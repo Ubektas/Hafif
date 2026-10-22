@@ -8,7 +8,7 @@ const race = (p, ms) => Promise.race([p, wait(ms).then(() => 'YANIT YOK')]);
 (async () => {
   const [device] = await android.devices();
   const res = {};
-  for (const mod of ['bulaniklik-yok+animasyon-yok', 'animasyon-yok', 'bulaniklik-yok', 'normal']) {
+  for (const mod of [process.env.TANI_MOD || 'normal']) {
     try {
       await device.shell(`am force-stop ${PKG}`); await wait(1500);
       await device.shell(`am start -W -n ${PKG}/.MainActivity`);
@@ -16,6 +16,8 @@ const race = (p, ms) => Promise.race([p, wait(ms).then(() => 'YANIT YOK')]);
       await page.waitForSelector('#view', { timeout: 30000 }); await wait(1000);
       await page.evaluate(mod => {
         if (mod.includes('bulaniklik-yok')) { const s = document.createElement('style'); s.textContent = '*{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}'; document.head.appendChild(s); }
+        const css = { 'css-animasyon-yok': '*,*::before,*::after{animation:none!important;transition:none!important}', 'bardak-gizli': '.wglass,canvas{display:none!important}', 'protein-gizli': '.pplate,.psec{display:none!important}', 'golge-yok': '*{box-shadow:none!important;filter:none!important}' }[mod];
+        if (css) { const s = document.createElement('style'); s.textContent = css; document.head.appendChild(s); }
         if (mod.includes('animasyon-yok')) { const mm = window.matchMedia.bind(window); window.matchMedia = q => /reduce/.test(q) ? { matches: true, media: q, addEventListener() {}, removeEventListener() {} } : mm(q); }
       }, mod);
       await page.evaluate(() => document.querySelector('.tab[data-tab="besin"]').click());
@@ -24,9 +26,8 @@ const race = (p, ms) => Promise.race([p, wait(ms).then(() => 'YANIT YOK')]);
       const ekran = await race(device.screenshot({ path: `${OUT}/tani-${mod}.png` }).then(() => 'alındı', e => 'HATA'), 15000);
       res[mod] = { fps, ekran };
     } catch (e) { res[mod] = { hata: String(e.message || e).slice(0, 200) }; }
-    console.log(mod, JSON.stringify(res[mod]));
+    console.log(mod, JSON.stringify(res[mod])); fs.writeFileSync(`${OUT}/tani.json`, JSON.stringify(res, null, 2));
   }
-  const r = JSON.parse(fs.existsSync(`${OUT}/rapor.json`) ? fs.readFileSync(`${OUT}/rapor.json`) : '{}');
-  r.besinTani = res; fs.writeFileSync(`${OUT}/rapor.json`, JSON.stringify(r, null, 2));
+  fs.writeFileSync(`${OUT}/tani.json`, JSON.stringify(res, null, 2));
   await device.close(); process.exit(0);
 })();

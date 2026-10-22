@@ -41,7 +41,6 @@ jobs:
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           script: |
             adb install -r android/app/build/outputs/apk/debug/app-debug.apk
-            OUT=test-sonuclari node tests/besin-tani.js
             OUT=test-sonuclari node tests/android-smoke.js
       - name: Sonuçları test-sonuclari dalına kaydet
         if: always()
