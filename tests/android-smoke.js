@@ -22,6 +22,8 @@ const step = (ad, sonuc, detay) => { report.adimlar.push({ ad, sonuc, detay }); 
     await wait(1500);
     return page;
   };
+  const tap = async (page, sel) => { await page.waitForSelector(sel, { state: 'attached', timeout: 20000 }); await page.evaluate(s => document.querySelector(s).click(), sel); };
+  const type = (page, sel, v) => page.evaluate(([s, v]) => { const e = document.querySelector(s); e.value = v; e.dispatchEvent(new Event('input', { bubbles: true })); }, [sel, v]);
   try {
     await device.shell(`pm clear ${PKG}`);
     await device.shell(`am start -n ${PKG}/.MainActivity`);
@@ -45,22 +47,22 @@ const step = (ad, sonuc, detay) => { report.adimlar.push({ ad, sonuc, detay }); 
     step('Uygulama açıldı (Capacitor)', env.native, JSON.stringify(env));
 
     for (const t of ['takviye', 'besin', 'kilo', 'igne', 'ozet']) {
-      await page.click(`.tab[data-tab="${t}"]`); await wait(700); await shot('sekme-' + t);
+      await tap(page, `.tab[data-tab="${t}"]`); await wait(1500); await shot('sekme-' + t);
     }
     step('Tüm sekmeler açıldı', report.hatalar.length === 0, report.hatalar.join(' | '));
 
     // Kilo girişi
-    await page.click('[data-open="weight"]'); await wait(600);
-    await page.fill('#w-kg', '88,4'); await shot('kilo-gir');
-    await page.click('#sheetRoot [type="submit"]'); await wait(900);
+    await tap(page, '[data-open="weight"]'); await wait(600);
+    await type(page, '#w-kg', '88,4'); await shot('kilo-gir');
+    await tap(page, '#sheetRoot [type="submit"]'); await wait(900);
     // İğne girişi
-    await page.click('[data-open="shot"]'); await wait(600);
-    await page.fill('#s-dose', '2,5'); await shot('igne-ekle');
-    await page.click('#sheetRoot [type="submit"]'); await wait(900);
+    await tap(page, '[data-open="shot"]'); await wait(600);
+    await type(page, '#s-dose', '2,5'); await shot('igne-ekle');
+    await tap(page, '#sheetRoot [type="submit"]'); await wait(900);
     // Su
-    await page.click('.tab[data-tab="besin"]'); await wait(600);
+    await tap(page, '.tab[data-tab="besin"]'); await wait(600);
     const su = page.locator('[data-wamt]').first();
-    if (await su.count()) { await su.click(); await wait(900); }
+    if (await su.count()) { await tap(page, '[data-wamt]'); await wait(900); }
     await shot('besin-su-eklendi');
     const kayit = await page.evaluate(() => { try { const d = JSON.parse(localStorage.getItem('doz-defteri')); return { tarti: d.weights.length, igne: d.shots.length, gun: Object.keys(d.daily || {}).length }; } catch (e) { return String(e); } });
     step('Kayıt eklendi', kayit.tarti === 1 && kayit.igne === 1, JSON.stringify(kayit));
@@ -73,20 +75,20 @@ const step = (ad, sonuc, detay) => { report.adimlar.push({ ad, sonuc, detay }); 
     step('Uygulama kapatılıp açılınca veriler duruyor', kayit2.tarti === 1 && kayit2.igne === 1, JSON.stringify(kayit2));
 
     // Geri tuşu: alt sayfa kapanmalı
-    await page.click('[data-open="weight"]'); await wait(600);
+    await tap(page, '[data-open="weight"]'); await wait(600);
     await device.shell('input keyevent 4'); await wait(700);
     const sheetKapali = await page.evaluate(() => !document.querySelector('#sheetRoot').firstChild);
     step('Geri tuşu açık pencereyi kapatıyor', sheetKapali);
     // Geri tuşu: sekmeden Özet'e
-    await page.click('.tab[data-tab="kilo"]'); await wait(500);
+    await tap(page, '.tab[data-tab="kilo"]'); await wait(500);
     await device.shell('input keyevent 4'); await wait(700);
     const ozette = await page.evaluate(() => document.querySelector('.tab[aria-selected="true"]')?.dataset.tab);
     step('Geri tuşu Özet sekmesine dönüyor', ozette === 'ozet', ozette);
 
     // Ayarlar → yedek indir: Android paylaş penceresi açılmalı
-    await page.click('#gearBtn'); await wait(700);
-    await page.locator('#exJson').scrollIntoViewIfNeeded(); await shot('ayarlar-verilerim');
-    await page.click('#exJson'); await wait(2500);
+    await tap(page, '#gearBtn'); await wait(700);
+    await page.evaluate(() => document.querySelector('#exJson').scrollIntoView()); await wait(500); await shot('ayarlar-verilerim');
+    await tap(page, '#exJson'); await wait(2500);
     await shot('yedek-paylas-penceresi');
     const pencere = await device.shell('dumpsys window | grep -E "mCurrentFocus|mFocusedApp"');
     step('Yedek dosyası → paylaş penceresi', !/hafif\/.*MainActivity/.test(pencere.toString().split('\n').find(l => l.includes('mCurrentFocus')) || ''), pencere.toString().trim());
@@ -94,7 +96,7 @@ const step = (ad, sonuc, detay) => { report.adimlar.push({ ad, sonuc, detay }); 
     const msg = await page.textContent('#dataMsg');
     step('Yedek dosyası hata mesajı yok', !msg, msg);
 
-    await page.click('#exXlsx'); await wait(3500);
+    await tap(page, '#exXlsx'); await wait(3500);
     await shot('excel-paylas-penceresi');
     await device.shell('input keyevent 4'); await wait(1000);
     const msg2 = await page.textContent('#dataMsg');

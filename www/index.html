@@ -1639,13 +1639,7 @@ function setComp(v,dir){compV=v;try{localStorage.setItem("hf-comp",v)}catch(_){}
 /* ---------- takviyeler ---------- */
 const SLOTS_S=[["sabah","Sabah"],["aksam","Akşam"],["gece","Gece"]];
 const DAYN=["Paz","Pzt","Sal","Çar","Per","Cum","Cmt"];
-const DEF_SUPPS=[
- {id:"mgday",name:"Magnesium Day",slot:"sabah",days:[0,1,2,3,4,5,6],shape:"caps",color:"#4F8FDB"},
- {id:"folbiol",name:"Folbiol",slot:"sabah",days:[1,3,4,6],shape:"tab",color:"#F1B3C3"},
- {id:"ferrozinc",name:"Ferrozinc",slot:"sabah",days:[1,3,4,6],shape:"caps",color:"#D9553B"},
- {id:"dcolefor",name:"D-Colefor",slot:"sabah",days:[1,4],shape:"soft",color:"#F2C94C"},
- {id:"bactive",name:"B Active",slot:"aksam",days:[0,1,2,3,4,5,6],shape:"oval",color:"#E9D59A"},
- {id:"mgnight",name:"Magnesium Night",slot:"gece",days:[0,1,2,3,4,5,6],shape:"caps",color:"#7A52D6"}];
+const DEF_SUPPS=[];
 const SUPP_TIMES={sabah:"07:30",aksam:"19:00",gece:"22:30"};
 let suppDate=null;
 function supps(){if(!Array.isArray(S.supps)){S.supps=JSON.parse(JSON.stringify(DEF_SUPPS));S.suppTimes={...SUPP_TIMES}}return S.supps}
