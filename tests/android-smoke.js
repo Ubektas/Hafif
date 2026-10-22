@@ -46,8 +46,20 @@ const step = (ad, sonuc, detay) => { report.adimlar.push({ ad, sonuc, detay }); 
     });
     step('Uygulama açıldı (Capacitor)', env.native, JSON.stringify(env));
 
+    const fps = () => Promise.race([page.evaluate(() => new Promise(r => { let n = 0; const t0 = performance.now(); (function f() { n++; if (performance.now() - t0 < 2000) requestAnimationFrame(f); else r(Math.round(n / 2)); })(); })), wait(8000).then(() => 'yanıt yok')]);
+    report.fps = { ozet: await fps() };
     for (const t of ['takviye', 'besin', 'kilo', 'igne', 'ozet']) {
-      await tap(page, `.tab[data-tab="${t}"]`); await wait(1500); await shot('sekme-' + t);
+      const t0 = Date.now();
+      const r = await Promise.race([page.evaluate(s => { document.querySelector(s).click(); return document.querySelector('#title')?.textContent; }, `.tab[data-tab="${t}"]`), wait(10000).then(() => 'ZAMAN AŞIMI')]);
+      report['sekme_' + t] = { sonuc: r, ms: Date.now() - t0 };
+      await wait(1500); await shot('sekme-' + t);
+      if (r === 'ZAMAN AŞIMI') {
+        for (const sn of [5, 15]) { await wait(sn * 1000); await shot(`sekme-${t}-${sn}sn-sonra`); }
+        report.pid = (await device.shell(`pidof ${PKG}`)).toString().trim();
+        report.logcat = (await device.shell('logcat -d -t 400 *:W')).toString().split('\n').filter(l => /chromium|Console|hafif|ANR|FATAL|AndroidRuntime|WebView|Capacitor/i.test(l)).slice(-80);
+        throw new Error('Sekme yanıt vermedi: ' + t);
+      }
+      report.fps[t] = await fps();
     }
     step('Tüm sekmeler açıldı', report.hatalar.length === 0, report.hatalar.join(' | '));
 
