@@ -1,0 +1,9 @@
+{
+  "appId": "com.ugurbektas.hafif",
+  "appName": "Hafif",
+  "webDir": "www",
+  "backgroundColor": "#F1F5F3",
+  "android": {
+    "allowMixedContent": false
+  }
+}

@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Hafif</string>
+    <string name="title_activity_main">Hafif</string>
+    <string name="package_name">com.ugurbektas.hafif</string>
+    <string name="custom_url_scheme">com.ugurbektas.hafif</string>
+</resources>
