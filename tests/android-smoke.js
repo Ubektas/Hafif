@@ -103,6 +103,7 @@ const step = (ad, sonuc, detay) => { report.adimlar.push({ ad, sonuc, detay }); 
     await device.shell('input keyevent 4'); await wait(1500);
     const odak = (await device.shell('dumpsys window | grep mCurrentFocus')).toString();
     step('Özet\'te geri tuşu uygulamadan çıkıyor', !odak.includes(PKG), odak.trim());
+    await device.shell(`am force-stop ${PKG}`); await wait(1500);
     page = await launch();
     // Ayarlar → yedek indir: Android paylaş penceresi açılmalı
     await tap(page, '#gearBtn'); await wait(700);
