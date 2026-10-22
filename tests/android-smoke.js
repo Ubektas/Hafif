@@ -87,6 +87,13 @@ const step = (ad, sonuc, detay) => { report.adimlar.push({ ad, sonuc, detay }); 
     await shot('yeniden-acildi');
     step('Uygulama kapatılıp açılınca veriler duruyor', kayit2.tarti === 1 && kayit2.igne === 1, JSON.stringify(kayit2));
 
+    // Geri tuşu tanısı
+    report.geriTani = await page.evaluate(() => { window.__bb = 0; const t = typeof Capacitor.addListener; try { Capacitor.addListener('App', 'backButton', () => { window.__bb++; }); } catch (e) { return t + ' / ' + e.message; } return t; });
+    await device.shell('input keyevent 4'); await wait(1200);
+    report.geriTani += ' | sayac=' + await Promise.race([page.evaluate(() => window.__bb), wait(4000).then(() => 'yanıt yok')]);
+    report.geriTani += ' | odak=' + (await device.shell('dumpsys window | grep mCurrentFocus')).toString().trim();
+    report.geriTani += ' | klavye=' + (await device.shell('dumpsys input_method | grep -E "mInputShown|mIsInputViewShown"')).toString().replace(/\s+/g, ' ').trim();
+    await device.shell(`am start -n ${PKG}/.MainActivity`); await wait(1500);
     // Geri tuşu: alt sayfa kapanmalı
     await tap(page, '[data-open="weight"]'); await wait(600);
     await device.shell('input keyevent 4'); await wait(700);
