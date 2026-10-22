@@ -87,15 +87,9 @@ const step = (ad, sonuc, detay) => { report.adimlar.push({ ad, sonuc, detay }); 
     await shot('yeniden-acildi');
     step('Uygulama kapatılıp açılınca veriler duruyor', kayit2.tarti === 1 && kayit2.igne === 1, JSON.stringify(kayit2));
 
-    // Geri tuşu tanısı
-    report.geriTani = await page.evaluate(() => { window.__bb = 0; const t = typeof Capacitor.addListener; try { Capacitor.addListener('App', 'backButton', () => { window.__bb++; }); } catch (e) { return t + ' / ' + e.message; } return t; });
-    await device.shell('input keyevent 4'); await wait(1200);
-    report.geriTani += ' | sayac=' + await Promise.race([page.evaluate(() => window.__bb), wait(4000).then(() => 'yanıt yok')]);
-    report.geriTani += ' | odak=' + (await device.shell('dumpsys window | grep mCurrentFocus')).toString().trim();
-    report.geriTani += ' | klavye=' + (await device.shell('dumpsys input_method | grep -E "mInputShown|mIsInputViewShown"')).toString().replace(/\s+/g, ' ').trim();
-    await device.shell(`am start -n ${PKG}/.MainActivity`); await wait(1500);
     // Geri tuşu: alt sayfa kapanmalı
     await tap(page, '[data-open="weight"]'); await wait(600);
+    await page.evaluate(() => document.activeElement && document.activeElement.blur()); await device.shell('input keyevent 111'); await wait(800); // klavyeyi kapat
     await device.shell('input keyevent 4'); await wait(700);
     const sheetKapali = await page.evaluate(() => !document.querySelector('#sheetRoot').firstChild);
     step('Geri tuşu açık pencereyi kapatıyor', sheetKapali);
@@ -105,6 +99,11 @@ const step = (ad, sonuc, detay) => { report.adimlar.push({ ad, sonuc, detay }); 
     const ozette = await page.evaluate(() => document.querySelector('.tab[aria-selected="true"]')?.dataset.tab);
     step('Geri tuşu Özet sekmesine dönüyor', ozette === 'ozet', ozette);
 
+    // Geri tuşu: Özet'teyken uygulamadan çıkmalı (en sonda tekrar açılır)
+    await device.shell('input keyevent 4'); await wait(1500);
+    const odak = (await device.shell('dumpsys window | grep mCurrentFocus')).toString();
+    step('Özet\'te geri tuşu uygulamadan çıkıyor', !odak.includes(PKG), odak.trim());
+    page = await launch();
     // Ayarlar → yedek indir: Android paylaş penceresi açılmalı
     await tap(page, '#gearBtn'); await wait(700);
     await page.evaluate(() => document.querySelector('#exJson').scrollIntoView()); await wait(500); await shot('ayarlar-verilerim');
