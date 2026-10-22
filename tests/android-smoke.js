@@ -18,6 +18,7 @@ const step = (ad, sonuc, detay) => { report.adimlar.push({ ad, sonuc, detay }); 
     const page = await wv.page();
     page.on('console', m => { if (m.type() === 'error' || m.type() === 'warning') report.konsol.push(m.type() + ': ' + m.text()); });
     page.on('pageerror', e => report.hatalar.push(e.message));
+    page.on('response', r => { if (r.status() >= 400) report.konsol.push('HTTP ' + r.status() + ' ' + r.url()); });
     await page.waitForSelector('#view', { timeout: 30000 });
     await wait(1500);
     return page;

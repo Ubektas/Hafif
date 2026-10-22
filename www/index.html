@@ -2061,7 +2061,7 @@ $("#gearBtn").addEventListener("click",()=>{selPhase=null;ANIM=true;tab="ayar";r
 document.querySelectorAll(".tab").forEach(t=>t.addEventListener("click",()=>{selPhase=null;ANIM=true;tab=t.dataset.tab;render();window.scrollTo(0,0)}));
 boot();
 /* Android geri tuşu: önce kutlamayı, sonra açık alt sayfayı kapatır, sonra Özet'e döner, en son uygulamadan çıkar */
-if(CAP&&CAP.App)CAP.App.addListener("backButton",()=>{
+if(CAP&&CAP.App)window.Capacitor.addListener("App","backButton",()=>{
   const c=$("#celeb");if(c){c.remove();return}
   if($("#sheetRoot").firstChild){closeSheet();return}
   if(tab!=="ozet"){selPhase=null;tab="ozet";render();window.scrollTo(0,0);return}
