@@ -28,7 +28,7 @@ const step = (ad, sonuc, detay) => { report.adimlar.push({ ad, sonuc, detay }); 
   try {
     await device.shell(`pm clear ${PKG}`);
     await device.shell(`am start -n ${PKG}/.MainActivity`);
-    await wait(400); await shot('acilis-ekrani');
+    for (const ms of [300, 500, 500]) { await wait(ms); await shot('acilis-ekrani'); }
     await device.shell(`am force-stop ${PKG}`);
 
     let page = await launch();
