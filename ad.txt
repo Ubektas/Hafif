@@ -1,0 +1,1 @@
+golge-yok swiftshader_indirect
