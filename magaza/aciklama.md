@@ -46,5 +46,5 @@ VERİLERİN SENİN
 Sağlık ve Fitness
 
 ## İletişim
-E-posta: [Play Console'da görünecek iletişim e-postası]
-Gizlilik politikası: [yayınlanacak adres]
+E-posta: ub.ugurbektas@gmail.com
+Gizlilik politikası: https://ubektas.github.io/hafif-gizlilik/
