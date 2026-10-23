@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="tr"><head><meta charset="utf-8">
+<link rel="stylesheet" href="../../www/fonts/fonts.css">
+<style>
+:root{--bg:#F1F5F3;--glow:#DDEFE7;--surface:#FFFFFF;--sunk:#EDF3F0;--fg:#0B2420;--muted:#5F726C;--line:#E0E8E4;--accent:#0E7C66;--accent-soft:#E1F3EC;--emerald-1:#126B58;--emerald-2:#0B3B33;--step:#4A5BC4;--step-2:#7C8BEA;--step-soft:#E9ECFB;--shadow:0 1px 2px rgba(11,36,32,.04),0 14px 34px -18px rgba(11,59,51,.22)}
+*{box-sizing:border-box}
+body{margin:0;background:#DCE7E2;font:15px/1.45 Figtree,sans-serif;color:var(--fg);display:flex;gap:26px;padding:26px;align-items:flex-start}
+.col{display:flex;flex-direction:column;gap:12px;align-items:center}
+.tag{font:700 15px Figtree;color:var(--emerald-2);background:#fff;border-radius:99px;padding:8px 16px;box-shadow:var(--shadow)}
+.tag b{color:var(--step)}
+.sc{width:390px;height:844px;flex:none;border-radius:34px;overflow:hidden;position:relative;background-color:var(--bg);background-image:radial-gradient(140% 460px at 85% -140px,var(--glow) 0%,var(--bg) 72%);padding:22px 16px;display:flex;flex-direction:column;gap:14px;box-shadow:0 30px 60px -30px rgba(11,59,51,.5)}
+.hd{display:flex;justify-content:space-between;align-items:flex-end;margin:4px 0 4px}
+.wm{font:700 30px "Bricolage Grotesque";letter-spacing:-.03em;display:flex;gap:8px;align-items:center;color:var(--fg)}.wm svg{width:24px;height:24px;color:var(--accent)}
+.dt{font-size:13px;color:var(--muted)}
+.card{background:radial-gradient(130% 70% at 100% 0%,rgba(14,124,102,.06) 0%,transparent 55%),var(--surface);border-radius:22px;padding:18px;box-shadow:var(--shadow)}
+.eb{font-size:11px;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);font-weight:600}
+h2{font:700 17.5px "Bricolage Grotesque";margin:0;color:var(--emerald-2)}
+.muted{color:var(--muted)}
+.hero{background:radial-gradient(120% 90% at 100% 0%,#1F8A70 0%,transparent 55%),linear-gradient(160deg,#0B3B33 0%,#082924 100%);color:#fff;border-radius:22px;padding:20px;height:150px;position:relative;overflow:hidden}
+.hero .eb{color:rgba(255,255,255,.6)}.hero b{font:700 54px/1 "Bricolage Grotesque";letter-spacing:-.04em;display:block;margin-top:8px}.hero b small{font-size:20px;color:rgba(255,255,255,.6);margin-left:4px}
+.hero svg{position:absolute;left:0;right:0;bottom:0}
+.btn{border:0;border-radius:16px;padding:14px;font:600 15px Figtree;background:linear-gradient(160deg,var(--emerald-1),var(--emerald-2));color:#fff;text-align:center;box-shadow:0 10px 22px -12px rgba(11,59,51,.55)}
+.ghost{opacity:.45}
+.nav{margin-top:auto;display:grid;grid-template-columns:repeat(5,1fr);background:rgba(255,255,255,.9);border-radius:18px;padding:8px 0;font-size:10.5px;color:var(--muted);text-align:center}
+.nav span.on{color:var(--accent);font-weight:700}
+/* A: halka */
+.a{display:grid;grid-template-columns:118px 1fr;gap:16px;align-items:center}
+.ring{position:relative;width:118px;height:118px}.ring div{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.ring b{font:700 24px "Bricolage Grotesque";letter-spacing:-.03em;color:var(--emerald-2)}.ring span{font-size:11px;color:var(--muted)}
+.trio{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:2px}
+.trio div{background:var(--sunk);border-radius:12px;padding:8px}.trio b{display:block;font:700 16px "Bricolage Grotesque";color:var(--emerald-2)}.trio span{font-size:10.5px;color:var(--muted)}
+.wk{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;align-items:end;height:56px;margin-top:14px}
+.wk div{display:flex;flex-direction:column;align-items:center;gap:4px;height:100%;justify-content:flex-end}
+.wk i{display:block;width:16px;border-radius:6px;background:var(--step-soft)}.wk i.ok{background:linear-gradient(var(--step-2),var(--step))}.wk i.td{background:linear-gradient(var(--step-2),var(--step));box-shadow:0 0 0 3px var(--step-soft)}
+.wk span{font-size:10px;color:var(--muted)}
+/* B: patika */
+.trail{position:relative;height:96px;margin:6px 4px 0}
+.trail svg{position:absolute;inset:0}
+.walker{position:absolute;top:22px;width:38px;height:38px;margin-left:-19px;border-radius:50%;background:var(--step);color:#fff;display:grid;place-items:center;box-shadow:0 6px 14px -4px rgba(74,91,196,.7)}
+.walker svg{position:static;width:22px;height:22px}
+.flag{position:absolute;top:66px;transform:translateX(-50%);font:600 10.5px Figtree;color:var(--muted)}
+.flag.done{color:var(--step)}
+.bigline{display:flex;align-items:baseline;gap:6px}.bigline b{font:700 40px "Bricolage Grotesque";letter-spacing:-.04em;color:var(--emerald-2)}.bigline span{color:var(--muted);font-size:14px}
+.chips{display:flex;gap:6px;flex-wrap:wrap}.chips span{font-size:12.5px;padding:5px 10px;border-radius:99px;background:var(--sunk);color:var(--fg)}.chips b{font-weight:700}
+.streak{display:flex;align-items:center;gap:8px;background:var(--step-soft);color:var(--step);border-radius:12px;padding:9px 12px;font:600 13px Figtree}
+/* C: şerit */
+.mini{display:flex;align-items:center;gap:14px;padding:14px 16px}
+.mi{width:52px;height:52px;border-radius:16px;background:var(--step-soft);color:var(--step);display:grid;place-items:center;flex:none}.mi svg{width:28px;height:28px}
+.mt{flex:1;min-width:0}.mt b{font:700 21px "Bricolage Grotesque";letter-spacing:-.02em;color:var(--emerald-2)}.mt small{font-size:13px;color:var(--muted);margin-left:4px}
+.bar{height:7px;border-radius:7px;background:var(--step-soft);margin-top:6px;overflow:hidden}.bar i{display:block;height:100%;border-radius:7px;background:linear-gradient(90deg,var(--step-2),var(--step))}
+.mts{font-size:12px;color:var(--muted);margin-top:5px}
+.supp{display:flex;align-items:center;gap:14px;padding:14px 16px}.supp .r{width:52px;height:52px;border-radius:50%;border:6px solid var(--sunk);border-top-color:var(--accent);border-right-color:var(--accent);display:grid;place-items:center;font:700 13px "Bricolage Grotesque";color:var(--emerald-2)}
+/* D: detay */
+.dhead{display:flex;flex-direction:column;align-items:center;gap:4px;padding:22px 18px}
+.big2{position:relative;width:200px;height:200px}.big2 div{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.big2 b{font:700 40px "Bricolage Grotesque";letter-spacing:-.04em;color:var(--emerald-2)}.big2 span{font-size:12.5px;color:var(--muted)}
+.hours{display:flex;align-items:flex-end;gap:3px;height:70px;margin-top:10px}.hours i{flex:1;border-radius:3px;background:var(--step-soft)}.hours i.h{background:var(--step)}
+.hx{display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-top:4px}
+.src{display:flex;align-items:center;gap:10px;font-size:12.5px;color:var(--muted);background:var(--surface);border-radius:14px;padding:10px 12px;box-shadow:var(--shadow)}
+.src i{width:28px;height:28px;border-radius:9px;background:linear-gradient(135deg,#4285F4,#34A853);flex:none}
+/* E: bağlantı */
+.conn{display:flex;flex-direction:column;gap:12px}
+.hc{width:76px;height:76px;border-radius:22px;background:var(--step-soft);color:var(--step);display:grid;place-items:center;margin:20px auto 6px}.hc svg{width:40px;height:40px}
+.perm{display:flex;flex-direction:column;background:var(--surface);border-radius:18px;padding:4px 16px;box-shadow:var(--shadow)}
+.perm div{display:flex;align-items:center;gap:12px;padding:12px 0;border-top:1px solid var(--line);font-size:14px}.perm div:first-child{border:0}
+.perm em{font-style:normal;margin-left:auto;font-size:12px;color:var(--muted)}
+.perm i{width:30px;height:30px;border-radius:10px;display:grid;place-items:center;flex:none}
+.note{font-size:12.5px;color:var(--muted);text-align:center;margin:0}
+</style></head><body>
+
+<!-- A -->
+<div class="col"><div class="tag">Seçenek <b>A</b> · Halka</div>
+<div class="sc" id="a">
+  <div class="hd"><div><div class="wm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 4C11 4 5 9 5 17v3"/><path d="M20 4c0 9-5 14-13 14"/><path d="M9 14l5-5"/></svg>Hafif</div><div class="dt">23 Ekim Cuma</div></div></div>
+  <div class="hero"><span class="eb">Başlangıçtan bu yana · 59 gün</span><b>−7,2<small>kg</small></b>
+    <svg viewBox="0 0 360 50" preserveAspectRatio="none" height="50" width="100%"><path d="M0 10 L60 18 L120 22 L180 30 L240 33 L300 40 L360 42 L360 50 L0 50Z" fill="rgba(127,224,194,.25)"/><path d="M0 10 L60 18 L120 22 L180 30 L240 33 L300 40 L360 42" stroke="#9FF0D6" stroke-width="2.2" fill="none"/></svg></div>
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px"><h2>Bugün hareket</h2><span class="muted" style="font-size:12.5px">Health Connect</span></div>
+    <div class="a">
+      <div class="ring"><svg viewBox="0 0 118 118" width="118" height="118"><circle cx="59" cy="59" r="50" fill="none" stroke="var(--step-soft)" stroke-width="12"/><circle cx="59" cy="59" r="50" fill="none" stroke="url(#sg)" stroke-width="12" stroke-linecap="round" stroke-dasharray="196 314" transform="rotate(-90 59 59)"/><defs><linearGradient id="sg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#7C8BEA"/><stop offset="1" stop-color="#4A5BC4"/></linearGradient></defs></svg><div><b>6.240</b><span>/ 10.000 adım</span></div></div>
+      <div><div class="eb" style="color:var(--step)">Hedefin %62'si</div><div style="font:700 17px 'Bricolage Grotesque';color:var(--emerald-2);margin:4px 0 10px">3.760 adım kaldı</div>
+        <div class="trio"><div><b>4,5</b><span>km</span></div><div><b>238</b><span>kcal</span></div><div><b>52</b><span>dk</span></div></div></div>
+    </div>
+    <div class="wk"><div><i class="ok" style="height:78%"></i><span>Cum</span></div><div><i class="ok" style="height:100%"></i><span>Cmt</span></div><div><i style="height:40%"></i><span>Paz</span></div><div><i class="ok" style="height:88%"></i><span>Pzt</span></div><div><i style="height:55%"></i><span>Sal</span></div><div><i class="ok" style="height:95%"></i><span>Çar</span></div><div><i class="td" style="height:62%"></i><span>Bugün</span></div></div>
+  </div>
+  <div class="nav"><span class="on">Özet</span><span>Takviye</span><span>Protein &amp; Su</span><span>Kilo</span><span>İğneler</span></div>
+</div><p class="note" style="max-width:380px">Özet'te büyük kart: halka, mesafe, kalori, aktif dakika ve son 7 gün. En dolu ve bilgilendirici seçenek.</p></div>
+
+<!-- B -->
+<div class="col"><div class="tag">Seçenek <b>B</b> · Patika</div>
+<div class="sc" id="b">
+  <div class="hd"><div><div class="wm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 4C11 4 5 9 5 17v3"/><path d="M20 4c0 9-5 14-13 14"/><path d="M9 14l5-5"/></svg>Hafif</div><div class="dt">23 Ekim Cuma</div></div></div>
+  <div class="hero"><span class="eb">Başlangıçtan bu yana · 59 gün</span><b>−7,2<small>kg</small></b>
+    <svg viewBox="0 0 360 50" preserveAspectRatio="none" height="50" width="100%"><path d="M0 10 L60 18 L120 22 L180 30 L240 33 L300 40 L360 42 L360 50 L0 50Z" fill="rgba(127,224,194,.25)"/><path d="M0 10 L60 18 L120 22 L180 30 L240 33 L300 40 L360 42" stroke="#9FF0D6" stroke-width="2.2" fill="none"/></svg></div>
+  <div class="card" style="display:flex;flex-direction:column;gap:10px">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start"><div><span class="eb">Bugünkü yürüyüşün</span><div class="bigline"><b>6.240</b><span>adım</span></div></div><div class="chips"><span><b>4,5</b> km</span></div></div>
+    <div class="trail">
+      <svg viewBox="0 0 330 96" width="100%" height="96" preserveAspectRatio="none"><path d="M6 42 C 70 10, 120 70, 170 42 S 270 14, 324 42" fill="none" stroke="var(--line)" stroke-width="8" stroke-linecap="round" stroke-dasharray="1 14"/><path d="M6 42 C 70 10, 120 70, 170 42 S 220 30, 210 36" fill="none" stroke="url(#tg)" stroke-width="8" stroke-linecap="round"/><defs><linearGradient id="tg"><stop offset="0" stop-color="#7C8BEA"/><stop offset="1" stop-color="#4A5BC4"/></linearGradient></defs>
+        <circle cx="85" cy="33" r="6" fill="#4A5BC4"/><circle cx="170" cy="42" r="6" fill="#4A5BC4"/><circle cx="255" cy="28" r="6" fill="#fff" stroke="#C9CFF3" stroke-width="2"/><circle cx="324" cy="42" r="8" fill="#fff" stroke="#C9CFF3" stroke-width="2"/></svg>
+      <div class="walker" style="left:64%"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13" cy="4.5" r="1.8"/><path d="M10 21l2-6 3 3v3M8 12l3-4 4 2 2 3M11 8l-1 5"/></svg></div>
+      <span class="flag done" style="left:26%">2.500</span><span class="flag done" style="left:51%">5.000</span><span class="flag" style="left:77%">7.500</span><span class="flag" style="left:97%">10.000 🏁</span>
+    </div>
+    <div class="streak">🔥 4 gündür hedefindesin · bugün 3.760 adım kaldı</div>
+  </div>
+  <div class="nav"><span class="on">Özet</span><span>Takviye</span><span>Protein &amp; Su</span><span>Kilo</span><span>İğneler</span></div>
+</div><p class="note" style="max-width:380px">Bir yürüyüş yolu: ara duraklar geçildikçe dolar, seri (streak) motivasyonu öne çıkar. En eğlenceli ve "oyunlaştırılmış" seçenek.</p></div>
+
+<!-- C -->
+<div class="col"><div class="tag">Seçenek <b>C</b> · Sade şerit</div>
+<div class="sc" id="c">
+  <div class="hd"><div><div class="wm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 4C11 4 5 9 5 17v3"/><path d="M20 4c0 9-5 14-13 14"/><path d="M9 14l5-5"/></svg>Hafif</div><div class="dt">23 Ekim Cuma</div></div></div>
+  <div class="hero"><span class="eb">Başlangıçtan bu yana · 59 gün</span><b>−7,2<small>kg</small></b>
+    <svg viewBox="0 0 360 50" preserveAspectRatio="none" height="50" width="100%"><path d="M0 10 L60 18 L120 22 L180 30 L240 33 L300 40 L360 42 L360 50 L0 50Z" fill="rgba(127,224,194,.25)"/><path d="M0 10 L60 18 L120 22 L180 30 L240 33 L300 40 L360 42" stroke="#9FF0D6" stroke-width="2.2" fill="none"/></svg></div>
+  <div class="btn">Kilo gir</div>
+  <div class="card supp"><div class="r">2/4</div><div style="flex:1"><div class="eb">Bugünün takviyeleri</div><b style="font:700 15.5px 'Bricolage Grotesque'">Sıradaki: Akşam · 19:00</b></div><span class="muted">›</span></div>
+  <div class="card mini"><div class="mi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 3.5c1.6 0 2.5 1.6 2.5 3.8S10 11 8.6 11 6 9.5 6 7.3s.9-3.8 2.5-3.8zM6.6 13h4l-.4 3a2.2 2.2 0 0 1-4.3-.3z"/><path d="M15.5 7.5c1.6 0 2.5 1.6 2.5 3.8S17 15 15.6 15 13 13.5 13 11.3s.9-3.8 2.5-3.8zM13.6 17h4l-.4 3a2.2 2.2 0 0 1-4.3-.3z"/></svg></div>
+    <div class="mt"><span class="eb">Bugünkü adımlar</span><div><b>6.240</b><small>/ 10.000 · 4,5 km</small></div><div class="bar"><i style="width:62%"></i></div></div><span class="muted">›</span></div>
+  <div class="card" style="opacity:.55"><h2>Kilo değişimi</h2><div style="height:110px"></div></div>
+  <div class="nav"><span class="on">Özet</span><span>Takviye</span><span>Protein &amp; Su</span><span>Kilo</span><span>İğneler</span></div>
+</div><p class="note" style="max-width:380px">Takviye kartının yanında küçük bir şerit; dokununca detay sayfası açılır. Özet'i en az kalabalıklaştıran seçenek.</p></div>
+
+<!-- D: detay sayfası (ortak) -->
+<div class="col"><div class="tag">Ortak · Adımlar sayfası</div>
+<div class="sc" id="d">
+  <div style="align-self:flex-start;background:#fff;border-radius:99px;padding:8px 14px;font:600 13.5px Figtree;color:var(--emerald-2);box-shadow:var(--shadow)">‹ Özet</div>
+  <div class="card dhead">
+    <div class="big2"><svg viewBox="0 0 200 200" width="200" height="200"><circle cx="100" cy="100" r="86" fill="none" stroke="var(--step-soft)" stroke-width="16"/><circle cx="100" cy="100" r="86" fill="none" stroke="url(#sg2)" stroke-width="16" stroke-linecap="round" stroke-dasharray="335 540" transform="rotate(-90 100 100)"/><defs><linearGradient id="sg2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#7C8BEA"/><stop offset="1" stop-color="#4A5BC4"/></linearGradient></defs></svg><div><b>6.240</b><span>hedef 10.000 adım</span></div></div>
+    <div class="trio" style="width:100%"><div><b>4,5 km</b><span>mesafe</span></div><div><b>238</b><span>kcal (tahmini)</span></div><div><b>52 dk</b><span>aktif</span></div></div>
+  </div>
+  <div class="card"><h2>Gün içinde</h2><div class="hours"><i style="height:4%"></i><i style="height:4%"></i><i style="height:4%"></i><i style="height:4%"></i><i style="height:4%"></i><i style="height:4%"></i><i style="height:4%"></i><i style="height:30%"></i><i class="h" style="height:72%"></i><i style="height:40%"></i><i style="height:22%"></i><i style="height:18%"></i><i class="h" style="height:60%"></i><i style="height:35%"></i><i style="height:12%"></i><i style="height:20%"></i><i style="height:8%"></i><i style="height:4%"></i><i style="height:4%"></i><i style="height:4%"></i><i style="height:4%"></i><i style="height:4%"></i><i style="height:4%"></i><i style="height:4%"></i></div><div class="hx"><span>00</span><span>06</span><span>12</span><span>18</span><span>24</span></div></div>
+  <div class="card"><div style="display:flex;justify-content:space-between"><h2>Son 7 gün</h2><span class="muted" style="font-size:12.5px">ort. 8.120</span></div>
+    <div class="wk"><div><i class="ok" style="height:78%"></i><span>Cum</span></div><div><i class="ok" style="height:100%"></i><span>Cmt</span></div><div><i style="height:40%"></i><span>Paz</span></div><div><i class="ok" style="height:88%"></i><span>Pzt</span></div><div><i style="height:55%"></i><span>Sal</span></div><div><i class="ok" style="height:95%"></i><span>Çar</span></div><div><i class="td" style="height:62%"></i><span>Bugün</span></div></div></div>
+  <div class="src"><i></i>Veriler Health Connect'ten · son güncelleme 14:20</div>
+</div><p class="note" style="max-width:380px">Hangi kart seçilirse seçilsin, dokununca bu sayfa açılır: saatlik dağılım, haftalık görünüm, mesafe ve tahmini kalori.</p></div>
+
+<!-- E: bağlantı -->
+<div class="col"><div class="tag">Ortak · İlk bağlantı</div>
+<div class="sc" id="e">
+  <div class="conn">
+    <div class="hc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/><path d="M8.5 11.5h2l1-2 1.5 4 1-2h1.5"/></svg></div>
+    <h2 style="font-size:26px;text-align:center;line-height:1.1">Adımlarını ve tartını<br><span style="color:var(--step)">bağla</span></h2>
+    <p class="note" style="font-size:14.5px">Hafif, telefonundaki <b>Health Connect</b>'ten okur. Samsung Health, Google Fit, Fitbit, akıllı saatin ve akıllı tartın buraya yazar.</p>
+    <div class="perm">
+      <div><i style="background:var(--step-soft);color:var(--step)">👣</i>Adımlar<em>okunur</em></div>
+      <div><i style="background:#E1F3EC">⚖️</i>Kilo<em>okunur</em></div>
+      <div><i style="background:#EEE9FB">💜</i>Vücut yağ oranı<em>okunur</em></div>
+    </div>
+    <p class="note">🔒 Veriler yalnızca bu telefonda kalır, hiçbir sunucuya gönderilmez. İzni istediğin zaman kaldırabilirsin.</p>
+  </div>
+  <div style="flex:1"></div>
+  <div class="btn" style="background:linear-gradient(160deg,#5B6BD6,#3A47A6)">Health Connect'e bağlan</div>
+  <div style="text-align:center;font:600 14px Figtree;color:var(--muted);text-decoration:underline">Şimdi değil</div>
+</div><p class="note" style="max-width:380px">Bağlantı ekranı: neyin okunacağını ve verinin telefonda kalacağını açıkça söyler, sonra Android'in izin penceresi açılır.</p></div>
+</body></html>
