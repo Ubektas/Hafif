@@ -457,6 +457,71 @@ input:focus{background:var(--surface);border-color:var(--accent);outline:none}
 .vessels button:active{background:var(--water-soft);border-color:#8FD2E6}
 .wlog{display:flex;gap:6px;flex-wrap:wrap}
 .wl{display:flex;gap:5px;align-items:baseline;font-size:11.5px;color:var(--muted);background:var(--sunk);border-radius:9px;padding:4px 8px}.wl b{color:var(--fg);font-weight:700}
+
+#cycWrap{touch-action:pan-y}
+.cycard{display:flex;flex-direction:column;gap:14px;background:radial-gradient(120% 70% at 100% 0%,rgba(14,124,102,.07),transparent 55%),var(--surface)}
+.cyline{margin:0;font-size:13.5px;color:var(--muted);line-height:1.5}.cyline b{color:var(--emerald-2)}
+.cinfo{display:grid;grid-template-columns:repeat(3,1fr);background:var(--sunk);border-radius:16px;padding:10px 6px}
+.cinfo div{display:flex;flex-direction:column;align-items:center;gap:2px}.cinfo div+div{border-left:1px solid var(--line)}
+.cinfo span{font-size:10.5px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);font-weight:600}.cinfo b{font:700 16px var(--f-display);color:var(--emerald-2)}
+.gtop{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.gstate{font:700 30px var(--f-display);letter-spacing:-.03em;color:var(--emerald-2);display:flex;align-items:baseline;gap:8px;margin-top:2px;line-height:1}
+.gstate small{font:600 14px var(--f-body);color:var(--muted);letter-spacing:0}
+.gnext{display:flex;flex-direction:column;align-items:flex-end;background:var(--sunk);border-radius:14px;padding:8px 12px;text-align:right}
+.gnext span{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:600}.gnext b{font:700 18px var(--f-display);color:var(--fg)}.gnext em{font-style:normal;font-size:11px;color:var(--muted)}
+.dcols{display:flex;gap:6px;justify-content:space-between;align-items:flex-end}
+.dcol{flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;min-width:0}
+.dmg{font:700 11px var(--f-body);color:var(--muted)}
+.dtube{position:relative;width:100%;max-width:38px;border-radius:12px;background:var(--sunk);display:flex;align-items:flex-end;overflow:hidden}
+.dtube i{display:block;width:100%;border-radius:12px}
+.dcol.fut .dtube i{border:1.5px dashed #9CCDBB;box-sizing:border-box;background:transparent}
+.dcol.today .dtube{box-shadow:0 0 0 2px var(--emerald-2)}
+.dcol.today .dmg{color:var(--emerald-2)}
+.dshot{position:absolute;top:6px;left:50%;transform:translateX(-50%);color:var(--emerald-2);z-index:1}
+.dday{font-size:12px;color:var(--fg)}.dcol.today .dday{color:var(--accent)}
+.dph{font-size:9.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.03em}
+
+.mix{display:flex;flex-direction:column;gap:10px;border-top:1px solid var(--line);padding-top:14px}
+.mixbar{display:flex;gap:3px;height:12px}
+.mixbar i{display:block;height:100%;border-radius:6px}
+.m1{background:linear-gradient(90deg,#0B3B33,#0E7C66)}.m2{background:linear-gradient(90deg,#7FD3B8,#B9E6D6)}
+.mixl{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.mixl>div{display:flex;gap:8px;align-items:flex-start}
+.mixl>div>i{flex:none;width:10px;height:10px;border-radius:3px;margin-top:4px}
+.mixl span{display:block;font-size:11.5px;color:var(--muted)}
+.mixl b{display:block;font:700 20px var(--f-display);letter-spacing:-.02em;color:var(--emerald-2)}
+.mixl em{display:block;font-style:normal;font-size:11px;color:var(--muted);line-height:1.3}
+.mixn{display:flex;justify-content:space-between;align-items:baseline;background:var(--sunk);border-radius:12px;padding:9px 12px;font-size:12.5px;color:var(--muted)}
+.mixn b{font:700 16px var(--f-display);color:var(--fg)}
+
+.parc{cursor:pointer}
+.phsel{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.phsel button{display:flex;align-items:center;gap:7px;border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:8px 9px;font:600 12.5px var(--f-body);color:var(--fg);cursor:pointer;text-align:left;position:relative}
+.phsel button i{flex:none;width:10px;height:10px;border-radius:3px}
+.phsel button span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.phsel button.cur::after{content:"";position:absolute;top:6px;right:7px;width:6px;height:6px;border-radius:50%;background:var(--accent)}
+.phsel button[aria-selected="true"]{background:var(--emerald-2);border-color:var(--emerald-2);color:#fff}
+.phsel button[aria-selected="true"].cur::after{background:#9FF0D6}
+.phd{display:flex;flex-direction:column;gap:10px;background:var(--sunk);border-radius:16px;padding:14px}
+.phdh{display:flex;justify-content:space-between;align-items:flex-end;gap:10px}
+.phdh h3{font-size:19px;color:var(--emerald-2);margin-top:2px}
+.phdr{font-size:12px;color:var(--muted);text-align:right}
+.phd p{margin:0;font-size:14px;line-height:1.5}
+.phd .tips li::before{background:var(--accent)}
+
+.seeall{border:0;background:var(--sunk);color:var(--emerald-2);font:600 12.5px var(--f-body);padding:6px 10px;border-radius:99px;cursor:pointer}
+button.mscount{border:0;background:none;cursor:pointer;padding:0;font:inherit;align-items:baseline}
+button.mscount i{font-style:normal;font-size:22px;color:var(--muted);margin-left:4px}
+.backbtn{align-self:flex-start;border:0;background:var(--surface);box-shadow:var(--shadow);color:var(--emerald-2);font:600 13.5px var(--f-body);padding:8px 14px;border-radius:99px;cursor:pointer}
+.bgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px 8px}
+.bcell{display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center}
+.bcell b{font-size:12.5px;line-height:1.25;color:var(--fg)}
+.bcell span{font-size:11px;color:var(--muted)}
+.bcell:not(.won){opacity:.45;filter:grayscale(.8)}
+.bcell.won span{color:var(--accent);font-weight:600}
+.kkpi{gap:10px}
+.ktrend{flex:none;display:flex;flex-direction:column;align-items:flex-end;background:rgba(255,255,255,.07);border:1px solid rgba(159,240,214,.2);border-radius:16px;padding:10px 12px}
+.ktrend span{font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.55)}.ktrend b{font:700 22px var(--f-display);color:#fff;letter-spacing:-.02em}.ktrend em{font-style:normal;font-size:11px;color:#9FF0D6}
 .celeb{position:fixed;inset:0;z-index:50;background:rgba(5,29,24,.45);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;padding-left:max(24px,env(safe-area-inset-left,0px));padding-right:max(24px,env(safe-area-inset-right,0px))}
 .celeb canvas{position:absolute;inset:0;width:100%;height:100%}
 .cbox{position:relative;background:var(--surface);border-radius:26px;padding:26px 22px 20px;max-width:340px;width:100%;display:flex;flex-direction:column;align-items:center;gap:10px;box-shadow:0 30px 60px -20px rgba(5,29,24,.6)}
@@ -629,10 +694,10 @@ function nextSite(){const s=sortedS();if(!s.length)return SITES[0];const i=SITES
 /* ---------- views ---------- */
 function render(){
   document.querySelectorAll(".tab").forEach(t=>t.setAttribute("aria-selected",t.dataset.tab===tab));
-  $("#title").textContent={ozet:"Hafif",takviye:"Takviyeler",besin:"Protein & Su",kilo:"Kilo",igne:"İğneler",ayar:"Ayarlar"}[tab];
+  $("#title").textContent={ozet:"Hafif",basari:"Başarıların",takviye:"Takviyeler",besin:"Protein & Su",kilo:"Kilo",igne:"İğneler",ayar:"Ayarlar"}[tab];
   $("#today").textContent=new Date().toLocaleDateString("tr-TR",{day:"numeric",month:"long",weekday:"long"});
   SCRUB=[];GID=0;
-  $("#view").innerHTML=({ozet:vOzet,takviye:vTakviye,besin:()=>`<section>${todayCard()}</section>`,kilo:vKilo,igne:vIgne,ayar:vAyar})[tab]();
+  $("#view").innerHTML=({ozet:vOzet,basari:vBasari,takviye:vTakviye,besin:()=>`<section>${todayCard()}</section>`,kilo:vKilo,igne:vIgne,ayar:vAyar})[tab]();
   if(ANIM){const sec=$("#view").querySelector("section");if(sec){sec.classList.add("enter");[...sec.children].forEach((el,i)=>el.style.setProperty("--i",Math.min(i,8)))}}
   ANIM=false;
   bindView();
@@ -686,14 +751,13 @@ function vOzetMain(){
   }
   return `<section>
     <div id="heroWrap">${heroHtml({w,s,lost,start,latest,goal,pct,ring,perWeek,totalDays})}</div>
+    <div class="actions"><button class="btn" data-open="weight">Kilo gir</button><button class="btn shotbtn" data-open="shot">İğne ekle</button></div>
     ${suppMini()}
+    ${w.length>1?chartCard():""}
     ${comp}
     ${milestoneCard()}
-    ${w.length>1?chartCard():""}
-    <div class="card" style="display:flex;flex-direction:column;gap:14px">${nextHtml}${phaseBlock()}</div>
-    <div class="actions"><button class="btn" data-open="weight">Kilo gir</button><button class="btn shotbtn" data-open="shot">İğne ekle</button></div>
-    ${drugCard()}
-    ${s.length?`<div class="card"><h2 style="margin-bottom:6px">Tüm iğneler <span class="muted num" style="font-size:14px;font-weight:400">${s.length}</span></h2>${shotList(9999)}</div>`:""}
+    <div id="cycWrap" class="cycw" data-v="kadran">${cycleHtml("kadran")}</div>
+    ${s.length?`<div class="card"><div class="msh" style="margin-bottom:6px"><h2>İğne girişleri <span class="muted num" style="font-size:14px;font-weight:400">${s.length}</span></h2><button type="button" class="seeall" data-go="igne">İğneler ›</button></div>${shotList(9999)}</div>`:""}
   </section>`;
 }
 function penIcon(){return `<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 4l6 6M17 7l-9 9-3 1 1-3 9-9M6 18l-3 3M11 8l2 2M8 11l2 2"/></svg>`}
@@ -797,12 +861,12 @@ function chartDrugWeight(){
 }
 
 const PHASES=[
- {k:"Başlangıç",txt:"İlaç deri altından kana geçmeye başladı. Bulantı ve şişkinlik gibi yan etkiler çoğu kişide ilk bir iki günde daha belirgin olur.",tips:["Küçük porsiyonlar ye, tok hissettiğinde bırak.","Yağlı ve ağır yemekleri bugün hafif tut.","Gün boyunca yudum yudum su iç."]},
- {k:"Yükselme",txt:"Düzey hızla yükseliyor. İştah genelde bu sırada belirgin şekilde azalmaya başlar.",tips:["Öğünlerde önce proteini ye.","Yavaş ye; doyma hissi gecikmeli gelebilir.","Bulantı olursa sade ve hafif yiyecekler daha iyi gider."]},
- {k:"Doruk",txt:"İlaç düzeyi döngünün en yüksek noktasında. İştah çoğu zaman en düşük seviyededir.",tips:["Az yesen bile protein ve sıvı alımını aksatma.","Öğün atlamak yerine küçük ve düzenli öğünler ye.","Kabızlığa karşı lifli besinler ve bol su."]},
- {k:"Süzülme",txt:"Düzey yavaşça iniyor. Yan etkiler hafiflerken iştah hâlâ kontrol altında; döngünün en dengeli dönemi.",tips:["Hareket ve egzersiz için iyi bir dönem.","Kas kaybını azaltmak için protein ve direnç egzersizlerine yer ver.","Tartılmak için hep aynı saati seç, tercihen sabah."]},
- {k:"Azalma",txt:"Düzey düşmeye devam ediyor. Bazı kişiler iştahın yavaş yavaş geri geldiğini fark eder.",tips:["Atıştırmalıkları önceden planla: yoğurt, meyve, kuruyemiş.","Lif ve protein tokluğu uzatır.","Gerçek açlıkla canın çekmesini ayırt etmeye çalış."]},
- {k:"Son düzlük",txt:"Döngünün en düşük noktasına yakınsın ve sonraki iğne yaklaşıyor. İştah burada daha belirgin olabilir, yan etkiler ise genelde en hafif hâlindedir.",tips:["Sonraki iğneni ve saatini hazırla.","Su ve lifi aksatma; bu dönemde alışkanlıkların seni taşır.","Dışarıda yemek için en rahat dönem; yine de ne yiyeceğini önceden planla."]}
+ {k:"Emilim",txt:"Doz yeni girdi ve vücudun onu tanımaya başlıyor. İlk saatlerde midende hafif bir dolgunluk ya da hassasiyet fark edebilirsin. Bu çoğu zaman geçicidir.",tips:["İlk öğünü hafif tut: çorba, yoğurt ya da haşlanmış yumurta gibi.","Ağır, yağlı ve çok baharatlı tabakları birkaç gün ertele.","Suyu tek seferde değil, gün boyuna yayarak iç."]},
+ {k:"Yükseliş",txt:"İlaç kanda hızla birikiyor. Tabağın yarısında doyduğunu fark etmen bu günlerin en tipik işareti.",tips:["Her öğüne bir avuç protein kaynağıyla başla.","Tabağı bitirmek zorunda değilsin, doyduysan bırak.","Mide bulanırsa kraker, pirinç ya da muz gibi yumuşak seçenekler işe yarayabilir."]},
+ {k:"Zirve",txt:"Etkinin en güçlü hissedildiği günler. Yemek düşüncesi geri planda kalabilir. Asıl iş, az yerken bile vücudunun ihtiyacını karşılamak.",tips:["Protein içeceği ya da yoğurt gibi kolay tüketilen kaynaklarla açığı kapat.","Uzun süre aç kalma, birkaç saatte bir küçük bir şey ye.","Sebze, meyve ve bol suyla bağırsaklarını çalışır tut."]},
+ {k:"Denge",txt:"Etki yumuşuyor ama sürüyor. Enerjin genellikle yerine gelir. Rutin kurmak için haftanın en elverişli zamanı.",tips:["Ağırlık ya da direnç bandıyla 20–30 dakikalık bir egzersiz planla.","Proteini kahvaltı, öğle ve akşam arasında eşit dağıt.","Sabah tartısını alışkanlık hâline getir: aynı saat, aynı koşullar."]},
+ {k:"Çekilme",txt:"İlaç seviyesi düşüşe geçti. Mutfağa daha sık uğradığını ya da tatlı isteğinin arttığını fark edebilirsin. Bu normal ve önceden tahmin edilebilir.",tips:["Canın bir şey çektiğinde elinin altında sağlıklı bir seçenek olsun.","Bir bardak su ve on dakikalık bir bekleme çoğu zaman isteği yatıştırır.","Akşam tabağında protein ve sebzeyi öne al, karbonhidratı azalt."]},
+ {k:"Hazırlık",txt:"Döngünün son günleri, vücuttaki miktar en alt düzeyde. İştah belirginleşebilir ama yan etkiler genellikle en az hissedildiği hâlde.",tips:["İğne gününü, saatini ve bu sefer kullanacağın bölgeyi netleştir.","Sosyal bir yemek planlıyorsan en rahat günler bunlar, menüyü önceden düşün.","Su ve lif rutinine sadık kal, yeni doz başlarken işini kolaylaştırır."]}
 ];
 function phaseInfo(){
   const P=pkState(); if(!P.last) return null;
@@ -826,7 +890,7 @@ function phaseInner(){
   return `<div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><span class="eyebrow">Döngü</span><span class="daychip">${I.days} günün ${I.day}. günü</span></div>
   <div class="phbar">${bar}</div>
   <div class="phase">
-    <h3><span>${ph.k}</span><span class="eyebrow" style="color:${isCur?"var(--shot)":"var(--muted)"}">${isCur?"Şu an · ":""}Aşama ${sel+1}/6</span></h3>
+    <h3><span>${ph.k}</span><span class="eyebrow" style="color:${isCur?"var(--shot)":"var(--muted)"}">${isCur?"Bugün · ":""}Evre ${sel+1}/6</span></h3>
     ${isCur?"":`<span class="muted" style="font-size:13px;margin-top:-6px">${rng(sel)} · ${sel<I.cur?"bu döngüde geçti":"bu döngüde gelecek"}</span>`}
     <p>${isCur&&I.overdue?"Planlanan iğne zamanı geçti. İlaç düzeyi düşmeye devam ediyor; iğneni yaptıysan buraya eklemeyi unutma.":ph.txt}</p>
     <ul class="tips">${ph.tips.map(t=>`<li>${t}</li>`).join("")}</ul>
@@ -1427,6 +1491,25 @@ function medal(m,size=64,ring=null){
     ${off?`<g transform="translate(58 13)"><circle r="8" fill="#FFFFFF" stroke="#D6DED9"/><path d="M-3 0.5h6v4h-6z" fill="#8A9792"/><path d="M-1.8 0.5v-1.6a1.8 1.8 0 0 1 3.6 0v1.6" fill="none" stroke="#8A9792" stroke-width="1.2"/></g>`:""}
   </svg>`;
 }
+function nextMsHtml(M){
+  const done=M.L.filter(m=>m.done), next=M.L.find(m=>!m.done), last=done[done.length-1];
+  if(!next) return `<div class="nextms"><div class="nmt">Tüm rozetler senin. Harika iş!</div></div>`;
+  const from=last?last.kg:M.start;const pr=Math.max(0,Math.min(1,(from-M.cur)/(from-next.kg)));
+  return `<div class="nextms">${medal(next,74,pr)}<div style="min-width:0;flex:1;display:flex;flex-direction:column;gap:4px"><span class="eyebrow" style="color:var(--accent)">Sıradaki rozet</span>
+      <div class="nmt">${next.goal?`Hedef kilo · ${kg(next.kg)} kg`:next.id[0]==="p"?`Vücut ağırlığının %${next.id.slice(1)}'i`:`${next.kg} kg'ın altı`}</div>
+      <div class="nchips"><span><b>${kg(Math.max(0,M.cur-next.kg))} kg</b> kaldı</span>${next.eta?`<span>tahmini <b>${toD(next.eta).toLocaleDateString("tr-TR",{day:"numeric",month:"long"})}</b></span>`:""}<span><b>%${Math.round(pr*100)}</b> yolda</span></div></div></div>`;
+}
+function vBasari(){
+  const M=milestones();
+  const back=`<button type="button" class="backbtn" data-go="ozet">‹ Özet</button>`;
+  if(!M) return `<section>${back}<div class="card empty"><h2>Henüz rozet yok</h2><p class="muted" style="margin:0">İki tartı girdiğinde başarı rozetlerin burada görünmeye başlar.</p></div></section>`;
+  const done=M.L.filter(m=>m.done);
+  const title=m=>m.goal?`Hedef · ${kg(m.kg)} kg`:m.id[0]==="p"?`%${m.id.slice(1)} vücut ağırlığı`:`${m.kg} kg'ın altı`;
+  return `<section>${back}
+    <div class="card" style="display:flex;flex-direction:column;gap:14px"><div class="msh"><div><span class="eyebrow">Rozet koleksiyonu</span><div style="font-size:14px;margin-top:2px">${done.length} rozet kazandın, ${M.L.length-done.length} rozet yolda</div></div><div class="mscount"><b>${done.length}</b><span>/${M.L.length}</span></div></div>${nextMsHtml(M)}</div>
+    <div class="card"><div class="bgrid">${M.L.map(m=>`<div class="bcell${m.done?" won":""}">${medal(m,72)}<b>${title(m)}</b><span>${m.done?fmtShort(m.done)+" kazanıldı":m.eta?"tahmini "+fmtShort(m.eta):"yolda"}</span></div>`).join("")}</div></div>
+  </section>`;
+}
 function milestoneCard(){
   const M=milestones(); if(!M) return "";
   const done=M.L.filter(m=>m.done), next=M.L.find(m=>!m.done), last=done[done.length-1];
@@ -1438,10 +1521,11 @@ function milestoneCard(){
   else nx=`<div class="nextms"><div class="nmt">Tüm rozetler senin. Harika iş!</div></div>`;
   const ni=next?M.L.indexOf(next):-1;
   return `<div class="card mscard">
-    <div class="msh"><div><h2>Ara hedefler</h2><span class="muted" style="font-size:13px">${last?`Son rozet: ${last.goal?"Hedef":last.id[0]==="p"?"%"+last.id.slice(1)+" vücut":last.kg+" kg"} · ${fmtShort(last.done)}`:"İlk rozet yolda"}</span></div>
-      <div class="mscount"><b>${done.length}</b><span>/${M.L.length}</span></div></div>
+    <div class="msh"><div><h2>Başarıların</h2><span class="muted" style="font-size:13px">${last?`Son rozet: ${last.goal?"Hedef":last.id[0]==="p"?"%"+last.id.slice(1)+" vücut":last.kg+" kg"} · ${fmtShort(last.done)}`:"İlk rozet yolda"}</span></div>
+      <button type="button" class="mscount" data-go="basari" aria-label="Tüm başarılar"><b>${done.length}</b><span>/${M.L.length}</span><i>›</i></button></div>
     ${nx}
     <div class="mtrack" id="mtrack">${M.L.map((m,i)=>`<div class="mnode${m.done?" done":""}${i===ni?" next":""}${i>0&&M.L[i-1].done&&m.done?" lk":""}">${medal(m,58)}<span class="mtype">${m.goal?"Hedef":m.id[0]==="p"?"Vücut":"Kilo"}</span><span class="mdate">${m.done?fmtShort(m.done):m.eta?"~"+fmtShort(m.eta):"–"}</span></div>`).join("")}</div>
+    <button type="button" class="btn ghost" data-go="basari">Tüm rozetleri gör ›</button>
   </div>`;
 }
 function checkCelebrate(){
@@ -1758,6 +1842,134 @@ function openSuppEdit(){
   $("#seAdd").addEventListener("click",()=>{const x={id:uid(),name:"",slot:"sabah",days:[0,1,2,3,4,5,6],shape:"caps",color:"#3BA58A"};L.push(x);list.insertAdjacentHTML("beforeend",rowH(x,L.length-1));const n=list.lastElementChild.querySelector(".se-name");n.focus()});
   $("#seSave").addEventListener("click",()=>{sync();const out=L.filter(x=>x&&x.name&&x.days.length);S.supps=out;S.suppTimes={sabah:$("#st-sabah").value||"07:30",aksam:$("#st-aksam").value||"19:00",gece:$("#st-gece").value||"22:30"};save();closeSheet();toast("Program kaydedildi")});
 }
+const ymd=t=>{const d=new Date(t);return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")};
+/* ---------- döngü kartı tasarımları ---------- */
+const CYCS=[["kadran","Kadran"]];
+let cycV="kadran";
+const PH_SHORT=["Emilim","Yüks.","Zirve","Denge","Çekil.","Hazır."];
+const PH_INT=[.32,.62,1,.78,.52,.3];
+const phCol=i=>`color-mix(in oklab,#0E7C66 ${Math.round(PH_INT[i]*100)}%,#E6F3EE)`;
+function cycDots(){return "";`<div class="hdots" aria-label="Kart tasarımı">${CYCS.map(([k,n])=>`<button type="button" data-cyc="${k}" aria-selected="${k===cycV}" aria-label="${n}"></button>`).join("")}<span>${CYCS.find(c=>c[0]===cycV)[1]}</span></div>`}
+function cycData(){
+  const I=phaseInfo(); if(!I) return null; const P=I.P;
+  const lv=t=>level(t,t<=P.now?P.past:P.fut);
+  let peak=0;for(let k=0;k<=96;k++){peak=Math.max(peak,lv(I.t0+(I.tn-I.t0)*k/96))}
+  const cur=lv(P.now), before=P.next?level(shotTs(P.next)-6e4,P.past):null;
+  let trough=before??cur; const rng=Math.max(.01,peak-trough), r=(cur-trough)/rng;
+  const state=r>.66?"Yüksek":r>.33?"Orta":"Düşük";
+  const left=P.next?Math.max(0,diffDays(today(),P.next.date)):null;
+  return {I,P,lv,peak:Math.max(peak,.5),cur,before,state,left};
+}
+function nextTxt(X){if(!X.P.next)return "Sonraki iğne planlanmadı";const l=X.left;return `${l>1?l+" gün sonra":l===1?"Yarın":"Bugün"} · ${fmtD(X.P.next.date)} ${shotTime(X.P.next)}`}
+function cycleHtml(vv){
+  const cycV=vv||"kadran";
+  const X=cycData(); if(!X) return "";
+  const {I,P,lv,peak,cur,state}=X, AN=c=>ANIM?c:"", sel=selPhase??I.cur, ph=PHASES[I.cur], mgT=n=>n.toLocaleString("tr-TR",{minimumFractionDigits:1,maximumFractionDigits:1});
+  let body="";
+  if(cycV==="kadran"){
+    const W=320,cx=160,cy=160,R0=74,AMP=44,span=I.tn-I.t0,ang=t=>-Math.PI/2+2*Math.PI*(t-I.t0)/span,pt=(t,r)=>[cx+Math.cos(ang(t))*r,cy+Math.sin(ang(t))*r];
+    const wave=(a,b,n)=>{const out=[];for(let k=0;k<=n;k++){const t=a+(b-a)*k/n;out.push([t,R0+AMP*lv(t)/peak])}return out};
+    const area=(pts)=>{let d="";pts.forEach(([t,r],i)=>{const[x,y]=pt(t,r);d+=(i?"L":"M")+x.toFixed(1)+" "+y.toFixed(1)});for(let i=pts.length-1;i>=0;i--){const[x,y]=pt(pts[i][0],R0);d+="L"+x.toFixed(1)+" "+y.toFixed(1)}return d+"Z"};
+    const line=(pts)=>pts.map(([t,r],i)=>{const[x,y]=pt(t,r);return (i?"L":"M")+x.toFixed(1)+" "+y.toFixed(1)}).join("");
+    const pa=wave(I.t0,Math.min(P.now,I.tn),Math.max(4,Math.round(90*(Math.min(P.now,I.tn)-I.t0)/span))), fu=P.now<I.tn?wave(P.now,I.tn,Math.max(4,Math.round(90*(I.tn-P.now)/span))):[];
+    let ticks="",labels="";const nd=Math.round(span/864e5);
+    for(let i=0;i<nd;i++){const t=I.t0+i*864e5,[x1,y1]=pt(t,R0-6),[x2,y2]=pt(t,R0);ticks+=`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="var(--line)" stroke-width="1.5"/>`;
+      const tm=t+432e5,[lx,ly]=pt(tm,R0+AMP+30),isT=ymd(t)===today();labels+=`<text x="${lx}" y="${ly+4}" text-anchor="middle" font-size="10.5" font-weight="${isT?700:500}" fill="${isT?"var(--accent)":"var(--muted)"}" font-family="Figtree, sans-serif">${DAYN[new Date(tm).getDay()]}</text>`}
+    let arcs="";PHASES.forEach((p,i)=>{const a=I.t0+I.starts[i]*864e5,b=I.t0+I.ends[i]*864e5,r=R0+AMP+14,[x1,y1]=pt(a+3e6,r),[x2,y2]=pt(b-3e6,r),lg=(b-a)/span>.5?1:0;
+      arcs+=`<g class="parc" data-cph="${i}"><path d="M${x1} ${y1} A${r} ${r} 0 ${lg} 1 ${x2} ${y2}" fill="none" stroke="transparent" stroke-width="22"/><path d="M${x1} ${y1} A${r} ${r} 0 ${lg} 1 ${x2} ${y2}" fill="none" stroke="${phCol(i)}" stroke-width="${i===sel?9:i===I.cur?6:4}" stroke-linecap="round" ${i===sel&&i!==I.cur?'stroke-opacity=".95"':""}/></g>`});
+    const [hx,hy]=pt(P.now,R0+AMP+14),[ix,iy]=pt(P.now,R0-12);
+    body=`<div class="kadran"><svg viewBox="0 0 ${W} ${W}" width="100%" style="max-width:320px;display:block;margin:0 auto" aria-hidden="true">
+      <defs><radialGradient id="kw" cx="50%" cy="50%" r="50%"><stop offset=".45" stop-color="#7FD3B8" stop-opacity=".25"/><stop offset="1" stop-color="#0E7C66" stop-opacity=".55"/></radialGradient></defs>
+      <circle cx="${cx}" cy="${cy}" r="${R0+AMP}" fill="none" stroke="var(--line)" stroke-dasharray="2 5"/>
+      <circle cx="${cx}" cy="${cy}" r="${R0}" fill="none" stroke="var(--line)"/>
+      ${arcs}${ticks}${labels}
+      <path class="${AN("fade")}" d="${area(pa)}" fill="url(#kw)"/>
+      <path class="${AN("draw")}" pathLength="1" d="${line(pa)}" fill="none" stroke="var(--accent)" stroke-width="2.6" stroke-linejoin="round"/>
+      ${fu.length?`<path d="${line(fu)}" fill="none" stroke="var(--accent)" stroke-width="2" stroke-dasharray="3 4" opacity=".55"/>`:""}
+      <line x1="${ix}" y1="${iy}" x2="${hx}" y2="${hy}" stroke="var(--emerald-2)" stroke-width="2" stroke-linecap="round"/>
+      <circle cx="${hx}" cy="${hy}" r="7" fill="var(--surface)" stroke="var(--emerald-2)" stroke-width="3"/>
+      <circle cx="${cx}" cy="${cy}" r="${R0-14}" fill="var(--surface)" style="filter:drop-shadow(0 6px 14px rgba(11,59,51,.14))"/>
+      <text x="${cx}" y="${cy-14}" text-anchor="middle" font-size="9.5" letter-spacing="1.4" font-weight="700" fill="var(--muted)" font-family="Figtree, sans-serif">VÜCUTTA</text>
+      <text x="${cx}" y="${cy+14}" text-anchor="middle" font-size="30" font-weight="700" letter-spacing="-1" fill="var(--emerald-2)" font-family="Bricolage Grotesque, sans-serif">${mgT(cur)}</text>
+      <text x="${cx}" y="${cy+30}" text-anchor="middle" font-size="11" fill="var(--muted)" font-family="Figtree, sans-serif">mg · ${state.toLocaleLowerCase("tr-TR")}</text>
+    </svg></div>
+    <div class="cinfo"><div><span>Evre</span><b>${ph.k}</b></div><div><span>Döngü günü</span><b>${Math.min(I.days,diffDays(P.last.date,today())+1)}/${I.days}</b></div><div><span>Yeni iğne</span><b>${X.left==null?"–":X.left>1?X.left+" gün":X.left===1?"Yarın":"Bugün"}</b></div></div>
+    ${(()=>{const dose=doseMg(P.last),fl=one(dose,(P.now-shotTs(P.last))/864e5),rest=Math.max(0,cur-fl),tot=Math.max(.01,cur),a=fl/tot*100,act=dose?Math.round(fl/dose*100):0;
+      return `<div class="mix"><span class="eyebrow">Bu ${mgT(cur)} mg nereden geliyor?</span>
+        <div class="mixbar" role="img" aria-label="Son iğneden ${mgT(fl)} mg, öncekilerden ${mgT(rest)} mg"><i class="m1 ${AN("gx")}" style="width:${a}%"></i><i class="m2 ${AN("gx")}" style="width:${100-a}%;animation-delay:.15s"></i></div>
+        <div class="mixl">
+          <div><i class="m1"></i><div><span>${fmtShort(P.last.date)} iğnesi</span><b>${mgT(fl)} mg</b><em>${esc(P.last.dose??"?")} mg'ın %${act} kadarı devrede</em></div></div>
+          <div><i class="m2"></i><div><span>Birikim</span><b>${mgT(rest)} mg</b><em>önceki haftalardan kalan</em></div></div>
+        </div>
+        ${X.before!=null?`<div class="mixn"><span>Yeni iğne anında beklenen</span><b>~${mgT(X.before)} mg</b></div>`:""}
+      </div>
+      <details class="how"><summary>Hesap mantığı</summary>
+        <p>Hafif her iğneyi ayrı ayrı izler ve hepsini toplar. Her doz kana yavaşça karışır, yaklaşık 36 saatte en yüksek noktasına ulaşır, sonra her 5 günde yarıya iner. Eski dozlar tamamen sıfırlanmadığı için haftalar boyunca küçük bir birikim oluşur.</p>
+        <p>Rakamlar bir ortalamaya dayanan tahmindir, kan tahlili sonucu değildir. Kadrandaki kesikli çizgi, yeni iğneyi planlanan gün ve aynı dozla yaparsan beklenen yolu gösterir.</p></details>`})()}`;
+  } else if(cycV==="gelgit"){
+    const W=340,H=176,T=18,B=40,t0=Math.min(I.t0-6*864e5,P.now-9*864e5),t1=I.tn+2.5*864e5,x=t=>(W)*(t-t0)/(t1-t0),y=v=>T+(H-T-B)*(1-v/(peak*1.12));
+    const samp=(a,b,n)=>{const o=[];for(let k=0;k<=n;k++){const t=a+(b-a)*k/n;o.push([x(t),y(lv(t))])}return o};
+    const pa=samp(t0,P.now,80),fu=samp(P.now,t1,40),ln=a=>a.map(([X,Y],i)=>(i?"L":"M")+X.toFixed(1)+" "+Y.toFixed(1)).join("");
+    let band="";PHASES.forEach((p,i)=>{const a=x(I.t0+I.starts[i]*864e5),b=x(I.t0+I.ends[i]*864e5);band+=`<rect x="${a+1}" y="${H-30}" width="${Math.max(2,b-a-2)}" height="${i===I.cur?10:6}" rx="3" fill="${phCol(i)}" ${i===I.cur?"":`transform="translate(0 2)"`}/>`;
+      if(i===I.cur)band+=`<text x="${(a+b)/2}" y="${H-8}" text-anchor="middle" font-size="10.5" font-weight="700" fill="var(--emerald-2)" font-family="Figtree, sans-serif">${p.k}</text>`});
+    const shots=P.past.concat(P.next?[P.next]:[]).filter(s=>shotTs(s)>=t0&&shotTs(s)<=t1).map(s=>{const X=x(shotTs(s)),fut=shotTs(s)>P.now;return `<g transform="translate(${X} ${H-B+4})"><path d="M0 -5 L5 0 L0 5 L-5 0Z" fill="${fut?"var(--surface)":"var(--emerald-2)"}" stroke="var(--emerald-2)" stroke-width="1.5"/></g>`}).join("");
+    const nx=x(P.now);
+    body=`<div class="gtop"><div><span class="eyebrow">İlaç dalgası</span><div class="gstate">${state}<small>${mgT(cur)} mg</small></div></div><div class="gnext"><span>Sonraki iğne</span><b>${X.left==null?"–":X.left>1?X.left+" gün":X.left===1?"Yarın":"Bugün"}</b><em>${P.next?fmtShort(P.next.date)+" "+shotTime(P.next):""}</em></div></div>
+      <svg class="chart" viewBox="0 0 ${W} ${H}" aria-hidden="true" style="overflow:visible"><defs><linearGradient id="gw" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2BB38F" stop-opacity=".45"/><stop offset="1" stop-color="#2BB38F" stop-opacity="0"/></linearGradient>
+        <linearGradient id="gn" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0B3B33" stop-opacity="0"/><stop offset=".3" stop-color="#0B3B33" stop-opacity=".9"/><stop offset="1" stop-color="#0B3B33" stop-opacity="0"/></linearGradient></defs>
+        <line x1="0" x2="${W}" y1="${H-B+4}" y2="${H-B+4}" stroke="var(--line)"/>
+        <path class="${AN("fade")}" d="${ln(pa)}L${nx} ${H-B+4}L0 ${H-B+4}Z" fill="url(#gw)"/>
+        <path d="${ln(fu)}L${W} ${H-B+4}L${nx} ${H-B+4}Z" fill="url(#gw)" opacity=".35"/>
+        <path class="${AN("draw")}" pathLength="1" d="${ln(pa)}" fill="none" stroke="var(--accent)" stroke-width="2.6" stroke-linejoin="round"/>
+        <path d="${ln(fu)}" fill="none" stroke="var(--accent)" stroke-width="2" stroke-dasharray="3 4" opacity=".6"/>
+        <rect x="${nx-1}" y="${T-8}" width="2" height="${H-B-T+14}" fill="url(#gn)"/>
+        <circle cx="${nx}" cy="${y(cur)}" r="6" fill="var(--surface)" stroke="var(--emerald-2)" stroke-width="3"/>
+        <text x="${nx}" y="${T-12}" text-anchor="middle" font-size="9.5" letter-spacing="1" font-weight="700" fill="var(--emerald-2)" font-family="Figtree, sans-serif">ŞİMDİ</text>
+        ${shots}${band}</svg>`;
+  } else if(cycV==="gunler"){
+    const nd=Math.round((I.tn-I.t0)/864e5),cols=[];
+    for(let i=0;i<nd;i++){const a=I.t0+i*864e5,b=a+864e5;let mx=0;for(let k=0;k<=12;k++)mx=Math.max(mx,lv(a+(b-a)*k/12));
+      const mid=(a+b)/2,phi=I.ends.findIndex(e=>(mid-I.t0)/864e5<e);cols.push({a,mx,ph:phi<0?5:phi,isT:ymd(a)===today()||ymd(b-1)===today()&&P.now>=a&&P.now<b,fut:a>P.now,past:b<=P.now})}
+    const H=130;
+    body=`<div class="gtop"><div><span class="eyebrow">Döngünün ${Math.min(I.days,diffDays(P.last.date,today())+1)}. günü</span><div class="gstate">${ph.k}<small>${mgT(cur)} mg</small></div></div><div class="gnext"><span>Sonraki iğne</span><b>${X.left==null?"–":X.left>1?X.left+" gün":X.left===1?"Yarın":"Bugün"}</b><em>${P.next?fmtShort(P.next.date)+" "+shotTime(P.next):""}</em></div></div>
+      <div class="dcols">${cols.map((c,i)=>{const h=Math.max(8,c.mx/peak*H),d=new Date(c.a);return `<div class="dcol${c.isT?" today":""}${c.fut?" fut":""}">
+        <span class="dmg">${mgT(c.mx)}</span>
+        <div class="dtube" style="height:${H}px">${i===0?`<span class="dshot" title="İğne günü">${penIcon().replace('width="26" height="26"','width="12" height="12"')}</span>`:""}<i class="${AN("gb gbp")}" style="height:${h}px;animation-delay:${i*70}ms;background:${c.fut?"transparent":`linear-gradient(${phCol(c.ph)},color-mix(in oklab,${phCol(c.ph)} 60%,#0B3B33))`}"></i></div>
+        <b class="dday">${DAYN[d.getDay()]}</b><span class="dph">${PH_SHORT[c.ph]}</span></div>`}).join("")}</div>`;
+  }
+  const ymdq=t=>ymd(t), rngP=i=>{const a=fmtShort(ymdq(I.t0+I.starts[i]*864e5)),b=fmtShort(ymdq(I.t0+I.ends[i]*864e5-1));return a===b?a:a+" – "+b};
+  const sp=PHASES[sel], isCur=sel===I.cur;
+  const phx=`<div class="phsel" role="tablist" aria-label="Evreler">${PHASES.map((p,i)=>`<button type="button" role="tab" data-cph="${i}" aria-selected="${i===sel}" class="${i===I.cur?"cur":""}"><i style="background:${phCol(i)}"></i><span>${p.k}</span></button>`).join("")}</div>
+    <div class="phd" id="phd"><div class="phdh"><div><span class="eyebrow" style="color:${isCur?"var(--accent)":"var(--muted)"}">${isCur?"Bugün · ":""}Evre ${sel+1}/6</span><h3>${sp.k}</h3></div><span class="phdr">${rngP(sel)}${isCur?"":sel<I.cur?" · tamamlandı":" · sırada"}</span></div>
+      <p>${isCur&&I.overdue?"Yeni iğnenin zamanı geldi ve geçti. Seviye düşmeye devam ediyor. İğneni yaptıysan Hafif'e eklemeyi unutma.":sp.txt}</p>
+      <ul class="tips">${sp.tips.map(t=>`<li>${t}</li>`).join("")}</ul>
+      ${isCur?"":`<button type="button" class="linkbtn" data-cph="${I.cur}" style="align-self:flex-start;padding:0">Bugünkü evreye dön (${PHASES[I.cur].k})</button>`}</div>`;
+  return `<div class="card cycard cv-${cycV}">${body}${phx}${cycDots()}</div>`;
+}
+function setCyc(v,dir){cycV=v;try{localStorage.setItem("hf-cyc",v)}catch(_){}ANIM=true;render();ANIM=false;
+  const cd=$("#cycWrap")&&$("#cycWrap").firstElementChild;if(cd&&cd.animate&&dir)cd.animate([{opacity:.3,transform:`translateX(${dir*30}px)`},{opacity:1,transform:"none"}],{duration:280,easing:"cubic-bezier(.2,.8,.2,1)"})}
+
+
+function kiloKpi(){
+  const w=sortedW(); if(!w.length) return "";
+  const L=w[w.length-1],pr=w[w.length-2],lo=Math.min(...w.map(x=>x.kg));
+  const wk=w.filter(x=>x.date>=addDays(L.date,-7)),d7=wk.length>1?L.kg-wk[0].kg:null;
+  const span=diffDays(w[0].date,L.date),gap=w.length>1?span/(w.length-1):null,T=trendInfo();
+  const pts=w.slice(-21),mn=Math.min(...pts.map(p=>p.kg)),mx=Math.max(...pts.map(p=>p.kg)),sp=Math.max(1,diffDays(pts[0].date,pts[pts.length-1].date));
+  const X2=p=>diffDays(pts[0].date,p.date)/sp*320,Y=v=>8+(mx-v)/Math.max(.1,mx-mn)*56,line=pts.map((p,i)=>(i?"L":"M")+X2(p).toFixed(1)+" "+Y(p.kg).toFixed(1)).join("");
+  const A=c=>ANIM?c:"";
+  return `<div class="card hero-gece kkpi">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px">
+      <div style="display:flex;flex-direction:column;gap:6px"><span class="eyebrow">Güncel kilo · ${fmtShort(L.date)}</span>
+        <div class="mega">${kg(L.kg)}<small>kg</small></div>
+        <div class="fromto">${pr?`son tartıdan <b>${sgn(L.kg-pr.kg)} kg</b>`:"ilk tartı"}</div></div>
+      ${T?`<div class="ktrend"><span>Eğilim</span><b>${kg(T.cur)}</b><em>${sgn(T.slope*7)} kg/hafta</em></div>`:""}
+    </div>
+    <svg class="spark" viewBox="0 0 320 72" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="kks" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7FE0C2" stop-opacity=".4"/><stop offset="1" stop-color="#7FE0C2" stop-opacity="0"/></linearGradient></defs>
+      <path d="${line}L320 72L0 72Z" fill="url(#kks)"/><path class="${A("draw")}" pathLength="1" d="${line}" fill="none" stroke="#9FF0D6" stroke-width="2.2" stroke-linejoin="round" vector-effect="non-scaling-stroke"/></svg>
+    <div class="chips dk"><span>son 7 gün <b>${d7==null?"–":sgn(d7)} kg</b></span><span>en düşük <b>${kg(lo)}</b></span><span><b>${w.length}</b> tartı${gap?` · ${pc1(gap)} günde bir`:""}</span></div>
+  </div>`;
+}
 let SCRUB=[];
 const fmtDT=t=>new Date(t).toLocaleString("tr-TR",{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"});
 const NS="http://www.w3.org/2000/svg";
@@ -1925,7 +2137,7 @@ function vKilo(){
       ${d==null?`<span class="dchip">ilk</span>`:`<span class="dchip ${d<0?"down":d>0?"up":""}">${sgn(d)}</span>`}
       <button class="ibtn del" data-del-w="${x.id}" aria-label="Tartıyı sil"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M9 7V4.8c0-.4.4-.8.8-.8h4.4c.4 0 .8.4.8.8V7M6.5 7l.9 12.2c.1.9.8 1.8 1.8 1.8h5.6c1 0 1.7-.9 1.8-1.8L17.5 7"/></svg></button></div>`};
   return `<section><button class="btn" data-open="weight">Kilo gir</button>
-    <div class="minis"><div><span>Tartı</span><b>${w.length}</b></div><div><span>En düşük</span><b>${kg(lo)}<small> kg</small></b></div><div><span>Sıklık</span><b>${gap?pc1(gap):"–"}<small> günde bir</small></b></div></div>
+    ${kiloKpi()}
     ${groups.map(g=>{const a=g.items[g.items.length-1].x,b=g.items[0].x,ch=b.kg-a.kg;const name=toD(g.k+"-01").toLocaleDateString("tr-TR",{month:"long",year:"numeric"});
       return `<div class="card mgroup"><div class="mhead"><div><h2>${name}</h2><span class="muted" style="font-size:12.5px">${g.items.length} tartı</span></div>${g.items.length>1?`<span class="dchip ${ch<0?"down":ch>0?"up":""}">${sgn(ch)} kg</span>`:""}</div>
         <div class="wlist">${g.items.map(row).join("")}</div></div>`}).join("")}
@@ -1936,7 +2148,8 @@ function vIgne(){
   const s=sortedS();
   if(!s.length) return `<section><div class="card empty"><h2>Henüz iğne yok</h2><p class="muted" style="margin:0">İğneyi yaptığın gün ekle. Dozu ve bölgeyi yazarsan doz başına verdiğin kiloyu ayrıca görürsün.</p></div><button class="btn shotbtn" data-open="shot">İğne ekle</button></section>`;
   const dt=doseTable();
-  return `<section><button class="btn shotbtn" data-open="shot">İğne ekle</button>
+  return `<section><div class="cycw" data-v="gunler">${cycleHtml("gunler")}</div>
+    <button class="btn shotbtn" data-open="shot">İğne ekle</button>
     <div class="card" style="display:flex;flex-direction:column;gap:12px"><div><h2>Doz özeti</h2><span class="muted" style="font-size:13px">Her dozda geçen sürede verdiğin kilo</span></div>
       ${dt.map(r=>`<div class="dosecard"><span class="dose big">${esc(r.dose)} mg</span><div class="dstats"><div><b>${r.count}</b><span>iğne</span></div><div><b>${r.has?sgn(r.loss):"–"}</b><span>kg toplam</span></div><div><b>${r.has?sgn(r.loss/r.count):"–"}</b><span>iğne başına</span></div></div></div>`).join("")}</div>
     <div class="card"><div style="margin-bottom:6px"><h2>İğne geçmişi</h2><span class="muted" style="font-size:13px">Her iğne günündeki kilodan bir sonrakine kadar olan değişim</span></div>${shotList()}</div></section>`;
@@ -2022,7 +2235,7 @@ function bindView(){
   v.querySelectorAll("svg[data-sid]").forEach(bindScrub);
   bindToday();
   v.querySelectorAll("[data-chart]").forEach(b=>b.addEventListener("click",()=>{chartMode=b.dataset.chart;ANIM=true;try{localStorage.setItem("dd-chart",chartMode)}catch(e){}render()}));
-  v.querySelectorAll("[data-go]").forEach(b=>b.addEventListener("click",()=>{tab=b.dataset.go;render()}));
+  v.querySelectorAll("[data-go]").forEach(b=>b.addEventListener("click",()=>{selPhase=null;ANIM=true;tab=b.dataset.go;render();window.scrollTo(0,0)}));
   v.querySelectorAll("[data-del-w],[data-del-shot]").forEach(b=>b.addEventListener("click",()=>{
     if(!b.classList.contains("armed")){const h=b.innerHTML;b.classList.add("armed");b.textContent="Sil?";setTimeout(()=>{if(b.isConnected){b.classList.remove("armed");b.innerHTML=h}},3000);return}
     if(b.dataset.delW)S.weights=S.weights.filter(x=>x.id!==b.dataset.delW);
@@ -2040,6 +2253,10 @@ function bindView(){
 function setHero(v,dir){heroV=v;try{localStorage.setItem("hf-hero",heroV)}catch(_){}
   const hw=$("#heroWrap");if(!hw||!HERO_CTX)return;hw.innerHTML=heroHtml(HERO_CTX);const cd=hw.firstElementChild;
   if(cd&&cd.animate&&!matchMedia("(prefers-reduced-motion: reduce)").matches)cd.animate([{opacity:.2,transform:`translateX(${dir?dir*40:0}px) scale(.985)`},{opacity:1,transform:"none"}],{duration:300,easing:"cubic-bezier(.2,.8,.2,1)"});}
+let yX=null,yY=null;
+$("#view").addEventListener("touchstart",e=>{if(!e.target.closest("#cycWrap")||e.target.closest("[data-cyc],[data-ph],svg[data-sid]")){yX=null;return}yX=e.touches[0].clientX;yY=e.touches[0].clientY},{passive:true});
+$("#view").addEventListener("touchend",e=>{if(yX==null)return;const dx=e.changedTouches[0].clientX-yX,dy=e.changedTouches[0].clientY-yY;yX=null;
+  if(Math.abs(dx)<45||Math.abs(dx)<Math.abs(dy)*1.3)return;const i=CYCS.findIndex(c=>c[0]===cycV),n=CYCS.length,d=dx<0?1:-1;setCyc(CYCS[(i+d+n)%n][0],d)},{passive:true});
 let cX=null,cY=null;
 $("#view").addEventListener("touchstart",e=>{if(!e.target.closest("#compWrap")||e.target.closest("[data-comp]")){cX=null;return}cX=e.touches[0].clientX;cY=e.touches[0].clientY},{passive:true});
 $("#view").addEventListener("touchend",e=>{if(cX==null)return;const dx=e.changedTouches[0].clientX-cX,dy=e.changedTouches[0].clientY-cY;cX=null;
@@ -2051,7 +2268,7 @@ $("#view").addEventListener("touchend",e=>{if(swX==null)return;const dx=e.change
 let msX=null;
 $("#view").addEventListener("mousedown",e=>{msX=e.target.closest("#heroWrap")&&!e.target.closest("[data-hero]")?e.clientX:null});
 $("#view").addEventListener("mouseup",e=>{if(msX==null)return;const dx=e.clientX-msX;msX=null;if(Math.abs(dx)<60)return;const i=HEROS.findIndex(h=>h[0]===heroV),n=HEROS.length,d=dx<0?1:-1;setHero(HEROS[(i+d+n)%n][0],d)});
-$("#view").addEventListener("click",e=>{const cb=e.target.closest("[data-comp]");if(cb){const i0=COMPS.findIndex(c=>c[0]===compV),i1=COMPS.findIndex(c=>c[0]===cb.dataset.comp);setComp(cb.dataset.comp,i1>i0?1:-1);return}if(e.target.closest("[data-share]")){openShare();return}const h=e.target.closest("[data-hero]");if(h&&HERO_CTX){heroV=h.dataset.hero;try{localStorage.setItem("hf-hero",heroV)}catch(_){}
+$("#view").addEventListener("click",e=>{const cp=e.target.closest("[data-cph]");if(cp){selPhase=+cp.dataset.cph;const w=cp.closest(".cycw");if(w){w.innerHTML=cycleHtml(w.dataset.v);const d=$("#phd");if(d&&d.animate)d.animate([{opacity:.3,transform:"translateY(6px)"},{opacity:1,transform:"none"}],{duration:240,easing:"ease-out"})}return}const cy=e.target.closest("[data-cyc]");if(cy){const i0=CYCS.findIndex(c=>c[0]===cycV),i1=CYCS.findIndex(c=>c[0]===cy.dataset.cyc);setCyc(cy.dataset.cyc,i1>i0?1:-1);return}const cb=e.target.closest("[data-comp]");if(cb){const i0=COMPS.findIndex(c=>c[0]===compV),i1=COMPS.findIndex(c=>c[0]===cb.dataset.comp);setComp(cb.dataset.comp,i1>i0?1:-1);return}if(e.target.closest("[data-share]")){openShare();return}const h=e.target.closest("[data-hero]");if(h&&HERO_CTX){heroV=h.dataset.hero;try{localStorage.setItem("hf-hero",heroV)}catch(_){}
   const hw=$("#heroWrap");hw.innerHTML=heroHtml(HERO_CTX);const cd=hw.firstElementChild;if(cd&&cd.animate)cd.animate([{opacity:.4,transform:"scale(.985)"},{opacity:1,transform:"none"}],{duration:260,easing:"ease-out"});return}
   const b=e.target.closest("[data-ph]");if(!b)return;const w=$("#phaseWrap");if(!w)return;
   const d=$("#phAll");phAllOpen=!!(d&&d.open);selPhase=+b.dataset.ph;w.innerHTML=phaseInner();

@@ -18,5 +18,8 @@ aşağıdaki değişiklikler yeniden uygulanır. Bunların dışında iki sürü
 6. **Boş başlangıç** – `DEF_SUPPS=[]` (kişisel takviye listesi yok) ve `startCut` varsayılanı `""`
    (sabit `"2026-09-16"` yerine; iğnesi olmayan kullanıcının eski tartıları gizlenmesin diye).
 
+Bu adımların hepsini `python3 araclar/android-uyarla.py <artifact.html>` uygular; beklenen bir parça
+bulunamazsa durur ve hangi adımın elle gözden geçirilmesi gerektiğini söyler.
+
 Taşımadan sonra: `npx cap sync android`, emülatör testi (`.github/workflows/android-test.yml`) ve
 `node magaza/kaynak/ekran-goruntuleri.js` ile ekran görüntüleri yenilenir.
