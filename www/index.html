@@ -580,6 +580,12 @@ button.mscount i{font-style:normal;font-size:22px;color:var(--muted);margin-left
 .hcicon{width:76px;height:76px;border-radius:22px;background:var(--step-soft);color:var(--step);display:grid;place-items:center;margin:6px auto 0}.hcicon svg{width:40px;height:40px}
 .hcperm{display:flex;flex-direction:column;background:var(--sunk);border-radius:16px;padding:2px 14px}
 .hcperm div{display:flex;align-items:center;gap:12px;padding:11px 0;border-top:1px solid var(--line);font-size:14px}.hcperm div:first-child{border:0}.hcperm em{font-style:normal;margin-left:auto;font-size:12px;color:var(--muted)}
+.remrow{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center}
+.remtime{display:flex;gap:8px;margin:-2px 0 6px}.remtime select,.remtime input{padding:9px 10px;font-size:14px}
+.remcta{display:flex;align-items:center;gap:14px;padding:14px 16px}
+.remcta .mi{width:48px;height:48px;border-radius:15px;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center;flex:none}.remcta .mi svg{width:26px;height:26px}
+.remcta b{font:700 15.5px var(--f-display)}.remcta small{display:block;font-size:12.5px;color:var(--muted)}
+.remx{border:0;background:none;color:var(--muted);font-size:20px;cursor:pointer;padding:4px 6px}
 .btn.stepbtn{background:linear-gradient(160deg,#5B6BD6,#3A47A6);box-shadow:0 10px 22px -12px rgba(58,71,166,.7)}
 .ktrend{flex:none;display:flex;flex-direction:column;align-items:flex-end;background:rgba(255,255,255,.07);border:1px solid rgba(159,240,214,.2);border-radius:16px;padding:10px 12px}
 .ktrend span{font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.55)}.ktrend b{font:700 22px var(--f-display);color:#fff;letter-spacing:-.02em}.ktrend em{font-style:normal;font-size:11px;color:#9FF0D6}
@@ -708,6 +714,7 @@ function save(){
     } else {
       try{localStorage.setItem("doz-defteri",JSON.stringify(snap));$("#sync").textContent="Bu cihazda kayıtlı"}catch(e){$("#sync").textContent="Kayıt yapılamadı"}
     }
+    if(typeof remQueue==="function")remQueue();
   },250);
 }
 async function boot(){
@@ -782,6 +789,7 @@ function render(){
   if(tab==="ozet")setTimeout(checkCelebrate,450);
   maybeOnboard();
   if(loaded&&HP())syncHealth();
+  if(loaded&&LN()&&!remT)remQueue();
   if(tab==="adim"&&HP()&&!HOURS)syncHealth(true);
 }
 
@@ -799,6 +807,7 @@ function vOzetMain(){
       ${actionsHtml()}
       ${suppMini()}
       ${stepCard()}
+      ${remCta()}
       <button class="btn ghost" data-go="ayar">Hedefini ayarla</button></section>`;
   }
   if(!w.length){
@@ -810,6 +819,7 @@ function vOzetMain(){
       ${actionsHtml()}
       ${suppMini()}
       ${stepCard()}
+      ${remCta()}
       ${s.length?`<div id="cycWrap" class="cycw" data-v="kadran">${cycleHtml("kadran")}</div>`:`<button class="btn ghost" data-go="ayar">Hedef ve ilaç bilgisini ayarla</button>`}</section>`;
   }
   const latest=w[w.length-1], first=w[0];
@@ -846,6 +856,7 @@ function vOzetMain(){
     ${actionsHtml()}
     ${suppMini()}
     ${stepCard()}
+    ${remCta()}
     ${w.length>1?chartCard():""}
     ${comp}
     ${milestoneCard()}
@@ -2271,6 +2282,7 @@ function vAyar(){
     <label class="sw" style="padding:2px 0"><span><b>Rozet kutlamaları</b><small>yeni bir ara hedefe ulaşınca konfeti</small></span><input type="checkbox" id="a-cel" ${P.noCelebrate?"":"checked"}><i></i></label>
     <button class="btn" type="submit">Kaydet</button>
   </form>
+  ${remCard()}
   ${dataCard()}
   <p class="muted" style="font-size:13px;margin:0">${mode==="db"?"Kayıtların Claude hesabında, yalnızca senin görebileceğin bir alanda tutuluyor. iPhone'da ve bilgisayarda aynı veriyi görürsün.":"Kayıtlar şu an sadece bu cihazda. Claude uygulamasında giriş yapmış olarak açarsan hesabına taşınır."}</p></section>`;
 }
@@ -2369,7 +2381,89 @@ async function syncHealth(force){
   S.hc.last=Date.now(); hcBusy=false; save();
   if(changed||tab==="adim"){if(!$("#sheetRoot").firstChild&&!$("#onb")&&(tab==="ozet"||tab==="adim"||tab==="kilo"))render()}
 }
-document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible")syncHealth()});
+document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible"){syncHealth();remQueue()}});
+
+/* ---------- hatırlatıcılar (yalnızca Android; telefon kendisi zamanlar) ---------- */
+const LN=()=>window.Capacitor&&window.Capacitor.isNativePlatform&&window.Capacitor.isNativePlatform()&&window.Capacitor.Plugins&&window.Capacitor.Plugins.LocalNotifications||null;
+const REM_DEF={shot:true,shotEve:true,supp:true,water:false,prot:false,weigh:true,weighDay:1,weighTime:"07:30"};
+const rem=()=>Object.assign({},REM_DEF,S.profile.rem||{});
+const remOn=()=>!!(S.profile.rem&&S.profile.rem.on);
+const BELL=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/></svg>`;
+const atOf=(d,hm)=>{const x=toD(d);const[h,m]=String(hm||"09:00").split(":").map(Number);x.setHours(h||0,m||0,0,0);return x};
+function remBuild(){
+  const R=rem(),L=[],now=Date.now()+60000,add=(id,at,title,body,type,extra)=>{if(at.getTime()>now)L.push({id,title,body,schedule:{at,allowWhileIdle:true},isExactNotification:false,actionTypeId:type,extra:extra||{}})};
+  if(SHOTS()&&(R.shot||R.shotEve)){const P=pkState();const nx=P.next;
+    if(nx){const dose=nx.dose?esc(nx.dose)+" mg · ":"",site=nextSite();
+      if(R.shot)add(1000,new Date(shotTs(nx)),"Bugün iğne günü",`${dose}önerilen bölge: ${site}. Yaptıktan sonra kaydetmeyi unutma.`,"IGNE",{tab:"igne"});
+      if(R.shotEve)add(1001,atOf(addDays(nx.date,-1),"20:00"),"Yarın iğne günü",`Saat ${shotTime(nx)} · sıradaki bölgen ${site}. Kalemini ve iğne ucunu hazırla.`,"BILGI",{tab:"igne"})}}
+  for(let i=0;i<14;i++){const d=addDays(today(),i);
+    if(R.supp&&Array.isArray(S.supps))SLOTS_S.forEach(([k,n],si)=>{const it=suppsFor(d).filter(x=>x.slot===k);if(!it.length)return;const t=takenOn(d);if(it.every(x=>t[x.id]))return;
+      add(2000+i*3+si,atOf(d,sTimes()[k]),`${n} takviyeleri`,it.map(x=>x.name).join(" · "),"SUPP",{tab:"takviye",date:d,slot:k})});
+    if(R.water)["11:00","15:00","19:00"].forEach((hm,j)=>{const w=dayRec(d).w,g=wGoal();if(i===0&&w>=g)return;
+      add(3000+i*3+j,atOf(d,hm),"Bir bardak su?",i===0?`Bugün ${ml(w)} ml içtin, hedefe ${ml(g-w)} ml kaldı.`:`Günlük hedefin ${ml(g)} ml. Bir bardak suyla devam et.`,"SU",{tab:"besin"})});
+    if(R.prot){const p=dayRec(d).p,g=pGoal();if(!(i===0&&p>=g))add(4000+i,atOf(d,"18:30"),i===0?"Protein hedefine az kaldı":"Protein hedefin",i===0?`${ml(p)} / ${g} g. Akşam yemeğinde ${ml(g-p)} g protein hedefini tamamlar.`:`Günlük protein hedefin ${g} g. Akşam tabağında proteini öne al.`,"PROT",{tab:"besin"})}
+    if(R.weigh&&toD(d).getDay()===+R.weighDay&&!(i===0&&S.weights.some(x=>x.date===d)))add(5000+i,atOf(d,R.weighTime),"Haftalık tartı zamanı","Sabah, aç karnına ve aynı saatte tartılmak en tutarlı sonucu verir.","TARTI",{tab:"kilo"});
+  }
+  return L;
+}
+let remT=null,remBusy=false,remTypes=false;
+function remQueue(){if(!LN())return;clearTimeout(remT);remT=setTimeout(remSchedule,1200)}
+async function remSchedule(){
+  const N=LN(); if(!N||remBusy) return; remBusy=true;
+  try{
+    if(!remTypes){remTypes=true;await N.registerActionTypes({types:[
+      {id:"IGNE",actions:[{id:"kaydet",title:"İğneyi kaydet",foreground:true},{id:"ertele",title:"1 saat ertele",foreground:true}]},
+      {id:"SUPP",actions:[{id:"aldim",title:"Hepsini aldım",foreground:true},{id:"ertele",title:"Ertele",foreground:true}]},
+      {id:"SU",actions:[{id:"su250",title:"+250 ml",foreground:true},{id:"su500",title:"+500 ml",foreground:true}]},
+      {id:"PROT",actions:[{id:"prot",title:"Protein ekle",foreground:true}]},
+      {id:"TARTI",actions:[{id:"kilo",title:"Kilo gir",foreground:true}]},
+      {id:"BILGI",actions:[{id:"tamam",title:"Tamam",foreground:false}]}]})}
+    const pend=await N.getPending(); const old=((pend&&pend.notifications)||[]).filter(x=>x.id<9000);
+    if(old.length)await N.cancel({notifications:old.map(x=>({id:x.id}))});
+    if(remOn()){const L=remBuild();if(L.length)await N.schedule({notifications:L})}
+  }catch(e){console.warn("hatırlatıcı",e&&e.message)}
+  remBusy=false;
+}
+async function remEnable(){
+  const N=LN(); if(!N) return;
+  try{let p=await N.checkPermissions();if(p.display!=="granted")p=await N.requestPermissions();
+    if(p.display!=="granted"){toast("Bildirim izni verilmedi. Android ayarlarından açabilirsin.");return}
+    S.profile.rem=Object.assign({},rem(),{on:true});save();render();toast("Hatırlatıcılar açıldı")}catch(e){toast("Bildirim izni alınamadı")}
+}
+function remCta(){
+  if(!LN()||remOn()||S.profile.remHide) return "";
+  return `<div class="card remcta"><span class="mi">${BELL}</span><span style="flex:1;min-width:0"><b>Hatırlatıcıları aç</b><small>${SHOTS()?"İğne günü, takviyeler, su ve tartı; ":"Takviyeler, su ve tartı; "}zamanında, internetsiz.</small></span><button type="button" class="btn" data-rem-on style="padding:10px 14px;font-size:14px">Aç</button><button type="button" class="remx" data-rem-hide aria-label="Gizle">×</button></div>`;
+}
+function remCard(){
+  if(!LN()) return "";
+  if(!remOn()) return `<div class="card" style="display:flex;flex-direction:column;gap:12px"><div><h2>Hatırlatıcılar</h2><span class="muted" style="font-size:13px">Bildirimler telefonunda zamanlanır, internet gerekmez.</span></div><button type="button" class="btn" data-rem-on>Hatırlatıcıları aç</button></div>`;
+  const R=rem(),sw=(k,l,d)=>`<label class="sw"><span><b>${l}</b><small>${d}</small></span><input type="checkbox" data-rem="${k}" ${R[k]?"checked":""}><i></i></label>`;
+  return `<div class="card" style="display:flex;flex-direction:column;gap:10px"><div class="remrow"><div><h2>Hatırlatıcılar</h2><span class="muted" style="font-size:13px">Saatler birkaç dakika oynayabilir</span></div><button type="button" class="linkbtn" data-rem-off>Tümünü kapat</button></div>
+    <div class="sws">${SHOTS()?sw("shot","İğne günü","iğne saatinde, doz ve bölge önerisiyle")+sw("shotEve","Bir gün önce","20:00'de hazırlık hatırlatması"):""}${sw("supp","Takviyeler","programındaki sabah, akşam ve gece saatlerinde")}${sw("water","Su","11:00, 15:00 ve 19:00'da, hedefin dolmadıysa")}${sw("prot","Protein","18:30'da, hedefin dolmadıysa")}${sw("weigh","Haftalık tartı","seçtiğin gün ve saatte")}</div>
+    <div class="remtime" ${R.weigh?"":"hidden"} id="remW"><select data-rem-day aria-label="Tartı günü">${[1,2,3,4,5,6,0].map(i=>`<option value="${i}" ${+R.weighDay===i?"selected":""}>${toD(lastDow(i)).toLocaleDateString("tr-TR",{weekday:"long"})}</option>`).join("")}</select><input type="time" data-rem-time value="${R.weighTime}" aria-label="Tartı saati"></div></div>`;
+}
+function bindRem(){
+  const v=$("#view");
+  v.querySelectorAll("[data-rem-on]").forEach(b=>b.addEventListener("click",remEnable));
+  v.querySelectorAll("[data-rem-hide]").forEach(b=>b.addEventListener("click",()=>{S.profile.remHide=true;save();render()}));
+  v.querySelectorAll("[data-rem-off]").forEach(b=>b.addEventListener("click",()=>{S.profile.rem=Object.assign({},rem(),{on:false});save();render();toast("Hatırlatıcılar kapatıldı")}));
+  const upd=(k,val)=>{S.profile.rem=Object.assign({},rem(),{on:true,[k]:val});save()};
+  v.querySelectorAll("[data-rem]").forEach(c=>c.addEventListener("change",e=>{upd(c.dataset.rem,e.target.checked);if(c.dataset.rem==="weigh")$("#remW").hidden=!e.target.checked}));
+  const d=v.querySelector("[data-rem-day]");if(d)d.addEventListener("change",e=>upd("weighDay",+e.target.value));
+  const t=v.querySelector("[data-rem-time]");if(t)t.addEventListener("change",e=>upd("weighTime",e.target.value||"07:30"));
+}
+function remAction(a){
+  const id=a.actionId,n=a.notification||{},x=n.extra||{};
+  const go=t=>{tab=t;ANIM=true;closeSheet();window.scrollTo(0,0)};
+  if(id==="ertele"){const N=LN();if(N)N.schedule({notifications:[{id:9000+Math.floor(Math.random()*900),title:n.title,body:n.body,actionTypeId:n.actionTypeId,extra:x,schedule:{at:new Date(Date.now()+36e5),allowWhileIdle:true},isExactNotification:false}]});toast("1 saat sonra tekrar hatırlatılacak");return}
+  if(id==="aldim"&&x.date&&x.slot){suppsFor(x.date).filter(s=>s.slot===x.slot).forEach(s=>{S.suppLog=S.suppLog||{};const t=S.suppLog[x.date]=S.suppLog[x.date]||{};t[s.id]=t[s.id]||Date.now()});save();go("takviye");toast("Takviyeler işaretlendi");return}
+  if(id==="su250"||id==="su500"){const amt=id==="su250"?250:500,r=ensureDay(today());r.w+=amt;r.log.push([Date.now(),"w",amt]);save();go("besin");toast(`+${amt} ml su eklendi`);return}
+  if(id==="kaydet"){go("ozet");openSheet("shot");return}
+  if(id==="kilo"){go("ozet");openSheet("weight");return}
+  if(id==="tamam")return;
+  go(x.tab&&(x.tab!=="igne"||SHOTS())?x.tab:"ozet");
+}
+if(LN())window.Capacitor.addListener("LocalNotifications","localNotificationActionPerformed",remAction);
 
 /* ---------- ilk kurulum ---------- */
 let OB=null;
@@ -2581,6 +2675,7 @@ function bindView(){
   bindSupp();
   const f=$("#fAyar");
   if(f)$("#a-shots").addEventListener("change",e=>{$("#a-shotf").hidden=!e.target.checked});
+  bindRem();
   if($("#a-hc"))$("#a-hc").addEventListener("click",()=>{if(S.hc&&S.hc.on){try{HP().openHealthConnectSettings()}catch(_){}}else openHealthSheet()});
   v.querySelectorAll("[data-hc]").forEach(b=>b.addEventListener("click",e=>{e.stopPropagation();openHealthSheet()}));
   if(f)f.addEventListener("submit",e=>{e.preventDefault();

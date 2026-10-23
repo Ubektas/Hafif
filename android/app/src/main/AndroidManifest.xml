@@ -33,6 +33,8 @@
     <!-- Permissions -->
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <!-- Hatırlatıcılar esnek zamanlıdır; kesin alarm izni gerekmez. -->
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" tools:node="remove" />
     <!-- Health Connect: yalnızca adım, kilo ve yağ oranı okunur. Eklentinin tanımladığı diğer izinler kaldırılır. -->
     <uses-permission android:name="android.permission.health.WRITE_STEPS" tools:node="remove" />
     <uses-permission android:name="android.permission.health.READ_DISTANCE" tools:node="remove" />

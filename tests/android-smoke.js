@@ -52,6 +52,18 @@ const step = (ad, sonuc, detay) => { report.adimlar.push({ ad, sonuc, detay }); 
     step('Health Connect izin penceresi açıldı', /healthdata|permissioncontroller|health/i.test(izin), izin);
     await device.shell('input keyevent 4'); await wait(1500);
     await page.evaluate(() => { const r = document.querySelector('#sheetRoot'); if (r) r.innerHTML = ''; });
+    // Hatırlatıcılar: izin ver, aç, bildirimler kuruldu mu; gerçek bir bildirim gösterilebiliyor mu?
+    await device.shell(`pm grant ${PKG} android.permission.POST_NOTIFICATIONS`);
+    await page.evaluate(() => document.querySelector('.remcta').scrollIntoView({ block: 'center' })); await shot('hatirlatici-kart');
+    await tap(page, '.remcta [data-rem-on]'); await wait(3500);
+    const bek = await page.evaluate(async () => (await Capacitor.Plugins.LocalNotifications.getPending()).notifications.length);
+    step('Hatırlatıcılar kuruldu', bek > 0, bek + ' bekleyen bildirim');
+    await page.evaluate(() => Capacitor.Plugins.LocalNotifications.schedule({ notifications: [{ id: 9998, title: 'Hafif test', body: 'Bir bardak su?', actionTypeId: 'SU', schedule: { at: new Date(Date.now() + 3000), allowWhileIdle: true }, isExactNotification: false }] }));
+    let goruldu = false;
+    for (let i = 0; i < 20 && !goruldu; i++) { await wait(3000); goruldu = /Hafif test/.test((await device.shell('dumpsys notification --noredact')).toString()); }
+    await device.shell('cmd statusbar expand-notifications'); await wait(1500); await shot('bildirim-paneli');
+    await device.shell('cmd statusbar collapse'); await wait(800);
+    step('Bildirim telefonda göründü', goruldu);
     const env = await page.evaluate(async () => {
       await document.fonts.ready;
       const nav = document.querySelector('nav.tabs').getBoundingClientRect();
