@@ -520,6 +520,42 @@ button.mscount i{font-style:normal;font-size:22px;color:var(--muted);margin-left
 .bcell:not(.won){opacity:.45;filter:grayscale(.8)}
 .bcell.won span{color:var(--accent);font-weight:600}
 .kkpi{gap:10px}
+/* ilk kurulum */
+.onb{position:fixed;inset:0;z-index:40;overflow-y:auto;background-color:var(--bg);background-image:radial-gradient(140% 460px at 85% -140px,var(--glow) 0%,var(--bg) 72%);background-repeat:no-repeat}
+.onbin{max-width:480px;min-height:100%;margin:0 auto;display:flex;flex-direction:column;padding:calc(22px + env(safe-area-inset-top,0px)) max(22px,env(safe-area-inset-right,0px)) calc(22px + env(safe-area-inset-bottom,0px)) max(22px,env(safe-area-inset-left,0px))}
+.obtop{display:flex;align-items:center;justify-content:space-between;min-height:36px;margin-bottom:18px}
+.obback{border:0;background:var(--surface);box-shadow:var(--shadow);color:var(--emerald-2);font:600 13.5px var(--f-body);padding:8px 14px;border-radius:99px;cursor:pointer}
+.obdots{display:flex;gap:6px}.obdots i{width:7px;height:7px;border-radius:9px;background:var(--line);transition:width .25s,background .25s}.obdots i.on{width:22px;background:var(--accent)}
+.obh1{font:700 32px/1.08 var(--f-display);letter-spacing:-.03em;margin:0;color:var(--emerald-2)}.obh1 em{font-style:normal;color:var(--accent)}
+.obsub{color:var(--muted);font-size:15.5px;margin:12px 0 0}
+.obgrow{flex:1;min-height:18px}
+.oblogo{width:92px;height:92px;border-radius:28px;background:linear-gradient(155deg,#1F8A70,#0B3B33);display:grid;place-items:center;color:#9FF0D6;box-shadow:0 20px 40px -18px rgba(11,59,51,.7);margin:12px 0 28px}.oblogo svg{width:50px;height:50px}
+.obfeat{display:flex;flex-direction:column;gap:10px;margin-top:24px}
+.obfeat div{display:flex;align-items:center;gap:12px;background:var(--surface);border-radius:16px;padding:12px 14px;box-shadow:var(--shadow);font-weight:600;font-size:14.5px}
+.obfeat i{width:34px;height:34px;border-radius:11px;display:grid;place-items:center;flex:none}.obfeat i svg{width:19px;height:19px}.obfeat small{color:var(--muted);font-weight:500;font-size:13px}
+.obpriv{display:flex;gap:8px;align-items:center;justify-content:center;font-size:12.5px;color:var(--muted);margin:16px 0 14px}
+.oblink{display:block;text-align:center;margin-top:14px;font:600 14px var(--f-body);color:var(--muted);text-decoration:underline;text-underline-offset:3px;cursor:pointer;background:none;border:0;width:100%}
+.obhint{font-size:12.5px;color:var(--muted);text-align:center;margin:0 0 12px}
+.obopt{display:flex;gap:14px;align-items:flex-start;background:var(--surface);border:2px solid var(--line);border-radius:22px;padding:18px;margin-top:14px;box-shadow:var(--shadow);text-align:left;font:inherit;color:inherit;cursor:pointer;width:100%;transition:border-color .2s,background .2s}
+.obopt.sel{border-color:var(--accent);background:linear-gradient(135deg,var(--accent-soft),var(--surface) 70%)}
+.obopt .oi{width:48px;height:48px;border-radius:15px;display:grid;place-items:center;flex:none}.obopt .oi svg{width:26px;height:26px}
+.obopt b{display:block;font:700 17px var(--f-body)}.obopt span span{display:block;font-size:13.5px;color:var(--muted);margin-top:3px}
+.obopt .rd{margin-left:auto;width:24px;height:24px;border-radius:50%;border:2px solid var(--line);flex:none;margin-top:12px;transition:border .2s}.obopt.sel .rd{border:7px solid var(--accent)}
+.oblbl{font-size:12.5px;color:var(--muted);font-weight:600;margin:18px 0 8px;display:block}.oblbl small{font-weight:400}
+.obchips{display:flex;flex-wrap:wrap;gap:7px}
+.obchips button{padding:9px 13px;border-radius:12px;background:var(--surface);border:1px solid var(--line);font:600 14px var(--f-body);color:var(--fg);cursor:pointer}
+.obchips button.on{background:var(--emerald-2);border-color:var(--emerald-2);color:#fff}
+.obchips.c button.on{background:var(--shot);border-color:var(--shot)}
+.obchips.f button{flex:1}
+.obu{position:relative}.obu input{padding-right:46px}.obu span{position:absolute;right:14px;top:50%;transform:translateY(-50%);font-size:13px;color:var(--muted);pointer-events:none}
+.onb input{background:var(--surface);border:1px solid var(--line)}
+.onb input:focus{border-color:var(--accent)}
+.obinfo{margin-top:16px;background:var(--accent-soft);border-radius:16px;padding:14px;font-size:13.5px;color:var(--emerald-2)}.obinfo b{font:700 19px var(--f-display)}
+.obok{width:84px;height:84px;border-radius:50%;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center;margin:18px 0 22px}.obok svg{width:44px;height:44px}
+.obsum{display:flex;flex-direction:column;background:var(--surface);border-radius:20px;padding:4px 16px;box-shadow:var(--shadow);margin-top:22px}
+.obsum div{display:flex;justify-content:space-between;gap:12px;padding:12px 0;border-top:1px solid var(--line);font-size:14.5px}.obsum div:first-child{border:0}.obsum span{color:var(--muted)}
+.btn:disabled{opacity:.4;cursor:default}
+@media (prefers-reduced-motion:reduce){.obdots i,.obopt{transition:none}}
 .ktrend{flex:none;display:flex;flex-direction:column;align-items:flex-end;background:rgba(255,255,255,.07);border:1px solid rgba(159,240,214,.2);border-radius:16px;padding:10px 12px}
 .ktrend span{font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.55)}.ktrend b{font:700 22px var(--f-display);color:#fff;letter-spacing:-.02em}.ktrend em{font-style:normal;font-size:11px;color:#9FF0D6}
 .celeb{position:fixed;inset:0;z-index:50;background:rgba(5,29,24,.45);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;padding-left:max(24px,env(safe-area-inset-left,0px));padding-right:max(24px,env(safe-area-inset-right,0px))}
@@ -607,6 +643,11 @@ const SITES=["Karın sol","Karın sağ","Uyluk sol","Uyluk sağ","Kol sol","Kol 
 const DEFAULT={profile:{drug:"Mounjaro",startWeight:null,goalWeight:null,heightCm:null,intervalDays:7},weights:[],shots:[]};
 let S=JSON.parse(JSON.stringify(DEFAULT));
 let tab="ozet", docRef=null, mode="local", loaded=false, IS_OWNER=false;
+/* iğne takibi isteğe bağlı: tanımsızsa (eski kayıtlar) açık kabul edilir */
+const SHOTS=()=>S.profile.usesShots!==false;
+const sinceTxt=()=>SHOTS()&&S.shots.length?"İlk iğneden":"Başlangıçtan";
+const shotChip=s=>SHOTS()?"<span><b>"+s.length+"</b> iğne</span>":"";
+const actionsHtml=()=>SHOTS()?`<div class="actions"><button class="btn" data-open="weight">Kilo gir</button><button class="btn shotbtn" data-open="shot">İğne ekle</button></div>`:`<div class="actions" style="grid-template-columns:1fr"><button class="btn" data-open="weight">Kilo gir</button></div>`;
 
 const $=s=>document.querySelector(s);
 const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
@@ -693,6 +734,9 @@ function nextSite(){const s=sortedS();if(!s.length)return SITES[0];const i=SITES
 
 /* ---------- views ---------- */
 function render(){
+  const ig=document.querySelector('.tab[data-tab="igne"]');
+  if(ig){ig.hidden=!SHOTS();document.querySelector("nav.tabs .in").style.gridTemplateColumns=`repeat(${SHOTS()?5:4},1fr)`}
+  if(!SHOTS()&&tab==="igne")tab="ozet";
   document.querySelectorAll(".tab").forEach(t=>t.setAttribute("aria-selected",t.dataset.tab===tab));
   $("#title").textContent={ozet:"Hafif",basari:"Başarıların",takviye:"Takviyeler",besin:"Protein & Su",kilo:"Kilo",igne:"İğneler",ayar:"Ayarlar"}[tab];
   $("#today").textContent=new Date().toLocaleDateString("tr-TR",{day:"numeric",month:"long",weekday:"long"});
@@ -704,6 +748,7 @@ function render(){
   if(!$("#mdefs").firstChild)$("#mdefs").innerHTML=medalDefs();
   const mt=$("#mtrack"),nn=mt&&mt.querySelector(".next");if(nn)mt.scrollLeft=nn.offsetLeft-mt.clientWidth/2+nn.clientWidth/2;
   if(tab==="ozet")setTimeout(checkCelebrate,450);
+  maybeOnboard();
 }
 
 function vOzet(){
@@ -711,13 +756,22 @@ function vOzet(){
 }
 function vOzetMain(){
   const w=sortedW(), s=sortedS(), P=S.profile;
+  if(!w.length&&!s.length&&!SHOTS()){
+    return `<section><div class="card empty">
+      <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5"><rect x="3" y="4" width="18" height="16" rx="4"/><path d="M8 9a4 4 0 0 1 8 0M12 9l1.5-2"/></svg>
+      <h2>Takibe başla</h2>
+      <p class="muted" style="margin:0;max-width:34ch">Önce bugünkü kilonu gir. Tartıların, hedefine ilerlemen ve rozetlerin burada görünecek.</p>
+      </div>
+      ${actionsHtml()}
+      <button class="btn ghost" data-go="ayar">Hedefini ayarla</button></section>`;
+  }
   if(!w.length&&!s.length){
     return `<section><div class="card empty">
       <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="var(--shot)" stroke-width="1.5"><path d="M14 4l6 6M17 7l-9 9-3 1 1-3 9-9M6 18l-3 3M11 8l2 2M8 11l2 2"/></svg>
       <h2>Takibe başla</h2>
       <p class="muted" style="margin:0;max-width:34ch">Önce bugünkü kilonu gir, sonra iğnelerini ekle. Her iğne arasında kaç kilo verdiğini burada göreceksin.</p>
       </div>
-      <div class="actions"><button class="btn" data-open="weight">Kilo gir</button><button class="btn shotbtn" data-open="shot">İğne ekle</button></div>
+      ${actionsHtml()}
       <button class="btn ghost" data-go="ayar">Hedef ve ilaç bilgisini ayarla</button></section>`;
   }
   const latest=w[w.length-1], first=w[0];
@@ -751,13 +805,13 @@ function vOzetMain(){
   }
   return `<section>
     <div id="heroWrap">${heroHtml({w,s,lost,start,latest,goal,pct,ring,perWeek,totalDays})}</div>
-    <div class="actions"><button class="btn" data-open="weight">Kilo gir</button><button class="btn shotbtn" data-open="shot">İğne ekle</button></div>
+    ${actionsHtml()}
     ${suppMini()}
     ${w.length>1?chartCard():""}
     ${comp}
     ${milestoneCard()}
-    <div id="cycWrap" class="cycw" data-v="kadran">${cycleHtml("kadran")}</div>
-    ${s.length?`<div class="card"><div class="msh" style="margin-bottom:6px"><h2>İğne girişleri <span class="muted num" style="font-size:14px;font-weight:400">${s.length}</span></h2><button type="button" class="seeall" data-go="igne">İğneler ›</button></div>${shotList(9999)}</div>`:""}
+    ${SHOTS()?`<div id="cycWrap" class="cycw" data-v="kadran">${cycleHtml("kadran")}</div>`:""}
+    ${SHOTS()&&s.length?`<div class="card"><div class="msh" style="margin-bottom:6px"><h2>İğne girişleri <span class="muted num" style="font-size:14px;font-weight:400">${s.length}</span></h2><button type="button" class="seeall" data-go="igne">İğneler ›</button></div>${shotList(9999)}</div>`:""}
   </section>`;
 }
 function penIcon(){return `<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 4l6 6M17 7l-9 9-3 1 1-3 9-9M6 18l-3 3M11 8l2 2M8 11l2 2"/></svg>`}
@@ -1209,7 +1263,7 @@ function heroHtml(X){
       <div class="track"><div class="rail"></div><div class="done" style="width:${pos*100}%"></div>${ticks}
         <div class="me" style="left:${pos*100}%"><span>${kg(latest.kg)}</span></div>
         <div class="end s"><b>${kg(start)}</b>başlangıç</div><div class="end g"><b>${goal!=null?kg(goal):"?"}</b>hedef</div></div>
-      <div class="chips" style="margin-top:4px"><span><b>${s.length}</b> iğne</span>${perWeek!=null?`<span>haftada <b>${sgn(perWeek)}</b> kg</span>`:""}${left!=null?`<span>hedefe <b>${kg(left)}</b> kg</span>`:""}</div>
+      <div class="chips" style="margin-top:4px">${shotChip(s)}${perWeek!=null?`<span>haftada <b>${sgn(perWeek)}</b> kg</span>`:""}${left!=null?`<span>hedefe <b>${kg(left)}</b> kg</span>`:""}</div>
       ${heroDots()}</div>`;
   }
   if(heroV==="gece"){
@@ -1218,39 +1272,39 @@ function heroHtml(X){
     const line=w.map((p,i)=>(i?"L":"M")+X2(p).toFixed(1)+" "+Y(p.kg).toFixed(1)).join("");
     return `<div class="card hero-gece">
       <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px">
-        <div style="display:flex;flex-direction:column;gap:6px"><span class="eyebrow">İlk iğneden bu yana · ${totalDays} gün</span>
+        <div style="display:flex;flex-direction:column;gap:6px"><span class="eyebrow">${sinceTxt()} bu yana · ${totalDays} gün</span>
         <div class="mega">${big}<small>kg</small></div>
         <div class="fromto">${kg(start)} → <b>${kg(latest.kg)} kg</b></div></div>
         ${pct!=null?`<div class="gmeter" role="img" aria-label="Hedefe yüzde ${Math.round(pct)}"><div class="gm-txt"><span>Hedefe</span><b>%${Math.round(pct)}</b>${goal!=null?`<em>${kg(goal)} kg</em>`:""}</div><div class="gm-bar"><i class="${A("gmgrow")}" style="height:${Math.max(4,pct)}%"></i></div></div>`:""}
       </div>
       <svg class="spark" viewBox="0 0 320 78" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="gsp" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7FE0C2" stop-opacity=".45"/><stop offset="1" stop-color="#7FE0C2" stop-opacity="0"/></linearGradient></defs>
         <path d="${line}L320 78L0 78Z" fill="url(#gsp)"/><path class="${A("draw")}" pathLength="1" d="${line}" fill="none" stroke="#9FF0D6" stroke-width="2.2" stroke-linejoin="round" vector-effect="non-scaling-stroke"/></svg>
-      <div style="display:flex;align-items:center;gap:8px"><div class="chips dk" style="flex:1;min-width:0"><span><b>${s.length}</b> iğne</span>${perWeek!=null?`<span>haftada <b>${sgn(perWeek)}</b> kg</span>`:""}${left!=null?`<span>hedefe <b>${kg(left)}</b> kg</span>`:""}</div>
+      <div style="display:flex;align-items:center;gap:8px"><div class="chips dk" style="flex:1;min-width:0">${shotChip(s)}${perWeek!=null?`<span>haftada <b>${sgn(perWeek)}</b> kg</span>`:""}${left!=null?`<span>hedefe <b>${kg(left)}</b> kg</span>`:""}</div>
       <button type="button" class="sharebtn" data-share aria-label="İlerlemeni paylaş"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V3M7.5 7.5L12 3l4.5 4.5"/><path d="M5 12v6.5A2.5 2.5 0 0 0 7.5 21h9a2.5 2.5 0 0 0 2.5-2.5V12"/></svg></button></div>
       ${heroDots(true)}</div>`;
   }
   if(heroV==="halka"){
     const R=86,C=2*Math.PI*R,f=pct!=null?pct/100:0;
     return `<div class="card hero-halka">
-      <span class="eyebrow" style="text-align:center">İlk iğneden bu yana · ${totalDays} gün</span>
+      <span class="eyebrow" style="text-align:center">${sinceTxt()} bu yana · ${totalDays} gün</span>
       <div class="bigring"><svg viewBox="0 0 200 200" width="200" height="200" aria-hidden="true"><defs><linearGradient id="rg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2BB38F"/><stop offset="1" stop-color="var(--accent)"/></linearGradient></defs>
         <circle cx="100" cy="100" r="${R}" fill="none" stroke="var(--accent-soft)" stroke-width="14"/>
         <circle cx="100" cy="100" r="${R}" fill="none" stroke="url(#rg)" stroke-width="14" stroke-linecap="round" stroke-dasharray="${C*f} ${C}" transform="rotate(-90 100 100)"/></svg>
         <div class="c"><div class="mega" style="font-size:46px">${big}<small>kg</small></div><span>${pct!=null?"hedefin %"+Math.round(pct)+"'i":"hedef belirlenmedi"}</span></div></div>
       <div class="trio"><div><span class="eyebrow">Başlangıç</span><b>${kg(start)}</b></div><div><span class="eyebrow">Şimdi</span><b style="color:var(--accent)">${kg(latest.kg)}</b></div><div><span class="eyebrow">Hedef</span><b>${goal!=null?kg(goal):"–"}</b></div></div>
-      <div class="chips" style="justify-content:center"><span><b>${s.length}</b> iğne</span>${perWeek!=null?`<span>haftada <b>${sgn(perWeek)}</b> kg</span>`:""}</div>
+      <div class="chips" style="justify-content:center">${shotChip(s)}${perWeek!=null?`<span>haftada <b>${sgn(perWeek)}</b> kg</span>`:""}</div>
       ${heroDots()}</div>`;
   }
   return `<div class="card hero2">
       <div class="row1">
         <div style="display:flex;flex-direction:column;gap:8px;min-width:0">
-          <span class="eyebrow">İlk iğneden bu yana · ${totalDays} gün</span>
+          <span class="eyebrow">${sinceTxt()} bu yana · ${totalDays} gün</span>
           <div class="mega">${big}<small>kg</small></div>
           <div class="fromto">${kg(start)} kg → <b>${kg(latest?.kg)} kg</b></div>
         </div>
         ${ring}
       </div>
-      <div class="chips"><span><b>${s.length}</b> iğne</span>${perWeek!=null?`<span>haftada <b>${sgn(perWeek)}</b> kg</span>`:""}${left!=null?`<span>hedefe <b>${kg(left)}</b> kg</span>`:""}</div>
+      <div class="chips">${shotChip(s)}${perWeek!=null?`<span>haftada <b>${sgn(perWeek)}</b> kg</span>`:""}${left!=null?`<span>hedefe <b>${kg(left)}</b> kg</span>`:""}</div>
       ${heroDots()}</div>`;
 }
 
@@ -1401,7 +1455,7 @@ const TPL_FN={zumrut:tZumrut,porselen:tPorselen,gece:tGece,halka:tHalka,once:tOn
 async function drawShare(tpl){
   const D=shareData(); if(!D) return null; await shareFonts();
   const W=1080,H=1350,cv=document.createElement("canvas");cv.width=W;cv.height=H;const c=cv.getContext("2d");c.textBaseline="alphabetic";
-  (TPL_FN[tpl||shareOpt.tpl]||tZumrut)(c,W,H,D,shareOpt); return cv;
+  (TPL_FN[tpl||shareOpt.tpl]||tZumrut)(c,W,H,D,{...shareOpt,shots:shareOpt.shots&&SHOTS()}); return cv;
 }
 async function renderSharePreview(){
   const img=$("#shImg"); if(!img) return; img.style.opacity=.4;
@@ -1419,14 +1473,14 @@ function openShare(){
     <div style="display:flex;flex-direction:column;gap:14px">
       <img id="shImg" class="shimg" alt="İlerleme kartı önizlemesi">
       <div class="tpls" role="radiogroup" aria-label="Şablon">${SHARE_TPLS.map(([k,n])=>`<button type="button" class="tpl" role="radio" data-tpl="${k}" aria-checked="${k===shareOpt.tpl}"><img alt=""><span>${n}</span></button>`).join("")}</div>
-      <div class="sws">${sw("weights","Kilo değerleri","başlangıç, şimdiki ve hedef kilo")}${sw("fat","Yağ bilgisi","verilen yağ ve yağ oranı")}${sw("shots","İğne bilgisi","iğne sayısı ve ilk iğne ifadesi")}</div>
+      <div class="sws">${sw("weights","Kilo değerleri","başlangıç, şimdiki ve hedef kilo")}${sw("fat","Yağ bilgisi","verilen yağ ve yağ oranı")}${SHOTS()?sw("shots","İğne bilgisi","iğne sayısı ve ilk iğne ifadesi"):""}</div>
       <button class="btn" id="shSave" type="button">Görseli kaydet / paylaş</button>
       <p class="muted" id="shHint" style="margin:0;font-size:12.5px;text-align:center">iPhone'da paylaşım menüsü açılır; WhatsApp'ı ya da Fotoğraflar'a kaydet'i seçebilirsin.</p>
     </div></div></div>`;
   const root=$("#sheetRoot");
   root.querySelector(".scrim").addEventListener("click",e=>{if(e.target.classList.contains("scrim"))closeSheet()});
   root.querySelector("[data-x]").addEventListener("click",closeSheet);
-  ["weights","fat","shots"].forEach(k=>$("#sh-"+k).addEventListener("change",e=>{shareOpt[k]=e.target.checked;try{localStorage.setItem("hf-share",JSON.stringify(shareOpt))}catch(_){}renderSharePreview()}));
+  ["weights","fat","shots"].forEach(k=>$("#sh-"+k)&&$("#sh-"+k).addEventListener("change",e=>{shareOpt[k]=e.target.checked;try{localStorage.setItem("hf-share",JSON.stringify(shareOpt))}catch(_){}renderSharePreview()}));
   root.querySelectorAll("[data-tpl]").forEach(b=>b.addEventListener("click",async()=>{shareOpt.tpl=b.dataset.tpl;try{localStorage.setItem("hf-share",JSON.stringify(shareOpt))}catch(_){}
     root.querySelectorAll("[data-tpl]").forEach(x=>x.setAttribute("aria-checked",x===b));
     const img=$("#shImg");img.style.opacity=.4;shareCanvas=await drawShare();img.src=shareCanvas.toDataURL("image/png");img.style.opacity=1;
@@ -1589,7 +1643,7 @@ async function exportXlsx(){
     const DL=Object.keys(S.daily||{}).sort().map(d=>({"Tarih":d,"Protein (g)":S.daily[d].p||0,"Su (ml)":S.daily[d].w||0}));
     const wb=X.utils.book_new();
     X.utils.book_append_sheet(wb,X.utils.json_to_sheet(W.length?W:[{"Tarih":""}]),"Tartılar");
-    X.utils.book_append_sheet(wb,X.utils.json_to_sheet(SH.length?SH:[{"Tarih":""}]),"İğneler");
+    if(SHOTS()||SH.length)X.utils.book_append_sheet(wb,X.utils.json_to_sheet(SH.length?SH:[{"Tarih":""}]),"İğneler");
     X.utils.book_append_sheet(wb,X.utils.json_to_sheet(DL.length?DL:[{"Tarih":""}]),"Protein ve Su");
     const buf=X.write(wb,{bookType:"xlsx",type:"array"});
     st.textContent="";await dlSave(`hafif-veriler-${today()}.xlsx`,new Uint8Array(buf));toast("Excel dosyası hazır");
@@ -1611,14 +1665,14 @@ function onRestoreFile(e){
 function doRestore(){if(!pendingRestore)return;S=Object.assign(JSON.parse(JSON.stringify(DEFAULT)),pendingRestore);pendingRestore=null;save();render();toast("Yedek yüklendi")}
 function dataCard(){
   return `<div class="card" style="display:flex;flex-direction:column;gap:12px">
-    <div><h2>Verilerim</h2><span class="muted" style="font-size:13px">${S.weights.length} tartı · ${S.shots.length} iğne · ${Object.keys(S.daily||{}).length} gün protein ve su</span></div>
+    <div><h2>Verilerim</h2><span class="muted" style="font-size:13px">${S.weights.length} tartı${SHOTS()?` · ${S.shots.length} iğne`:""} · ${Object.keys(S.daily||{}).length} gün protein ve su</span></div>
     <button type="button" class="btn" id="exXlsx">Excel olarak indir</button>
     <div style="display:flex;gap:8px"><button type="button" class="btn ghost" id="exJson" style="flex:1">Yedek dosyası indir</button>
       <label class="btn ghost" style="flex:1;text-align:center;flex-direction:row;display:block;color:var(--fg);font-size:15px">Yedekten yükle<input type="file" id="rsFile" accept=".json,application/json" hidden></label></div>
     <div class="restore" id="restoreAsk" hidden><b>Yedek yüklensin mi?</b><span class="muted" id="restoreInfo" style="font-size:13px"></span><span style="font-size:13px">Şu anki kayıtların bu yedekle değiştirilecek.</span>
       <div style="display:flex;gap:8px"><button type="button" class="btn ghost" id="rsNo" style="flex:1">Vazgeç</button><button type="button" class="btn" id="rsYes" style="flex:1;background:var(--bad)">Yedeği yükle</button></div></div>
     <p class="muted" id="dataMsg" style="margin:0;font-size:12.5px" role="status"></p>
-    <p class="muted" style="margin:0;font-size:12.5px">Excel dosyasında Tartılar, İğneler ve Protein ve Su ayrı sayfalarda. Yedek dosyasını sakla; telefon değiştirsen bile buradan geri yükleyebilirsin.</p>
+    <p class="muted" style="margin:0;font-size:12.5px">Excel dosyasında Tartılar${SHOTS()?", İğneler":""} ve Protein ve Su ayrı sayfalarda. Yedek dosyasını sakla; telefon değiştirsen bile buradan geri yükleyebilirsin.</p>
   </div>`;
 }
 function bindData(){
@@ -2006,17 +2060,18 @@ function bindScrub(svg){
 let chartMode=(()=>{try{return localStorage.getItem("dd-chart")||"egri"}catch(e){return "egri"}})();
 const MODES=[["egri","Eğri"],["igne","İğne"],["hafta","Haftalık"],["trend","Trend"],["ilac","İlaç"],["yag","Yağ"]];
 function chartCard(){
-  const sub={egri:"Her tartı, iğne günleri işaretli",igne:"İki iğne arasında verilen kilo",hafta:"Haftalık ortalamaya göre değişim",trend:"7 günlük ortalama ve 4 haftalık tahmin",ilac:"Tahmini ilaç düzeyi ile kilo aynı grafikte",yag:"Vücut yağ oranı ve yağ kütlesi"}[chartMode];
+  const modes=MODES.filter(([k])=>SHOTS()||(k!=="igne"&&k!=="ilac")); if(!modes.some(([k])=>k===chartMode))chartMode="egri";
+  const sub={egri:SHOTS()?"Her tartı, iğne günleri işaretli":"Her tartı ve hedef çizgin",igne:"İki iğne arasında verilen kilo",hafta:"Haftalık ortalamaya göre değişim",trend:"7 günlük ortalama ve 4 haftalık tahmin",ilac:"Tahmini ilaç düzeyi ile kilo aynı grafikte",yag:"Vücut yağ oranı ve yağ kütlesi"}[chartMode];
   let body, legend;
   if(chartMode==="igne"){body=chartBars(shotRows().filter(r=>r.loss!=null).map(r=>({label:fmtShort(r.date),v:r.loss,live:r.current})));legend=`<span class="b">Verilen kilo</span><span class="b live">Süren aralık</span>`}
   else if(chartMode==="hafta"){body=chartBars(weekly());legend=`<span class="b">Önceki haftaya göre</span>`}
   else if(chartMode==="trend"){body=chartTrend();legend=`<span class="dot">Tartı</span><span>7 günlük ortalama</span><span class="dash">Tahmin</span>`}
   else if(chartMode==="yag"){body=chartFat();legend=`<span class="fat">Yağ oranı %</span><span class="b">Yağ kütlesi, kg</span>`}
   else if(chartMode==="ilac"){body=chartDrugWeight();legend=`<span>Kilo (sol eksen)</span><span class="area">İlaç düzeyi, mg (sağ eksen)</span>`}
-  else {body=chart();legend=`<span>Kilo</span><span class="sd">İğne günü</span>`}
+  else {body=chart();legend=SHOTS()?`<span>Kilo</span><span class="sd">İğne günü</span>`:`<span>Kilo</span>`}
   return `<div class="card" style="display:flex;flex-direction:column;gap:10px">
     <div><h2>Kilo değişimi</h2><span class="muted" style="font-size:13px">${sub}</span></div>
-    <div class="seg" role="tablist">${MODES.map(([k,l])=>`<button role="tab" aria-selected="${k===chartMode}" data-chart="${k}">${l}</button>`).join("")}</div>
+    <div class="seg" role="tablist" style="grid-template-columns:repeat(${modes.length},1fr)">${modes.map(([k,l])=>`<button role="tab" aria-selected="${k===chartMode}" data-chart="${k}">${l}</button>`).join("")}</div>
     ${body}<div class="legend">${legend}</div></div>`;
 }
 function weekly(){
@@ -2159,12 +2214,15 @@ function vAyar(){
   const P=S.profile;
   return `<section><form id="fAyar" class="card form2">
     <div class="fsec"><span>Tedavi</span></div>
-    <div class="two"><label>İlaç adı<input id="a-drug" value="${esc(P.drug||"")}" placeholder="ör. Mounjaro"></label>
+    <label class="sw" style="padding:2px 0"><span><b>Haftalık iğne kullanıyorum</b><small>kapalıyken iğne bölümleri gizlenir, kayıtların silinmez</small></span><input type="checkbox" id="a-shots" ${SHOTS()?"checked":""}><i></i></label>
+    <div class="two" id="a-shotf" ${SHOTS()?"":"hidden"}><label>İlaç adı<input id="a-drug" value="${esc(P.drug||"")}" placeholder="ör. ilacının adı"></label>
     <label>İğne aralığı (gün)<input id="a-iv" inputmode="numeric" value="${P.intervalDays??7}"></label></div>
     <div class="fsec"><span>Vücut ve hedef</span></div>
     <div class="three"><label>Başlangıç<input id="a-start" inputmode="decimal" value="${P.startWeight??""}" placeholder="kg"></label>
     <label>Hedef<input id="a-goal" inputmode="decimal" value="${P.goalWeight??""}" placeholder="kg"></label>
     <label>Boy<input id="a-height" inputmode="numeric" value="${P.heightCm??""}" placeholder="cm"></label></div>
+    <div class="two"><label>Yaş<input id="a-age" inputmode="numeric" value="${P.age??""}" placeholder="yaş"></label>
+    <label>Cinsiyet<select id="a-sex"><option value="">Seç</option><option value="k" ${P.sex==="k"?"selected":""}>Kadın</option><option value="e" ${P.sex==="e"?"selected":""}>Erkek</option></select></label></div>
     <div class="fsec"><span>Günlük hedefler</span></div>
     <div class="two"><label>Protein (g)<input id="a-prot" inputmode="numeric" value="${P.proteinGoal??""}" placeholder="${protSuggest()[2]}"></label>
     <label>Su (ml)<input id="a-water" inputmode="numeric" value="${P.waterGoal??""}" placeholder="2500"></label></div>
@@ -2175,6 +2233,147 @@ function vAyar(){
   </form>
   ${dataCard()}
   <p class="muted" style="font-size:13px;margin:0">${mode==="db"?"Kayıtların Claude hesabında, yalnızca senin görebileceğin bir alanda tutuluyor. iPhone'da ve bilgisayarda aynı veriyi görürsün.":"Kayıtlar şu an sadece bu cihazda. Claude uygulamasında giriş yapmış olarak açarsan hesabına taşınır."}</p></section>`;
+}
+
+/* ---------- ilk kurulum ---------- */
+let OB=null;
+const DOSES=["2,5","5","7,5","10","12,5","15"];
+const OB_ICON={
+  kilo:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="16" rx="4"/><path d="M8 9a4 4 0 0 1 8 0M12 9l1.5-2"/></svg>`,
+  igne:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 4l6 6M17 7l-9 9-3 1 1-3 9-9M6 18l-3 3M11 8l2 2M8 11l2 2"/></svg>`,
+  su:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M12 3c3.5 4.2 6 7.6 6 10.8A6 6 0 0 1 6 13.8C6 10.6 8.5 7.2 12 3z"/><path d="M9.2 14.5a3 3 0 0 0 2.8 2.6"/></svg>`,
+  takviye:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2.8" y="8.2" width="18.4" height="7.6" rx="3.8" transform="rotate(-40 12 12)"/><path d="M9.6 9.1l5.1 6.1"/></svg>`};
+function needsOnboard(){return loaded&&!S.profile.onboarded&&!S.weights.length&&!S.shots.length}
+function maybeOnboard(){if(needsOnboard()&&!$("#onb"))openOnboard()}
+function obSteps(){return OB.uses===false?[1,2,4,5]:[1,2,3,4,5]}
+function lastDow(dow){let d=today();for(let i=0;i<7;i++){if(toD(d).getDay()===dow)return d;d=addDays(d,-1)}return today()}
+function obCollect(){
+  const v=id=>{const e=$("#"+id);return e?e.value:null};
+  if(OB.step===3){OB.doseX=v("obDoseX")??OB.doseX;OB.last=v("obLast")??OB.last;OB.time=v("obTime")||OB.time;OB.drug=v("obDrug")??OB.drug}
+  if(OB.step===4){OB.kg=v("obKg")??OB.kg;OB.goal=v("obGoal")??OB.goal;OB.h=v("obH")??OB.h;OB.age=v("obAge")??OB.age;OB.prot=v("obProt")??OB.prot;OB.water=v("obWater")??OB.water}
+}
+function obInfo(){
+  const k=num(OB.kg),g=num(OB.goal);
+  let t="";
+  if(k&&g&&k>g){const l=k-g,a=Math.max(1,Math.round(l/1/4.345)),b=Math.max(a,Math.round(l/0.5/4.345));t=`Hedefe <b>${kg(l)} kg</b> var. Haftada 0,5–1 kg ile yaklaşık <b>${a===b?a:a+"–"+b} ay</b>. `}
+  return t+"Yaş ve cinsiyet, günlük kalori ve protein önerini hesaplamak için.";
+}
+function obProtPh(){const k=num(OB.kg);return k?`ör. ${Math.round(k*1.35/5)*5}`:"ör. 110"}
+function obBody(){
+  const st=OB.step, steps=obSteps(), mid=steps.filter(x=>x>1&&x<5), di=mid.indexOf(st);
+  const top=st>1&&st<5?`<div class="obtop"><button type="button" class="obback" data-ob="back">‹ Geri</button><div class="obdots">${mid.map((_,i)=>`<i class="${i===di?"on":""}"></i>`).join("")}</div><span style="width:62px"></span></div>`:"";
+  if(st===1) return `<div class="oblogo">${'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 4C11 4 5 9 5 17v3"/><path d="M20 4c0 9-5 14-13 14"/><path d="M9 14l5-5"/></svg>'}</div>
+    <h1 class="obh1">Hafif'e<br><em>hoş geldin.</em></h1>
+    <p class="obsub">Kilo verme yolculuğunu sade ve keyifli bir şekilde takip et.</p>
+    <div class="obfeat">
+      <div><i style="background:var(--accent-soft);color:var(--accent)">${OB_ICON.kilo}</i>Kilo ve vücut kompozisyonu</div>
+      <div><i style="background:var(--shot-soft);color:var(--shot)">${OB_ICON.igne}</i>Haftalık iğne <small>· isteğe bağlı</small></div>
+      <div><i style="background:var(--water-soft);color:var(--water)">${OB_ICON.su}</i>Su ve protein</div>
+      <div><i style="background:var(--fat-soft);color:var(--fat)">${OB_ICON.takviye}</i>Takviye programı</div>
+    </div>
+    <div class="obgrow"></div>
+    <div class="obpriv"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4.5" y="10.5" width="15" height="10" rx="3"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/></svg>Hesap yok · verilerin yalnızca bu cihazda</div>
+    <button type="button" class="btn" data-ob="next">Başlayalım</button>
+    <label class="oblink">Yedek dosyam var, geri yükle<input type="file" id="obFile" accept=".json,application/json" hidden></label>
+    <p class="obhint" id="obMsg" role="status" style="margin-top:8px"></p>`;
+  if(st===2) return `${top}<h1 class="obh1">Haftalık iğne<br><em>kullanıyor musun?</em></h1>
+    <p class="obsub">Kilo verme sürecinde haftada bir yaptığın bir tedavi varsa iğne takibini açalım.</p>
+    <button type="button" class="obopt${OB.uses===true?" sel":""}" data-ob-uses="1"><span class="oi" style="background:var(--shot-soft);color:var(--shot)">${OB_ICON.igne}</span><span><b>Evet, kullanıyorum</b><span>İğne günü, doz, bölge önerisi ve haftalık döngü takibi açılır.</span></span><i class="rd"></i></button>
+    <button type="button" class="obopt${OB.uses===false?" sel":""}" data-ob-uses="0"><span class="oi" style="background:var(--accent-soft);color:var(--accent)">${OB_ICON.kilo}</span><span><b>Hayır, kullanmıyorum</b><span>Kilo, su, protein ve takviye takibiyle devam et.</span></span><i class="rd"></i></button>
+    <div class="obgrow"></div><p class="obhint">İstediğin zaman Ayarlar'dan değiştirebilirsin.</p>
+    <button type="button" class="btn" data-ob="next" ${OB.uses==null?"disabled":""}>Devam</button>`;
+  if(st===3){const days=[1,2,3,4,5,6,0];const other=OB.dose==="x";
+    return `${top}<h1 class="obh1">İğneni<br><em>tanıyalım.</em></h1>
+    <span class="oblbl">Şu anki dozun</span>
+    <div class="obchips c">${DOSES.map(d=>`<button type="button" data-ob-dose="${d}" class="${OB.dose===d?"on":""}">${d} mg</button>`).join("")}<button type="button" data-ob-dose="x" class="${other?"on":""}">Diğer</button></div>
+    ${other?`<div class="obu" style="margin-top:8px"><input id="obDoseX" inputmode="decimal" value="${esc(OB.doseX||"")}" placeholder="doz"><span>mg</span></div>`:""}
+    <span class="oblbl">Hangi gün yapıyorsun?</span>
+    <div class="obchips">${days.map(d=>`<button type="button" data-ob-day="${d}" class="${OB.day===d?"on":""}">${DAYN[d]}</button>`).join("")}</div>
+    <span class="oblbl">Son iğneni ne zaman yaptın?</span>
+    <div class="two"><input id="obLast" type="date" max="${today()}" value="${OB.last||""}" aria-label="Son iğne tarihi"><input id="obTime" type="time" value="${OB.time}" aria-label="Saat"></div>
+    <span class="oblbl">İlacın adı <small>(isteğe bağlı)</small></span>
+    <input id="obDrug" value="${esc(OB.drug||"")}" placeholder="ör. ilacının adı" autocomplete="off">
+    <div class="obgrow"></div><p class="obhint">Tedavine yeni başlıyorsan son iğne tarihini boş bırak.</p>
+    <button type="button" class="btn" data-ob="next">Devam</button>`}
+  if(st===4) return `${top}<h1 class="obh1">Nereden nereye<br><em>gidiyoruz?</em></h1>
+    <span class="oblbl">Şu anki kilon</span>
+    <div class="obu"><input id="obKg" inputmode="decimal" value="${esc(OB.kg||"")}" placeholder="ör. 82,4" style="font:700 22px var(--f-display)"><span>kg</span></div>
+    <div class="two"><div><span class="oblbl">Hedef kilon</span><div class="obu"><input id="obGoal" inputmode="decimal" value="${esc(OB.goal||"")}" placeholder="ör. 70"><span>kg</span></div></div>
+      <div><span class="oblbl">Boyun</span><div class="obu"><input id="obH" inputmode="numeric" value="${esc(OB.h||"")}" placeholder="ör. 170"><span>cm</span></div></div></div>
+    <div class="two"><div><span class="oblbl">Yaşın</span><div class="obu"><input id="obAge" inputmode="numeric" value="${esc(OB.age||"")}" placeholder="ör. 35"><span>yaş</span></div></div>
+      <div><span class="oblbl">Cinsiyet</span><div class="obchips f"><button type="button" data-ob-sex="k" class="${OB.sex==="k"?"on":""}">Kadın</button><button type="button" data-ob-sex="e" class="${OB.sex==="e"?"on":""}">Erkek</button></div></div></div>
+    <div class="obinfo" id="obInfo">${obInfo()}</div>
+    <span class="oblbl">Günlük hedefler <small>(sonra değiştirebilirsin)</small></span>
+    <div class="two"><div class="obu"><input id="obProt" inputmode="numeric" value="${esc(OB.prot||"")}" placeholder="${obProtPh()}"><span>g protein</span></div><div class="obu"><input id="obWater" inputmode="numeric" value="${esc(OB.water||"")}" placeholder="2500"><span>ml su</span></div></div>
+    <div class="obgrow"></div>
+    <button type="button" class="btn" data-ob="next">Devam</button>
+    <button type="button" class="oblink" data-ob="skip">Şimdilik atla</button>`;
+  const k=num(OB.kg),g=num(OB.goal),dose=OB.dose==="x"?OB.doseX:OB.dose;
+  const rows=[];
+  if(k)rows.push(["Başlangıç",kg(k)+" kg"]);
+  if(g)rows.push(["Hedef",kg(g)+" kg"]);
+  if(OB.uses!==false){rows.push(["İğne",`${dose?esc(dose)+" mg":"doz ?"}${OB.day!=null?" · her "+toD(lastDow(OB.day)).toLocaleDateString("tr-TR",{weekday:"long"}):""}`]);
+    if(OB.last)rows.push(["Sıradaki iğne",`${fmtD(addDays(OB.last,7))}, ${OB.time}`])}
+  return `<div class="obok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
+    <h1 class="obh1">Her şey<br><em>hazır.</em></h1>
+    <p class="obsub">${k?"İlk tartın kaydedilecek. ":""}Hafif'i keşfetmeye başlayabilirsin.</p>
+    ${rows.length?`<div class="obsum">${rows.map(([a,b])=>`<div><span>${a}</span><b>${b}</b></div>`).join("")}</div>`:""}
+    <div class="obgrow"></div>
+    <button type="button" class="btn" data-ob="finish">Hafif'i aç</button>`;
+}
+function renderOnb(dir){
+  const o=$("#onb"); if(!o) return;
+  o.innerHTML=`<div class="onbin">${obBody()}</div>`; o.scrollTop=0;
+  const inr=o.firstElementChild;
+  if(dir&&inr.animate&&!matchMedia("(prefers-reduced-motion: reduce)").matches)inr.animate([{opacity:0,transform:`translateX(${dir*24}px)`},{opacity:1,transform:"none"}],{duration:260,easing:"cubic-bezier(.2,.8,.2,1)"});
+  const f=$("#obFile"); if(f)f.addEventListener("change",obRestore);
+}
+function obGo(d){obCollect();const st=obSteps(),i=st.indexOf(OB.step);const n=st[Math.max(0,Math.min(st.length-1,i+d))];if(n===OB.step)return;OB.step=n;renderOnb(d)}
+function obBack(){obGo(-1)}
+function openOnboard(){
+  OB={step:1,uses:null,dose:"2,5",doseX:"",day:null,last:"",time:"09:00",drug:"",kg:"",goal:"",h:"",age:"",sex:null,prot:"",water:""};
+  const o=document.createElement("div");o.id="onb";o.className="onb";o.setAttribute("role","dialog");o.setAttribute("aria-modal","true");o.setAttribute("aria-label","Hafif'e hoş geldin");
+  document.body.appendChild(o);
+  o.addEventListener("click",e=>{
+    const b=e.target.closest("[data-ob],[data-ob-uses],[data-ob-dose],[data-ob-day],[data-ob-sex]"); if(!b) return;
+    if(b.dataset.obUses!=null){OB.uses=b.dataset.obUses==="1";o.querySelectorAll("[data-ob-uses]").forEach(x=>x.classList.toggle("sel",x===b));o.querySelector('[data-ob="next"]').disabled=false;return}
+    if(b.dataset.obDose!=null){obCollect();OB.dose=b.dataset.obDose;renderOnb();if(OB.dose==="x")$("#obDoseX").focus();return}
+    if(b.dataset.obDay!=null){obCollect();OB.day=+b.dataset.obDay;OB.last=lastDow(OB.day);renderOnb();return}
+    if(b.dataset.obSex!=null){obCollect();OB.sex=b.dataset.obSex;o.querySelectorAll("[data-ob-sex]").forEach(x=>x.classList.toggle("on",x===b));return}
+    const a=b.dataset.ob;
+    if(a==="next")obGo(1); else if(a==="back")obGo(-1);
+    else if(a==="skip"){OB.kg=OB.goal=OB.h=OB.age=OB.prot=OB.water="";OB.sex=null;OB.step=5;renderOnb(1)}
+    else if(a==="finish")finishOnboard();
+  });
+  o.addEventListener("input",e=>{if(OB.step===4&&(e.target.id==="obKg"||e.target.id==="obGoal")){obCollect();$("#obInfo").innerHTML=obInfo();$("#obProt").placeholder=obProtPh()}});
+  renderOnb();
+}
+function finishOnboard(){
+  obCollect();
+  const P=S.profile, k=num(OB.kg), g=num(OB.goal), h=num(OB.h), age=num(OB.age), pr=num(OB.prot), wa=num(OB.water);
+  P.onboarded=true; P.usesShots=OB.uses!==false;
+  if(P.usesShots){
+    P.drug=(OB.drug||"").trim()||null; P.intervalDays=P.intervalDays||7;
+    const dose=OB.dose==="x"?num(OB.doseX):num(OB.dose);
+    if(OB.last&&OB.last<=today())S.shots.push({id:uid(),date:OB.last,time:OB.time||"09:00",dose:dose==null?null:dose.toLocaleString("tr-TR"),site:null,note:null});
+  } else P.drug=null;
+  if(k!=null&&k>=20&&k<=400){S.weights.push({id:uid(),date:today(),kg:k,fat:null,note:null,t:Date.now()});P.startWeight=k}
+  if(g!=null&&g>=20&&g<=400)P.goalWeight=g;
+  if(h!=null&&h>=100&&h<=250)P.heightCm=Math.round(h);
+  if(age!=null&&age>=10&&age<=110)P.age=Math.round(age);
+  if(OB.sex)P.sex=OB.sex;
+  if(pr!=null&&pr>0)P.proteinGoal=Math.round(pr);
+  if(wa!=null&&wa>0)P.waterGoal=Math.round(wa);
+  save(); const o=$("#onb"); if(o)o.remove(); OB=null; tab="ozet"; ANIM=true; render(); window.scrollTo(0,0);
+}
+function obRestore(e){
+  const f=e.target.files&&e.target.files[0]; if(!f) return; const st=$("#obMsg");
+  const rd=new FileReader(); rd.onload=()=>{try{const j=JSON.parse(rd.result);const d=j&&j.data?j.data:j;
+      if(!d||!Array.isArray(d.weights)||!Array.isArray(d.shots))throw 0;
+      S=Object.assign(JSON.parse(JSON.stringify(DEFAULT)),d); S.profile=Object.assign({},S.profile,{onboarded:true});
+      save(); const o=$("#onb"); if(o)o.remove(); OB=null; tab="ozet"; ANIM=true; render(); toast(`Yedek yüklendi · ${d.weights.length} tartı`)}
+    catch(_){st.textContent="Bu dosya bir Hafif yedeği değil. “Yedek dosyası indir” ile alınan .json dosyasını seç."}};
+  rd.readAsText(f); e.target.value="";
 }
 
 /* ---------- sheets ---------- */
@@ -2245,8 +2444,9 @@ function bindView(){
   bindData();
   bindSupp();
   const f=$("#fAyar");
+  if(f)$("#a-shots").addEventListener("change",e=>{$("#a-shotf").hidden=!e.target.checked});
   if(f)f.addEventListener("submit",e=>{e.preventDefault();
-    S.profile={celebrated:S.profile.celebrated,noCelebrate:!$("#a-cel").checked,trackyImported:!!S.profile.trackyImported,zeppImported:!!S.profile.zeppImported,drug:$("#a-drug").value.trim()||null,startWeight:num($("#a-start").value),goalWeight:num($("#a-goal").value),heightCm:num($("#a-height").value),proteinGoal:(n=>n&&n>0?Math.round(n):null)(num($("#a-prot").value)),waterGoal:(n=>n&&n>0?Math.round(n):null)(num($("#a-water").value)),startDate:S.profile.startDate||null,intervalDays:Math.max(1,Math.round(num($("#a-iv").value)||7))};
+    S.profile={usesShots:$("#a-shots").checked,onboarded:true,age:(n=>n&&n>=10&&n<=110?Math.round(n):null)(num($("#a-age").value)),sex:$("#a-sex").value||null,celebrated:S.profile.celebrated,noCelebrate:!$("#a-cel").checked,trackyImported:!!S.profile.trackyImported,zeppImported:!!S.profile.zeppImported,drug:$("#a-drug").value.trim()||null,startWeight:num($("#a-start").value),goalWeight:num($("#a-goal").value),heightCm:num($("#a-height").value),proteinGoal:(n=>n&&n>0?Math.round(n):null)(num($("#a-prot").value)),waterGoal:(n=>n&&n>0?Math.round(n):null)(num($("#a-water").value)),startDate:S.profile.startDate||null,intervalDays:Math.max(1,Math.round(num($("#a-iv").value)||7))};
     save();toast("Ayarlar kaydedildi");tab="ozet";render();
   });
 }
@@ -2280,6 +2480,7 @@ boot();
 /* Android geri tuşu: önce kutlamayı, sonra açık alt sayfayı kapatır, sonra Özet'e döner, en son uygulamadan çıkar */
 if(CAP&&CAP.App)window.Capacitor.addListener("App","backButton",()=>{
   const c=$("#celeb");if(c){c.remove();return}
+  if($("#onb")){if(OB&&OB.step>1)obBack();else CAP.App.exitApp();return}
   if($("#sheetRoot").firstChild){closeSheet();return}
   if(tab!=="ozet"){selPhase=null;tab="ozet";render();window.scrollTo(0,0);return}
   CAP.App.exitApp();

@@ -11,7 +11,7 @@ aşağıdaki değişiklikler yeniden uygulanır. Bunların dışında iki sürü
    `dlSave` ilk satırında `if(CAP)return nativeSave(name,data);` olur. `saveShare` içinde `try{` sonrasına
    `if(CAP){…nativeSave(`hafif-ilerleme-…png`,blob);toast("Görsel hazır");return}` satırı eklenir.
 4. **Geri tuşu** – IIFE'nin sonundaki `boot();` satırından sonra
-   `window.Capacitor.addListener("App","backButton",…)` bloğu: kutlama → alt sayfa → Özet → `exitApp`.
+   `window.Capacitor.addListener("App","backButton",…)` bloğu: kutlama → ilk kurulumda bir önceki adım → alt sayfa → Özet → `exitApp`.
 5. **Kişisel veriler çıkarıldı** – `TRACKY`, `TRACKY_TIMES`, `importTracky`, `importCard`, `ZEPP`,
    `importZepp`, `zeppCard` ve bunların `bindView` bağlantıları silinir; `vOzet` yalnızca `vOzetMain()` döndürür;
    `shotTime` yalnızca `x.time||"09:00"` kullanır.

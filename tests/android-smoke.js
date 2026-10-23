@@ -32,6 +32,16 @@ const step = (ad, sonuc, detay) => { report.adimlar.push({ ad, sonuc, detay }); 
     await device.shell(`am force-stop ${PKG}`);
 
     let page = await launch();
+    // İlk kurulum: karşılama → "Evet" → iğne bilgileri → hedefleri atla → bitir
+    const onb = await page.evaluate(() => !!document.querySelector('#onb'));
+    step('İlk kurulum ekranı açıldı', onb);
+    await shot('kurulum-hosgeldin');
+    await tap(page, '[data-ob="next"]'); await wait(500);
+    await tap(page, '[data-ob-uses="1"]'); await tap(page, '[data-ob="next"]'); await wait(500); await shot('kurulum-igne');
+    await tap(page, '[data-ob="next"]'); await wait(500); await shot('kurulum-hedef');
+    await tap(page, '[data-ob="skip"]'); await wait(500);
+    await tap(page, '[data-ob="finish"]'); await wait(1200);
+    step('İlk kurulum tamamlandı', await page.evaluate(() => !document.querySelector('#onb') && JSON.parse(localStorage.getItem('doz-defteri') || '{}').profile?.onboarded === true));
     await shot('ozet-bos');
     const env = await page.evaluate(async () => {
       await document.fonts.ready;
