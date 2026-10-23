@@ -41,10 +41,26 @@ h1 span{display:block}
 .gz i{flex:none;width:86px;height:86px;border-radius:26px;padding:20px}.gz i svg{width:100%;height:100%}
 .gz b{display:block;font:700 42px "Bricolage Grotesque";letter-spacing:-.02em;color:#0B3B33}
 .gz span span{display:block;font:500 27px Figtree;color:#0B3B33AA;margin-top:4px}
+
+/* dikey (Reels / TikTok, 1080x1920): yazı üstte, telefon altta; alt 380 px arayüz için boş */
+body.dikey,body.dikey html{width:1080px;height:1920px}
+body.dikey .txt{left:84px;right:84px;width:auto;top:250px;bottom:auto;justify-content:flex-start}
+body.dikey h1{font-size:118px;margin-top:30px}
+body.dikey .sub{font-size:36px;margin-top:26px;max-width:900px}
+body.dikey .tel{left:250px;top:900px;width:580px;height:1172px;border-radius:84px;padding:20px}
+body.dikey .tel .scr{border-radius:66px}
+body.dikey .call{left:60px!important;top:1330px!important}
+body.dikey .gz{left:84px;right:84px;width:auto;top:860px;bottom:auto;justify-content:flex-start}
+body.dikey .center{padding:0 70px}
+body.dikey .icon{width:240px;height:240px}
+body.dikey .wm{font-size:180px}
+body.dikey .tag{font-size:42px;line-height:1.35}
+body.dikey .feats{flex-wrap:wrap;justify-content:center;max-width:900px}
 </style></head><body>
 <div id="bg"><div class="glow" id="g1"></div><div class="glow" id="g2"></div></div>
 <div id="stage"></div>
 <script>
+const DIKEY=new URLSearchParams(location.search).has('dikey');if(DIKEY){document.body.classList.add('dikey');document.documentElement.style.cssText='width:1080px;height:1920px'}
 const SVG = d => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">${d}</svg>`;
 const IC = {
   kilo: SVG('<rect x="3" y="4" width="18" height="16" rx="4"/><path d="M8 9a4 4 0 0 1 8 0M12 9l1.5-2"/>'),
@@ -90,7 +106,7 @@ S.forEach((s, i) => {
   const el = document.createElement('div'); el.className = 'scene'; el.id = 's' + i; const c = C[s.r];
   if (s.tip === 'giris' || s.tip === 'cikis') {
     el.innerHTML = `<div class="center"><img class="icon" src="../ikon.png"><div class="wm">Hafif</div>
-      <div class="tag">${s.tip === 'giris' ? 'Kilo verme yolculuğunun <b>sade defteri.</b>' : 'Kilo, adım, iğne, takviye, su ve protein. <b>Tek yerde.</b>'}</div>
+      <div class="tag">${s.tip === 'giris' ? (DIKEY?'Kilo verme yolculuğunun<br><b>sade defteri.</b>':'Kilo verme yolculuğunun <b>sade defteri.</b>') : (DIKEY?'Kilo, adım, iğne, takviye,<br>su ve protein. <b>Tek yerde.</b>':'Kilo, adım, iğne, takviye, su ve protein. <b>Tek yerde.</b>')}</div>
       ${s.tip === 'cikis' ? `<div class="feats">${[['kilo', '#0E7C66', '#E1F3EC'], ['adim', '#4A5BC4', '#E9ECFB'], ['igne', '#E2643D', '#FCEDE7'], ['takviye', '#7B5BD0', '#EEE9FB'], ['su', '#2C8FE0', '#E7F3F6']].map(([k, a, b]) => `<span><i style="background:${b};color:${a}">${IC[k]}</i>${{ kilo: 'Kilo', adim: 'Adım', igne: 'İğne', takviye: 'Takviye', su: 'Su & protein' }[k]}</span>`).join('')}</div>
       <div class="store">${IC.play}Google Play'de ücretsiz</div>` : ''}</div>`;
   } else {
