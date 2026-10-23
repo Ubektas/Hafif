@@ -43,6 +43,15 @@ const step = (ad, sonuc, detay) => { report.adimlar.push({ ad, sonuc, detay }); 
     await tap(page, '[data-ob="finish"]'); await wait(1200);
     step('İlk kurulum tamamlandı', await page.evaluate(() => !document.querySelector('#onb') && JSON.parse(localStorage.getItem('doz-defteri') || '{}').profile?.onboarded === true));
     await shot('ozet-bos');
+    // Adım sayar: kart görünüyor mu, Health Connect var mı, izin penceresi açılıyor mu?
+    const hc = await page.evaluate(async () => ({ kart: !!document.querySelector('.stcta'), uygun: await Capacitor.Plugins.Health.isAvailable().then(r => JSON.stringify(r), e => 'hata: ' + e.message) }));
+    step('Adım kartı görünüyor', hc.kart, hc.uygun);
+    await tap(page, '.stcta'); await wait(700); await shot('adim-baglan');
+    await tap(page, '#hcGo'); await wait(3500); await shot('health-connect-izin');
+    const izin = (await device.shell('dumpsys window | grep mCurrentFocus')).toString().trim();
+    step('Health Connect izin penceresi açıldı', /healthdata|permissioncontroller|health/i.test(izin), izin);
+    await device.shell('input keyevent 4'); await wait(1500);
+    await page.evaluate(() => { const r = document.querySelector('#sheetRoot'); if (r) r.innerHTML = ''; });
     const env = await page.evaluate(async () => {
       await document.fonts.ready;
       const nav = document.querySelector('nav.tabs').getBoundingClientRect();
