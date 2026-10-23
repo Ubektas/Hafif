@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="tr"><head><meta charset="utf-8">
+<link rel="stylesheet" href="../../www/fonts/fonts.css">
+<style>
+:root{--bg:#F1F5F3;--glow:#DDEFE7;--surface:#FFFFFF;--sunk:#EDF3F0;--fg:#0B2420;--muted:#5F726C;--line:#E0E8E4;--accent:#0E7C66;--accent-soft:#E1F3EC;--emerald-1:#126B58;--emerald-2:#0B3B33;--shot:#E2643D;--shot-soft:#FCEDE7;--water:#2C8FE0;--protein:#D08A1E;--fat:#7B5BD0;--shadow:0 1px 2px rgba(11,36,32,.04),0 14px 34px -18px rgba(11,59,51,.22)}
+*{box-sizing:border-box}
+body{margin:0;background:#DCE7E2;font:15px/1.45 Figtree,sans-serif;color:var(--fg);display:flex;gap:28px;padding:28px}
+.sc{width:405px;height:860px;flex:none;border-radius:34px;overflow:hidden;position:relative;background-color:var(--bg);background-image:radial-gradient(140% 460px at 85% -140px,var(--glow) 0%,var(--bg) 72%);display:flex;flex-direction:column;padding:56px 24px 28px;box-shadow:0 30px 60px -30px rgba(11,59,51,.5)}
+.no{position:absolute;top:14px;left:0;right:0;text-align:center;font:700 11px Figtree;letter-spacing:.1em;color:var(--muted);text-transform:uppercase}
+.dots{display:flex;gap:6px;justify-content:center;margin-bottom:26px}
+.dots i{width:7px;height:7px;border-radius:9px;background:var(--line)}.dots i.on{width:22px;background:var(--accent)}
+h1{font:700 32px/1.08 "Bricolage Grotesque";letter-spacing:-.03em;margin:0;color:var(--emerald-2)}
+h1 em{font-style:normal;color:var(--accent)}
+.sub{color:var(--muted);font-size:15.5px;margin:12px 0 0}
+.grow{flex:1}
+.btn{border:0;border-radius:16px;padding:16px;font:600 16px Figtree;background:linear-gradient(160deg,var(--emerald-1),var(--emerald-2));color:#fff;text-align:center;box-shadow:0 10px 22px -12px rgba(11,59,51,.55)}
+.btn.dis{opacity:.4}
+.link{text-align:center;margin-top:14px;font:600 14px Figtree;color:var(--muted);text-decoration:underline;text-underline-offset:3px}
+.hint{font-size:12.5px;color:var(--muted);text-align:center;margin-top:12px}
+/* 1 */
+.logo{width:96px;height:96px;border-radius:28px;background:linear-gradient(155deg,#1F8A70,#0B3B33);display:grid;place-items:center;color:#9FF0D6;box-shadow:0 20px 40px -18px rgba(11,59,51,.7);margin:30px 0 30px}
+.logo svg{width:52px;height:52px}
+.feat{display:flex;flex-direction:column;gap:10px;margin-top:26px}
+.feat div{display:flex;align-items:center;gap:12px;background:var(--surface);border-radius:16px;padding:12px 14px;box-shadow:var(--shadow);font-weight:600;font-size:14.5px}
+.feat i{width:34px;height:34px;border-radius:11px;display:grid;place-items:center;flex:none}.feat i svg{width:19px;height:19px}
+.priv{display:flex;gap:8px;align-items:center;justify-content:center;font-size:12.5px;color:var(--muted);margin:16px 0 14px}
+/* 2 */
+.opt{display:flex;gap:14px;align-items:flex-start;background:var(--surface);border:2px solid var(--line);border-radius:22px;padding:18px;margin-top:14px;box-shadow:var(--shadow)}
+.opt.sel{border-color:var(--accent);background:linear-gradient(135deg,var(--accent-soft),#fff 70%)}
+.opt .oi{width:48px;height:48px;border-radius:15px;display:grid;place-items:center;flex:none}.opt .oi svg{width:26px;height:26px}
+.opt b{display:block;font:700 17px Figtree}.opt span{display:block;font-size:13.5px;color:var(--muted);margin-top:3px}
+.opt .rd{margin-left:auto;width:24px;height:24px;border-radius:50%;border:2px solid var(--line);flex:none;margin-top:12px}
+.opt.sel .rd{border:7px solid var(--accent)}
+/* 3-4 */
+.lbl{font-size:12.5px;color:var(--muted);font-weight:600;margin:18px 0 8px}
+.chips{display:flex;flex-wrap:wrap;gap:7px}
+.chips span{padding:9px 13px;border-radius:12px;background:var(--surface);border:1px solid var(--line);font:600 14px Figtree}
+.chips span.on{background:var(--emerald-2);border-color:var(--emerald-2);color:#fff}
+.chips.c span.on{background:var(--shot);border-color:var(--shot)}
+.inp{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:13px 14px;font-size:16px;display:flex;justify-content:space-between}
+.inp small{color:var(--muted)}
+.inp.ph{color:#9AAAA5}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.bmi{margin-top:16px;background:var(--accent-soft);border-radius:16px;padding:14px;font-size:13.5px;color:var(--emerald-2)}
+.bmi b{font:700 20px "Bricolage Grotesque"}
+/* 5 */
+.done{width:84px;height:84px;border-radius:50%;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center;margin:26px 0 22px}
+.done svg{width:44px;height:44px}
+.sum{display:flex;flex-direction:column;background:var(--surface);border-radius:20px;padding:6px 16px;box-shadow:var(--shadow);margin-top:22px}
+.sum div{display:flex;justify-content:space-between;padding:12px 0;border-top:1px solid var(--line);font-size:14.5px}.sum div:first-child{border:0}
+.sum span{color:var(--muted)}
+.tabs{display:flex;gap:6px;justify-content:center;margin-top:18px}
+.tabs span{font-size:11.5px;font-weight:600;padding:6px 9px;border-radius:9px;background:var(--surface);border:1px solid var(--line)}
+.tabs span.x{opacity:.35;text-decoration:line-through}
+</style></head><body>
+
+<!-- 1. Hoş geldin -->
+<div class="sc" id="e1"><div class="no">1 · Karşılama</div>
+  <div class="logo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 4C11 4 5 9 5 17v3"/><path d="M20 4c0 9-5 14-13 14"/><path d="M9 14l5-5"/></svg></div>
+  <h1>Hafif'e<br><em>hoş geldin.</em></h1>
+  <p class="sub">Kilo verme yolculuğunu sade ve keyifli bir şekilde takip et.</p>
+  <div class="feat">
+    <div><i style="background:#E1F3EC;color:#0E7C66"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="16" rx="4"/><path d="M8 9a4 4 0 0 1 8 0"/><path d="M12 9l1.5-2"/></svg></i>Kilo ve vücut kompozisyonu</div>
+    <div><i style="background:#FCEDE7;color:#E2643D"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 4l6 6M17 7l-9 9-3 1 1-3 9-9M6 18l-3 3M11 8l2 2M8 11l2 2"/></svg></i>Haftalık iğne <span style="color:var(--muted);font-weight:500">&nbsp;· isteğe bağlı</span></div>
+    <div><i style="background:#E7F3F6;color:#2C8FE0"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M12 3c3.5 4.2 6 7.6 6 10.8A6 6 0 0 1 6 13.8C6 10.6 8.5 7.2 12 3z"/></svg></i>Su ve protein</div>
+    <div><i style="background:#EEE9FB;color:#7B5BD0"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="2.8" y="8.5" width="18.4" height="7" rx="3.5" transform="rotate(-35 12 12)"/><path d="M9.5 8.5l5 7" transform="rotate(-35 12 12) translate(0 0)"/></svg></i>Takviye programı</div>
+  </div>
+  <div class="grow"></div>
+  <div class="priv"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4.5" y="10.5" width="15" height="10" rx="3"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/></svg>Hesap yok · verilerin yalnızca bu telefonda</div>
+  <div class="btn">Başlayalım</div>
+  <div class="link">Yedek dosyam var, geri yükle</div>
+</div>
+
+<!-- 2. İğne sorusu -->
+<div class="sc" id="e2"><div class="no">2 · İğne sorusu</div>
+  <div class="dots"><i class="on"></i><i></i><i></i></div>
+  <h1>Haftalık iğne<br><em>kullanıyor musun?</em></h1>
+  <p class="sub">Kilo verme sürecinde kullandığın, haftada bir yapılan bir tedavi varsa iğne takibini açalım.</p>
+  <div class="opt sel"><div class="oi" style="background:#FCEDE7;color:#E2643D"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 4l6 6M17 7l-9 9-3 1 1-3 9-9M6 18l-3 3M11 8l2 2M8 11l2 2"/></svg></div>
+    <div><b>Evet, kullanıyorum</b><span>İğne günü, doz, bölge önerisi ve haftalık döngü takibi açılır.</span></div><i class="rd"></i></div>
+  <div class="opt"><div class="oi" style="background:#E1F3EC;color:#0E7C66"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="16" rx="4"/><path d="M8 9a4 4 0 0 1 8 0"/><path d="M12 9l1.5-2"/></svg></div>
+    <div><b>Hayır, kullanmıyorum</b><span>Kilo, su, protein ve takviye takibiyle devam et.</span></div><i class="rd"></i></div>
+  <div class="grow"></div>
+  <div class="hint">İstediğin zaman Ayarlar'dan değiştirebilirsin.</div>
+  <div class="btn" style="margin-top:12px">Devam</div>
+</div>
+
+<!-- 3. İğne bilgileri (yalnızca "Evet" diyenlere) -->
+<div class="sc" id="e3"><div class="no">3 · İğne bilgileri (yalnızca "Evet")</div>
+  <div class="dots"><i></i><i class="on"></i><i></i></div>
+  <h1>İğneni<br><em>tanıyalım.</em></h1>
+  <div class="lbl">Şu anki dozun</div>
+  <div class="chips c"><span>2,5 mg</span><span class="on">5 mg</span><span>7,5 mg</span><span>10 mg</span><span>12,5 mg</span><span>15 mg</span><span>Diğer</span></div>
+  <div class="lbl">Hangi gün yapıyorsun?</div>
+  <div class="chips"><span>Pzt</span><span>Sal</span><span>Çar</span><span class="on">Per</span><span>Cum</span><span>Cmt</span><span>Paz</span></div>
+  <div class="lbl">Son iğneni ne zaman yaptın?</div>
+  <div class="inp">16 Ekim 2026, Perşembe <small>09:00</small></div>
+  <div class="lbl">İlacın adı <span style="font-weight:400">(isteğe bağlı)</span></div>
+  <div class="inp ph">ör. ilacının adı</div>
+  <div class="grow"></div>
+  <div class="hint">Tedavine yeni başlıyorsan son iğne tarihini boş bırak.</div>
+  <div class="btn" style="margin-top:12px">Devam</div>
+</div>
+
+<!-- 4. Hedefler -->
+<div class="sc" id="e4"><div class="no">4 · Hedefler</div>
+  <div class="dots"><i></i><i></i><i class="on"></i></div>
+  <h1>Nereden nereye<br><em>gidiyoruz?</em></h1>
+  <div class="lbl">Şu anki kilon</div>
+  <div class="inp"><b style="font:700 22px 'Bricolage Grotesque'">91,2</b><small>kg</small></div>
+  <div class="two">
+    <div><div class="lbl">Hedef kilon</div><div class="inp"><span>80,0</span><small>kg</small></div></div>
+    <div><div class="lbl">Boyun</div><div class="inp"><span>172</span><small>cm</small></div></div>
+  </div>
+  <div class="bmi">Hedefe <b>11,2 kg</b> var. Haftada 0,5–1 kg ile yaklaşık <b>3–5 ay</b>.</div>
+  <div class="lbl">Günlük hedefler <span style="font-weight:400">(sonra değiştirebilirsin)</span></div>
+  <div class="two"><div class="inp"><span>110 g</span><small>protein</small></div><div class="inp"><span>2.500 ml</span><small>su</small></div></div>
+  <div class="grow"></div>
+  <div class="btn">Devam</div>
+  <div class="link">Şimdilik atla</div>
+</div>
+
+<!-- 5. Hazırsın -->
+<div class="sc" id="e5"><div class="no">5 · Hazırsın</div>
+  <div class="done"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
+  <h1>Her şey<br><em>hazır.</em></h1>
+  <p class="sub">İlk tartın kaydedildi. Hafif'i keşfetmeye başlayabilirsin.</p>
+  <div class="sum">
+    <div><span>Başlangıç</span><b>91,2 kg</b></div>
+    <div><span>Hedef</span><b>80,0 kg</b></div>
+    <div><span>İğne</span><b>5 mg · her Perşembe</b></div>
+    <div><span>Sıradaki iğne</span><b>23 Ekim, 09:00</b></div>
+  </div>
+  <div class="lbl" style="text-align:center">"Hayır" diyenlerde alt menü</div>
+  <div class="tabs"><span>Özet</span><span>Takviye</span><span>Protein &amp; Su</span><span>Kilo</span><span class="x">İğneler</span></div>
+  <div class="grow"></div>
+  <div class="btn">Hafif'i aç</div>
+</div>
+</body></html>

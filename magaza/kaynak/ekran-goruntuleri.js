@@ -1,0 +1,59 @@
+// Play Store ekran görüntüleri: örnek (uydurma) verilerle, 1080x1920.
+// Çalıştırma: node magaza/kaynak/ekran-goruntuleri.js <playwright modül yolu>
+const { chromium } = require(process.argv[2] || 'playwright');
+const path = require('path');
+const ROOT = path.resolve(__dirname, '../..');
+const OUT = path.join(ROOT, 'magaza/ekran');
+const BUGUN = '2026-10-23';
+
+function ornekVeri() {
+  const d0 = new Date(2026, 7, 25); // 25 Ağustos
+  const iso = d => d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+  const gun = n => { const d = new Date(d0); d.setDate(d.getDate() + n); return iso(d); };
+  const SITES = ['Karın sol', 'Karın sağ', 'Uyluk sol', 'Uyluk sağ', 'Kol sol', 'Kol sağ'];
+  const shots = [], weights = [], daily = {};
+  for (let i = 0; i < 9; i++) shots.push({ id: 's' + i, date: gun(i * 7), time: '09:00', dose: i < 4 ? '2,5' : '5', site: SITES[i % 6], note: null });
+  const ofs = [0, 2, 4, 7, 9, 11, 14, 16, 18, 21, 24, 28, 30, 33, 35, 38, 42, 45, 49, 52, 56, 59];
+  ofs.forEach((n, i) => { const k = 98.4 - 8.9 * (1 - Math.exp(-n / 34)) + [0, .3, -.2, .1, .2, -.1][i % 6]; weights.push({ id: 'w' + i, date: gun(n), kg: Math.round(k * 10) / 10, fat: Math.round((34.2 - 3.4 * n / 59) * 10) / 10, note: null, t: i }); });
+  const t = Date.UTC(2026, 9, 22, 21, 0); // 23 Ekim 00:00, İstanbul
+  for (let n = 1; n <= 7; n++) { const d = new Date(2026, 9, 23 - n); daily[iso(d)] = { p: [96, 104, 88, 112, 99, 107, 92][n - 1], w: [2250, 2500, 2000, 2750, 2500, 2250, 2500][n - 1], log: [] }; }
+  daily[BUGUN] = { p: 74, w: 1750, log: [[t + 8.5 * 36e5, 'p', 12, 'Yumurta'], [t + 13 * 36e5, 'p', 31, 'Tavuk göğsü'], [t + 16 * 36e5, 'p', 31, null], [t + 8 * 36e5, 'w', 500], [t + 11 * 36e5, 'w', 250], [t + 13.2 * 36e5, 'w', 500], [t + 15 * 36e5, 'w', 500]] };
+  const supps = [
+    { id: 'mg', name: 'Magnezyum', slot: 'sabah', days: [0, 1, 2, 3, 4, 5, 6], shape: 'caps', color: '#4F8FDB' },
+    { id: 'd3', name: 'D3 vitamini', slot: 'sabah', days: [1, 3, 5], shape: 'soft', color: '#F2C94C' },
+    { id: 'om', name: 'Omega-3', slot: 'aksam', days: [0, 1, 2, 3, 4, 5, 6], shape: 'oval', color: '#E9D59A' },
+    { id: 'b12', name: 'B12', slot: 'sabah', days: [1, 4], shape: 'tab', color: '#F1B3C3' },
+    { id: 'mgn', name: 'Magnezyum (gece)', slot: 'gece', days: [0, 1, 2, 3, 4, 5, 6], shape: 'caps', color: '#7A52D6' }];
+  return {
+    profile: { drug: null, startWeight: 98.4, goalWeight: 80, heightCm: 172, intervalDays: 7, proteinGoal: 110, waterGoal: 2500, noCelebrate: true },
+    weights, shots, daily, supps, suppTimes: { sabah: '08:00', aksam: '19:00', gece: '22:30' },
+    suppLog: { [BUGUN]: { mg: t + 8.1 * 36e5, d3: t + 8.15 * 36e5 } }
+  };
+}
+
+(async () => {
+  const b = await chromium.launch();
+  const ctx = await b.newContext({ viewport: { width: 405, height: 720 }, deviceScaleFactor: 2.6667, isMobile: true, hasTouch: true, locale: 'tr-TR', timezoneId: 'Europe/Istanbul' });
+  await ctx.addInitScript(([veri, bugun]) => {
+    localStorage.setItem('doz-defteri', JSON.stringify(veri));
+    const T = new Date(bugun + 'T14:20:00+03:00').getTime(), D = Date, off = T - D.now();
+    class FD extends D { constructor(...a) { super(...(a.length ? a : [D.now() + off])); } static now() { return D.now() + off; } }
+    window.Date = FD;
+  }, [ornekVeri(), BUGUN]);
+  const p = await ctx.newPage();
+  await p.goto('file://' + path.join(ROOT, 'www/index.html'));
+  await p.evaluate(() => document.fonts.ready); await p.waitForTimeout(1500);
+  let n = 0;
+  const shot = async ad => { await p.waitForTimeout(1600); await p.screenshot({ path: `${OUT}/${String(++n).padStart(2, '0')}-${ad}.png` }); };
+  const tab = async t => { await p.click(`.tab[data-tab="${t}"]`); await p.evaluate(() => scrollTo(0, 0)); };
+  const kaydir = async sel => p.evaluate(s => { const e = document.querySelector(s); if (e) scrollTo(0, e.getBoundingClientRect().top + scrollY - 12); }, sel);
+  await shot('ozet');
+  await kaydir('#cycWrap'); await shot('dongu');
+  await kaydir('.mscard'); await shot('basarilar');
+  await p.click('[data-go="basari"]'); await p.evaluate(() => scrollTo(0, 0)); await shot('rozetler');
+  await tab('kilo'); await shot('kilo');
+  await tab('igne'); await shot('igneler');
+  await tab('besin'); await shot('protein-su');
+  await tab('takviye'); await shot('takviyeler');
+  await b.close();
+})();
