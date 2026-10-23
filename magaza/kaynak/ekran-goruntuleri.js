@@ -27,7 +27,8 @@ function ornekVeri() {
   return {
     profile: { drug: null, startWeight: 98.4, goalWeight: 80, heightCm: 172, intervalDays: 7, proteinGoal: 110, waterGoal: 2500, noCelebrate: true },
     weights, shots, daily, supps, suppTimes: { sabah: '08:00', aksam: '19:00', gece: '22:30' },
-    suppLog: { [BUGUN]: { mg: t + 8.1 * 36e5, d3: t + 8.15 * 36e5 } }
+    suppLog: { [BUGUN]: { mg: t + 8.1 * 36e5, d3: t + 8.15 * 36e5 } },
+    hc: { on: true, last: t + 14.3 * 36e5, wFrom: BUGUN }
   };
 }
 
@@ -39,6 +40,18 @@ function ornekVeri() {
     const T = new Date(bugun + 'T14:20:00+03:00').getTime(), D = Date, off = T - D.now();
     class FD extends D { constructor(...a) { super(...(a.length ? a : [D.now() + off])); } static now() { return D.now() + off; } }
     window.Date = FD;
+    // Örnek Health Connect: adım sayar ekranları için (yalnızca görsel üretimi)
+    const gun = n => { const d = new FD(); d.setHours(0, 0, 0, 0); d.setDate(d.getDate() - n); return d; };
+    const GUNLUK = [8240, 10450, 4120, 9180, 5630, 9870, 7340, 8810, 11020, 6150, 9460, 7980, 10230, 5210];
+    const SAAT = [0, 0, 0, 0, 0, 0, 0, 420, 1650, 820, 380, 290, 1240, 560, 260, 300, 120, 0, 0, 0, 0, 0, 0, 0];
+    window.Capacitor = { isNativePlatform: () => true, addListener: () => {}, Plugins: { App: {}, Health: {
+      isAvailable: async () => ({ available: true }),
+      requestAuthorization: async o => ({ readAuthorized: o.read }),
+      readSamples: async () => ({ samples: [] }),
+      queryAggregated: async o => o.bucket === 'hour'
+        ? { samples: SAAT.map((v, i) => ({ startDate: new FD(gun(0).getTime() + i * 36e5).toISOString(), value: v })) }
+        : { samples: [...Array(30)].map((_, i) => ({ startDate: gun(29 - i).toISOString(), value: i === 29 ? 6240 : GUNLUK[i % GUNLUK.length] })) }
+    } } };
   }, [ornekVeri(), BUGUN]);
   const p = await ctx.newPage();
   await p.goto('file://' + path.join(ROOT, 'www/index.html'));
@@ -55,5 +68,7 @@ function ornekVeri() {
   await tab('igne'); await shot('igneler');
   await tab('besin'); await shot('protein-su');
   await tab('takviye'); await shot('takviyeler');
+  await tab('ozet'); await kaydir('.stcard'); await shot('adim-kart');
+  await p.click('.stcard'); await p.waitForTimeout(800); await p.evaluate(() => scrollTo(0, 0)); await shot('adimlar');
   await b.close();
 })();

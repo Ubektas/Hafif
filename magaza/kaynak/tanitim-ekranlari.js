@@ -17,6 +17,7 @@ const KISI = svgI('<circle cx="12" cy="8" r="3.5"/><path d="M5 20a7 7 0 0 1 14 0
 const REKLAMYOK = svgI('<rect x="3.5" y="5.5" width="17" height="13" rx="3"/><path d="M8 15l2-6 2 6M8.7 13h2.6M15 9v6h1a2 2 0 0 0 2-2v-2a2 2 0 0 0-2-2z"/><path d="M3 3l18 18"/>');
 const WIFIYOK = svgI('<path d="M5 12.5a10 10 0 0 1 3.2-2M12 9a10 10 0 0 1 7 3.5M8.5 16a5 5 0 0 1 7 0"/><circle cx="12" cy="19.5" r=".8" fill="currentColor"/><path d="M3 3l18 18"/>');
 const YEDEK = svgI('<path d="M12 3v11M7.5 9.5 12 14l4.5-4.5"/><path d="M4 15v3a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3v-3"/>');
+const ADIMI = svgI('<path d="M8.5 3.5c1.6 0 2.5 1.6 2.5 3.8S10 11 8.6 11 6 9.5 6 7.3s.9-3.8 2.5-3.8zM6.6 13h4l-.4 3a2.2 2.2 0 0 1-4.3-.3z"/><path d="M15.5 7.5c1.6 0 2.5 1.6 2.5 3.8S17 15 15.6 15 13 13.5 13 11.3s.9-3.8 2.5-3.8zM13.6 17h4l-.4 3a2.2 2.2 0 0 1-4.3-.3z"/>');
 const ROZET = '<svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="6"/><path d="M8.5 13.8 7 21l5-2.6L17 21l-1.5-7.2"/></svg>';
 
 // Her özelliğin rengi uygulamadaki rengiyle aynı
@@ -26,16 +27,17 @@ const R = {
   rozet: { ana: '#B8892A', koyu: '#5C4210', acik: '#FBF1DC', zemin: ['#FBF5E6', '#F2E3BF'] },
   takviye: { ana: '#7B5BD0', koyu: '#3A2378', acik: '#EEE9FB', zemin: ['#F2EEFC', '#DFD6F6'] },
   su: { ana: '#2C8FE0', koyu: '#123F66', acik: '#E7F3F6', zemin: ['#EAF4FB', '#CFE6F5'] },
+  adim: { ana: '#4A5BC4', koyu: '#1E2A6E', acik: '#E9ECFB', zemin: ['#EEF0FC', '#D6DCF7'] },
 };
 
 const EKRANLAR = [
   { ad: '01-kilo', renk: 'kilo', ikon: ikon('kilo'), etiket: 'Kilo takibi', baslik: ['Her tartı', 'bir adım.'], alt: 'Verdiğin kiloyu, hızını ve hedefe kalan yolu tek bakışta gör.', ekran: '01-ozet.png', kart: ['Hedefe ilerleme', '%39 tamam'], kartYer: 'sag' },
-  { ad: '02-igne', renk: 'igne', ikon: ikon('igne'), etiket: 'İğne takibi', baslik: ['Haftanı', 'tanı.'], alt: 'Döngünün hangi evresinde olduğunu ve sıradaki iğneni hep bil.', ekran: '02-dongu.png', kart: ['Bugünkü evre', 'Zirve · 4. gün'], kartYer: 'sol' },
-  { ad: '03-rozet', renk: 'rozet', ikon: ROZET, etiket: 'Başarılar', baslik: ['Her eşik', 'bir rozet.'], alt: 'Ara hedeflere ulaştıkça rozet kazan, motivasyonun hep diri kalsın.', ekran: '04-rozetler.png', kart: ['Yeni rozet', '%5 vücut ağırlığı'], kartYer: 'sag' },
-  { ad: '04-protein-su', renk: 'su', ikon: ikon('besin'), etiket: 'Su ve protein', baslik: ['Tabağın ve', 'bardağın hazır.'], alt: 'Protein ve suyu tek dokunuşla ekle, günlük hedefini kaçırma.', ekran: '07-protein-su.png', kart: ['Bugün', '74 g · 1.750 ml'], kartYer: 'sol' },
-  { ad: '05-takviye', renk: 'takviye', ikon: ikon('takviye'), etiket: 'Takviye takibi', baslik: ['Takviyelerin', 'tek dokunuşta.'], alt: 'Sabah, akşam ve gece programını kur; aldıklarını işaretle.', ekran: '08-takviyeler.png', kart: ['Bugün alındı', '2 / 4'], kartYer: 'sag' },
-  { ad: '06-kilo-gecmisi', renk: 'kilo', ikon: ikon('kilo'), etiket: 'Kilo geçmişi', baslik: ['Eğilime bak,', 'tartıya takılma.'], alt: 'Günlük dalgalanmalar değil, haftalık eğilim önemli.', ekran: '05-kilo.png', kart: ['Haftalık eğilim', '−0,5 kg'], kartYer: 'sol' },
-  { ad: '07-igne-gecmisi', renk: 'igne', ikon: ikon('igne'), etiket: 'Doz özeti', baslik: ['Hangi doz', 'ne kazandırdı?'], alt: 'Her dozda ve her iğne arasında verdiğin kiloyu karşılaştır.', ekran: '06-igneler.png', kart: ['Sıradaki iğne', '4 gün sonra'], kartYer: 'sag' },
+  { ad: '02-adim', renk: 'adim', ikon: ADIMI, etiket: 'Adım sayar', baslik: ['Her adım', 'sayılır.'], alt: 'Health Connect ile adımların ve akıllı tartın kendiliğinden gelir.', ekran: '10-adimlar.png', kart: ['Bu hafta ortalama', '8.240 adım'], kartYer: 'sag', kartTop: 1690 },
+  { ad: '03-igne', renk: 'igne', ikon: ikon('igne'), etiket: 'İğne takibi', baslik: ['Haftanı', 'tanı.'], alt: 'Döngünün hangi evresinde olduğunu ve sıradaki iğneni hep bil.', ekran: '02-dongu.png', kart: ['Bugünkü evre', 'Zirve · 4. gün'], kartYer: 'sol' },
+  { ad: '04-rozet', renk: 'rozet', ikon: ROZET, etiket: 'Başarılar', baslik: ['Her eşik', 'bir rozet.'], alt: 'Ara hedeflere ulaştıkça rozet kazan, motivasyonun hep diri kalsın.', ekran: '04-rozetler.png', kart: ['Yeni rozet', '%5 vücut ağırlığı'], kartYer: 'sag' },
+  { ad: '05-protein-su', renk: 'su', ikon: ikon('besin'), etiket: 'Su ve protein', baslik: ['Tabağın ve', 'bardağın hazır.'], alt: 'Protein ve suyu tek dokunuşla ekle, günlük hedefini kaçırma.', ekran: '07-protein-su.png', kart: ['Bugün', '74 g · 1.750 ml'], kartYer: 'sol' },
+  { ad: '06-takviye', renk: 'takviye', ikon: ikon('takviye'), etiket: 'Takviye takibi', baslik: ['Takviyelerin', 'tek dokunuşta.'], alt: 'Sabah, akşam ve gece programını kur; aldıklarını işaretle.', ekran: '08-takviyeler.png', kart: ['Bugün alındı', '2 / 4'], kartYer: 'sag' },
+  { ad: '07-kilo-gecmisi', renk: 'kilo', ikon: ikon('kilo'), etiket: 'Kilo geçmişi', baslik: ['Eğilime bak,', 'tartıya takılma.'], alt: 'Günlük dalgalanmalar değil, haftalık eğilim önemli.', ekran: '05-kilo.png', kart: ['Haftalık eğilim', '−0,5 kg'], kartYer: 'sol' },
 ];
 
 const yaziCSS = `@font-face{font-family:"Bricolage Grotesque";src:url(../../www/fonts/BricolageGrotesque-700-latin.woff2) format("woff2");font-weight:700;unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}`;
@@ -47,7 +49,7 @@ function sayfa(e) {
       <div class="durum"><span>14:20</span><span class="ik"><i></i><i></i><b></b></span></div>
       <img src="../ekran/${e.ekran}">
     </div>
-    <div class="kart ${e.kartYer}"><span class="ki" style="background:${r.acik};color:${r.ana}">${e.ikon}</span><div><small>${e.kart[0]}</small><b>${e.kart[1]}</b></div></div>` : '';
+    <div class="kart ${e.kartYer}"${e.kartTop ? ` style="top:${e.kartTop}px"` : ''}><span class="ki" style="background:${r.acik};color:${r.ana}">${e.ikon}</span><div><small>${e.kart[0]}</small><b>${e.kart[1]}</b></div></div>` : '';
   return `<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="../../www/fonts/fonts.css"><style>
   html,body{margin:0}
   .s{width:1080px;height:1920px;position:relative;overflow:hidden;font-family:Figtree,sans-serif;color:${r.koyu};
