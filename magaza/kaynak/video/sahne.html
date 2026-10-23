@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="tr"><head><meta charset="utf-8">
+<link rel="stylesheet" href="../../../www/fonts/fonts.css">
+<style>
+html,body{margin:0;width:1920px;height:1080px;overflow:hidden;background:#0B3B33}
+*{box-sizing:border-box}
+#bg{position:absolute;inset:0}
+#bg .glow{position:absolute;border-radius:50%;filter:blur(60px)}
+.scene{position:absolute;inset:0;opacity:0}
+.txt{position:absolute;left:150px;top:0;bottom:0;width:820px;display:flex;flex-direction:column;justify-content:center}
+.pill{align-self:flex-start;display:inline-flex;align-items:center;gap:14px;background:#fff;border-radius:99px;padding:12px 28px 12px 14px;font:700 30px Figtree;box-shadow:0 14px 34px -18px rgba(0,0,0,.35)}
+.pill i{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;padding:10px}
+.pill i svg{width:100%;height:100%}
+h1{margin:38px 0 0;font:700 128px/1 "Bricolage Grotesque";letter-spacing:-.045em}
+h1 span{display:block}
+.sub{margin:34px 0 0;font:500 38px/1.38 Figtree;max-width:760px}
+.tel{position:absolute;left:1210px;top:96px;width:500px;height:1010px;background:#0B2420;border-radius:72px;padding:18px;box-shadow:0 70px 120px -50px rgba(0,0,0,.55),0 0 0 2px #2A4A43 inset}
+.tel .scr{width:100%;height:100%;border-radius:56px;overflow:hidden;background:#F1F5F3}
+.tel .bar{height:44px;display:flex;justify-content:space-between;align-items:center;padding:4px 44px 0;font:600 18px Figtree;color:#0B2420;background:#F1F5F3}
+.tel img{display:block;width:100%}
+.tel .cam{position:absolute;left:50%;top:30px;width:20px;height:20px;margin-left:-10px;border-radius:50%;background:#0B2420}
+.call{position:absolute;display:flex;align-items:center;gap:20px;background:#fff;border-radius:30px;padding:22px 34px 22px 22px;box-shadow:0 40px 80px -30px rgba(0,0,0,.45)}
+.call .ci{width:76px;height:76px;border-radius:22px;display:grid;place-items:center;padding:18px}
+.call .ci svg{width:100%;height:100%}
+.call small{display:block;font:600 24px Figtree;opacity:.65}
+.call b{display:block;font:700 52px "Bricolage Grotesque";letter-spacing:-.03em;white-space:nowrap}
+/* giriş & kapanış */
+.center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;text-align:center}
+.icon{width:220px;height:220px;border-radius:58px;box-shadow:0 40px 90px -30px rgba(0,0,0,.6),0 0 120px rgba(127,224,194,.25)}
+.wm{font:700 168px/1 "Bricolage Grotesque";letter-spacing:-.05em;margin-top:44px}
+.tag{font:500 40px Figtree;color:rgba(255,255,255,.75);margin-top:22px}
+.tag b{color:#9FF0D6;font-weight:600}
+.feats{display:flex;gap:18px;margin-top:56px}
+.feats span{display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.08);border:1px solid rgba(159,240,214,.22);border-radius:99px;padding:14px 26px 14px 16px;font:600 28px Figtree}
+.feats i{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;padding:8px}.feats i svg{width:100%;height:100%}
+.store{margin-top:54px;display:inline-flex;align-items:center;gap:16px;background:#fff;color:#0B3B33;border-radius:22px;padding:20px 36px;font:700 34px Figtree}
+.store svg{width:40px;height:40px}
+/* gizlilik */
+.gz{position:absolute;left:1120px;top:0;bottom:0;width:640px;display:flex;flex-direction:column;justify-content:center;gap:26px}
+.gz div{display:flex;align-items:center;gap:28px;background:#fff;border-radius:34px;padding:30px 36px;box-shadow:0 30px 60px -36px rgba(0,0,0,.4)}
+.gz i{flex:none;width:86px;height:86px;border-radius:26px;padding:20px}.gz i svg{width:100%;height:100%}
+.gz b{display:block;font:700 42px "Bricolage Grotesque";letter-spacing:-.02em;color:#0B3B33}
+.gz span span{display:block;font:500 27px Figtree;color:#0B3B33AA;margin-top:4px}
+</style></head><body>
+<div id="bg"><div class="glow" id="g1"></div><div class="glow" id="g2"></div></div>
+<div id="stage"></div>
+<script>
+const SVG = d => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">${d}</svg>`;
+const IC = {
+  kilo: SVG('<rect x="3" y="4" width="18" height="16" rx="4"/><path d="M8 9a4 4 0 0 1 8 0M12 9l1.5-2"/>'),
+  adim: SVG('<path d="M8.5 3.5c1.6 0 2.5 1.6 2.5 3.8S10 11 8.6 11 6 9.5 6 7.3s.9-3.8 2.5-3.8zM6.6 13h4l-.4 3a2.2 2.2 0 0 1-4.3-.3z"/><path d="M15.5 7.5c1.6 0 2.5 1.6 2.5 3.8S17 15 15.6 15 13 13.5 13 11.3s.9-3.8 2.5-3.8zM13.6 17h4l-.4 3a2.2 2.2 0 0 1-4.3-.3z"/>'),
+  igne: SVG('<path d="M14 4l6 6M17 7l-9 9-3 1 1-3 9-9M6 18l-3 3M11 8l2 2M8 11l2 2"/>'),
+  rozet: SVG('<circle cx="12" cy="9" r="6"/><path d="M8.5 13.8 7 21l5-2.6L17 21l-1.5-7.2"/>'),
+  su: SVG('<path d="M12 3c3.5 4.2 6 7.6 6 10.8A6 6 0 0 1 6 13.8C6 10.6 8.5 7.2 12 3z"/><path d="M9.2 14.5a3 3 0 0 0 2.8 2.6"/>'),
+  takviye: SVG('<rect x="2.8" y="8.2" width="18.4" height="7.6" rx="3.8" transform="rotate(-40 12 12)"/><path d="M9.6 9.1l5.1 6.1"/>'),
+  kilit: SVG('<rect x="4.5" y="10.5" width="15" height="10" rx="3"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/><path d="M12 14.5v2"/>'),
+  kisi: SVG('<circle cx="12" cy="8" r="3.5"/><path d="M5 20a7 7 0 0 1 14 0"/><path d="M4 4l16 16"/>'),
+  reklam: SVG('<rect x="3.5" y="5.5" width="17" height="13" rx="3"/><path d="M8 15l2-6 2 6M8.7 13h2.6M15 9v6h1a2 2 0 0 0 2-2v-2a2 2 0 0 0-2-2z"/><path d="M3 3l18 18"/>'),
+  wifi: SVG('<path d="M5 12.5a10 10 0 0 1 3.2-2M12 9a10 10 0 0 1 7 3.5M8.5 16a5 5 0 0 1 7 0"/><circle cx="12" cy="19.5" r=".8" fill="currentColor"/><path d="M3 3l18 18"/>'),
+  yedek: SVG('<path d="M12 3v11M7.5 9.5 12 14l4.5-4.5"/><path d="M4 15v3a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3v-3"/>'),
+  play: '<svg viewBox="0 0 24 24"><path d="M4 3.5v17l9.2-8.5z" fill="#00A173"/><path d="M4 3.5l12.6 7.3-3.4 1.7z" fill="#00D7FE"/><path d="M4 20.5l12.6-7.3-3.4-1.7z" fill="#FF3A44"/><path d="M16.6 10.8 20 12.7l-3.4 2-3.4-2.7z" fill="#FFD109"/></svg>'
+};
+// Renkler uygulamanın renk sistemiyle aynı
+const C = {
+  koyu: { z: ['#0B3B33', '#1F8A70', '#082924'], ana: '#9FF0D6', yazi: '#FFFFFF', acik: 'rgba(255,255,255,.12)' },
+  kilo: { z: ['#E6F4EE', '#B9E3D3', '#F3FAF7'], ana: '#0E7C66', yazi: '#0B3B33', acik: '#E1F3EC' },
+  adim: { z: ['#EEF0FC', '#C9D0F5', '#F7F8FE'], ana: '#4A5BC4', yazi: '#1E2A6E', acik: '#E9ECFB' },
+  igne: { z: ['#FBEFE9', '#F3CDBA', '#FDF7F4'], ana: '#E2643D', yazi: '#7A2E16', acik: '#FCEDE7' },
+  rozet: { z: ['#FBF5E6', '#EFD9A6', '#FDFAF2'], ana: '#B8892A', yazi: '#5C4210', acik: '#FBF1DC' },
+  su: { z: ['#EAF4FB', '#C2DFF3', '#F5FAFD'], ana: '#2C8FE0', yazi: '#123F66', acik: '#E7F3F6' },
+  takviye: { z: ['#F2EEFC', '#D8CDF5', '#F9F7FE'], ana: '#7B5BD0', yazi: '#3A2378', acik: '#EEE9FB' }
+};
+const S = [
+  { tip: 'giris', d: 3.6, r: 'koyu' },
+  { d: 4.3, r: 'kilo', ic: 'kilo', et: 'Kilo takibi', h: ['Her tartı', 'bir adım.'], sub: 'Verdiğin kiloyu, hızını ve hedefe kalan yolu tek bakışta gör.', img: '01-ozet.png', call: ['Başlangıçtan bu yana', -7.2, ' kg', 1], cx: 'sol' },
+  { d: 4.3, r: 'adim', ic: 'adim', et: 'Adım sayar', h: ['Her adım', 'sayılır.'], sub: 'Health Connect ile adımların ve akıllı tartın kendiliğinden gelir.', img: '10-adimlar.png', call: ['Bugün', 6240, ' adım', 0], cx: 'sol' },
+  { d: 4.3, r: 'igne', ic: 'igne', et: 'İğne takibi · isteğe bağlı', h: ['Haftanı', 'tanı.'], sub: 'Döngünün evresini, vücuttaki tahmini miktarı ve sıradaki iğneni gör.', img: '02-dongu.png', call: ['Sıradaki iğne', '4 gün sonra'], cx: 'sol' },
+  { d: 4.0, r: 'rozet', ic: 'rozet', et: 'Başarılar', h: ['Her eşik', 'bir rozet.'], sub: 'Ara hedeflere ulaştıkça rozet kazan, motivasyonun hep diri kalsın.', img: '04-rozetler.png', call: ['Yeni rozet', '%5 vücut'], cx: 'sol' },
+  { d: 4.0, r: 'su', ic: 'su', et: 'Su ve protein', h: ['Tabağın ve', 'bardağın hazır.'], sub: 'Protein ve suyu tek dokunuşla ekle, günlük hedefini kaçırma.', img: '07-protein-su.png', call: ['Bugün su', 1750, ' ml', 0], cx: 'sol' },
+  { d: 4.0, r: 'takviye', ic: 'takviye', et: 'Takviye takibi', h: ['Takviyelerin', 'tek dokunuşta.'], sub: 'Sabah, akşam ve gece programını kur; aldıklarını işaretle.', img: '08-takviyeler.png', call: ['Bugün alındı', '2 / 4'], cx: 'sol' },
+  { tip: 'gizlilik', d: 4.6, r: 'kilo', ic: 'kilit', et: 'Gizlilik', h: ['Verilerin', 'sende kalır.'], sub: 'Hafif senin kişisel defterin; kimse okumaz, kimseyle paylaşılmaz.' },
+  { tip: 'cikis', d: 4.6, r: 'koyu' }
+];
+let t0 = 0; S.forEach(s => { s.t = t0; t0 += s.d; });
+window.SURE = t0;
+
+const st = document.getElementById('stage');
+const fmt = (v, dec) => (v < 0 ? '−' : '') + Math.abs(v).toLocaleString('tr-TR', { minimumFractionDigits: dec, maximumFractionDigits: dec });
+S.forEach((s, i) => {
+  const el = document.createElement('div'); el.className = 'scene'; el.id = 's' + i; const c = C[s.r];
+  if (s.tip === 'giris' || s.tip === 'cikis') {
+    el.innerHTML = `<div class="center"><img class="icon" src="../ikon.png"><div class="wm">Hafif</div>
+      <div class="tag">${s.tip === 'giris' ? 'Kilo verme yolculuğunun <b>sade defteri.</b>' : 'Kilo, adım, iğne, takviye, su ve protein. <b>Tek yerde.</b>'}</div>
+      ${s.tip === 'cikis' ? `<div class="feats">${[['kilo', '#0E7C66', '#E1F3EC'], ['adim', '#4A5BC4', '#E9ECFB'], ['igne', '#E2643D', '#FCEDE7'], ['takviye', '#7B5BD0', '#EEE9FB'], ['su', '#2C8FE0', '#E7F3F6']].map(([k, a, b]) => `<span><i style="background:${b};color:${a}">${IC[k]}</i>${{ kilo: 'Kilo', adim: 'Adım', igne: 'İğne', takviye: 'Takviye', su: 'Su & protein' }[k]}</span>`).join('')}</div>
+      <div class="store">${IC.play}Google Play'de ücretsiz</div>` : ''}</div>`;
+  } else {
+    el.innerHTML = `<div class="txt" style="color:${c.yazi}"><span class="pill" style="color:${c.ana}"><i style="background:${c.acik}">${IC[s.ic]}</i>${s.et}</span>
+      <h1><span>${s.h[0]}</span><span style="color:${c.ana}">${s.h[1]}</span></h1><p class="sub" style="color:${c.yazi}B3">${s.sub}</p></div>
+      ${s.tip === 'gizlilik' ? `<div class="gz">${[['kisi', 'Hesap yok', 'Kayıt olmadan hemen başla.'], ['reklam', 'Reklam ve takip yok', 'Verilerin hiçbir sunucuya gitmez.'], ['wifi', 'İnternetsiz çalışır', 'Her şey telefonunda saklanır.'], ['yedek', 'Yedekle, taşı', "Excel'e aktar, yeni telefonuna yükle."]].map(([k, a, b]) => `<div><i style="background:${c.acik};color:${c.ana}">${IC[k]}</i><span><b>${a}</b><span>${b}</span></span></div>`).join('')}</div>`
+      : `<div class="tel"><div class="scr"><div class="bar"><span>14:20</span><span>●●●</span></div><img src="../../ekran/${s.img}"></div><div class="cam"></div></div>
+         <div class="call" style="left:${s.cx === 'sol' ? 1030 : 1500}px;top:760px;color:${c.yazi}"><span class="ci" style="background:${c.acik};color:${c.ana}">${IC[s.ic]}</span><div><small>${s.call[0]}</small><b class="cv"></b></div></div>`}`;
+  }
+  st.appendChild(el); s.el = el;
+});
+
+const cl = (x, a = 0, b = 1) => Math.max(a, Math.min(b, x));
+const eo = x => 1 - Math.pow(1 - cl(x), 3);              // ease-out
+const eio = x => { x = cl(x); return x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2 };
+const back = x => { x = cl(x); const c1 = 1.5, c3 = c1 + 1; return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2) };
+const hex = h => [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16));
+const mix = (a, b, k) => { const A = hex(a), B = hex(b); return `rgb(${A.map((v, i) => Math.round(v + (B[i] - v) * k)).join(',')})` };
+const seg = (u, a, b) => cl((u - a) / (b - a));
+
+window.render = function (t) {
+  // Arka plan: sahne renkleri arasında yumuşak geçiş
+  let i = S.findIndex(s => t < s.t + s.d); if (i < 0) i = S.length - 1;
+  const s = S[i], n = S[Math.min(S.length - 1, i + 1)], k = eio(seg(t, s.t + s.d - .55, s.t + s.d + .15));
+  const z = j => mix(C[s.r].z[j], C[n.r].z[j], k);
+  document.getElementById('bg').style.background = `linear-gradient(160deg,${z(0)},${z(2)})`;
+  const g1 = document.getElementById('g1'), g2 = document.getElementById('g2');
+  g1.style.cssText = `width:900px;height:900px;right:${-200 + Math.sin(t * .4) * 60}px;top:${-300 + Math.cos(t * .3) * 40}px;background:${z(1)};opacity:.9`;
+  g2.style.cssText = `width:700px;height:700px;left:${-220 + Math.cos(t * .35) * 50}px;bottom:${-320 + Math.sin(t * .5) * 40}px;background:${z(1)};opacity:.7`;
+
+  S.forEach(sc => {
+    const u = t - sc.t, el = sc.el;
+    const vis = u > -.2 && u < sc.d + .3; el.style.display = vis ? '' : 'none'; if (!vis) return;
+    const out = eio(seg(u, sc.d - .45, sc.d + .05));         // çıkış
+    el.style.opacity = String((sc.t === 0 ? 1 : eo(seg(u, 0, .35))) * (1 - out));
+    if (sc.tip === 'giris' || sc.tip === 'cikis') {
+      const ic = el.querySelector('.icon'), wm = el.querySelector('.wm'), tg = el.querySelector('.tag');
+      ic.style.transform = `scale(${.55 + .45 * back(seg(u, .1, .9))}) rotate(${(1 - eo(seg(u, .1, .9))) * -8}deg)`; ic.style.opacity = eo(seg(u, .1, .6));
+      wm.style.transform = `translateY(${(1 - eo(seg(u, .45, 1.15))) * 50}px)`; wm.style.opacity = eo(seg(u, .45, 1.1));
+      tg.style.transform = `translateY(${(1 - eo(seg(u, .8, 1.5))) * 30}px)`; tg.style.opacity = eo(seg(u, .8, 1.5));
+      el.querySelectorAll('.feats span').forEach((x, j) => { const p = seg(u, 1.3 + j * .12, 1.9 + j * .12); x.style.opacity = eo(p); x.style.transform = `translateY(${(1 - back(p)) * 30}px)` });
+      const sb = el.querySelector('.store'); if (sb) { const p = seg(u, 2.1, 2.7); sb.style.opacity = eo(p); sb.style.transform = `scale(${.8 + .2 * back(p)})` }
+      if (sc.tip === 'giris') { const f = 1 + u * .012; el.querySelector('.center').style.transform = `scale(${f})` }
+      return;
+    }
+    const tx = el.querySelector('.txt'), pill = tx.querySelector('.pill'), sp = tx.querySelectorAll('h1 span'), sub = tx.querySelector('.sub');
+    const enter = (node, a, b, dy = 60) => { const p = seg(u, a, b); node.style.opacity = eo(p); node.style.transform = `translateY(${(1 - eo(p)) * dy}px)` };
+    enter(pill, .05, .6, 30); enter(sp[0], .15, .8); enter(sp[1], .28, .95); enter(sub, .45, 1.1, 40);
+    tx.style.transform = `translateX(${-out * 60}px)`;
+    const tel = el.querySelector('.tel');
+    if (tel) {
+      const p = eo(seg(u, 0, 1.0)), fl = Math.sin(u * 1.6) * 8;
+      tel.style.transform = `translateY(${(1 - p) * 260 + fl - out * 40}px) rotate(${(1 - p) * 6 - 1.2}deg)`;
+      tel.style.opacity = eo(seg(u, 0, .5));
+      const img = tel.querySelector('img'); img.style.transform = `translateY(${-cl(seg(u, 1.4, sc.d - .3)) * 60}px)`;
+      const cv = el.querySelector('.call'), q = seg(u, .95, 1.5);
+      cv.style.opacity = eo(q); cv.style.transform = `scale(${.6 + .4 * back(q)}) rotate(${-3 + (1 - back(q)) * -6}deg) translateY(${Math.sin(u * 2 + 1) * 6}px)`;
+      const v = sc.call[1], b = cv.querySelector('.cv');
+      if (typeof v === 'number') { const r = eo(seg(u, 1.0, 2.3)); b.textContent = fmt(v * r, sc.call[3]) + sc.call[2] } else b.textContent = v;
+    }
+    el.querySelectorAll('.gz>div').forEach((x, j) => { const p = seg(u, .55 + j * .22, 1.15 + j * .22); x.style.opacity = eo(p); x.style.transform = `translateX(${(1 - eo(p)) * 120}px)` });
+  });
+};
+window.render(0);
+</script>
+</body></html>
