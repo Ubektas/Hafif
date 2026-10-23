@@ -1,0 +1,64 @@
+name: Play Store sürümü
+# "v1.0.0" gibi bir etiket gönderildiğinde ya da Actions sekmesinden elle başlatıldığında
+# imzalı AAB (Play Console'a yüklenecek) ve imzalı APK (telefona kurulacak) üretir,
+# ikisini de GitHub Releases sayfasına koyar.
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+    inputs:
+      surum:
+        description: 'Sürüm adı (ör. 1.0.0)'
+        required: true
+        default: '1.0.0'
+permissions:
+  contents: write
+jobs:
+  yayin:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 21
+      - name: İmzalama anahtarını hazırla
+        env:
+          KS_B64: ${{ secrets.HAFIF_KEYSTORE_B64 }}
+          KS_PW: ${{ secrets.HAFIF_KEYSTORE_PASSWORD }}
+        run: |
+          if [ -z "$KS_B64" ] || [ -z "$KS_PW" ]; then
+            echo "::error::HAFIF_KEYSTORE_B64 ve HAFIF_KEYSTORE_PASSWORD gizli değişkenleri eksik (Settings → Secrets and variables → Actions)."
+            exit 1
+          fi
+          echo "$KS_B64" | base64 -d > "$RUNNER_TEMP/hafif-upload.jks"
+          echo "HAFIF_KEYSTORE_FILE=$RUNNER_TEMP/hafif-upload.jks" >> "$GITHUB_ENV"
+          echo "HAFIF_KEYSTORE_PASSWORD=$KS_PW" >> "$GITHUB_ENV"
+      - name: Sürüm numarası
+        run: |
+          AD="${{ github.event.inputs.surum }}"
+          [ -z "$AD" ] && AD="${GITHUB_REF_NAME#v}"
+          echo "HAFIF_VERSION_NAME=$AD" >> "$GITHUB_ENV"
+          echo "HAFIF_VERSION_CODE=${{ github.run_number }}" >> "$GITHUB_ENV"
+          echo "SURUM=$AD" >> "$GITHUB_ENV"
+      - run: npm ci
+      - run: npx cap sync android
+      - run: chmod +x gradlew && ./gradlew bundleRelease assembleRelease
+        working-directory: android
+      - name: Dosyaları adlandır
+        run: |
+          mkdir -p cikti
+          cp android/app/build/outputs/bundle/release/app-release.aab "cikti/hafif-$SURUM.aab"
+          cp android/app/build/outputs/apk/release/app-release.apk "cikti/hafif-$SURUM.apk"
+      - name: GitHub Releases'a koy
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          ETIKET="v$SURUM"
+          gh release view "$ETIKET" >/dev/null 2>&1 && gh release delete "$ETIKET" -y --cleanup-tag=false
+          gh release create "$ETIKET" cikti/* --target "$GITHUB_SHA" --title "Hafif $SURUM" \
+            --notes "Play Console'a: hafif-$SURUM.aab · Telefona kurmak için: hafif-$SURUM.apk (sürüm kodu ${HAFIF_VERSION_CODE})"

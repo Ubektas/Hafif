@@ -7,8 +7,9 @@ android {
         applicationId "com.ugurbektas.hafif"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        // Sürüm numaraları GitHub Actions'tan gelir (yayin.yml); yerelde 1 / 1.0
+        versionCode((System.getenv("HAFIF_VERSION_CODE") ?: "1") as Integer)
+        versionName(System.getenv("HAFIF_VERSION_NAME") ?: "1.0")
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
              // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.
@@ -16,8 +17,20 @@ android {
             ignoreAssetsPattern = '!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~'
         }
     }
+    // Yükleme anahtarı yalnızca ortam değişkenleriyle verilir; depoda anahtar ya da şifre tutulmaz
+    signingConfigs {
+        if (System.getenv("HAFIF_KEYSTORE_FILE")) {
+            release {
+                storeFile file(System.getenv("HAFIF_KEYSTORE_FILE"))
+                storePassword System.getenv("HAFIF_KEYSTORE_PASSWORD")
+                keyAlias "hafif"
+                keyPassword System.getenv("HAFIF_KEYSTORE_PASSWORD")
+            }
+        }
+    }
     buildTypes {
         release {
+            if (System.getenv("HAFIF_KEYSTORE_FILE")) signingConfig signingConfigs.release
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
