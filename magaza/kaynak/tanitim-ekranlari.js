@@ -37,7 +37,6 @@ const EKRANLAR = [
   { ad: '04-rozet', renk: 'rozet', ikon: ROZET, etiket: 'Başarılar', baslik: ['Her eşik', 'bir rozet.'], alt: 'Ara hedeflere ulaştıkça rozet kazan, motivasyonun hep diri kalsın.', ekran: '04-rozetler.png', kart: ['Yeni rozet', '%5 vücut ağırlığı'], kartYer: 'sag' },
   { ad: '05-protein-su', renk: 'su', ikon: ikon('besin'), etiket: 'Su ve protein', baslik: ['Tabağın ve', 'bardağın hazır.'], alt: 'Protein ve suyu tek dokunuşla ekle, günlük hedefini kaçırma.', ekran: '07-protein-su.png', kart: ['Bugün', '74 g · 1.750 ml'], kartYer: 'sol' },
   { ad: '06-takviye', renk: 'takviye', ikon: ikon('takviye'), etiket: 'Takviye takibi', baslik: ['Takviyelerin', 'tek dokunuşta.'], alt: 'Sabah, akşam ve gece programını kur; aldıklarını işaretle.', ekran: '08-takviyeler.png', kart: ['Bugün alındı', '2 / 4'], kartYer: 'sag' },
-  { ad: '07-kilo-gecmisi', renk: 'kilo', ikon: ikon('kilo'), etiket: 'Kilo geçmişi', baslik: ['Eğilime bak,', 'tartıya takılma.'], alt: 'Günlük dalgalanmalar değil, haftalık eğilim önemli.', ekran: '05-kilo.png', kart: ['Haftalık eğilim', '−0,5 kg'], kartYer: 'sol' },
 ];
 
 const yaziCSS = `@font-face{font-family:"Bricolage Grotesque";src:url(../../www/fonts/BricolageGrotesque-700-latin.woff2) format("woff2");font-weight:700;unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}`;

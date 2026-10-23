@@ -15,8 +15,6 @@ const BILDIRIMLER = [
   { ad: '04-su', zaman: '15:00', baslik: 'Bir bardak su?', metin: 'Bugün 1.250 ml içtin, hedefe 1.250 ml kaldı.', butonlar: ['+250 ml', '+500 ml'], renk: '#2C8FE0' },
   { ad: '05-protein', zaman: '18:30', baslik: 'Protein hedefine az kaldı', metin: '74 / 110 g. Akşam yemeğinde 36 g protein hedefini tamamlar.', butonlar: ['Protein ekle'], renk: '#D08A1E' },
   { ad: '06-tarti', zaman: '07:30', baslik: 'Haftalık tartı zamanı', metin: 'Sabah, aç karnına ve aynı saatte tartılmak en tutarlı sonucu verir.', butonlar: ['Kilo gir'], renk: '#0E7C66' },
-  { ad: '07-rozet-yakin', zaman: '09:10', baslik: '90 kg\'ın altına çok az kaldı', metin: 'Sadece 1,2 kg. Yeni rozetin yolda, devam!', butonlar: ['Rozetlerim'], renk: '#B8892A' },
-  { ad: '08-rozet-kazanildi', zaman: '09:12', baslik: 'Yeni rozet: %5 vücut ağırlığı', metin: 'Başlangıçtan bu yana 4,9 kg verdin. Tebrikler!', butonlar: ['Paylaş', 'Rozetlerim'], renk: '#B8892A' },
 ];
 
 const ikon = 'file://' + path.join(ROOT, 'assets/icon-only.png');
@@ -77,7 +75,7 @@ const KILIT_CSS = `
     await el.screenshot({ path: path.join(OUT, n.ad + '.png'), omitBackground: true });
   }
   // 2) Kilit ekranı (tek başına)
-  const secili = [BILDIRIMLER[0], BILDIRIMLER[2], BILDIRIMLER[3], BILDIRIMLER[7]];
+  const secili = [BILDIRIMLER[0], BILDIRIMLER[2], BILDIRIMLER[3], BILDIRIMLER[5]];
   await p.setViewportSize({ width: 820, height: 1600 });
   await p.setContent(sayfa(`<style>${KILIT_CSS}</style><div style="padding:40px">${kilit(secili)}</div>`));
   await p.evaluate(() => document.fonts.ready);
@@ -98,7 +96,7 @@ const KILIT_CSS = `
       <h1>Hiçbir şeyi<br><em>unutma.</em></h1><p class="alt">İğne günü, takviyeler, su ve tartı; hepsi zamanında, internetsiz.</p></div>
       <div class="tw">${kilit(secili)}</div></div>`));
   await p.evaluate(() => document.fonts.ready); await p.waitForTimeout(200);
-  await p.screenshot({ path: path.join(ROOT, 'magaza/tanitim/09-hatirlatici.png') });
+  await p.screenshot({ path: path.join(ROOT, 'magaza/tanitim/07-hatirlatici.png') });
   fs.unlinkSync(TMP);
   await b.close();
   console.log('bildirim görselleri: ' + OUT);

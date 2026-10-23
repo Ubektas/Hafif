@@ -42,6 +42,15 @@ h1 span{display:block}
 .gz b{display:block;font:700 42px "Bricolage Grotesque";letter-spacing:-.02em;color:#0B3B33}
 .gz span span{display:block;font:500 27px Figtree;color:#0B3B33AA;margin-top:4px}
 
+/* hatırlatıcı sahnesi: kilit ekranı */
+.kilit{width:100%;height:100%;background:radial-gradient(90% 60% at 80% 10%,#1F8A70 0%,transparent 60%),radial-gradient(80% 50% at 10% 90%,#126B58 0%,transparent 60%),linear-gradient(170deg,#0B3B33,#062520);color:#fff;padding:0 22px;display:flex;flex-direction:column;align-items:center}
+.kilit .ks{font:700 150px/1 "Bricolage Grotesque";letter-spacing:-.05em;margin-top:96px}
+.kilit .kt{font:500 26px Figtree;opacity:.8;margin-top:8px}
+.kilit .ky{display:flex;flex-direction:column;gap:12px;margin-top:56px;width:100%}
+.bd{background:rgba(246,248,247,.95);border-radius:30px;padding:20px 24px 18px;color:#0B2420;font-family:Figtree}
+.bd .bh{display:flex;align-items:center;gap:10px;font:500 18px Figtree;color:#5F726C}.bd .bh img{width:28px;height:28px;border-radius:50%}.bd .bh b{color:#0B3B33;font-weight:600}
+.bd .bb{font:700 23px Figtree;margin-top:10px}.bd p{margin:5px 0 0;font:500 20px/1.35 Figtree;color:#3D524C}
+.bd .ba{display:flex;gap:28px;margin-top:12px;font:700 19px Figtree}
 /* dikey (Reels / TikTok, 1080x1920): yazı üstte, telefon altta; alt 380 px arayüz için boş */
 body.dikey,body.dikey html{width:1080px;height:1920px}
 body.dikey .txt{left:84px;right:84px;width:auto;top:250px;bottom:auto;justify-content:flex-start}
@@ -69,6 +78,7 @@ const IC = {
   rozet: SVG('<circle cx="12" cy="9" r="6"/><path d="M8.5 13.8 7 21l5-2.6L17 21l-1.5-7.2"/>'),
   su: SVG('<path d="M12 3c3.5 4.2 6 7.6 6 10.8A6 6 0 0 1 6 13.8C6 10.6 8.5 7.2 12 3z"/><path d="M9.2 14.5a3 3 0 0 0 2.8 2.6"/>'),
   takviye: SVG('<rect x="2.8" y="8.2" width="18.4" height="7.6" rx="3.8" transform="rotate(-40 12 12)"/><path d="M9.6 9.1l5.1 6.1"/>'),
+  zil: SVG('<path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/>'),
   kilit: SVG('<rect x="4.5" y="10.5" width="15" height="10" rx="3"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/><path d="M12 14.5v2"/>'),
   kisi: SVG('<circle cx="12" cy="8" r="3.5"/><path d="M5 20a7 7 0 0 1 14 0"/><path d="M4 4l16 16"/>'),
   reklam: SVG('<rect x="3.5" y="5.5" width="17" height="13" rx="3"/><path d="M8 15l2-6 2 6M8.7 13h2.6M15 9v6h1a2 2 0 0 0 2-2v-2a2 2 0 0 0-2-2z"/><path d="M3 3l18 18"/>'),
@@ -84,6 +94,7 @@ const C = {
   igne: { z: ['#FBEFE9', '#F3CDBA', '#FDF7F4'], ana: '#E2643D', yazi: '#7A2E16', acik: '#FCEDE7' },
   rozet: { z: ['#FBF5E6', '#EFD9A6', '#FDFAF2'], ana: '#B8892A', yazi: '#5C4210', acik: '#FBF1DC' },
   su: { z: ['#EAF4FB', '#C2DFF3', '#F5FAFD'], ana: '#2C8FE0', yazi: '#123F66', acik: '#E7F3F6' },
+  bildirim: { z: ['#FFF4E6', '#F6D3A1', '#FFFAF3'], ana: '#C9741E', yazi: '#5E3410', acik: '#FDEBD3' },
   takviye: { z: ['#F2EEFC', '#D8CDF5', '#F9F7FE'], ana: '#7B5BD0', yazi: '#3A2378', acik: '#EEE9FB' }
 };
 const S = [
@@ -94,12 +105,18 @@ const S = [
   { d: 4.0, r: 'rozet', ic: 'rozet', et: 'Başarılar', h: ['Her eşik', 'bir rozet.'], sub: 'Ara hedeflere ulaştıkça rozet kazan, motivasyonun hep diri kalsın.', img: '04-rozetler.png', call: ['Yeni rozet', '%5 vücut'], cx: 'sol' },
   { d: 4.0, r: 'su', ic: 'su', et: 'Su ve protein', h: ['Tabağın ve', 'bardağın hazır.'], sub: 'Protein ve suyu tek dokunuşla ekle, günlük hedefini kaçırma.', img: '07-protein-su.png', call: ['Bugün su', 1750, ' ml', 0], cx: 'sol' },
   { d: 4.0, r: 'takviye', ic: 'takviye', et: 'Takviye takibi', h: ['Takviyelerin', 'tek dokunuşta.'], sub: 'Sabah, akşam ve gece programını kur; aldıklarını işaretle.', img: '08-takviyeler.png', call: ['Bugün alındı', '2 / 4'], cx: 'sol' },
+  { tip: 'bildirim', d: 4.8, r: 'bildirim', ic: 'zil', et: 'Hatırlatıcılar', h: ['Hiçbir şeyi', 'unutma.'], sub: 'İğne günü, takviyeler, su ve tartı; hepsi zamanında, internetsiz.' },
   { tip: 'gizlilik', d: 4.6, r: 'kilo', ic: 'kilit', et: 'Gizlilik', h: ['Verilerin', 'sende kalır.'], sub: 'Hafif senin kişisel defterin; kimse okumaz, kimseyle paylaşılmaz.' },
   { tip: 'cikis', d: 4.6, r: 'koyu' }
 ];
 let t0 = 0; S.forEach(s => { s.t = t0; t0 += s.d; });
 window.SURE = t0;
 
+const BILD = [
+  ['şimdi', 'Bugün iğne günü', '5 mg · önerilen bölge: Uyluk sol.', ['İğneyi kaydet', '1 saat ertele'], '#E2643D'],
+  ['08:00', 'Sabah takviyeleri', 'Magnezyum · D3 vitamini', ['Hepsini aldım', 'Ertele'], '#7B5BD0'],
+  ['15:00', 'Bir bardak su?', 'Bugün 1.250 ml içtin, hedefe 1.250 ml kaldı.', ['+250 ml', '+500 ml'], '#2C8FE0'],
+  ['07:30', 'Haftalık tartı zamanı', 'Sabah, aç karnına tartılmak en tutarlı sonucu verir.', ['Kilo gir'], '#0E7C66']];
 const st = document.getElementById('stage');
 const fmt = (v, dec) => (v < 0 ? '−' : '') + Math.abs(v).toLocaleString('tr-TR', { minimumFractionDigits: dec, maximumFractionDigits: dec });
 S.forEach((s, i) => {
@@ -113,6 +130,7 @@ S.forEach((s, i) => {
     el.innerHTML = `<div class="txt" style="color:${c.yazi}"><span class="pill" style="color:${c.ana}"><i style="background:${c.acik}">${IC[s.ic]}</i>${s.et}</span>
       <h1><span>${s.h[0]}</span><span style="color:${c.ana}">${s.h[1]}</span></h1><p class="sub" style="color:${c.yazi}B3">${s.sub}</p></div>
       ${s.tip === 'gizlilik' ? `<div class="gz">${[['kisi', 'Hesap yok', 'Kayıt olmadan hemen başla.'], ['reklam', 'Reklam ve takip yok', 'Verilerin hiçbir sunucuya gitmez.'], ['wifi', 'İnternetsiz çalışır', 'Her şey telefonunda saklanır.'], ['yedek', 'Yedekle, taşı', "Excel'e aktar, yeni telefonuna yükle."]].map(([k, a, b]) => `<div><i style="background:${c.acik};color:${c.ana}">${IC[k]}</i><span><b>${a}</b><span>${b}</span></span></div>`).join('')}</div>`
+      : s.tip === 'bildirim' ? `<div class="tel"><div class="scr"><div class="kilit"><div class="ks">08:00</div><div class="kt">Cuma, 23 Ekim</div><div class="ky">${BILD.map(b => `<div class="bd"><div class="bh"><img src="../ikon.png"><b>Hafif</b> · ${b[0]}</div><div class="bb">${b[1]}</div><p>${b[2]}</p><div class="ba">${b[3].map(x => `<span style="color:${b[4]}">${x}</span>`).join('')}</div></div>`).join('')}</div></div></div><div class="cam"></div></div>`
       : `<div class="tel"><div class="scr"><div class="bar"><span>14:20</span><span>●●●</span></div><img src="../../ekran/${s.img}"></div><div class="cam"></div></div>
          <div class="call" style="left:${s.cx === 'sol' ? 1030 : 1500}px;top:760px;color:${c.yazi}"><span class="ci" style="background:${c.acik};color:${c.ana}">${IC[s.ic]}</span><div><small>${s.call[0]}</small><b class="cv"></b></div></div>`}`;
   }
@@ -161,12 +179,13 @@ window.render = function (t) {
       const p = eo(seg(u, 0, 1.0)), fl = Math.sin(u * 1.6) * 8;
       tel.style.transform = `translateY(${(1 - p) * 260 + fl - out * 40}px) rotate(${(1 - p) * 6 - 1.2}deg)`;
       tel.style.opacity = eo(seg(u, 0, .5));
-      const img = tel.querySelector('img'); img.style.transform = `translateY(${-cl(seg(u, 1.4, sc.d - .3)) * 60}px)`;
-      const cv = el.querySelector('.call'), q = seg(u, .95, 1.5);
+      const img = tel.querySelector('.scr>img'); if (img) img.style.transform = `translateY(${-cl(seg(u, 1.4, sc.d - .3)) * 60}px)`;
+      const cv = el.querySelector('.call'); if (!cv) return; const q = seg(u, .95, 1.5);
       cv.style.opacity = eo(q); cv.style.transform = `scale(${.6 + .4 * back(q)}) rotate(${-3 + (1 - back(q)) * -6}deg) translateY(${Math.sin(u * 2 + 1) * 6}px)`;
       const v = sc.call[1], b = cv.querySelector('.cv');
       if (typeof v === 'number') { const r = eo(seg(u, 1.0, 2.3)); b.textContent = fmt(v * r, sc.call[3]) + sc.call[2] } else b.textContent = v;
     }
+    el.querySelectorAll('.ky .bd').forEach((x, j) => { const q = seg(u, 1.0 + j * .55, 1.5 + j * .55); x.style.opacity = eo(q); x.style.transform = `translateY(${(1 - back(q)) * -70}px) scale(${.92 + .08 * eo(q)})` });
     el.querySelectorAll('.gz>div').forEach((x, j) => { const p = seg(u, .55 + j * .22, 1.15 + j * .22); x.style.opacity = eo(p); x.style.transform = `translateX(${(1 - eo(p)) * 120}px)` });
   });
 };
