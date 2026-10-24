@@ -29,7 +29,7 @@ import java.util.List;
  */
 final class WidgetRenderer {
     static final int MINT = 0xFF9FF0D6, WHITE = 0xFFFFFFFF, EM = 0xFF0B3B33, ACC = 0xFF0E7C66, MUTED = 0xFF5F726C,
-            WATER = 0xFF5BC0F5, PROT = 0xFFE6B35A, STEP = 0xFF8C9BF0, SHOT = 0xFFF4A586, SUPP = 0xFFD6CBF7, GOLD = 0xFFE8C877;
+            WATER = 0xFF5BC0F5, PROT = 0xFFE6B35A, STEP = 0xFFF58FB0, SHOT = 0xFFA9B8F0, SUPP = 0xFFD6CBF7, GOLD = 0xFFE8C877;
 
     static final class Result {
         Bitmap bmp;
@@ -50,7 +50,7 @@ final class WidgetRenderer {
         try {
             a = ResourcesCompat.getFont(ctx, R.font.hafif_figtree_medium);
             b = ResourcesCompat.getFont(ctx, R.font.hafif_figtree_bold);
-            d = ResourcesCompat.getFont(ctx, R.font.hafif_bricolage_bold);
+            d = ResourcesCompat.getFont(ctx, R.font.hafif_outfit_bold);
         } catch (Exception ignored) {
         }
         fm = a != null ? a : Typeface.DEFAULT;
@@ -146,7 +146,7 @@ final class WidgetRenderer {
         JSONObject n = d.next();
         if (!wide || !tall) {
             float ic = Math.min(40, H - 24), y0 = (H - ic) / 2;
-            rrect(14, y0, ic, ic, 12, 0x40E2643D);
+            rrect(14, y0, ic, ic, 12, 0x403552B0);
             syringe(14 + ic / 2, y0 + ic / 2, ic * 0.5f, SHOT);
             float x = 14 + ic + 12;
             text("YENİ İĞNE", x, H / 2 - 10, 8.5f, fb, 0xB3FFFFFF, W - x - 10, 1.2f);
@@ -167,7 +167,7 @@ final class WidgetRenderer {
             int pen = n.optInt("pen");
             text("🖊️  Kalemde " + pen + " doz kaldı", x, 96, 12.5f, fm, pen <= 1 ? SHOT : WHITE, mw);
         }
-        buttons(r, new String[][]{{"İğneyi kaydet", "shot"}}, new int[]{0x4DE2643D}, new int[]{0xFFFFD2C2});
+        buttons(r, new String[][]{{"İğneyi kaydet", "shot"}}, new int[]{0x4D3552B0}, new int[]{0xFFD2DCFA});
     }
 
     private void bugun(WidgetData d, Result r, boolean wide) {
@@ -381,7 +381,7 @@ final class WidgetRenderer {
             for (int i = 0; i < n; i++) {
                 double v = (i == n - 1 && !d.fresh) ? 0 : wk.optDouble(i);
                 float h = (float) Math.max(3, v / mx * bh);
-                rrect(x + i * bw + bw * 0.2f, top + bh - h, bw * 0.6f, h, 4, v >= g ? STEP : 0x668C9BF0);
+                rrect(x + i * bw + bw * 0.2f, top + bh - h, bw * 0.6f, h, 4, v >= g ? STEP : 0x66F58FB0);
             }
             JSONArray lb = day.optJSONArray("wkl");
             if (lb != null) for (int i = 0; i < n && i < lb.length(); i++)
@@ -707,7 +707,7 @@ final class WidgetRenderer {
         if (shotLines && shots != null) {
             p.setStyle(Paint.Style.STROKE);
             p.setStrokeWidth(1.2f);
-            p.setColor(0x80E2643D);
+            p.setColor(0x803552B0);
             p.setPathEffect(new android.graphics.DashPathEffect(new float[]{3, 3}, 0));
             for (int i = 0; i < shots.length(); i++) {
                 double sd = shots.optDouble(i);

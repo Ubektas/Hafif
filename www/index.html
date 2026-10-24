@@ -7,22 +7,22 @@
 :root{
   /* Layout: one-column phone app; light porcelain ground with emerald-tinted neutrals; the summary hero is the one dark "Zümrüt" piece and buttons echo it */
   --bg:#F1F5F3; --glow:#DDEFE7; --surface:#FFFFFF; --surface-2:#FFFFFF; --sunk:#EDF3F0; --fg:#0B2420; --muted:#5F726C; --line:#E0E8E4;
-  --accent:#0E7C66; --accent-soft:#E1F3EC; --accent-ink:#FFFFFF; --fat:#7B5BD0; --fat-soft:#EEE9FB; --shot:#E2643D; --shot-soft:#FCEDE7; --protein-ink:#8A5A10; --mint:#9FF0D6;
+  --accent:#0E7C66; --accent-soft:#E1F3EC; --accent-ink:#FFFFFF; --fat:#7B5BD0; --fat-soft:#EEE9FB; --shot:#3552B0; --shot-soft:#E8EDFA; --protein-ink:#8A5A10; --mint:#9FF0D6;
   --emerald-1:#126B58; --emerald-2:#0B3B33; --head:#0B3B33; --chipbg:rgba(255,255,255,.75); --warnbg:#FFF4E5; --warnfg:#8A5A10;
   --good:#12855D; --bad:#D04545; --water:#2C8FE0; --water-2:#7CC0F4; --water-soft:#E7F3F6; --protein:#D08A1E; --protein-soft:#FDF3E2;
   --shadow:0 1px 2px rgba(11,36,32,.04),0 14px 34px -18px rgba(11,59,51,.22);
-  --f-display:"Bricolage Grotesque", ui-rounded, system-ui, sans-serif;
+  --f-display:"Outfit", ui-rounded, system-ui, sans-serif;
   --f-body:"Figtree", system-ui, -apple-system, sans-serif;
   --f-num:"Figtree", system-ui, -apple-system, sans-serif;
   color-scheme:light;
 }
 :root[data-hf="dark"]{
   --bg:#08171A; --glow:#0E2D27; --surface:#10221F; --surface-2:#132824; --sunk:#0B1C19; --fg:#E4F1EC; --muted:#8FA8A1; --line:#1D3631;
-  --accent:#43C9A0; --accent-soft:#103A30; --accent-ink:#04201A; --fat:#A68BF0; --fat-soft:#251E3D; --shot:#F07A52; --shot-soft:#3A1F17; --protein-ink:#F0C27A; --mint:#9FF0D6;
+  --accent:#43C9A0; --accent-soft:#103A30; --accent-ink:#04201A; --fat:#A68BF0; --fat-soft:#251E3D; --shot:#7D94E6; --shot-soft:#18203A; --protein-ink:#F0C27A; --mint:#9FF0D6;
   --emerald-1:#167A64; --emerald-2:#0C4A3F; --head:#CFEDE3; --chipbg:rgba(255,255,255,.06); --warnbg:#3A2A10; --warnfg:#F3C77B;
   --good:#3FC48F; --bad:#F06B6B; --water:#4FA9E8; --water-2:#7CC0F4; --water-soft:#10293A; --protein:#E09A2E; --protein-soft:#33260F;
   --shadow:0 1px 2px rgba(0,0,0,.3),0 14px 34px -18px rgba(0,0,0,.6);
-  color-scheme:dark; --seinsfg:#F6B79F; --step:#7C8BEA; --step-soft:#1E2648;
+  color-scheme:dark; --seinsfg:#B9C6F2; --step:#F0709A; --step-soft:#3A1724;
 }
 :root[data-hf="dark"] nav.tabs{background:rgba(10,24,22,.88)}
 :root[data-hf="dark"] .nextms{background:linear-gradient(135deg,var(--accent-soft),var(--surface));border-color:rgba(67,201,160,.15)}
@@ -199,13 +199,13 @@ input[type=range].wr::-moz-range-thumb{width:20px;height:20px;border-radius:50%;
 .segrid button .sv{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted)}
 .segrid button .sv i{display:flex;gap:3px}.segrid button .sv i u{width:16px;height:6px;border-radius:9px;background:var(--sunk);display:block}
 .segrid button[data-lv="1"]{background:var(--shot-soft);border-color:transparent}.segrid button[data-lv="1"] .sv i u:nth-child(-n+1),.segrid button[data-lv="2"] .sv i u:nth-child(-n+2),.segrid button[data-lv="3"] .sv i u{background:var(--shot)}
-.segrid button[data-lv="2"]{background:var(--shot-soft);border-color:#F2B9A6}.segrid button[data-lv="3"]{background:#FADBD0;border-color:var(--shot)}
+.segrid button[data-lv="2"]{background:var(--shot-soft);border-color:#B9C6EE}.segrid button[data-lv="3"]{background:#D3DCF5;border-color:var(--shot)}
 .sedays{display:flex;gap:6px}.sedays button{border:1px solid var(--line);background:var(--surface);border-radius:99px;padding:6px 12px;font:600 13px var(--f-body);color:var(--muted);cursor:pointer}.sedays button[aria-pressed="true"]{background:var(--emerald-2);border-color:var(--emerald-2);color:#fff}
 .sepat{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;align-items:end;height:92px}
 .sepat div{display:flex;flex-direction:column;align-items:center;gap:4px;height:100%;justify-content:flex-end}
 .sepat i{display:block;width:100%;max-width:28px;border-radius:7px 7px 3px 3px;background:color-mix(in oklab,var(--shot) 35%,var(--surface))}.sepat i.hi{background:var(--shot)}
 .sepat span{font:600 11px var(--f-num);color:var(--muted)}
-.seins{background:var(--shot-soft);border-radius:14px;padding:10px 12px;font-size:13.5px;line-height:1.45;color:var(--seinsfg,#7A2E15)}
+.seins{background:var(--shot-soft);border-radius:14px;padding:10px 12px;font-size:13.5px;line-height:1.45;color:var(--seinsfg,#1C2B66)}
 .mgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
 .mgrid div{background:var(--sunk);border-radius:14px;padding:10px 10px 9px;display:flex;flex-direction:column;gap:2px;min-width:0}
 .mgrid span{font-size:12px;color:var(--muted)}.mgrid b{font:700 20px/1.1 var(--f-display);color:var(--head);letter-spacing:-.02em}.mgrid b small{font:500 12px var(--f-body);color:var(--muted);margin-left:2px}
@@ -502,7 +502,7 @@ input:focus{background:var(--surface);border-color:var(--accent);outline:none}
 .slot{display:flex;flex-direction:column;gap:10px;padding:16px}
 .slh{display:flex;align-items:center;gap:12px}
 .sli{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;flex:none}
-.s-sabah .sli{background:#FFF4D6;color:#D99A13}.s-ogle .sli{background:#FFEFD0;color:#E08A00}.s-aksam .sli{background:#FFE7DC;color:#E2643D}.s-gece .sli{background:#E6EAFB;color:#4A5BC4}
+.s-sabah .sli{background:#FFF4D6;color:#D99A13}.s-ogle .sli{background:#FFEFD0;color:#E08A00}.s-aksam .sli{background:#FFE7DC;color:#3552B0}.s-gece .sli{background:#E6EAFB;color:#E0507A}
 .allbtn{border:0;border-radius:99px;background:var(--accent-soft);color:var(--accent);font:700 12.5px var(--f-body);padding:8px 12px;cursor:pointer}
 .sldone{font:700 12.5px var(--f-body);color:var(--good);display:flex;align-items:center;gap:4px}
 .sldone::before{content:"✓"}
@@ -660,7 +660,7 @@ button.mscount i{font-style:normal;font-size:22px;color:var(--muted);margin-left
 .btn:disabled{opacity:.4;cursor:default}
 @media (prefers-reduced-motion:reduce){.obdots i,.obopt{transition:none}}
 /* adımlar (Health Connect, yalnızca Android) */
-:root{--step:#4A5BC4;--step-2:#7C8BEA;--step-soft:#E9ECFB}
+:root{--step:#E0507A;--step-2:#F0709A;--step-soft:#FCE8EF}
 .stcard{display:flex;flex-direction:column;gap:14px;cursor:pointer;text-align:left;font:inherit;color:inherit;width:100%;border:0}
 .sthead{display:flex;justify-content:space-between;align-items:baseline}
 .sta{display:grid;grid-template-columns:118px 1fr;gap:16px;align-items:center}
@@ -694,7 +694,7 @@ button.mscount i{font-style:normal;font-size:22px;color:var(--muted);margin-left
 .remcta .mi{width:48px;height:48px;border-radius:15px;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center;flex:none}.remcta .mi svg{width:26px;height:26px}
 .remcta b{font:700 15.5px var(--f-display)}.remcta small{display:block;font-size:12.5px;color:var(--muted)}
 .remx{border:0;background:none;color:var(--muted);font-size:20px;cursor:pointer;padding:4px 6px}
-.btn.stepbtn{background:linear-gradient(160deg,#5B6BD6,#3A47A6);box-shadow:0 10px 22px -12px rgba(58,71,166,.7)}
+.btn.stepbtn{background:linear-gradient(160deg,#E86A8F,#C23A63);box-shadow:0 10px 22px -12px rgba(194,58,99,.7)}
 .ktrend{flex:none;display:flex;flex-direction:column;align-items:flex-end;background:rgba(255,255,255,.07);border:1px solid rgba(159,240,214,.2);border-radius:16px;padding:10px 12px}
 .ktrend span{font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.55)}.ktrend b{font:700 22px var(--f-display);color:#fff;letter-spacing:-.02em}.ktrend em{font-style:normal;font-size:11px;color:#9FF0D6}
 .celeb{position:fixed;inset:0;z-index:50;background:rgba(5,29,24,.45);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;padding-left:max(24px,env(safe-area-inset-left,0px));padding-right:max(24px,env(safe-area-inset-right,0px))}
@@ -1654,8 +1654,8 @@ function shareData(){
 }
 function rr(c,x,y,w,h,r){c.beginPath();c.moveTo(x+r,y);c.arcTo(x+w,y,x+w,y+h,r);c.arcTo(x+w,y+h,x,y+h,r);c.arcTo(x,y+h,x,y,r);c.arcTo(x,y,x+w,y,r);c.closePath()}
 const SHARE_TPLS=[["zumrut","Zümrüt"],["fis","Tartı fişi"],["mezura","Mezura"],["basamak","Basamak"],["afis","Afiş"]];
-const FONT_D='"Bricolage Grotesque", system-ui, sans-serif', FONT_B='"Figtree", system-ui, sans-serif', FONT_M='"DM Mono", ui-monospace, monospace';
-async function shareFonts(){try{await Promise.all([document.fonts.load('700 200px "Bricolage Grotesque"'),document.fonts.load('500 40px "Bricolage Grotesque"'),document.fonts.load('500 40px "DM Mono"'),document.fonts.load('600 40px "Figtree"'),document.fonts.load('400 40px "Figtree"')])}catch(e){}}
+const FONT_D='"Outfit", system-ui, sans-serif', FONT_B='"Figtree", system-ui, sans-serif', FONT_M='"DM Mono", ui-monospace, monospace';
+async function shareFonts(){try{await Promise.all([document.fonts.load('700 200px "Outfit"'),document.fonts.load('500 40px "Outfit"'),document.fonts.load('500 40px "DM Mono"'),document.fonts.load('600 40px "Figtree"'),document.fonts.load('400 40px "Figtree"')])}catch(e){}}
 const LS=(c,v)=>{try{c.letterSpacing=v}catch(e){}};
 function leaf(c,x,y,sc,col,lw=1.8){c.save();c.translate(x,y);c.scale(sc,sc);c.strokeStyle=col;c.lineWidth=lw;c.lineCap="round";c.lineJoin="round";c.stroke(new Path2D("M20 4C11 4 5 9 5 17v3"));c.stroke(new Path2D("M20 4c0 9-5 14-13 14"));c.stroke(new Path2D("M9 14l5-5"));c.restore()}
 function sparkPts(D,x,y,w,h){const ws=D.w,lo=Math.min(...ws.map(p=>p.kg)),hi=Math.max(...ws.map(p=>p.kg)),sp=Math.max(1,diffDays(ws[0].date,ws[ws.length-1].date));return ws.map(p=>[x+diffDays(ws[0].date,p.date)/sp*w,y+(hi-p.kg)/Math.max(.1,hi-lo)*h])}
@@ -1747,7 +1747,7 @@ function tMezura(c,W,H,D,o){
   const mark=(v,col,lab,up)=>{const x=sx(v);c.fillStyle=col;c.beginPath();if(up){c.moveTo(x,ty-6);c.lineTo(x-20,ty-40);c.lineTo(x+20,ty-40)}else{c.moveTo(x,ty+TH+6);c.lineTo(x-20,ty+TH+40);c.lineTo(x+20,ty+TH+40)}c.fill();
     c.font=`700 30px ${FONT_B}`;c.textAlign="center";c.fillStyle="#FFF";c.fillText(lab,x,up?ty-56:ty+TH+78);c.textAlign="left"};
   mark(D.a.kg,"#FFFFFF","başlangıç",true);mark(D.b.kg,"#0B2420","bugün",false);
-  if(D.goal!=null&&D.goal>=lo)mark(D.goal,"#F4A586","hedef",true);
+  if(D.goal!=null&&D.goal>=lo)mark(D.goal,"#A9B8F0","hedef",true);
   c.restore();
   // alt bilgiler
   const B=statList(D,o).slice(0,3);let x=80;const y=1150;
@@ -1781,7 +1781,7 @@ function tBasamak(c,W,H,D,o){
 
 /* ---- Afiş: büyük rakam, ızgara, haftalık sütunlar ---- */
 function tAfis(c,W,H,D,o){
-  const PAPER="#F6F7F5",INK="#111816",RED="#E2643D",G="#0B3B33";
+  const PAPER="#F6F7F5",INK="#111816",RED="#3552B0",G="#0B3B33";
   c.fillStyle=PAPER;c.fillRect(0,0,W,H);
   c.strokeStyle="rgba(17,24,22,.12)";c.lineWidth=2;for(let x=80;x<W;x+=230){c.beginPath();c.moveTo(x,0);c.lineTo(x,H);c.stroke()}
   c.font=`700 26px ${FONT_B}`;c.fillStyle=INK;LS(c,"3px");c.fillText("HAFİF",80,110);c.fillText("KİLO GÜNLÜĞÜ",310,110);c.fillText(String(toD(today()).getFullYear()),770,110);LS(c,"0px");
@@ -1898,7 +1898,7 @@ function medal(m,size=64,ring=null){
     <circle cx="36" cy="36" r="26.5" fill="url(#mi-${k})"/>
     <circle cx="36" cy="36" r="23.5" fill="none" stroke="${off?"#D6DED9":"rgba(255,255,255,.35)"}" stroke-width="1" stroke-dasharray="1.5 2.2"/>
     ${off?"":`<path d="M14 26 A24 24 0 0 1 44 11" stroke="rgba(255,255,255,.55)" stroke-width="3" fill="none" stroke-linecap="round"/>`}
-    <text x="36" y="${m.goal?42:40}" text-anchor="middle" font-family="Bricolage Grotesque, system-ui, sans-serif" font-weight="700" font-size="${m.goal?20:String(main).length>3?15:18}" fill="${fg}" letter-spacing="-.5">${main}</text>
+    <text x="36" y="${m.goal?42:40}" text-anchor="middle" font-family="Outfit, system-ui, sans-serif" font-weight="700" font-size="${m.goal?20:String(main).length>3?15:18}" fill="${fg}" letter-spacing="-.5">${main}</text>
     <text x="36" y="${m.goal?53:51}" text-anchor="middle" font-family="Figtree, system-ui, sans-serif" font-weight="700" font-size="6.5" fill="${fg}" opacity=".8" letter-spacing="1">${sub}</text>
     ${off?`<g transform="translate(58 13)"><circle r="8" fill="#FFFFFF" stroke="#D6DED9"/><path d="M-3 0.5h6v4h-6z" fill="#8A9792"/><path d="M-1.8 0.5v-1.6a1.8 1.8 0 0 1 3.6 0v1.6" fill="none" stroke="#8A9792" stroke-width="1.2"/></g>`:""}
   </svg>`;
@@ -2056,8 +2056,8 @@ function pdfFromJpegs(pages){
   const out=new Uint8Array(len);let o=0;for(const b of parts){out.set(b,o);o+=b.length}return out;
 }
 function rpPages(){
-  const PW=1240,PH=1754,M=90,F=s=>`${s}px Figtree, sans-serif`,FD=s=>`700 ${s}px "Bricolage Grotesque", sans-serif`;
-  const C={em:"#0B3B33",ac:"#0E7C66",mu:"#5F726C",ln:"#E0E8E4",sk:"#EDF3F0",sh:"#E2643D",shs:"#FCEDE7",pr:"#D08A1E",fg:"#0B2420"};
+  const PW=1240,PH=1754,M=90,F=s=>`${s}px Figtree, sans-serif`,FD=s=>`700 ${s}px "Outfit", sans-serif`;
+  const C={em:"#0B3B33",ac:"#0E7C66",mu:"#5F726C",ln:"#E0E8E4",sk:"#EDF3F0",sh:"#3552B0",shs:"#E8EDFA",pr:"#D08A1E",fg:"#0B2420"};
   const pages=[];let cv,c,y;
   const page=()=>{cv=document.createElement("canvas");cv.width=PW;cv.height=PH;c=cv.getContext("2d");c.fillStyle="#fff";c.fillRect(0,0,PW,PH);pages.push(cv);
     c.fillStyle=C.em;c.font=FD(30);c.textBaseline="alphabetic";c.fillText("Hafif",M,M+6);c.fillStyle=C.mu;c.font=F(20);c.textAlign="right";c.fillText("İlerleme raporu · "+toD(today()).toLocaleDateString("tr-TR",{day:"numeric",month:"long",year:"numeric"}),PW-M,M+4);c.textAlign="left";
@@ -2084,7 +2084,7 @@ function rpPages(){
     H2("Kilo seyri");y+=20;const gx=M+70,gw=PW-2*M-90,gh=380,gy=y;const lo=Math.min(...w.map(x=>x.kg)),hi=Math.max(...w.map(x=>x.kg)),pad=Math.max(1,(hi-lo)*.12),y0=lo-pad,y1=hi+pad;
     const t0=toD(w[0].date).getTime(),t1=Math.max(t0+864e5,toD(w[w.length-1].date).getTime()),X=d=>gx+(toD(d).getTime()-t0)/(t1-t0)*gw,Y=v=>gy+gh-(v-y0)/(y1-y0)*gh;
     c.strokeStyle=C.ln;c.lineWidth=2;for(let i=0;i<=4;i++){const v=y0+(y1-y0)*i/4,yy=Y(v);c.beginPath();c.moveTo(gx,yy);c.lineTo(gx+gw,yy);c.stroke();T(kg(v),gx-14,yy+7,F(17),C.mu,"right")}
-    s.filter(x=>x.date>=w[0].date).forEach((x,i,arr)=>{const xx=X(x.date);c.strokeStyle="rgba(226,100,61,.35)";c.lineWidth=2;c.setLineDash([6,6]);c.beginPath();c.moveTo(xx,gy);c.lineTo(xx,gy+gh);c.stroke();c.setLineDash([]);
+    s.filter(x=>x.date>=w[0].date).forEach((x,i,arr)=>{const xx=X(x.date);c.strokeStyle="rgba(53,82,176,.35)";c.lineWidth=2;c.setLineDash([6,6]);c.beginPath();c.moveTo(xx,gy);c.lineTo(xx,gy+gh);c.stroke();c.setLineDash([]);
       if(x.dose&&(i===0||arr[i-1].dose!==x.dose)){rr(xx-4,gy-34,c.measureText(x.dose+" mg").width+30,30,15,C.shs);T(x.dose+" mg",xx+10,gy-12,"600 "+F(17),C.sh)}});
     c.strokeStyle=C.ac;c.lineWidth=5;c.lineJoin="round";c.beginPath();w.forEach((x,i)=>{i?c.lineTo(X(x.date),Y(x.kg)):c.moveTo(X(x.date),Y(x.kg))});c.stroke();
     c.fillStyle=C.ac;w.forEach(x=>{c.beginPath();c.arc(X(x.date),Y(x.kg),5,0,7);c.fill()});
@@ -2185,7 +2185,7 @@ function compHtml(X){
         <rect class="${AN("gb gbp")}" style="animation-delay:.15s" x="${x}" y="${base-hl-hf-3}" width="74" height="${hf}" rx="10" fill="url(#cf)"/>
         <text x="${x+37}" y="${base-hl/2+4}" text-anchor="middle" font-size="12" font-weight="700" fill="#fff" font-family="Figtree, sans-serif">${p1c(l)}</text>
         <text x="${x+37}" y="${base-hl-hf/2+1}" text-anchor="middle" font-size="12" font-weight="700" fill="#fff" font-family="Figtree, sans-serif">${p1c(f)}</text>
-        <text x="${x+37}" y="${base-hl-hf-12}" text-anchor="middle" font-size="15" font-weight="700" fill="var(--head)" font-family="Bricolage Grotesque, sans-serif">${p1c(o)} kg</text>
+        <text x="${x+37}" y="${base-hl-hf-12}" text-anchor="middle" font-size="15" font-weight="700" fill="var(--head)" font-family="Outfit, sans-serif">${p1c(o)} kg</text>
         <text x="${x+37}" y="${base+18}" text-anchor="middle" font-size="11" fill="var(--muted)" font-family="Figtree, sans-serif">${lbl}</text></g>`};
     body=`<svg class="chart" viewBox="0 0 ${W} ${H+10}" aria-hidden="true"><defs>
         <linearGradient id="cl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2BB38F"/><stop offset="1" stop-color="#0E7C66"/></linearGradient>
@@ -2214,7 +2214,7 @@ function compHtml(X){
         return `<g class="${AN("pop2")}" style="animation-delay:.6s"><defs><linearGradient id="sfb" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F4EFFF"/><stop offset="1" stop-color="#E6DCFB"/></linearGradient></defs>
         <rect x="${bx}" y="${by}" width="${bw}" height="${bh}" rx="16" fill="url(#sfb)" stroke="#D9CCF6"/>
         <text x="${cx}" y="${by+17}" text-anchor="middle" font-size="9" font-weight="700" letter-spacing="1.2" fill="#8566D6" font-family="Figtree, sans-serif">YAĞDAN</text>
-        <text x="${cx}" y="${by+41}" text-anchor="middle" font-size="26" font-weight="700" letter-spacing="-1" fill="var(--fat)" font-family="Bricolage Grotesque, sans-serif">%${Math.round(sh)}</text>
+        <text x="${cx}" y="${by+41}" text-anchor="middle" font-size="26" font-weight="700" letter-spacing="-1" fill="var(--fat)" font-family="Outfit, sans-serif">%${Math.round(sh)}</text>
         <rect x="${bx+12}" y="${by+50}" width="${pw}" height="5" rx="2.5" fill="#fff"/><rect x="${bx+12}" y="${by+50}" width="${pw*sh/100}" height="5" rx="2.5" fill="var(--fat)"/>
         <text x="${cx}" y="${by+bh+11}" text-anchor="middle" font-size="9.5" fill="var(--muted)" font-family="Figtree, sans-serif">verilen kilonun</text></g>`})()}
       </svg>`;
@@ -2229,7 +2229,7 @@ function compHtml(X){
       ${ticks}
       <circle cx="${ax}" cy="${ay}" r="9" fill="var(--surface)" stroke="var(--fat)" stroke-width="3"/>
       <circle class="${AN("pop2")}" cx="${bx}" cy="${by}" r="12" fill="var(--fat)" stroke="var(--surface)" stroke-width="4"/>
-      <text x="${cx}" y="${cy-28}" text-anchor="middle" font-size="40" font-weight="700" fill="var(--head)" font-family="Bricolage Grotesque, sans-serif" letter-spacing="-1.5">%${p1c(B.fat)}</text>
+      <text x="${cx}" y="${cy-28}" text-anchor="middle" font-size="40" font-weight="700" fill="var(--head)" font-family="Outfit, sans-serif" letter-spacing="-1.5">%${p1c(B.fat)}</text>
       <text x="${cx}" y="${cy-6}" text-anchor="middle" font-size="12.5" fill="var(--muted)" font-family="Figtree, sans-serif">yağ oranı · başta %${p1c(A.fat)}</text>
       </svg>
       <div class="comp3"><div><span class="eyebrow">Puan</span><div class="v" style="color:var(--fat)">${sgn(B.fat-A.fat)}</div></div><div><span class="eyebrow">Yağ</span><div class="v">−${p1c(dFat)}<small style="font-size:13px;color:var(--muted)"> kg</small></div></div><div><span class="eyebrow">Yağsız</span><div class="v">−${p1c(Math.max(0,dLean))}<small style="font-size:13px;color:var(--muted)"> kg</small></div></div></div>`;
@@ -2427,9 +2427,9 @@ function cycleHtml(vv){
       <circle cx="${hx}" cy="${hy}" r="7" fill="var(--surface)" stroke="var(--head)" stroke-width="3"/>
       <circle cx="${cx}" cy="${cy}" r="${R0-14}" fill="var(--surface)" style="filter:drop-shadow(0 6px 14px rgba(11,59,51,.14))"/>
       ${PL?`<text x="${cx}" y="${cy-14}" text-anchor="middle" font-size="9.5" letter-spacing="1.4" font-weight="700" fill="var(--muted)" font-family="Figtree, sans-serif">VÜCUTTA</text>
-      <text x="${cx}" y="${cy+14}" text-anchor="middle" font-size="30" font-weight="700" letter-spacing="-1" fill="var(--head)" font-family="Bricolage Grotesque, sans-serif">${mgT(cur)}</text>
+      <text x="${cx}" y="${cy+14}" text-anchor="middle" font-size="30" font-weight="700" letter-spacing="-1" fill="var(--head)" font-family="Outfit, sans-serif">${mgT(cur)}</text>
       <text x="${cx}" y="${cy+30}" text-anchor="middle" font-size="11" fill="var(--muted)" font-family="Figtree, sans-serif">mg · ${state.toLocaleLowerCase("tr-TR")}</text>`:`<text x="${cx}" y="${cy-12}" text-anchor="middle" font-size="9.5" letter-spacing="1.4" font-weight="700" fill="var(--muted)" font-family="Figtree, sans-serif">EVRE</text>
-      <text x="${cx}" y="${cy+12}" text-anchor="middle" font-size="22" font-weight="700" letter-spacing="-.5" fill="var(--head)" font-family="Bricolage Grotesque, sans-serif">${ph.k}</text>
+      <text x="${cx}" y="${cy+12}" text-anchor="middle" font-size="22" font-weight="700" letter-spacing="-.5" fill="var(--head)" font-family="Outfit, sans-serif">${ph.k}</text>
       <g data-plus style="cursor:pointer"><rect x="${cx-34}" y="${cy+20}" width="68" height="20" rx="10" fill="rgba(201,160,74,.16)"/><text x="${cx}" y="${cy+34}" text-anchor="middle" font-size="10" font-weight="700" letter-spacing=".6" fill="#B08A35" font-family="Figtree, sans-serif">✦ mg · PLUS</text></g>`}
     </svg></div>
     <div class="cinfo"><div><span>Evre</span><b>${ph.k}</b></div><div><span>Döngü günü</span><b>${Math.min(I.days,diffDays(P.last.date,today())+1)}/${I.days}</b></div><div><span>Yeni iğne</span><b>${X.left==null?"–":X.left>1?X.left+" gün":X.left===1?"Yarın":"Bugün"}</b></div></div>
@@ -2830,7 +2830,7 @@ function vAyar(){
 const FOOT=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 3.5c1.6 0 2.5 1.6 2.5 3.8S10 11 8.6 11 6 9.5 6 7.3s.9-3.8 2.5-3.8zM6.6 13h4l-.4 3a2.2 2.2 0 0 1-4.3-.3z"/><path d="M15.5 7.5c1.6 0 2.5 1.6 2.5 3.8S17 15 15.6 15 13 13.5 13 11.3s.9-3.8 2.5-3.8zM13.6 17h4l-.4 3a2.2 2.2 0 0 1-4.3-.3z"/></svg>`;
 const HEART=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/><path d="M8.5 11.5h2l1-2 1.5 4 1-2h1.5"/></svg>`;
 function stRing(n,size,stroke){const g=stepGoal(),f=Math.min(1,n/g),r=(size-stroke)/2-2,C=2*Math.PI*r,c=size/2;
-  return `<svg viewBox="0 0 ${size} ${size}" width="${size}" height="${size}" aria-hidden="true"><defs><linearGradient id="stg${size}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#7C8BEA"/><stop offset="1" stop-color="#4A5BC4"/></linearGradient></defs>
+  return `<svg viewBox="0 0 ${size} ${size}" width="${size}" height="${size}" aria-hidden="true"><defs><linearGradient id="stg${size}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F0709A"/><stop offset="1" stop-color="#E0507A"/></linearGradient></defs>
     <circle cx="${c}" cy="${c}" r="${r}" fill="none" stroke="var(--step-soft)" stroke-width="${stroke}"/>
     <circle cx="${c}" cy="${c}" r="${r}" fill="none" stroke="url(#stg${size})" stroke-width="${stroke}" stroke-linecap="round" stroke-dasharray="${C*f} ${C}" transform="rotate(-90 ${c} ${c})" style="transition:stroke-dasharray .9s cubic-bezier(.2,.8,.2,1)"/></svg>`}
 function stWeek(){const g=stepGoal();let h="";for(let i=6;i>=0;i--){const d=addDays(today(),-i),n=stepsOn(d);

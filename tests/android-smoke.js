@@ -77,7 +77,7 @@ const step = (ad, sonuc, detay) => { report.adimlar.push({ ad, sonuc, detay }); 
       return {
         native: !!(window.Capacitor && Capacitor.isNativePlatform()),
         eklentiler: Object.keys((window.Capacitor && Capacitor.Plugins) || {}),
-        fontlar: ['Bricolage Grotesque', 'Figtree'].map(f => f + ':' + document.fonts.check(`700 20px "${f}"`, 'ğşıİ')),
+        fontlar: ['Outfit', 'Figtree'].map(f => f + ':' + document.fonts.check(`700 20px "${f}"`, 'ğşıİ')),
         ekran: [innerWidth, innerHeight], navAlt: Math.round(nav.bottom), padUst: cs.paddingTop, padAlt: cs.paddingBottom,
         senkron: document.querySelector('#sync')?.textContent
       };

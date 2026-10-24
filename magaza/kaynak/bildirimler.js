@@ -9,8 +9,8 @@ const OUT = path.join(ROOT, 'magaza/bildirim');
 fs.mkdirSync(OUT, { recursive: true });
 
 const BILDIRIMLER = [
-  { ad: '01-igne-gunu', zaman: 'şimdi', baslik: 'Bugün iğne günü', metin: '5 mg · önerilen bölge: Uyluk sol. Yaptıktan sonra kaydetmeyi unutma.', butonlar: ['İğneyi kaydet', '1 saat ertele'], renk: '#E2643D' },
-  { ad: '02-igne-yarin', zaman: '20:00', baslik: 'Yarın iğne günü', metin: 'Saat 09:00 · sıradaki bölgen Uyluk sol. Kalemini ve iğne ucunu hazırla.', butonlar: ['Tamam'], renk: '#E2643D' },
+  { ad: '01-igne-gunu', zaman: 'şimdi', baslik: 'Bugün iğne günü', metin: '5 mg · önerilen bölge: Uyluk sol. Yaptıktan sonra kaydetmeyi unutma.', butonlar: ['İğneyi kaydet', '1 saat ertele'], renk: '#3552B0' },
+  { ad: '02-igne-yarin', zaman: '20:00', baslik: 'Yarın iğne günü', metin: 'Saat 09:00 · sıradaki bölgen Uyluk sol. Kalemini ve iğne ucunu hazırla.', butonlar: ['Tamam'], renk: '#3552B0' },
   { ad: '03-takviye', zaman: '08:00', baslik: 'Sabah takviyeleri', metin: 'Magnezyum · D3 vitamini', butonlar: ['Hepsini aldım', 'Ertele'], renk: '#7B5BD0' },
   { ad: '04-su', zaman: '15:00', baslik: 'Bir bardak su?', metin: 'Bugün 1.250 ml içtin, hedefe 1.250 ml kaldı.', butonlar: ['+250 ml', '+500 ml'], renk: '#2C8FE0' },
   { ad: '05-protein', zaman: '18:30', baslik: 'Protein hedefine az kaldı', metin: '74 / 110 g. Akşam yemeğinde 36 g protein hedefini tamamlar.', butonlar: ['Protein ekle'], renk: '#D08A1E' },
@@ -55,7 +55,7 @@ const KILIT_CSS = `
   .cam{position:absolute;left:50%;top:40px;width:26px;height:26px;margin-left:-13px;border-radius:50%;background:#0B2420}
   .dur{height:64px;display:flex;justify-content:space-between;align-items:center;padding:8px 40px 0;font:600 24px Figtree}
   .ik{display:flex;gap:10px;align-items:center}.ik i{width:26px;height:16px;border-radius:3px;background:#fff;opacity:.9}.ik i:first-child{border-radius:50% 50% 2px 2px}.ik b{width:34px;height:16px;border-radius:4px;border:2px solid #fff;box-sizing:border-box}
-  .saat{text-align:center;margin-top:70px;font:700 190px/1 "Bricolage Grotesque";letter-spacing:-.05em}
+  .saat{text-align:center;margin-top:70px;font:700 190px/1 "Outfit";letter-spacing:-.025em}
   .tarih{text-align:center;font:500 32px Figtree;opacity:.8;margin-top:6px}
   .yigin{display:flex;flex-direction:column;gap:14px;margin-top:70px;align-items:center}
   .yigin .bd{background:rgba(246,248,247,.94);padding:24px 28px 20px;border-radius:36px}
@@ -89,7 +89,7 @@ const KILIT_CSS = `
     .ust{position:absolute;left:84px;right:84px;top:118px}
     .etk{display:inline-flex;align-items:center;gap:14px;background:#fff;border-radius:99px;padding:12px 26px 12px 14px;font:700 30px Figtree;color:${z.ana};box-shadow:0 10px 30px -18px ${z.koyu}66}
     .etk i{width:44px;height:44px;border-radius:50%;background:${z.acik};display:grid;place-items:center;padding:9px;box-sizing:border-box}
-    h1{margin:40px 0 0;font:700 108px/1 "Bricolage Grotesque";letter-spacing:-.045em}h1 em{font-style:normal;color:${z.ana}}
+    h1{margin:40px 0 0;font:700 108px/1 "Outfit";letter-spacing:-.02em}h1 em{font-style:normal;color:${z.ana}}
     p.alt{margin:30px 0 0;font:500 36px/1.38 Figtree;color:${z.koyu}B3;max-width:860px}
     .tw{position:absolute;left:50%;top:760px;margin-left:-370px}</style>
     <div class="s"><div class="ust"><span class="etk"><i>${zil}</i>Hatırlatıcılar</span>

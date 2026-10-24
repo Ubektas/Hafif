@@ -11,7 +11,7 @@ html,body{margin:0;width:1920px;height:1080px;overflow:hidden;background:#0B3B33
 .pill{align-self:flex-start;display:inline-flex;align-items:center;gap:14px;background:#fff;border-radius:99px;padding:12px 28px 12px 14px;font:700 30px Figtree;box-shadow:0 14px 34px -18px rgba(0,0,0,.35)}
 .pill i{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;padding:10px}
 .pill i svg{width:100%;height:100%}
-h1{margin:38px 0 0;font:700 128px/1 "Bricolage Grotesque";letter-spacing:-.045em}
+h1{margin:38px 0 0;font:700 128px/1 "Outfit";letter-spacing:-.02em}
 h1 span{display:block}
 .sub{margin:34px 0 0;font:500 38px/1.38 Figtree;max-width:760px}
 .tel{position:absolute;left:1210px;top:96px;width:500px;height:1010px;background:#0B2420;border-radius:72px;padding:18px;box-shadow:0 70px 120px -50px rgba(0,0,0,.55),0 0 0 2px #2A4A43 inset}
@@ -23,11 +23,11 @@ h1 span{display:block}
 .call .ci{width:76px;height:76px;border-radius:22px;display:grid;place-items:center;padding:18px}
 .call .ci svg{width:100%;height:100%}
 .call small{display:block;font:600 24px Figtree;opacity:.65}
-.call b{display:block;font:700 52px "Bricolage Grotesque";letter-spacing:-.03em;white-space:nowrap}
+.call b{display:block;font:700 52px "Outfit";letter-spacing:-.015em;white-space:nowrap}
 /* giriş & kapanış */
 .center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;text-align:center}
 .icon{width:220px;height:220px;border-radius:58px;box-shadow:0 40px 90px -30px rgba(0,0,0,.6),0 0 120px rgba(127,224,194,.25)}
-.wm{font:700 168px/1 "Bricolage Grotesque";letter-spacing:-.05em;margin-top:44px}
+.wm{font:700 168px/1 "Outfit";letter-spacing:-.025em;margin-top:44px}
 .tag{font:500 40px Figtree;color:rgba(255,255,255,.75);margin-top:22px}
 .tag b{color:#9FF0D6;font-weight:600}
 .feats{display:flex;gap:18px;margin-top:56px}
@@ -39,12 +39,12 @@ h1 span{display:block}
 .gz{position:absolute;left:1120px;top:0;bottom:0;width:640px;display:flex;flex-direction:column;justify-content:center;gap:26px}
 .gz div{display:flex;align-items:center;gap:28px;background:#fff;border-radius:34px;padding:30px 36px;box-shadow:0 30px 60px -36px rgba(0,0,0,.4)}
 .gz i{flex:none;width:86px;height:86px;border-radius:26px;padding:20px}.gz i svg{width:100%;height:100%}
-.gz b{display:block;font:700 42px "Bricolage Grotesque";letter-spacing:-.02em;color:#0B3B33}
+.gz b{display:block;font:700 42px "Outfit";letter-spacing:-.02em;color:#0B3B33}
 .gz span span{display:block;font:500 27px Figtree;color:#0B3B33AA;margin-top:4px}
 
 /* hatırlatıcı sahnesi: kilit ekranı */
 .kilit{width:100%;height:100%;background:radial-gradient(90% 60% at 80% 10%,#1F8A70 0%,transparent 60%),radial-gradient(80% 50% at 10% 90%,#126B58 0%,transparent 60%),linear-gradient(170deg,#0B3B33,#062520);color:#fff;padding:0 22px;display:flex;flex-direction:column;align-items:center}
-.kilit .ks{font:700 150px/1 "Bricolage Grotesque";letter-spacing:-.05em;margin-top:96px}
+.kilit .ks{font:700 150px/1 "Outfit";letter-spacing:-.025em;margin-top:96px}
 .kilit .kt{font:500 26px Figtree;opacity:.8;margin-top:8px}
 .kilit .ky{display:flex;flex-direction:column;gap:12px;margin-top:56px;width:100%}
 .bd{background:rgba(246,248,247,.95);border-radius:30px;padding:20px 24px 18px;color:#0B2420;font-family:Figtree}
@@ -92,8 +92,8 @@ const IC = {
 const C = {
   koyu: { z: ['#0B3B33', '#1F8A70', '#082924'], ana: '#9FF0D6', yazi: '#FFFFFF', acik: 'rgba(255,255,255,.12)' },
   kilo: { z: ['#E6F4EE', '#B9E3D3', '#F3FAF7'], ana: '#0E7C66', yazi: '#0B3B33', acik: '#E1F3EC' },
-  adim: { z: ['#EEF0FC', '#C9D0F5', '#F7F8FE'], ana: '#4A5BC4', yazi: '#1E2A6E', acik: '#E9ECFB' },
-  igne: { z: ['#FBEFE9', '#F3CDBA', '#FDF7F4'], ana: '#E2643D', yazi: '#7A2E16', acik: '#FCEDE7' },
+  adim: { z: ['#FDEFF3', '#F5C6D5', '#FEF6F9'], ana: '#E0507A', yazi: '#7A1F3C', acik: '#FCE8EF' },
+  igne: { z: ['#EDF1FB', '#CBD6F4', '#F6F8FD'], ana: '#3552B0', yazi: '#1C2B66', acik: '#E8EDFA' },
   rozet: { z: ['#FBF5E6', '#EFD9A6', '#FDFAF2'], ana: '#B8892A', yazi: '#5C4210', acik: '#FBF1DC' },
   su: { z: ['#EAF4FB', '#C2DFF3', '#F5FAFD'], ana: '#2C8FE0', yazi: '#123F66', acik: '#E7F3F6' },
   bildirim: { z: ['#FFF4E6', '#F6D3A1', '#FFFAF3'], ana: '#C9741E', yazi: '#5E3410', acik: '#FDEBD3' },
@@ -115,7 +115,7 @@ let t0 = 0; S.forEach(s => { s.t = t0; t0 += s.d; });
 window.SURE = t0;
 
 const BILD = [
-  ['şimdi', 'Bugün iğne günü', '5 mg · önerilen bölge: Uyluk sol.', ['İğneyi kaydet', '1 saat ertele'], '#E2643D'],
+  ['şimdi', 'Bugün iğne günü', '5 mg · önerilen bölge: Uyluk sol.', ['İğneyi kaydet', '1 saat ertele'], '#3552B0'],
   ['08:00', 'Sabah takviyeleri', 'Magnezyum · D3 vitamini', ['Hepsini aldım', 'Ertele'], '#7B5BD0'],
   ['15:00', 'Bir bardak su?', 'Bugün 1.250 ml içtin, hedefe 1.250 ml kaldı.', ['+250 ml', '+500 ml'], '#2C8FE0'],
   ['07:30', 'Haftalık tartı zamanı', 'Sabah, aç karnına tartılmak en tutarlı sonucu verir.', ['Kilo gir'], '#0E7C66']];
@@ -126,7 +126,7 @@ S.forEach((s, i) => {
   if (s.tip === 'giris' || s.tip === 'cikis') {
     el.innerHTML = `<div class="center"><img class="icon" src="../ikon.png"><div class="wm">Hafif</div>
       <div class="tag">${s.tip === 'giris' ? (DIKEY?'Kilo verme yolculuğunun<br><b>sade defteri.</b>':'Kilo verme yolculuğunun <b>sade defteri.</b>') : (DIKEY?'Kilo, adım, iğne, takviye,<br>su ve protein. <b>Tek yerde.</b>':'Kilo, adım, iğne, takviye, su ve protein. <b>Tek yerde.</b>')}</div>
-      ${s.tip === 'cikis' ? `<div class="feats">${[['kilo', '#0E7C66', '#E1F3EC'], ['adim', '#4A5BC4', '#E9ECFB'], ['igne', '#E2643D', '#FCEDE7'], ['takviye', '#7B5BD0', '#EEE9FB'], ['su', '#2C8FE0', '#E7F3F6']].map(([k, a, b]) => `<span><i style="background:${b};color:${a}">${IC[k]}</i>${{ kilo: 'Kilo', adim: 'Adım', igne: 'İğne', takviye: 'Takviye', su: 'Su & protein' }[k]}</span>`).join('')}</div>
+      ${s.tip === 'cikis' ? `<div class="feats">${[['kilo', '#0E7C66', '#E1F3EC'], ['adim', '#E0507A', '#FCE8EF'], ['igne', '#3552B0', '#E8EDFA'], ['takviye', '#7B5BD0', '#EEE9FB'], ['su', '#2C8FE0', '#E7F3F6']].map(([k, a, b]) => `<span><i style="background:${b};color:${a}">${IC[k]}</i>${{ kilo: 'Kilo', adim: 'Adım', igne: 'İğne', takviye: 'Takviye', su: 'Su & protein' }[k]}</span>`).join('')}</div>
       <div class="store">${IC.play}Google Play'de ücretsiz</div>` : ''}</div>`;
   } else {
     el.innerHTML = `<div class="txt" style="color:${c.yazi}"><span class="pill" style="color:${c.ana}"><i style="background:${c.acik}">${IC[s.ic]}</i>${s.et}</span>

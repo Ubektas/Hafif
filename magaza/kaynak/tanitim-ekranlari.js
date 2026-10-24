@@ -26,11 +26,11 @@ const ROZET = '<svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" s
 // Her özelliğin rengi uygulamadaki rengiyle aynı
 const R = {
   kilo: { ana: '#0E7C66', koyu: '#0B3B33', acik: '#E1F3EC', zemin: ['#E6F4EE', '#CDEBDF'] },
-  igne: { ana: '#E2643D', koyu: '#7A2E16', acik: '#FCEDE7', zemin: ['#FBEFE9', '#F6D9CB'] },
+  igne: { ana: '#3552B0', koyu: '#1C2B66', acik: '#E8EDFA', zemin: ['#EDF1FB', '#D5DEF6'] },
   rozet: { ana: '#B8892A', koyu: '#5C4210', acik: '#FBF1DC', zemin: ['#FBF5E6', '#F2E3BF'] },
   takviye: { ana: '#7B5BD0', koyu: '#3A2378', acik: '#EEE9FB', zemin: ['#F2EEFC', '#DFD6F6'] },
   su: { ana: '#2C8FE0', koyu: '#123F66', acik: '#E7F3F6', zemin: ['#EAF4FB', '#CFE6F5'] },
-  adim: { ana: '#4A5BC4', koyu: '#1E2A6E', acik: '#E9ECFB', zemin: ['#EEF0FC', '#D6DCF7'] },
+  adim: { ana: '#E0507A', koyu: '#7A1F3C', acik: '#FCE8EF', zemin: ['#FDEFF3', '#F8D3DF'] },
 };
 
 const EKRANLAR = [
@@ -42,7 +42,7 @@ const EKRANLAR = [
   { ad: '06-protein-su', renk: 'su', ikon: ikon('besin'), etiket: 'Protein ve su', baslik: ['Protein ve su', 'hep hedefte.'], alt: 'Protein ve su takibi tek ekranda: yediklerin hedefini doldurur, suyu tek dokunuşla eklersin.', ekran: '07-protein-su.png', kart: ['Bugün', '74 g · 1.750 ml'], kartYer: 'sol' },
 ];
 
-const yaziCSS = `@font-face{font-family:"Bricolage Grotesque";src:url(../../www/fonts/BricolageGrotesque-700-latin.woff2) format("woff2");font-weight:700;unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}`;
+const yaziCSS = `@font-face{font-family:"Outfit";src:url(../../www/fonts/Outfit-700-latin.woff2) format("woff2");font-weight:700;unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}`;
 
 const kartH = (e, r) => { const k = e.kartRenk ? R[e.kartRenk] : r; return `<div class="kart ${e.kartYer}"${e.kartTop ? ` style="top:${e.kartTop}px"` : ''}><span class="ki" style="background:${k.acik};color:${k.ana}">${e.kartIkon || e.ikon}</span><div><small>${e.kart[0]}</small><b>${e.kart[1]}</b></div></div>`; };
 function sayfa(e) {
@@ -64,7 +64,7 @@ function sayfa(e) {
   .ust{position:absolute;left:84px;right:84px;top:118px}
   .etk{display:inline-flex;align-items:center;gap:14px;background:#fff;border-radius:99px;padding:12px 26px 12px 14px;font:700 30px Figtree;color:${r.ana};box-shadow:0 10px 30px -18px ${r.koyu}66}
   .etk i{width:44px;height:44px;border-radius:50%;background:${r.acik};display:grid;place-items:center;padding:9px;box-sizing:border-box}
-  h1{margin:40px 0 0;font:700 108px/1 "Bricolage Grotesque";letter-spacing:-.045em;color:${r.koyu}}
+  h1{margin:40px 0 0;font:700 108px/1 "Outfit";letter-spacing:-.02em;color:${r.koyu}}
   h1 em{font-style:normal;color:${r.ana}}
   p{margin:30px 0 0;font:500 36px/1.38 Figtree;color:${r.koyu}B3;max-width:860px}
   .tel{position:absolute;left:50%;top:${e.ekran ? 800 : 0}px;width:740px;height:1520px;margin-left:-370px;background:#0B2420;border-radius:96px;padding:22px;box-sizing:border-box;box-shadow:0 60px 120px -50px ${r.koyu}AA,0 0 0 2px #2A4A43 inset}
@@ -76,17 +76,17 @@ function sayfa(e) {
   .kart.sag{right:46px;transform:rotate(3deg)}.kart.sol{left:46px;transform:rotate(-3deg)}
   .kart .ki{width:84px;height:84px;border-radius:24px;padding:20px;box-sizing:border-box;display:block}
   .kart small{display:block;font:600 26px Figtree;color:${r.koyu}99}
-  .kart b{display:block;font:700 54px "Bricolage Grotesque";letter-spacing:-.03em;color:${r.koyu};white-space:nowrap}
+  .kart b{display:block;font:700 54px "Outfit";letter-spacing:-.015em;color:${r.koyu};white-space:nowrap}
   .pdf{position:absolute;width:760px;background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 50px 100px -40px ${r.koyu}AA,0 0 0 1px ${r.koyu}14}
   .pdf img{display:block;width:100%}
   .pdf.p1{left:70px;top:760px;transform:rotate(-4deg);z-index:2}.pdf.p2{left:330px;top:840px;transform:rotate(5deg)}
   .pdfetk{position:absolute;right:70px;top:700px;z-index:4;display:flex;align-items:center;gap:14px;background:${r.koyu};color:#fff;border-radius:99px;padding:14px 28px 14px 14px;font:600 26px Figtree;transform:rotate(3deg)}
-  .pdfetk b{background:#E2643D;border-radius:99px;padding:6px 16px;font:700 24px Figtree}
+  .pdfetk b{background:#3552B0;border-radius:99px;padding:6px 16px;font:700 24px Figtree}
   .pl{display:inline-block;margin-left:14px;vertical-align:middle;background:#0B3B33;color:#9FF0D6;border-radius:99px;padding:12px 22px;font:700 26px Figtree;letter-spacing:.06em}
   .gz{position:absolute;left:84px;right:84px;top:720px;display:flex;flex-direction:column;gap:26px}
   .gz div{display:flex;align-items:center;gap:30px;background:#fff;border-radius:40px;padding:36px 40px;box-shadow:0 30px 60px -36px ${r.koyu}77}
   .gz i{flex:none;width:96px;height:96px;border-radius:28px;background:${r.acik};color:${r.ana};padding:22px;box-sizing:border-box}
-  .gz b{display:block;font:700 46px "Bricolage Grotesque";letter-spacing:-.02em}
+  .gz b{display:block;font:700 46px "Outfit";letter-spacing:-.02em}
   .gz span{display:block;font:500 30px Figtree;color:${r.koyu}AA;margin-top:4px}
   </style></head><body><div class="s">
   <div class="ust"><span class="etk"><i>${e.ikon}</i>${e.etiket}</span>${e.plus ? '<span class="pl">✦ Plus</span>' : ''}
