@@ -209,10 +209,9 @@ const step = (ad, sonuc, detay) => { report.adimlar.push({ ad, sonuc, detay }); 
     step('Rapor (Plus) → ödeme ekranı açıldı', pw.acik && pw.planlar === 3, JSON.stringify(pw));
     await device.shell('input keyevent 4'); await wait(800);
     step('Geri tuşu ödeme ekranını kapatıyor', await page.evaluate(() => !document.querySelector('#paywall')));
-    // grafik kartı için ikinci (dünkü) tartı
+    // grafik kartı için ikinci tartı (ilk iğneden sonra sayılsın diye bugün)
     await tap(page, '.tab[data-tab="ozet"]'); await wait(700);
     await tap(page, '[data-open="weight"]'); await wait(600); await type(page, '#w-kg', '88,6');
-    await page.evaluate(() => { const d = new Date(); d.setDate(d.getDate() - 1); document.querySelector('#w-date').value = d.toISOString().slice(0, 10); });
     await tap(page, '#sheetRoot [type="submit"]'); await wait(1200);
     await tap(page, '.tab[data-tab="ozet"]'); await wait(700);
     await page.evaluate(() => { const b = document.querySelector('[data-chart="trend"]'); if (b) b.click(); }); await wait(900);
