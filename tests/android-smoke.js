@@ -111,8 +111,8 @@ const step = (ad, sonuc, detay) => { report.adimlar.push({ ad, sonuc, detay }); 
     await tap(page, '#sheetRoot [type="submit"]'); await wait(900);
     // Su
     await tap(page, '.tab[data-tab="besin"]'); await wait(600);
-    const su = page.locator('[data-wamt]').first();
-    if (await su.count()) { await tap(page, '[data-wamt]'); await wait(900); }
+    const su = page.locator('#wAdd');
+    if (await su.count()) { await tap(page, '#wAdd'); await wait(900); }
     await shot('besin-su-eklendi');
     const kayit = await page.evaluate(() => { try { const d = JSON.parse(localStorage.getItem('doz-defteri')); return { tarti: d.weights.length, igne: d.shots.length, gun: Object.keys(d.daily || {}).length }; } catch (e) { return String(e); } });
     step('Kayıt eklendi', kayit.tarti === 1 && kayit.igne === 1, JSON.stringify(kayit));

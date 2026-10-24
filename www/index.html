@@ -550,6 +550,10 @@ input:focus{background:var(--surface);border-color:var(--accent);outline:none}
 .stepper button:active{transform:scale(.94)}
 .stepper div{display:flex;align-items:baseline;justify-content:center;gap:3px}.stepper b{font:700 20px var(--f-display);letter-spacing:-.02em}.stepper span{font-size:12px;color:var(--muted)}
 .btn.waterbtn{background:linear-gradient(160deg,#4FA9CC,#2B7FA6);color:#fff;box-shadow:0 10px 22px -12px rgba(43,127,166,.7)}
+.wamts{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;background:var(--sunk);border-radius:16px;padding:5px}
+.wamts button{border:0;background:none;border-radius:12px;padding:8px 0 7px;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;color:var(--muted);font:700 15px var(--f-num)}
+.wamts button small{font:500 10.5px var(--f-body)}
+.wamts button[aria-checked="true"]{background:var(--surface);color:var(--water);box-shadow:0 2px 6px rgba(11,59,51,.12)}
 .vessels{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
 .vessels button{border:1px solid var(--line);background:var(--surface);border-radius:16px;padding:10px 2px 9px;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;color:var(--muted);font-family:var(--f-body);transition:border-color .2s,background .2s,color .2s}
 .vessels b{font-size:11px;font-weight:600;color:var(--fg);line-height:1.15;text-align:center;margin-top:2px}.vessels span{font-size:11px;font-weight:700;color:#2B7FA6}
@@ -1418,11 +1422,10 @@ function todayCard(){
         <span class="eyebrow" style="color:#2B7FA6">Su</span>
         <div class="wv"><b id="wVal">${ml(r.w)}</b><span>ml</span></div>
         <div class="wgoal"><div class="wbar"><i id="wBar" style="width:${Math.min(100,r.w/wg*100)}%"></i></div><span id="wGoalTxt">${wGoalTxt(r.w)}</span></div>
-        <div class="stepper" role="group" aria-label="Eklenecek miktar"><button type="button" data-wstep="-50" aria-label="50 ml azalt">−</button><div><b id="wAmtLbl">${wAmt}</b><span>ml</span></div><button type="button" data-wstep="50" aria-label="50 ml artır">+</button></div>
-        <button class="btn waterbtn" type="button" id="wAdd">Ekle</button>
       </div>
     </div>
-    <div><span class="eyebrow">Hızlı ekle</span><div class="vessels" style="margin-top:8px">${VESSELS.map(v=>`<button type="button" data-wamt="${v.ml}" aria-label="${v.n}, ${v.ml} ml ekle">${v.ic}<b>${v.n}</b><span>+${v.ml} ml</span></button>`).join("")}</div></div>
+    <div class="wamts" role="radiogroup" aria-label="Eklenecek miktar">${WAMTS.map(([v,l])=>`<button type="button" role="radio" data-wsel="${v}" aria-checked="${v===wAmt}"><b>${v}</b><small>${l}</small></button>`).join("")}</div>
+    <button class="btn waterbtn" type="button" id="wAdd"><span style="font-size:22px;line-height:0">+</span> <span id="wAmtLbl">${ml(wAmt)}</span> ml su ekle</button>
     <div class="wlog" id="wLog">${wLogHtml()}</div>
     <div class="hr"></div>
     <div><span class="eyebrow">Son 7 gün</span><div class="week" id="week" style="margin-top:8px">${weekHtml()}</div></div>
@@ -1444,6 +1447,7 @@ const VESSELS=[
  {ml:250,n:"Büyük bardak",ic:`<svg viewBox="0 0 48 48" width="44" height="44" aria-hidden="true"><path d="M7.5 9.5a3 3 0 0 1 3-3.2h27a3 3 0 0 1 3 3.2l-3 31.2a4 4 0 0 1-4 3.6H14.5a4 4 0 0 1-4-3.6z" fill="#DAF0F1"/><path d="M36.2 6.3h1.3a3 3 0 0 1 3 3.2l-3 31.2a4 4 0 0 1-4 3.6h-1.3a4 4 0 0 0 4-3.6z" fill="#BCE3E3"/><path d="M9.2 22.6c6-3.4 11.5-2.6 15.8 1 4.1-4.6 8.6-5.2 13-3.4l-2.1 19.8H11.4z" fill="#69C3EE"/><path d="M25 23.6c3.6-3.8 7.7-5 11.6-3.6 1.6.6 1.9 2.7.7 4-2.6 2.4-7.6 2.6-12.3-.4z" fill="#52B2D8"/><path d="M13.2 27.2l.8 6M13.9 36.2l.2 1.6" stroke="#9BE3FA" stroke-width="2.2" stroke-linecap="round"/><path d="M38 2.5l.8 2.3 2.3.8-2.3.8-.8 2.3-.8-2.3-2.3-.8 2.3-.8z" fill="#69C3EE"/></svg>`},
  {ml:330,n:"Küçük şişe",ic:`<svg viewBox="0 0 48 48" width="44" height="44" aria-hidden="true"><g transform="translate(6.5 4) scale(.76)"><rect x="18" y="1" width="12" height="6" rx="1.6" fill="#4F8BE8"/><path d="M19 7h10v3c6 2.4 8.6 6.4 8.6 11.6V45a4 4 0 0 1-4 4H14.4a4 4 0 0 1-4-4V21.6C10.4 16.4 13 12.4 19 10z" fill="#A6E0EE"/><rect x="10.4" y="21" width="27.2" height="15" fill="#4F8BE8"/><path d="M33.6 12.4c2.6 2.2 4 5.2 4 9.2V45a4 4 0 0 1-4 4h-2a4 4 0 0 0 4-4V21.6c0-3.6-.8-6.6-2-9.2z" fill="#000" opacity=".08"/><path d="M14.5 22v24" stroke="#fff" stroke-width="2.4" opacity=".35"/></g></svg>`},
  {ml:500,n:"Büyük şişe",ic:`<svg viewBox="0 0 48 48" width="44" height="44" aria-hidden="true"><rect x="18.5" y="2" width="11" height="5.5" rx="1" fill="#E8432E" stroke="#1E2230" stroke-width="1.8"/><path d="M20 7.5h8l6.5 9.3v26.1a3 3 0 0 1-3 3h-15a3 3 0 0 1-3-3V16.8z" fill="#8FDBF7"/><path d="M13.5 16.8h21v10.4h-21zM13.5 34h21v8.9a3 3 0 0 1-3 3h-15a3 3 0 0 1-3-3z" fill="#36B4E8"/><path d="M20 7.5h8l6.5 9.3v7c0 1.3-1.4 1.6-1.4 2.6s1.4 1.3 1.4 2.6-1.4 1.6-1.4 2.6 1.4 1.3 1.4 2.6v11.7a3 3 0 0 1-3 3h-15a3 3 0 0 1-3-3V31.2c0-1.3 1.4-1.6 1.4-2.6s-1.4-1.3-1.4-2.6 1.4-1.6 1.4-2.6-1.4-1.3-1.4-2.6v-3.1zM13.5 16.8h21" fill="none" stroke="#1E2230" stroke-width="1.8" stroke-linejoin="round"/><rect x="17" y="11.5" width="2" height="2" fill="#fff"/><rect x="23" y="25.4" width="2" height="2" fill="#fff"/><rect x="23" y="31" width="2" height="2" fill="#fff"/></svg>`}];
+const WAMTS=[[200,"bardak"],[250,"büyük"],[330,"şişe"],[500,"şişe"],[750,"matara"]];
 function wGoalTxt(w){const g=wGoal();return w>=g?`Hedef tamam · ${ml(g)} ml`:`${ml(g-w)} ml kaldı · hedef ${ml(g)} ml`}
 function wLogHtml(){const L=dayRec(today()).log.filter(x=>x[1]==="w");if(!L.length)return `<span class="muted" style="font-size:12.5px">Bugün henüz su eklenmedi.</span>`;
   return L.slice(-8).reverse().map(x=>`<span class="wl"><b>${x[2]} ml</b>${new Date(x[0]).toLocaleTimeString("tr-TR",{hour:"2-digit",minute:"2-digit"})}</span>`).join("")}
@@ -1561,15 +1565,14 @@ function undoLast(){
 }
 function setWAmt(v){
   wAmt=v; try{localStorage.setItem("hf-wamt",v)}catch(e){}
-  const lb=$("#wAmtLbl"); lb.textContent=v; if(lb.animate)lb.animate([{transform:"translateY(-3px)",opacity:.4},{transform:"none",opacity:1}],{duration:180,easing:"ease-out"});
-  document.querySelectorAll("[data-wamt]").forEach(b=>b.setAttribute("aria-pressed",+b.dataset.wamt===v));
+  const lb=$("#wAmtLbl"); if(lb){lb.textContent=ml(v); if(lb.animate)lb.animate([{transform:"translateY(-3px)",opacity:.4},{transform:"none",opacity:1}],{duration:180,easing:"ease-out"})}
+  document.querySelectorAll("[data-wsel]").forEach(b=>b.setAttribute("aria-checked",+b.dataset.wsel===v));
 }
 function bindToday(){
   const c=$("#todayCard"); if(!c)return;
   c.querySelectorAll("[data-food]").forEach(b=>b.addEventListener("click",()=>{const f=FOODS.find(x=>x.k===b.dataset.food);addProtein(f.g,f.k);if(b.animate)b.animate([{transform:"scale(.92)"},{transform:"none"}],{duration:260})}));
   $("#pOpen").addEventListener("click",openProteinSheet); bindPDel();
-  c.querySelectorAll("[data-wamt]").forEach(b=>b.addEventListener("click",()=>{setWAmt(+b.dataset.wamt);addWater();if(b.animate)b.animate([{transform:"scale(.92)"},{transform:"none"}],{duration:260,easing:"cubic-bezier(.3,1.6,.5,1)"})}));
-  c.querySelectorAll("[data-wstep]").forEach(b=>b.addEventListener("click",()=>setWAmt(Math.max(50,Math.min(1000,wAmt+ +b.dataset.wstep)))));
+  c.querySelectorAll("[data-wsel]").forEach(b=>b.addEventListener("click",()=>setWAmt(+b.dataset.wsel)));
   $("#wAdd").addEventListener("click",addWater);
   $("#undo").addEventListener("click",undoLast);
   GLASS=makeGlass($("#glassCv"),dayRec(today()).w/wGoal());
