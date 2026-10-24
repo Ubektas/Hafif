@@ -213,6 +213,37 @@ input[type=range].wr::-moz-range-thumb{width:20px;height:20px;border-radius:50%;
 .mtotal{display:flex;align-items:center;gap:12px;background:var(--accent-soft);border-radius:16px;padding:12px 14px}.mtotal b{font:700 28px/1 var(--f-display);color:var(--accent);letter-spacing:-.03em}.mtotal span{font-size:13px;color:var(--head);line-height:1.35}
 .mhist{display:flex;flex-direction:column}.mhist div{display:flex;align-items:center;gap:10px;padding:8px 0;border-top:1px solid var(--line);font-size:13px}.mhist div b{min-width:84px;font-weight:600}.mhist div span{flex:1;color:var(--muted);min-width:0}
 .mhist button{border:0;background:none;color:var(--muted);font-size:18px;padding:4px 2px 4px 8px;cursor:pointer}
+.plock{position:relative;border-radius:16px;overflow:hidden}
+.plock>.pbl{filter:blur(7px) saturate(.8);opacity:.55;pointer-events:none;user-select:none}
+.plock>.pov{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center;padding:16px;background:linear-gradient(180deg,transparent,color-mix(in oklab,var(--surface) 70%,transparent))}
+.pov b{font:700 17px var(--f-display);color:var(--head)}.pov span{font-size:13px;color:var(--muted);max-width:260px}
+.plusbtn{display:inline-flex;align-items:center;gap:8px;border:0;border-radius:99px;padding:11px 20px;font:700 14px var(--f-body);color:#fff;background:linear-gradient(160deg,var(--emerald-1),var(--emerald-2));box-shadow:0 10px 22px -12px rgba(11,59,51,.6);cursor:pointer}
+.ptag{display:inline-flex;align-items:center;gap:4px;font:700 10.5px var(--f-body);letter-spacing:.08em;text-transform:uppercase;color:#C9A04A;background:rgba(201,160,74,.14);border-radius:99px;padding:3px 8px;vertical-align:middle}
+.seg button{position:relative}.seg button .lk{position:absolute;top:1px;right:3px;font-size:8px;opacity:.6}
+#paywall{position:fixed;inset:0;z-index:60;background:var(--bg);overflow-y:auto;display:flex;flex-direction:column;animation:pwin .28s cubic-bezier(.2,.8,.2,1)}
+@keyframes pwin{from{transform:translateY(24px);opacity:0}to{transform:none;opacity:1}}
+#paywall .pwtop{position:relative;background:radial-gradient(120% 90% at 85% 0%,#1F8A70 0%,transparent 60%),linear-gradient(165deg,#0B3B33,#062520);color:#fff;padding:calc(30px + env(safe-area-inset-top,0px)) 24px 26px}
+#paywall .pwx{position:absolute;top:calc(14px + env(safe-area-inset-top,0px));right:14px;width:36px;height:36px;border-radius:50%;border:0;background:rgba(255,255,255,.14);color:#fff;font-size:18px;cursor:pointer}
+#paywall .pwk{font:700 12.5px var(--f-body);letter-spacing:.14em;text-transform:uppercase;color:var(--mint)}
+#paywall h1{margin:10px 0 0;font:700 34px/1.05 var(--f-display);letter-spacing:-.03em;color:#fff}
+#paywall .pwtop p{margin:8px 0 0;color:rgba(255,255,255,.78);font-size:14.5px}
+#paywall .pwb{padding:18px 20px calc(22px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:12px;max-width:560px;width:100%;margin:0 auto}
+.pwf{display:flex;flex-direction:column;gap:10px;margin-bottom:4px}
+.pwf div{display:flex;gap:12px;align-items:center;font-size:14.5px;line-height:1.3}.pwf small{color:var(--muted)}
+.pwf i{flex:none;width:32px;height:32px;border-radius:10px;display:grid;place-items:center;font-style:normal}
+.pwp{border:1.5px solid var(--line);border-radius:18px;padding:13px 16px;display:flex;align-items:center;gap:12px;background:var(--surface);position:relative;cursor:pointer;text-align:left;color:var(--fg);font:inherit;width:100%}
+.pwp b{font:700 16px var(--f-body);display:block}.pwp small{font-size:12.5px;color:var(--muted)}
+.pwp .pr{margin-left:auto;text-align:right}.pwp .pr b{font:700 18px var(--f-display)}.pwp .pr small{display:block}
+.pwp[aria-checked="true"]{border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in oklab,var(--accent) 18%,transparent)}
+.pwp .rd{width:20px;height:20px;border-radius:50%;border:2px solid var(--line);flex:none}.pwp[aria-checked="true"] .rd{border:6px solid var(--accent)}
+.pwp .bdg{position:absolute;top:-10px;left:16px;background:var(--accent);color:#fff;font:700 11px var(--f-body);border-radius:99px;padding:3px 9px;letter-spacing:.03em}
+.pwcta{border:0;border-radius:18px;padding:16px;font:700 16.5px var(--f-body);color:#fff;background:linear-gradient(160deg,var(--emerald-1),var(--emerald-2));box-shadow:0 12px 24px -12px rgba(11,59,51,.6);cursor:pointer}
+.pwcta:disabled{opacity:.6}
+.pwfine{font-size:11.5px;color:var(--muted);text-align:center;line-height:1.45;margin:0}
+.pwl{display:flex;justify-content:center;flex-wrap:wrap;gap:6px 16px}.pwl button,.pwl a{border:0;background:none;font:500 12.5px var(--f-body);color:var(--muted);text-decoration:underline;cursor:pointer;padding:2px}
+.plcard{display:flex;align-items:center;gap:14px;background:radial-gradient(120% 120% at 100% 0%,#1F8A70 0%,transparent 55%),linear-gradient(160deg,#0B3B33,#062520);color:#fff;border-radius:22px;padding:18px;cursor:pointer;border:0;text-align:left;width:100%;font:inherit}
+.plcard b{display:block;font:700 18px var(--f-display)}.plcard small{display:block;color:rgba(255,255,255,.75);font-size:13px;margin-top:2px}
+.plcard .st{width:44px;height:44px;border-radius:14px;background:rgba(159,240,214,.14);color:var(--mint);display:grid;place-items:center;font-size:20px;flex:none}
 .seg3{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;background:var(--sunk);border-radius:14px;padding:4px}
 .seg3 button{border:0;background:none;border-radius:11px;padding:10px;font:600 14px var(--f-body);color:var(--muted);cursor:pointer}
 .seg3 button[aria-checked="true"]{background:var(--surface);color:var(--fg);box-shadow:0 1px 3px rgba(0,0,0,.12)}
@@ -863,6 +894,74 @@ function doseTable(){
 function nextSite(){const s=sortedS();if(!s.length)return SITES[0];const i=SITES.indexOf(s[s.length-1].site);return SITES[(i+1)%SITES.length]}
 
 /* ---------- views ---------- */
+/* ---------- Hafif Plus (Google Play aboneliği; satın alma doğrudan telefon ile Google Play arasında) ---------- */
+const PLUS_ID="hafif_plus";
+const PLANS=[{k:"aylik",n:"Aylık",p:"99,99 ₺",m:"/ ay",sub:"her ay yenilenir",mo:1},{k:"uc-aylik",n:"3 aylık",p:"229,99 ₺",m:"76,66 ₺ / ay",sub:"%23 tasarruf",mo:3},{k:"yillik",n:"Yıllık",p:"499,99 ₺",m:"41,67 ₺ / ay",sub:"%58 tasarruf",mo:12,best:true}];
+const NATIVE=()=>!!(window.Capacitor&&window.Capacitor.isNativePlatform&&window.Capacitor.isNativePlatform());
+let plusOwned=(()=>{try{return localStorage.getItem("hf-plus")==="1"}catch(e){return false}})();
+function PLUS(){return NATIVE()?plusOwned:!S.profile.pvFree}
+const IAP=()=>window.CdvPurchase&&window.CdvPurchase.store||null;
+function iapInit(){
+  const st=IAP();if(!st||st.__hf)return;st.__hf=1;const C=window.CdvPurchase;
+  st.register([{id:PLUS_ID,type:C.ProductType.PAID_SUBSCRIPTION,platform:C.Platform.GOOGLE_PLAY}]);
+  st.when().approved(t=>t.verify()).verified(r=>r.finish())
+    .receiptUpdated(()=>{const o=!!st.owned(PLUS_ID);if(o!==plusOwned){plusOwned=o;try{localStorage.setItem("hf-plus",o?"1":"0")}catch(e){}if(o){closePaywall();toast("Hafif Plus açıldı. Teşekkürler!")}render()}})
+    .productUpdated(()=>{if($("#paywall"))pwRefresh()});
+  st.initialize([C.Platform.GOOGLE_PLAY]).catch(()=>{});
+}
+document.addEventListener("deviceready",iapInit,false);
+function pwOffer(k){const st=IAP();if(!st)return null;const pr=st.get(PLUS_ID);if(!pr||!pr.offers)return null;
+  const all=pr.offers.filter(o=>o.id===PLUS_ID+"@"+k||o.id.startsWith(PLUS_ID+"@"+k+"@"));
+  return all.find(o=>o.pricingPhases[0]&&o.pricingPhases[0].paymentMode==="FreeTrial"&&o.canPurchase!==false)||all.find(o=>o.id===PLUS_ID+"@"+k)||all[0]||null}
+function pwTrial(o){const ph=o&&o.pricingPhases[0];if(!ph||ph.paymentMode!=="FreeTrial")return "";const m=/P(\d+)([DWM])/.exec(ph.billingPeriod||"");if(!m)return "ücretsiz deneme";return `${+m[1]*(m[2]==="W"?7:1)} ${m[2]==="M"?"ay":"gün"} ücretsiz`}
+let pwSel="yillik";
+function pwPlansHtml(){
+  return PLANS.map(P=>{const o=pwOffer(P.k),last=o&&o.pricingPhases[o.pricingPhases.length-1],price=last?last.price:P.p,tr=pwTrial(o);
+    let per=P.m;if(last&&P.mo>1&&last.priceMicros)per=(last.priceMicros/1e6/P.mo).toLocaleString("tr-TR",{style:"currency",currency:last.currency||"TRY"})+" / ay";
+    const bdg=P.best?`EN AVANTAJLI${tr?" · "+tr.toLocaleUpperCase("tr-TR"):""}`:tr?tr.toLocaleUpperCase("tr-TR"):"";
+    return `<button type="button" class="pwp" role="radio" data-pw="${P.k}" aria-checked="${P.k===pwSel}">${bdg?`<span class="bdg">${bdg}</span>`:""}<span class="rd"></span><span><b>${P.n}</b><small>${P.sub}</small></span><span class="pr"><b>${price}</b><small>${per}</small></span></button>`}).join("");
+}
+function pwCta(){const o=pwOffer(pwSel),tr=pwTrial(o),P=PLANS.find(x=>x.k===pwSel),last=o&&o.pricingPhases[o.pricingPhases.length-1];
+  return {btn:tr?tr.charAt(0).toLocaleUpperCase("tr-TR")+tr.slice(1)+" dene":"Hafif Plus'a geç",fine:`${tr?`Deneme bitince ${last?last.price:P.p} alınır. `:""}Abonelik, iptal edilmedikçe ${P.mo===1?"her ay":P.mo===3?"3 ayda bir":"yılda bir"} Google Play hesabından otomatik yenilenir. İstediğin zaman Google Play → Abonelikler'den iptal edebilirsin.`}}
+function pwRefresh(){const w=$("#paywall");if(!w)return;$("#pwPlans").innerHTML=pwPlansHtml();const c=pwCta();$("#pwBuy").textContent=c.btn;$("#pwFine").textContent=c.fine;bindPw()}
+function bindPw(){document.querySelectorAll("[data-pw]").forEach(b=>b.addEventListener("click",()=>{pwSel=b.dataset.pw;pwRefresh()}))}
+function closePaywall(){const w=$("#paywall");if(w)w.remove()}
+function openPaywall(src){
+  closePaywall();if(PLUS()&&NATIVE())return;iapInit();
+  const d=document.createElement("div");d.id="paywall";d.setAttribute("role","dialog");d.setAttribute("aria-modal","true");d.setAttribute("aria-label","Hafif Plus");
+  const c=pwCta();
+  d.innerHTML=`<div class="pwtop"><button type="button" class="pwx" id="pwX" aria-label="Kapat">✕</button><span class="pwk">✦ Hafif Plus</span><h1>Kilo vermenin<br>en hafif yolu.</h1><p>Tüm grafikler, doktor raporu ve yan etki analizi tek abonelikte.</p></div>
+    <div class="pwb">
+      <div class="pwf">
+        <div><i style="background:var(--accent-soft)">📈</i><span>Kilo değişiminin tüm grafikleri<br><small>İğne, haftalık, trend, ilaç düzeyi ve yağ</small></span></div>
+        <div><i style="background:var(--accent-soft)">📄</i><span>Doktor için PDF rapor<br><small>Kilo, doz, yan etki ve ölçüler tek dosyada</small></span></div>
+        <div><i style="background:var(--shot-soft)">🧭</i><span>Yan etki analizi<br><small>Hangi gün, hangi belirti yoğunlaşıyor</small></span></div>
+        <div><i style="background:var(--protein-soft)">🍽️</i><span>Kalori ve yemek takibi<br><small>yakında · aboneliğine dahil</small></span></div>
+      </div>
+      <div id="pwPlans" role="radiogroup" aria-label="Plan" style="display:flex;flex-direction:column;gap:12px">${pwPlansHtml()}</div>
+      <button type="button" class="pwcta" id="pwBuy">${c.btn}</button>
+      <p class="pwfine" id="pwFine">${c.fine}</p>
+      <p class="pwfine" id="pwMsg" role="status" style="color:var(--bad)"></p>
+      <div class="pwl"><button type="button" id="pwRestore">Satın alımları geri yükle</button><button type="button" id="pwManage">Aboneliği yönet</button><a href="https://ubektas.github.io/hafif-gizlilik/" target="_blank" rel="noopener">Gizlilik</a></div>
+    </div>`;
+  document.body.appendChild(d);bindPw();
+  $("#pwX").addEventListener("click",closePaywall);
+  $("#pwBuy").addEventListener("click",async()=>{const m=$("#pwMsg");m.textContent="";
+    if(!NATIVE()){toast("Satın alma Android uygulamasında yapılır");return}
+    const o=pwOffer(pwSel);if(!o){m.textContent="Abonelik bilgisi Google Play'den alınamadı. İnternet bağlantını kontrol edip tekrar dene.";return}
+    const b=$("#pwBuy");b.disabled=true;try{const err=await o.order();if(err&&err.code!==window.CdvPurchase.ErrorCode.PAYMENT_CANCELLED)m.textContent="Satın alma tamamlanamadı: "+(err.message||"bilinmeyen hata")}catch(e){m.textContent="Satın alma başlatılamadı."}b.disabled=false});
+  $("#pwRestore").addEventListener("click",async()=>{const st=IAP();if(!st){toast(NATIVE()?"Google Play'e bağlanılamadı":"Bu görünümde satın alma yok");return}await st.restorePurchases().catch(()=>{});toast(st.owned(PLUS_ID)?"Hafif Plus geri yüklendi":"Bu hesapta etkin bir Hafif Plus aboneliği bulunamadı")});
+  $("#pwManage").addEventListener("click",()=>{const st=IAP();if(st&&st.manageSubscriptions)st.manageSubscriptions().catch(()=>{});else window.open("https://play.google.com/store/account/subscriptions","_blank")});
+}
+const plock=(html,title,sub)=>`<div class="plock"><div class="pbl" aria-hidden="true">${html}</div><div class="pov"><b>${title}</b><span>${sub}</span><button type="button" class="plusbtn" data-plus>✦ Plus'a geç</button></div></div>`;
+function plusCard(){
+  if(PLUS()&&NATIVE()) return `<button type="button" class="plcard" id="plManage"><span class="st">✦</span><span style="flex:1"><b>Hafif Plus aktif</b><small>Teşekkürler! Aboneliğini Google Play'den yönetebilirsin.</small></span></button>`;
+  if(!NATIVE()) return `<div class="card" style="display:flex;flex-direction:column;gap:10px"><div><h2>Hafif Plus <span class="ptag">Önizleme</span></h2><span class="muted" style="font-size:13px">Claude'da tüm Plus özellikleri açık. Android'deki ücretsiz görünümü ve ödeme ekranını buradan deneyebilirsin.</span></div>
+    <label class="sw" style="padding:2px 0"><span><b>Ücretsiz sürümü göster</b><small>kilitli alanlar bulanık görünür</small></span><input type="checkbox" id="pvFree" ${S.profile.pvFree?"checked":""}><i></i></label>
+    <button type="button" class="btn ghost" data-plus>Ödeme ekranını aç</button></div>`;
+  return `<button type="button" class="plcard" data-plus><span class="st">✦</span><span style="flex:1"><b>Hafif Plus'a geç</b><small>Tüm grafikler, doktor raporu ve yan etki analizi</small></span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg></button>`;
+}
+
 /* görünüm: sistem / açık / koyu */
 const darkMQ=window.matchMedia?matchMedia("(prefers-color-scheme: dark)"):null;
 function applyTheme(){const t=(S.profile&&S.profile.theme)||"sys",d=t==="dark"||(t==="sys"&&darkMQ&&darkMQ.matches);
@@ -1948,6 +2047,7 @@ function rpPages(){
   return pages;
 }
 async function exportPdf(){
+  if(!PLUS()){openPaywall("pdf");return}
   const st=$("#dataMsg");if(!S.weights.length&&!S.shots.length){st.textContent="Rapor için önce birkaç kayıt gir.";return}
   st.textContent="Rapor hazırlanıyor…";
   try{try{await document.fonts.ready}catch(_){}
@@ -1959,7 +2059,7 @@ function dataCard(){
   return `<div class="card" style="display:flex;flex-direction:column;gap:12px">
     <div><h2>Verilerim</h2><span class="muted" style="font-size:13px">${S.weights.length} tartı${SHOTS()?` · ${S.shots.length} iğne`:""} · ${Object.keys(S.daily||{}).length} gün protein ve su</span></div>
     ${bkLine()}
-    <button type="button" class="btn" id="exPdf" style="background:var(--emerald-2)">Doktor için rapor (PDF)</button>
+    <button type="button" class="btn" id="exPdf" style="background:var(--emerald-2)">Doktor için rapor (PDF)${PLUS()?"":' <span class="ptag" style="margin-left:6px">✦ Plus</span>'}</button>
     <button type="button" class="btn ghost" id="exXlsx">Excel olarak indir</button>
     <div style="display:flex;gap:8px"><button type="button" class="btn ghost" id="exJson" style="flex:1">Yedek dosyası indir</button>
       <label class="btn ghost" style="flex:1;text-align:center;flex-direction:row;display:block;color:var(--fg);font-size:15px">Yedekten yükle<input type="file" id="rsFile" accept=".json,application/json" hidden></label></div>
@@ -2365,8 +2465,8 @@ function chartCard(){
   else {body=chart();legend=SHOTS()?`<span>Kilo</span><span class="sd">İğne günü</span>`:`<span>Kilo</span>`}
   return `<div class="card" style="display:flex;flex-direction:column;gap:10px">
     <div><h2>Kilo değişimi</h2><span class="muted" style="font-size:13px">${sub}</span></div>
-    <div class="seg" role="tablist" style="grid-template-columns:repeat(${modes.length},1fr)">${modes.map(([k,l])=>`<button role="tab" aria-selected="${k===chartMode}" data-chart="${k}">${l}</button>`).join("")}</div>
-    ${body}<div class="legend">${legend}</div></div>`;
+    <div class="seg" role="tablist" style="grid-template-columns:repeat(${modes.length},1fr)">${modes.map(([k,l])=>`<button role="tab" aria-selected="${k===chartMode}" data-chart="${k}">${l}${k!=="egri"&&!PLUS()?'<span class="lk">🔒</span>':""}</button>`).join("")}</div>
+    ${chartMode!=="egri"&&!PLUS()?plock(body+`<div class="legend">${legend}</div>`,"Bu grafik Hafif Plus'ta",{igne:"Her iki iğne arasında kaç kilo verdiğini gör.",hafta:"Haftadan haftaya değişimini gör.",trend:"Ortalamanı ve 4 haftalık tahminini gör.",ilac:"İlaç düzeyiyle kilonun ilişkisini gör.",yag:"Yağ oranı ve yağ kütlendeki değişimi gör."}[chartMode]):body+`<div class="legend">${legend}</div>`}</div>`;
 }
 function weekly(){
   const m=new Map();
@@ -2560,7 +2660,7 @@ function sideCard(){
       <div class="sedays">${[0,1,2].map(i=>{const dd=addDays(today(),-i);return `<button type="button" data-sed="${dd}" aria-pressed="${dd===d}">${i===0?"Bugün":i===1?"Dün":toD(dd).toLocaleDateString("tr-TR",{weekday:"long"})}</button>`}).join("")}</div>
     <div class="segrid">${SE.map(([k,t])=>{const lv=r[k]||0;return `<button type="button" data-se="${k}" data-lv="${lv}" aria-label="${t}: ${SE_LV[lv]}"><b>${t}</b><span class="sv"><i><u></u><u></u><u></u></i>${SE_LV[lv]}</span></button>`}).join("")}</div>
     <span class="muted" style="font-size:12.5px">Dokundukça artar: yok → hafif → orta → şiddetli. Şiddetli ya da geçmeyen yan etkilerde doktoruna danış.</span>
-    ${any?`<div class="hr"></div><div><span class="eyebrow">İğneden sonraki günlere göre</span><div class="sepat" style="margin-top:10px">${st.avg.map((v,i)=>`<div><i class="${v===mx?"hi":""}" style="height:${Math.max(6,v/mx*100)}%"></i><span>${i===0?"İğne":i+". g"}</span></div>`).join("")}</div></div><div class="seins">${ins}</div>`:st.days?`<span class="muted" style="font-size:12.5px">Birkaç gün daha kaydedince yan etkilerinin hangi günlerde yoğunlaştığını burada göreceksin.</span>`:""}
+    ${any?(()=>{const h=`<div><span class="eyebrow">İğneden sonraki günlere göre</span><div class="sepat" style="margin-top:10px">${st.avg.map((v,i)=>`<div><i class="${v===mx?"hi":""}" style="height:${Math.max(6,v/mx*100)}%"></i><span>${i===0?"İğne":i+". g"}</span></div>`).join("")}</div></div><div class="seins" style="margin-top:12px">${ins}</div>`;return `<div class="hr"></div>`+(PLUS()?h:plock(h,"Yan etki analizi Plus'ta","Belirtilerinin iğneden sonraki hangi günlerde yoğunlaştığını gör."))})():st.days?`<span class="muted" style="font-size:12.5px">Birkaç gün daha kaydedince yan etkilerinin hangi günlerde yoğunlaştığını burada göreceksin.</span>`:""}
   </div>`;
 }
 /* ---------- kalem stoğu ---------- */
@@ -2608,7 +2708,7 @@ function vIgne(){
 
 function vAyar(){
   const P=S.profile;
-  return `<section><form id="fAyar" class="card form2">
+  return `<section>${plusCard()}<form id="fAyar" class="card form2">
     <div class="fsec"><span>Tedavi</span></div>
     <label class="sw" style="padding:2px 0"><span><b>Haftalık iğne kullanıyorum</b><small>kapalıyken iğne bölümleri gizlenir, kayıtların silinmez</small></span><input type="checkbox" id="a-shots" ${SHOTS()?"checked":""}><i></i></label>
     <div class="two" id="a-shotf" ${SHOTS()?"":"hidden"}><label>İlaç adı<input id="a-drug" value="${esc(P.drug||"")}" placeholder="ör. ilacının adı"></label>
@@ -3032,6 +3132,9 @@ function bindView(){
   v.querySelectorAll("[data-edit-shot]").forEach(b=>b.addEventListener("click",()=>openSheet("shot",b.dataset.editShot)));
   v.querySelectorAll("svg[data-sid]").forEach(bindScrub);
   bindToday(); bindIgne(); bindKilo();
+  v.querySelectorAll("[data-plus]").forEach(b=>b.addEventListener("click",e=>{e.stopPropagation();openPaywall("kilit")}));
+  const pf=$("#pvFree");if(pf)pf.addEventListener("change",()=>{S.profile.pvFree=pf.checked;save();render()});
+  const pm=$("#plManage");if(pm)pm.addEventListener("click",()=>{const st=IAP();if(st&&st.manageSubscriptions)st.manageSubscriptions().catch(()=>{})});
   v.querySelectorAll("[data-theme-set]").forEach(b=>b.addEventListener("click",()=>{S.profile.theme=b.dataset.themeSet;save();render()}));
   v.querySelectorAll("[data-chart]").forEach(b=>b.addEventListener("click",()=>{chartMode=b.dataset.chart;ANIM=true;try{localStorage.setItem("dd-chart",chartMode)}catch(e){}render()}));
   v.querySelectorAll("[data-go]").forEach(b=>b.addEventListener("click",()=>{selPhase=null;ANIM=true;tab=b.dataset.go;render();window.scrollTo(0,0)}));
@@ -3083,6 +3186,7 @@ boot();
 /* Android geri tuşu: önce kutlamayı, sonra açık alt sayfayı kapatır, sonra Özet'e döner, en son uygulamadan çıkar */
 if(CAP&&CAP.App)window.Capacitor.addListener("App","backButton",()=>{
   const c=$("#celeb");if(c){c.remove();return}
+  const pw=$("#paywall");if(pw){pw.remove();return}
   if($("#onb")){if(OB&&OB.step>1)obBack();else CAP.App.exitApp();return}
   if($("#sheetRoot").firstChild){closeSheet();return}
   if(tab!=="ozet"){selPhase=null;tab="ozet";render();window.scrollTo(0,0);return}

@@ -16,7 +16,8 @@
     "@capacitor/filesystem": "^8.1.5",
     "@capacitor/local-notifications": "^8.3.1",
     "@capacitor/share": "^8.0.3",
-    "@capgo/capacitor-health": "^8.11.12"
+    "@capgo/capacitor-health": "^8.11.12",
+    "cordova-plugin-purchase": "^13.19.1"
   },
   "devDependencies": {
     "@capacitor/assets": "^3.0.5",

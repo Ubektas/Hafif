@@ -200,13 +200,21 @@ const step = (ad, sonuc, detay) => { report.adimlar.push({ ad, sonuc, detay }); 
     const msg2 = await page.textContent('#dataMsg');
     step('Excel dosyası hata mesajı yok', !msg2, msg2);
 
-    await tap(page, '#exPdf'); await wait(5000);
-    await shot('rapor-paylas-penceresi');
-    const pencere3 = (await device.shell('dumpsys window | grep mCurrentFocus')).toString();
-    step('Doktor raporu (PDF) → paylaş penceresi', !/hafif\/.*MainActivity/.test(pencere3), pencere3.trim());
-    await device.shell('input keyevent 4'); await wait(1000);
-    const msg3 = await page.textContent('#dataMsg');
-    step('Rapor hata mesajı yok', !msg3, msg3);
+    // Hafif Plus: ücretsiz kullanıcıda rapor ödeme ekranını açar; Google Play faturalandırma eklentisi yüklü
+    const iap = await page.evaluate(() => !!(window.CdvPurchase && window.CdvPurchase.store));
+    step('Google Play faturalandırma eklentisi yüklendi', iap);
+    await tap(page, '#exPdf'); await wait(2500);
+    await shot('odeme-ekrani');
+    const pw = await page.evaluate(() => ({ acik: !!document.querySelector('#paywall'), planlar: document.querySelectorAll('[data-pw]').length, baslik: (document.querySelector('#paywall h1') || {}).textContent }));
+    step('Rapor (Plus) → ödeme ekranı açıldı', pw.acik && pw.planlar === 3, JSON.stringify(pw));
+    await device.shell('input keyevent 4'); await wait(800);
+    step('Geri tuşu ödeme ekranını kapatıyor', await page.evaluate(() => !document.querySelector('#paywall')));
+    await tap(page, '.tab[data-tab="ozet"]'); await wait(700);
+    await page.evaluate(() => { const b = document.querySelector('[data-chart="trend"]'); if (b) b.click(); }); await wait(900);
+    const kilit = await page.evaluate(() => !!document.querySelector('.plock [data-plus]'));
+    await shot('kilitli-grafik');
+    step('Plus grafikleri kilitli görünüyor', kilit);
+    await page.evaluate(() => { const b = document.querySelector('[data-chart="egri"]'); if (b) b.click(); }); await wait(500);
   } catch (e) {
     report.hatalar.push('TEST HATASI: ' + (e && e.stack || e));
     try { await shot('hata-ani'); } catch (_) {}

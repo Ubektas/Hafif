@@ -79,6 +79,7 @@ s = rep(s, "boot();\n})();", """boot();
 /* Android geri tuşu: önce kutlamayı, sonra açık alt sayfayı kapatır, sonra Özet'e döner, en son uygulamadan çıkar */
 if(CAP&&CAP.App)window.Capacitor.addListener("App","backButton",()=>{
   const c=$("#celeb");if(c){c.remove();return}
+  const pw=$("#paywall");if(pw){pw.remove();return}
   if($("#onb")){if(OB&&OB.step>1)obBack();else CAP.App.exitApp();return}
   if($("#sheetRoot").firstChild){closeSheet();return}
   if(tab!=="ozet"){selPhase=null;tab="ozet";render();window.scrollTo(0,0);return}

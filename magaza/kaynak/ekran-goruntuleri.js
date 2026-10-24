@@ -40,6 +40,7 @@ function ornekVeri() {
   const ctx = await b.newContext({ viewport: { width: 405, height: 720 }, deviceScaleFactor: 2.6667, isMobile: true, hasTouch: true, locale: 'tr-TR', timezoneId: 'Europe/Istanbul' });
   await ctx.addInitScript(([veri, bugun]) => {
     localStorage.setItem('doz-defteri', JSON.stringify(veri));
+    localStorage.setItem('hf-plus', '1');
     const T = new Date(bugun + 'T14:20:00+03:00').getTime(), D = Date, off = T - D.now();
     class FD extends D { constructor(...a) { super(...(a.length ? a : [D.now() + off])); } static now() { return D.now() + off; } }
     window.Date = FD;
