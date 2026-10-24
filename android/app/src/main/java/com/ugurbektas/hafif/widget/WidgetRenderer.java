@@ -476,9 +476,12 @@ final class WidgetRenderer {
         dark = darkBg;
         RectF r = new RectF(0, 0, W, H);
         p.setShader(null);
+        p.setStyle(Paint.Style.FILL);
+        p.setColor(0xFF000000); // önceki çizimden kalan saydamlık gölgelendiriciye geçmesin
         if (darkBg) {
             p.setShader(new LinearGradient(0, 0, W * 0.6f, H, 0xFF0B3B33, 0xFF062520, Shader.TileMode.CLAMP));
             c.drawRoundRect(r, 22, 22, p);
+            p.setColor(0xFF000000);
             p.setShader(new RadialGradient(W, 0, Math.max(W, H) * 0.9f, 0x991F8A70, 0x001F8A70, Shader.TileMode.CLAMP));
             c.drawRoundRect(r, 22, 22, p);
         } else {
@@ -698,6 +701,8 @@ final class WidgetRenderer {
             d0 = Math.min(d0, q.optDouble(0)); d1 = Math.max(d1, q.optDouble(0));
         }
         mn -= 0.3; mx += 0.3;
+        boolean byIndex = d1 - d0 < 1; // hepsi aynı gün: eşit aralıklı çiz
+        if (byIndex) { d0 = 0; d1 = pts.length() - 1; }
         double span = Math.max(1, d1 - d0);
         if (shotLines && shots != null) {
             p.setStyle(Paint.Style.STROKE);
@@ -706,7 +711,7 @@ final class WidgetRenderer {
             p.setPathEffect(new android.graphics.DashPathEffect(new float[]{3, 3}, 0));
             for (int i = 0; i < shots.length(); i++) {
                 double sd = shots.optDouble(i);
-                if (sd < d0 || sd > d1) continue;
+                if (byIndex || sd < d0 || sd > d1) continue;
                 float sx = x + (float) ((sd - d0) / span) * w;
                 c.drawLine(sx, y, sx, y + h, p);
             }
@@ -715,7 +720,7 @@ final class WidgetRenderer {
         Path line = new Path(), area = new Path();
         for (int i = 0; i < pts.length(); i++) {
             JSONArray q = pts.optJSONArray(i);
-            float px = x + (float) ((q.optDouble(0) - d0) / span) * w;
+            float px = x + (float) (((byIndex ? i : q.optDouble(0)) - d0) / span) * w;
             float py = y + 4 + (float) ((mx - q.optDouble(1)) / (mx - mn)) * (h - 8);
             if (i == 0) { line.moveTo(px, py); area.moveTo(px, y + h); area.lineTo(px, py); }
             else { line.lineTo(px, py); area.lineTo(px, py); }

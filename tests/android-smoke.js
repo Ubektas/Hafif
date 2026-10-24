@@ -236,11 +236,19 @@ const step = (ad, sonuc, detay) => { report.adimlar.push({ ad, sonuc, detay }); 
 
     // Ana ekran widget'ları: 10 sağlayıcı kayıtlı, veri dosyası yazılıyor, çizimler üretiliyor, widget bağlantısı çalışıyor
     const aw = (await device.shell('dumpsys appwidget')).toString();
-    const saglayici = new Set((aw.match(/com\.ugurbektas\.hafif\/\.widget\.HafifWidgets\$\w+/g) || [])).size;
+    const saglayici = new Set((aw.match(/HafifWidgets\$\w+/g) || [])).size;
     step('10 widget sağlayıcısı kayıtlı', saglayici === 10, saglayici + ' sağlayıcı');
     await wait(1500);
     const wj = (await device.shell(`run-as ${PKG} cat files/widget.json`)).toString();
     step('Widget veri dosyası yazıldı', wj.includes('"cyc"') && wj.includes('"day"'), wj.slice(0, 100));
+    await page.evaluate(() => { const S = JSON.parse(localStorage.getItem('doz-defteri')); const ago = n => { const d = new Date(); d.setDate(d.getDate() - n); return d.toISOString().slice(0, 10); };
+      S.profile.goalWeight = 80; S.profile.since = new Date().toISOString().slice(0, 10);
+      S.supps = [{ id: 'mg', name: 'Magnezyum', slots: ['sabah', 'aksam'], slot: 'sabah', days: [0, 1, 2, 3, 4, 5, 6], shape: 'caps', color: '#4F8FDB' }, { id: 'om', name: 'Omega-3', slot: 'aksam', days: [0, 1, 2, 3, 4, 5, 6], shape: 'oval', color: '#E9D59A' }];
+      [[20, 92.4], [14, 91.1], [7, 90.2], [3, 89.4]].forEach(([g, k], i) => S.weights.push({ id: 'wt' + i, date: ago(g), kg: k, t: i }));
+      S.shots.forEach(x => { x.date = ago(21); }); S.shots.push({ id: 'sh2', date: ago(14), time: '09:00', dose: '5', site: 'Karın sağ' }, { id: 'sh3', date: ago(7), time: '09:00', dose: '5', site: 'Uyluk sol' }, { id: 'sh4', date: ago(2), time: '09:00', dose: '5', site: 'Uyluk sağ' });
+      localStorage.setItem('doz-defteri', JSON.stringify(S)); });
+    await page.reload(); await page.waitForSelector('#view'); await wait(4000);
+    await page.evaluate(() => { const x = document.querySelector('#pwX'); if (x) x.click(); });
     const pv = await page.evaluate(async () => { try { return (await window.Capacitor.Plugins.HafifWidget.preview()).files; } catch (e) { return 'HATA ' + e.message; } });
     const dosyalar = String(pv).split(',').filter(Boolean);
     for (const f of dosyalar) {
