@@ -1,0 +1,65 @@
+<!doctype html><html lang="tr"><head><meta charset="utf-8">
+<link rel="stylesheet" href="../../www/fonts/fonts.css">
+<style>
+:root{--bg:#F1F5F3;--surface:#fff;--sunk:#EDF3F0;--fg:#0B2420;--muted:#5F726C;--line:#E0E8E4;--em:#0B3B33;--w:#2C8FE0;--ws:#E7F3F6;--wd:#2B7FA6;--fd:"Bricolage Grotesque",sans-serif;--fb:"Figtree",sans-serif}
+*{box-sizing:border-box}
+body{margin:0;background:#DCE6E1;font-family:var(--fb);color:var(--fg);display:flex}
+.col{width:446px;padding:28px;display:flex;flex-direction:column;gap:14px}
+.lab{font:700 30px var(--fd);letter-spacing:-.02em;color:var(--em)}.lab span{color:var(--w)}
+.sub{font-size:15px;color:var(--muted);margin-top:-8px;line-height:1.4;min-height:63px}
+.card{background:var(--surface);border-radius:26px;padding:20px;display:flex;flex-direction:column;gap:14px;box-shadow:0 1px 0 var(--line),0 10px 30px -22px rgba(11,59,51,.35)}
+.top{display:flex;gap:16px;align-items:center}
+.ey{font:600 12px var(--fb);letter-spacing:.14em;text-transform:uppercase;color:var(--wd)}
+.big{font:700 46px/1 var(--fd);letter-spacing:-.04em;color:var(--fg)}.big small{font:500 18px var(--fb);color:var(--muted);letter-spacing:0;margin-left:3px}
+.bar{height:8px;border-radius:9px;background:var(--ws);overflow:hidden}.bar i{display:block;height:100%;width:50%;border-radius:9px;background:linear-gradient(90deg,#7CC0F4,#2B7FA6)}
+.muted{color:var(--muted);font-size:13px}
+.eb{font:600 11px var(--fb);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+/* A */
+.pills{display:flex;gap:8px;flex-wrap:wrap}
+.pill{display:inline-flex;align-items:center;gap:8px;border-radius:99px;padding:8px 14px 8px 8px;background:var(--ws);color:var(--wd);font:700 15px var(--fb)}
+.pill i{width:30px;height:30px;border-radius:50%;background:#fff;display:grid;place-items:center}
+.pill.on{background:var(--w);color:#fff}
+.pill.oth{background:var(--sunk);color:var(--fg);padding:8px 14px}
+.undo{display:flex;justify-content:space-between;align-items:center;background:var(--sunk);border-radius:14px;padding:10px 12px;font-size:13px}
+.undo b{color:var(--wd)}
+/* B */
+.glasses{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+.gl{position:relative;display:flex;justify-content:center;padding-bottom:4px}
+.gl svg{width:auto;height:58px}
+.gl span{position:absolute;inset:auto 0 -18px;text-align:center;font:600 10.5px var(--fb);color:var(--muted)}
+.gl.next{animation:none}
+.size{display:flex;justify-content:space-between;align-items:center}
+.size .chip{border:1px solid var(--line);border-radius:99px;padding:6px 12px;font:600 13px var(--fb);background:#fff}
+/* C */
+.amts{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;background:var(--sunk);border-radius:16px;padding:5px}
+.amts b{display:flex;flex-direction:column;align-items:center;gap:2px;border-radius:12px;padding:8px 0 7px;font:700 15px var(--fb);color:var(--muted)}
+.amts b small{font:500 10.5px var(--fb)}
+.amts b.on{background:#fff;color:var(--wd);box-shadow:0 2px 6px rgba(11,59,51,.12)}
+.addbig{display:flex;align-items:center;justify-content:center;gap:10px;border-radius:18px;padding:15px;font:700 17px var(--fb);color:#fff;background:linear-gradient(160deg,#4FA9CC,#2B7FA6);box-shadow:0 12px 24px -12px rgba(43,127,166,.7)}
+.log{display:flex;gap:6px;flex-wrap:wrap}.log span{background:var(--sunk);border-radius:99px;padding:4px 10px;font-size:12.5px}.log span b{margin-right:4px}
+</style></head><body>
+<script>
+const glassSVG=(f,sz=90)=>`<svg width="${sz*.7}" height="${sz}" viewBox="0 0 62 100"><clipPath id="c${sz}${f}"><path d="M4 4h54l-6 92H10z"/></clipPath><path d="M4 4h54l-6 92H10z" fill="#EEF4F8"/><rect clip-path="url(#c${sz}${f})" x="0" y="${4+92*(1-f)}" width="62" height="100" fill="#8FD0F2"/><path d="M4 4h54l-6 92H10z" fill="none" stroke="#C9D8E0" stroke-width="2.5"/></svg>`;
+const TOPH=`<div class="top">${glassSVG(.5,104)}<div style="flex:1;display:flex;flex-direction:column;gap:8px"><span class="ey">Su</span><div class="big">1.250<small>ml</small></div><div class="bar"><i></i></div><span class="muted">1.250 ml kaldı · hedef 2.500 ml</span></div></div>`;
+const ic={k:'<svg width="18" height="18" viewBox="0 0 24 24"><path d="M5 4h14l-1.6 16H6.6z" fill="#8FD0F2" stroke="#2B7FA6" stroke-width="1.6" stroke-linejoin="round"/></svg>',
+ b:'<svg width="18" height="18" viewBox="0 0 24 24"><path d="M4.5 3h15l-1.8 18H6.3z" fill="#8FD0F2" stroke="#2B7FA6" stroke-width="1.6" stroke-linejoin="round"/><path d="M5 8h14" stroke="#2B7FA6" stroke-width="1.2"/></svg>',
+ s:'<svg width="18" height="18" viewBox="0 0 24 24"><path d="M10 2h4v3l2 3v12a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2V8l2-3z" fill="#8FD0F2" stroke="#2B7FA6" stroke-width="1.6" stroke-linejoin="round"/></svg>',
+ S:'<svg width="18" height="18" viewBox="0 0 24 24"><path d="M9.5 1.5h5v3l2.5 3.5v13a2 2 0 0 1-2 2h-6a2 2 0 0 1-2-2V8l2.5-3.5z" fill="#8FD0F2" stroke="#2B7FA6" stroke-width="1.6" stroke-linejoin="round"/><path d="M7 12h10" stroke="#2B7FA6" stroke-width="1.2"/></svg>'};
+document.body.innerHTML=`
+<div class="col"><div class="lab"><span>A</span> · Tek sıra</div><div class="sub">Dört büyük kutu yerine tek sırada küçük düğmeler. Dokun = eklenir; az önceki ekleme hemen altta, geri alınabilir. Sayaç (− 250 +) ve Ekle düğmesi kalkar.</div>
+<div class="card">${TOPH}<span class="eb">Bir dokunuşla ekle</span>
+ <div class="pills"><span class="pill"><i>${ic.k}</i>200</span><span class="pill on"><i>${ic.b}</i>250</span><span class="pill"><i>${ic.s}</i>330</span><span class="pill"><i>${ic.S}</i>500</span><span class="pill oth">Diğer…</span></div>
+ <div class="undo"><span><b>+250 ml</b> eklendi · 14:37</span><span style="font-weight:700;text-decoration:underline">Geri al</span></div></div></div>
+
+<div class="col"><div class="lab"><span>B</span> · Bardak sayacı</div><div class="sub">Hedef bardaklara bölünür (2.500 ml = 10 bardak). Sıradaki boş bardağa dokun, dolsun; dolu olana dokunursan boşalır. Bardak boyunu bir kez seçersin.</div>
+<div class="card"><div class="top" style="gap:12px"><div style="flex:1;display:flex;flex-direction:column;gap:6px"><span class="ey">Su</span><div class="big">5<small>/ 10 bardak</small></div><span class="muted">1.250 / 2.500 ml</span></div></div>
+ <div class="glasses">${Array.from({length:10},(_,i)=>`<div class="gl">${glassSVG(i<5?.85:i===5?0:0,64)}${i===5?'<span style="color:#2B7FA6;font-weight:700">dokun</span>':''}</div>`).join('')}</div>
+ <div class="size" style="margin-top:14px"><span class="muted">Bir bardak</span><span class="chip">250 ml ▾</span></div>
+ <span class="muted" style="font-size:12px">Şişeden içtiysen: uzun bas → 330 / 500 ml</span></div></div>
+
+<div class="col"><div class="lab"><span>C</span> · Miktar seç + Ekle</div><div class="sub">Sayaç ve hızlı ekle tek parçada birleşir: miktarı seç, büyük düğmeye bas. Son seçtiğin miktar hatırlanır; günün girişleri altta.</div>
+<div class="card">${TOPH}
+ <div class="amts"><b>200<small>bardak</small></b><b class="on">250<small>büyük</small></b><b>330<small>şişe</small></b><b>500<small>şişe</small></b><b>750<small>matara</small></b></div>
+ <div class="addbig"><span style="font-size:22px;line-height:0">+</span> 250 ml su ekle</div>
+ <div class="log"><span><b>500 ml</b>09:10</span><span><b>250 ml</b>11:45</span><span><b>500 ml</b>14:37</span></div></div></div>`;
+</script></body></html>
