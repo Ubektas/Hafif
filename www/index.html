@@ -141,6 +141,7 @@ details.how p{margin:8px 0 0}
 .pring .c{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
 .pring .c b{font-family:var(--f-display);font-size:20px;color:var(--fg);letter-spacing:-.02em;text-transform:none}
 .inl{display:flex;gap:6px;margin-top:8px}
+.sheet form.inl{flex-direction:row;margin:0}.sheet form.inl input{flex:1;min-width:0;padding:13px 14px}.sheet form.inl button{flex:none;padding:0 22px;border-radius:14px}
 .inl input{padding:8px 10px;font-size:15px}
 .inl button{border:0;border-radius:11px;background:var(--protein);color:#fff;font:600 14px var(--f-body);padding:0 14px;cursor:pointer}
 .hr{height:1px;background:var(--line)}
@@ -177,6 +178,30 @@ input[type=range].wr::-moz-range-thumb{width:20px;height:20px;border-radius:50%;
 .linkbtn{border:0;background:none;color:var(--muted);font:500 13px var(--f-body);padding:4px;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
 @media (prefers-reduced-motion:reduce){.wave,.bub{animation:none}.liquid,.pring svg circle.v,.week .bars i{transition:none}}
 
+.phead{display:flex;justify-content:space-between;align-items:flex-end;gap:12px}
+.pbig{font:700 48px/1 var(--f-display);letter-spacing:-.04em;color:var(--emerald-2);margin-top:6px}.pbig small{font:500 19px var(--f-body);letter-spacing:0;color:var(--muted);margin-left:4px}
+.ppill{background:var(--protein-soft);color:var(--protein-ink);border-radius:99px;padding:6px 12px;font:600 13px var(--f-num);white-space:nowrap}
+.pblocks{display:grid;grid-template-columns:repeat(12,1fr);gap:4px;margin-top:14px}
+.pblocks i{aspect-ratio:1;border-radius:6px;background:var(--sunk);transition:background .35s}
+.pblocks i.pop{animation:bpop .45s cubic-bezier(.3,1.6,.5,1)}
+@keyframes bpop{0%{transform:scale(.3)}100%{transform:none}}
+.pscale{display:flex;justify-content:space-between;font-size:12.5px;color:var(--muted);margin-top:8px}
+.plist{display:flex;flex-direction:column}
+.pli{display:flex;align-items:center;gap:12px;padding:9px 0;border-top:1px solid var(--line)}
+.pli .ic{width:40px;height:40px;border-radius:13px;background:var(--sunk);display:grid;place-items:center;flex:none}
+.pli .tx{min-width:0;flex:1}.pli .tx b{display:block;font-size:15px;font-weight:600}.pli .tx small{font-size:12.5px;color:var(--muted)}
+.pli em{font:700 16px var(--f-display);font-style:normal;color:var(--protein-ink)}
+.pli .x{border:0;background:none;color:var(--muted);font-size:20px;line-height:1;padding:6px 2px 6px 8px;cursor:pointer}
+.pempty2{font-size:13px;color:var(--muted);padding:10px 0 2px;border-top:1px solid var(--line)}
+.paddbtn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;border:0;background:var(--protein);color:#fff;border-radius:18px;padding:15px;font:700 16px var(--f-body);cursor:pointer;box-shadow:0 12px 24px -14px var(--protein)}
+.paddbtn:active{transform:scale(.98)}
+.psugg{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin:0 -2px;padding:0 2px}.psugg::-webkit-scrollbar{display:none}
+.psugg button{flex:none;display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:99px;padding:5px 12px 5px 6px;font:500 13px var(--f-body);background:var(--surface);color:var(--fg);cursor:pointer}
+.psugg button b{color:var(--protein-ink);font-weight:700}
+.fgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.fgrid button{border:0;background:var(--sunk);border-radius:16px;padding:12px 6px 10px;display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;cursor:pointer;color:var(--fg)}
+.fgrid button b{font:600 12.5px var(--f-body);line-height:1.15}.fgrid button span{font:700 12.5px var(--f-num);color:var(--protein-ink)}
+.fgrid button:active{transform:scale(.95)}
 .psec{display:grid;grid-template-columns:128px 1fr;gap:16px;align-items:center}
 .pplate{position:relative;width:128px;height:128px}
 .pplate .plate{position:absolute;inset:0}
@@ -1092,6 +1117,7 @@ const ICON={
  psutpro:'<path d="M8.2 3h7.6v2.4l1.6 2.4v12.4a1.8 1.8 0 0 1-1.8 1.8H8.4a1.8 1.8 0 0 1-1.8-1.8V7.8l1.6-2.4z" fill="#FFFFFF" stroke="#C9D5DD" stroke-width="1"/><rect x="8.6" y="1.6" width="6.8" height="2.6" rx=".8" fill="#24346B"/><rect x="6.6" y="10.4" width="10.8" height="7.4" fill="#24346B"/><path d="M6.6 17.2h10.8" stroke="#E2B341" stroke-width="1.4"/><text x="12" y="15.4" text-anchor="middle" font-size="4.6" font-weight="800" fill="#E2B341" font-family="Figtree, sans-serif">PRO</text>',
  genel:'<circle cx="12" cy="12" r="7.5" fill="#F6D9A8" stroke="#E0B670" stroke-width="1"/><text x="12" y="15.2" text-anchor="middle" font-size="8.5" font-weight="700" fill="#8A5A10" font-family="Figtree, sans-serif">P</text>'
 };
+const FCOL={yumurta:"#F2C14E",tavuk:"#D98A3D",et:"#B8463A",ton:"#2C6E9B",yogurt:"#7DB7E0",peynir:"#E3D7B4",sut:"#BFD6E4",shake:"#8A6BD1",bar:"#6E4A2C",psut:"#4F8BE8",psutpro:"#1F5FBF",mercimek:"#E0782F",genel:"#E6B35A"};
 const icon=(k,sz=28)=>`<svg width="${sz}" height="${sz}" viewBox="0 0 24 24" aria-hidden="true">${ICON[k]||ICON.genel}</svg>`;
 function protSuggest(){const w=sortedW();const k=w.length?w[w.length-1].kg:null;if(!k)return [null,null,"ör. 110"];const a=Math.round(k*1.2/5)*5,b=Math.round(k*1.5/5)*5;return [a,b,"ör. "+Math.round((a+b)/2/5)*5]}
 const pGoal=()=>S.profile.proteinGoal||Math.round(((protSuggest()[0]||90)+(protSuggest()[1]||110))/2/5)*5;
@@ -1102,6 +1128,53 @@ let barG=(()=>{try{return +localStorage.getItem("hf-barg")||15}catch(e){return 1
 let wAmt=(()=>{try{return +localStorage.getItem("hf-wamt")||250}catch(e){return 250}})();
 const ml=n=>Math.round(n).toLocaleString("tr-TR");
 const SLOTS=(()=>{const a=[[0,0]];for(let i=0;i<6;i++){const t=i/6*Math.PI*2-Math.PI/2;a.push([Math.cos(t)*22,Math.sin(t)*22])}for(let i=0;i<6;i++){const t=(i+.5)/6*Math.PI*2-Math.PI/2;a.push([Math.cos(t)*34,Math.sin(t)*34])}return a})();
+function pItems(){return dayRec(today()).log.filter(x=>x[1]==="p")}
+function pBlocksHtml(popFrom){
+  const pg=pGoal(),n=Math.max(12,Math.ceil(pg/5)),it=pItems();let acc=0;const seg=it.map(x=>{const a=acc;acc+=x[2];return [a,acc,FCOL[x[3]]||FCOL.genel]});
+  let h="";for(let i=0;i<n;i++){const m=i*5+2.5,sg=seg.find(z=>m>=z[0]&&m<z[1]);h+=`<i${sg?` style="background:${sg[2]}"`:""}${sg&&popFrom!=null&&i*5>=popFrom?' class="pop"':""}></i>`}
+  return h;
+}
+let pAll=false;
+function pListHtml(){
+  const it=pItems();if(!it.length)return `<div class="pempty2">Bugün henüz protein eklenmedi.</div>`;
+  const G={};for(const x of it){const k=x[3]||"_";(G[k]=G[k]||[]).push(x)}
+  const rows=Object.entries(G).sort((a,b)=>b[1][b[1].length-1][0]-a[1][a[1].length-1][0]);
+  const hm=ts=>new Date(ts).toLocaleTimeString("tr-TR",{hour:"2-digit",minute:"2-digit"});
+  const html=rows.slice(0,pAll?99:4).map(([k,xs])=>{const f=FOODS.find(y=>y.k===k),last=xs[xs.length-1],g=xs.reduce((a,x)=>a+x[2],0),n=xs.length;
+    const det=!f?(n>1?n+" giriş":"elle girildi"):f.pick?(n>1?n+" bar":xs[0][2]+" g bar"):n>1?(f.d==="1 adet"?n+" adet":n+" × "+f.d):f.d;
+    return `<div class="pli"><span class="ic">${icon(k==="_"?"genel":k,28)}</span><div class="tx"><b>${f?f.n:"Diğer"}</b><small>${det} · ${n>1?"son ":""}${hm(last[0])}</small></div><em>+${ml(g)} g</em><button type="button" class="x" data-pdel="${last[0]}" aria-label="${n>1?"Birini sil":"Sil"}">${n>1?"−":"×"}</button></div>`}).join("");
+  return html+(rows.length>4?`<button type="button" class="linkbtn" id="pMore" style="align-self:center;margin-top:6px">${pAll?"Daha az göster":`+${rows.length-4} yiyecek daha`}</button>`:"");
+}
+function pSugg(){
+  const c={};for(let i=0;i<14;i++){for(const x of dayRec(addDays(today(),-i)).log)if(x[1]==="p"&&x[3]&&x[3]!=="bar")c[x[3]]=(c[x[3]]||0)+1}
+  const ks=Object.keys(c).sort((a,b)=>c[b]-c[a]);for(const k of ["shake","ton","et","sut","yumurta","tavuk"])if(!ks.includes(k))ks.push(k);
+  return ks.slice(0,4).map(k=>FOODS.find(f=>f.k===k)).filter(Boolean);
+}
+function pPill(p,pg){return p>=pg?"Hedef tamam":"%"+Math.round(p/pg*100)}
+function openProteinSheet(){
+  $("#sheetRoot").innerHTML=`<div class="scrim" data-close><div class="sheet" role="dialog" aria-modal="true" aria-label="Protein ekle"><div class="grab"></div>
+    <header><h2>Protein ekle</h2><button class="del" data-x>Kapat</button></header>
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div class="fgrid">${FOODS.map(f=>`<button type="button" data-sfood="${f.k}">${icon(f.k,34)}<b>${f.n}</b><span>${f.pick?f.d:f.g+" g"}</span></button>`).join("")}</div>
+      <div class="pick" id="barPick" hidden>
+        <div class="pickrow">${icon("bar",34)}<div style="min-width:0;flex:1"><b style="font-size:14px">Protein bar</b><div class="muted" style="font-size:12px">Paketteki protein miktarını seç</div></div><div class="pickv"><b id="barG">${barG}</b> g</div></div>
+        <input type="range" class="pr" id="barRange" min="10" max="21" step="1" value="${barG}" style="--p:${(barG-10)/11*100}%" aria-label="Protein bar gramı">
+        <div class="pickscale"><span>10 g</span><span>21 g</span></div>
+        <button type="button" class="btn" id="barAdd" style="background:var(--protein)">+ <span id="barG2">${barG}</span> g ekle</button>
+      </div>
+      <form id="pForm" class="inl"><input id="p-in" inputmode="numeric" placeholder="Başka bir şey: gram yaz" autocomplete="off"><button type="submit">Ekle</button></form>
+    </div></div></div>`;
+  const root=$("#sheetRoot");
+  root.querySelector(".scrim").addEventListener("click",e=>{if(e.target.classList.contains("scrim"))closeSheet()});
+  root.querySelector("[data-x]").addEventListener("click",closeSheet);
+  const done=(g,k)=>{closeSheet();addProtein(g,k);toast(`+${g} g protein eklendi`)};
+  root.querySelectorAll("[data-sfood]").forEach(b=>b.addEventListener("click",()=>{const f=FOODS.find(x=>x.k===b.dataset.sfood);
+    if(f.pick){const pk=$("#barPick");pk.hidden=!pk.hidden;return}done(f.g,f.k)}));
+  const setBar=v=>{barG=v;try{localStorage.setItem("hf-barg",v)}catch(e){}$("#barG").textContent=v;$("#barG2").textContent=v;const r=$("#barRange");r.value=v;r.style.setProperty("--p",(v-10)/11*100+"%")};
+  $("#barRange").addEventListener("input",e=>setBar(+e.target.value));
+  $("#barAdd").addEventListener("click",()=>done(barG,"bar"));
+  $("#pForm").addEventListener("submit",e=>{e.preventDefault();const v=num($("#p-in").value),g=v==null?0:Math.round(v);if(!(g>0&&g<=300)){toast("Protein miktarını gram olarak yaz");return}done(g)});
+}
 function plateHtml(popTs){
   const r=dayRec(today()), items=r.log.filter(x=>x[1]==="p"), pg=pGoal(), f=Math.min(1,r.p/pg);
   const R=58,C=2*Math.PI*R, cx=64, cy=64;
@@ -1129,23 +1202,12 @@ function todayCard(){
   const chips=[50,100,200,250,330,500].map(v=>`<button type="button" data-wamt="${v}" aria-pressed="${v===wAmt}">${v}</button>`).join("");
   return `<div class="card today" id="todayCard">
     <div class="todayhead"><h2>Bugün</h2><span class="muted" style="font-size:13px">${toD(today()).toLocaleDateString("tr-TR",{day:"numeric",month:"long"})}</span></div>
-    <div class="psec">
-      <div class="pplate" id="plate">${plateHtml()}</div>
-      <div style="min-width:0;display:flex;flex-direction:column;gap:6px">
-        <span class="eyebrow" style="color:var(--protein)">Protein</span>
-        <div class="pv"><b id="pVal">${ml(r.p)}</b><small>/ ${pg} g</small></div>
-        <span class="muted" style="font-size:13px" id="pLeft">${r.p>=pg?"Hedef tamam":ml(pg-r.p)+" g kaldı"}</span>
-        <div class="qchips p"><button type="button" data-padd="5">+5</button><button type="button" data-padd="10">+10</button><button type="button" data-pcustom style="font-family:var(--f-body)">Diğer</button></div>
-        <form class="inl" id="pForm" hidden><input id="p-in" inputmode="numeric" placeholder="gram" autocomplete="off"><button type="submit">Ekle</button></form>
-      </div>
-    </div>
-    <div class="foods" role="list">${FOODS.map(f=>`<button type="button" class="food" role="listitem" data-food="${f.k}">${icon(f.k,34)}<span class="fn">${f.n}</span><span class="fd">${f.pick?`seçmeli · <b>${f.d}</b>`:`${f.d} · <b>${f.g} g</b>`}</span></button>`).join("")}</div>
-    <div class="pick" id="barPick" hidden>
-      <div class="pickrow">${icon("bar",34)}<div style="min-width:0;flex:1"><b style="font-size:14px">Protein bar</b><div class="muted" style="font-size:12px">Paketteki protein miktarını seç</div></div><div class="pickv"><b id="barG">${barG}</b> g</div></div>
-      <input type="range" class="pr" id="barRange" min="10" max="21" step="1" value="${barG}" style="--p:${(barG-10)/11*100}%" aria-label="Protein bar gramı">
-      <div class="pickscale"><span>10 g</span><span>21 g</span></div>
-      <div style="display:flex;gap:8px"><button type="button" class="btn ghost" id="barCancel" style="flex:1">Vazgeç</button><button type="button" class="btn" id="barAdd" style="flex:2;background:var(--protein)">+ <span id="barG2">${barG}</span> g ekle</button></div>
-    </div>
+    <div class="phead"><div><span class="eyebrow" style="color:var(--protein)">Protein</span><div class="pbig"><b id="pVal" style="font-weight:700">${ml(r.p)}</b><small>/ ${pg} g</small></div></div><span class="ppill" id="pPill">${pPill(r.p,pg)}</span></div>
+    <div><div class="pblocks" id="pBlocks" aria-label="Protein: ${ml(r.p)} / ${pg} g">${pBlocksHtml()}</div>
+      <div class="pscale"><span>her blok 5 g</span><span id="pLeft">${r.p>=pg?"Hedef tamam":ml(pg-r.p)+" g kaldı"}</span></div></div>
+    <div class="plist" id="pList">${pListHtml()}</div>
+    <button type="button" class="paddbtn" id="pOpen"><span style="font-size:22px;line-height:0">+</span> Protein ekle</button>
+    <div class="psugg">${pSugg().map(f=>`<button type="button" data-food="${f.k}">${icon(f.k,20)}${f.n.replace(" göğsü","").replace(" balığı","").replace("Kırmızı ","").replace("Protein shake","Shake")} <b>${f.g} g</b></button>`).join("")}</div>
     <div class="hr"></div>
     <div class="wsec">
       <div class="wglass"><canvas id="glassCv" style="width:140px;height:236px" aria-label="Su bardağı, ${ml(r.w)} ml"></canvas></div>
@@ -1273,11 +1335,9 @@ function addProtein(g,food){
   if(!(g>0&&g<=300)){toast("Protein miktarını gram olarak yaz");return}
   const r=ensureDay(today()), from=r.p, ts=Date.now(); r.p+=g; r.log.push([ts,"p",g,food||null]);
   holdUntil=Date.now()+1200; save();
-  $("#plate").innerHTML=plateHtml(ts);
-  countUp($("#pVal"),from,r.p); $("#pLeft").textContent=r.p>=pGoal()?"Hedef tamam":ml(pGoal()-r.p)+" g kaldı";
-  const fl=document.createElement("span");fl.className="pfloat";fl.textContent="+"+g+" g";$("#plate").appendChild(fl);
-  if(fl.animate)fl.animate([{transform:"translate(-50%,0)",opacity:0},{opacity:1,offset:.2},{transform:"translate(-50%,-34px)",opacity:0}],{duration:1100,easing:"ease-out"}).onfinish=()=>fl.remove();else fl.remove();
-  refreshCommon();
+  if($("#pBlocks")){$("#pBlocks").innerHTML=pBlocksHtml(Math.floor(from/5)*5);
+  countUp($("#pVal"),from,r.p); $("#pLeft").textContent=r.p>=pGoal()?"Hedef tamam":ml(pGoal()-r.p)+" g kaldı"; $("#pPill").textContent=pPill(r.p,pGoal());
+  $("#pList").innerHTML=pListHtml(); bindPDel(); refreshCommon();}
   if(from<pGoal()&&r.p>=pGoal())toast("Protein hedefi tamam");
 }
 function addWater(){
@@ -1289,6 +1349,8 @@ function addWater(){
   const btn=$("#wAdd");if(btn&&btn.animate)btn.animate([{transform:"scale(.96)"},{transform:"none"}],{duration:220});
   if(GLASS)GLASS.pour(amt,to/wGoal(),fin);else fin();
 }
+function bindPDel(){const m=$("#pMore");if(m)m.addEventListener("click",()=>{pAll=!pAll;$("#pList").innerHTML=pListHtml();bindPDel()});document.querySelectorAll("[data-pdel]").forEach(b=>b.addEventListener("click",()=>{const r=ensureDay(today()),i=r.log.findIndex(x=>x[1]==="p"&&String(x[0])===b.dataset.pdel);if(i<0)return;
+  r.p=Math.max(0,r.p-r.log[i][2]);r.log.splice(i,1);save();render();toast("Silindi")}))}
 function undoLast(){
   const r=ensureDay(today()); const last=r.log.pop(); if(!last)return;
   if(last[1]==="p")r.p=Math.max(0,r.p-last[2]); else r.w=Math.max(0,r.w-last[2]);
@@ -1301,16 +1363,8 @@ function setWAmt(v){
 }
 function bindToday(){
   const c=$("#todayCard"); if(!c)return;
-  c.querySelectorAll("[data-padd]").forEach(b=>b.addEventListener("click",()=>addProtein(+b.dataset.padd)));
-  c.querySelectorAll("[data-food]").forEach(b=>b.addEventListener("click",()=>{const f=FOODS.find(x=>x.k===b.dataset.food);
-    if(f.pick){const pk=$("#barPick");pk.hidden=!pk.hidden;if(!pk.hidden&&pk.animate)pk.animate([{opacity:0,transform:"translateY(-6px)"},{opacity:1,transform:"none"}],{duration:200,easing:"ease-out"});return}
-    addProtein(f.g,f.k)}));
-  const setBar=v=>{barG=v;try{localStorage.setItem("hf-barg",v)}catch(e){}$("#barG").textContent=v;$("#barG2").textContent=v;const r=$("#barRange");r.value=v;r.style.setProperty("--p",(v-10)/11*100+"%")};
-  $("#barRange").addEventListener("input",e=>setBar(+e.target.value));
-  $("#barCancel").addEventListener("click",()=>{$("#barPick").hidden=true});
-  $("#barAdd").addEventListener("click",()=>{addProtein(barG,"bar");$("#barPick").hidden=true});
-  c.querySelector("[data-pcustom]").addEventListener("click",()=>{const f=$("#pForm");f.hidden=!f.hidden;if(!f.hidden)$("#p-in").focus()});
-  $("#pForm").addEventListener("submit",e=>{e.preventDefault();const v=num($("#p-in").value);addProtein(v==null?0:Math.round(v));$("#p-in").value="";$("#pForm").hidden=true});
+  c.querySelectorAll("[data-food]").forEach(b=>b.addEventListener("click",()=>{const f=FOODS.find(x=>x.k===b.dataset.food);addProtein(f.g,f.k);if(b.animate)b.animate([{transform:"scale(.92)"},{transform:"none"}],{duration:260})}));
+  $("#pOpen").addEventListener("click",openProteinSheet); bindPDel();
   c.querySelectorAll("[data-wamt]").forEach(b=>b.addEventListener("click",()=>{setWAmt(+b.dataset.wamt);addWater();if(b.animate)b.animate([{transform:"scale(.92)"},{transform:"none"}],{duration:260,easing:"cubic-bezier(.3,1.6,.5,1)"})}));
   c.querySelectorAll("[data-wstep]").forEach(b=>b.addEventListener("click",()=>setWAmt(Math.max(50,Math.min(1000,wAmt+ +b.dataset.wstep)))));
   $("#wAdd").addEventListener("click",addWater);
