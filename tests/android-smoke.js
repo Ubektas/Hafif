@@ -53,10 +53,14 @@ const step = (ad, sonuc, detay) => { report.adimlar.push({ ad, sonuc, detay }); 
     const hc = await page.evaluate(async () => ({ kart: !!document.querySelector('.stcta'), uygun: await Capacitor.Plugins.Health.isAvailable().then(r => JSON.stringify(r), e => 'hata: ' + e.message) }));
     step('Adım kartı görünüyor', hc.kart, hc.uygun);
     await tap(page, '.stcta'); await wait(700); await shot('adim-baglan');
-    await tap(page, '#hcGo'); await wait(3500); await shot('health-connect-izin');
-    const izin = (await device.shell('dumpsys window | grep mCurrentFocus')).toString().trim();
+    await tap(page, '#hcGo');
+    // pencere yavaş emülatörde geç açılabilir: 15 sn'ye kadar bekle, sonra uygulamaya dönene kadar geri bas
+    const odakNe = async () => (await device.shell('dumpsys window | grep mCurrentFocus')).toString().trim();
+    let izin = '';
+    for (let i = 0; i < 15; i++) { await wait(1000); izin = await odakNe(); if (/healthdata|permissioncontroller|health/i.test(izin)) break; }
+    await wait(800); await shot('health-connect-izin');
     step('Health Connect izin penceresi açıldı', /healthdata|permissioncontroller|health/i.test(izin), izin);
-    await device.shell('input keyevent 4'); await wait(1500);
+    for (let i = 0; i < 4 && !/hafif\/.*MainActivity/.test(await odakNe()); i++) { await device.shell('input keyevent 4'); await wait(1500); }
     await page.evaluate(() => { const r = document.querySelector('#sheetRoot'); if (r) r.innerHTML = ''; });
     // Hatırlatıcılar: izin ver, aç, bildirimler kuruldu mu; gerçek bir bildirim gösterilebiliyor mu?
     await device.shell(`pm grant ${PKG} android.permission.POST_NOTIFICATIONS`);
