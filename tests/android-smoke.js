@@ -245,6 +245,11 @@ const step = (ad, sonuc, detay) => { report.adimlar.push({ ad, sonuc, detay }); 
       S.profile.goalWeight = 80; S.profile.since = new Date().toISOString().slice(0, 10);
       S.supps = [{ id: 'mg', name: 'Magnezyum', slots: ['sabah', 'aksam'], slot: 'sabah', days: [0, 1, 2, 3, 4, 5, 6], shape: 'caps', color: '#4F8FDB' }, { id: 'om', name: 'Omega-3', slot: 'aksam', days: [0, 1, 2, 3, 4, 5, 6], shape: 'oval', color: '#E9D59A' }];
       [[20, 92.4], [14, 91.1], [7, 90.2], [3, 89.4]].forEach(([g, k], i) => S.weights.push({ id: 'wt' + i, date: ago(g), kg: k, t: i }));
+      // widget önizlemeleri dolu görünsün: bugünün suyu/proteini, 7 günlük adım, ikinci takviye
+      const td = ago(0), t0 = new Date(td + 'T00:00:00').getTime();
+      S.daily = S.daily || {}; S.daily[td] = { p: 74, w: 1750, log: [[t0 + 8.4 * 36e5, 'p', 12, 'yumurta'], [t0 + 13 * 36e5, 'p', 31, 'tavuk'], [t0 + 16 * 36e5, 'p', 15, 'yogurt'], [t0 + 17 * 36e5, 'p', 16, 'peynir'], [t0 + 8 * 36e5, 'w', 750], [t0 + 13 * 36e5, 'w', 1000]] };
+      S.hc = Object.assign({}, S.hc, { on: true }); S.steps = {}; [5820, 8110, 7340, 9020, 6480, 7900, 6240].forEach((n, i) => { S.steps[ago(6 - i)] = n; });
+      S.supps[1].name = 'Omega-3'; S.supps.push({ id: 'b12', name: 'B12', slot: 'aksam', days: [0, 1, 2, 3, 4, 5, 6], shape: 'tab', color: '#F1B3C3' });
       S.shots.forEach(x => { x.date = ago(21); }); S.shots.push({ id: 'sh2', date: ago(14), time: '09:00', dose: '5', site: 'Karın sağ' }, { id: 'sh3', date: ago(7), time: '09:00', dose: '5', site: 'Uyluk sol' }, { id: 'sh4', date: ago(2), time: '09:00', dose: '5', site: 'Uyluk sağ' });
       localStorage.setItem('doz-defteri', JSON.stringify(S)); });
     await page.reload(); await page.waitForSelector('#view'); await wait(4000);
