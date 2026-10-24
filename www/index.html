@@ -502,7 +502,7 @@ input:focus{background:var(--surface);border-color:var(--accent);outline:none}
 .slot{display:flex;flex-direction:column;gap:10px;padding:16px}
 .slh{display:flex;align-items:center;gap:12px}
 .sli{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;flex:none}
-.s-sabah .sli{background:#FFF4D6;color:#D99A13}.s-aksam .sli{background:#FFE7DC;color:#E2643D}.s-gece .sli{background:#E6EAFB;color:#4A5BC4}
+.s-sabah .sli{background:#FFF4D6;color:#D99A13}.s-ogle .sli{background:#FFEFD0;color:#E08A00}.s-aksam .sli{background:#FFE7DC;color:#E2643D}.s-gece .sli{background:#E6EAFB;color:#4A5BC4}
 .allbtn{border:0;border-radius:99px;background:var(--accent-soft);color:var(--accent);font:700 12.5px var(--f-body);padding:8px 12px;cursor:pointer}
 .sldone{font:700 12.5px var(--f-body);color:var(--good);display:flex;align-items:center;gap:4px}
 .sldone::before{content:"✓"}
@@ -2169,16 +2169,22 @@ function setComp(v,dir){compV=v;try{localStorage.setItem("hf-comp",v)}catch(_){}
   const cd=w.firstElementChild;if(cd&&cd.animate&&!matchMedia("(prefers-reduced-motion: reduce)").matches)cd.animate([{opacity:.3,transform:`translateX(${(dir||0)*30}px)`},{opacity:1,transform:"none"}],{duration:280,easing:"cubic-bezier(.2,.8,.2,1)"})}
 
 /* ---------- takviyeler ---------- */
-const SLOTS_S=[["sabah","Sabah"],["aksam","Akşam"],["gece","Gece"]];
+const SLOTS_S=[["sabah","Sabah"],["ogle","Öğle"],["aksam","Akşam"],["gece","Gece"]];
 const DAYN=["Paz","Pzt","Sal","Çar","Per","Cum","Cmt"];
 const DEF_SUPPS=[];
-const SUPP_TIMES={sabah:"07:30",aksam:"19:00",gece:"22:30"};
+const SUPP_TIMES={sabah:"07:30",ogle:"13:00",aksam:"19:00",gece:"22:30"};
 let suppDate=null;
 function supps(){if(!Array.isArray(S.supps)){S.supps=JSON.parse(JSON.stringify(DEF_SUPPS));S.suppTimes={...SUPP_TIMES}}return S.supps}
 const sTimes=()=>Object.assign({},SUPP_TIMES,S.suppTimes||{});
 function suppsFor(d){const wd=toD(d).getDay();return supps().filter(x=>x.days.includes(wd))}
+/* bir takviye günde birkaç vakitte alınabilir: her vakit ayrı bir "doz"; ilk vaktin kaydı eski kayıtlarla uyumlu kalsın diye yalnızca kimlikle tutulur */
+const slotsOf=x=>Array.isArray(x.slots)&&x.slots.length?SLOTS_S.map(z=>z[0]).filter(k=>x.slots.includes(k)):[x.slot||"sabah"];
+const doseKey=(x,k)=>k===slotsOf(x)[0]?x.id:x.id+"@"+k;
+function dosesFor(d){return suppsFor(d).flatMap(x=>slotsOf(x).map(k=>({x,k,key:doseKey(x,k)})))}
+const suppOfKey=key=>supps().find(z=>z.id===String(key).split("@")[0]);
+const timesTxt=x=>{const n=slotsOf(x).length;return n>1?`günde ${n} kez`:""};
 function takenOn(d){S.suppLog=S.suppLog||{};return S.suppLog[d]||{}}
-function dayDone(d){const L=suppsFor(d),t=takenOn(d);return {n:L.filter(x=>t[x.id]).length,of:L.length}}
+function dayDone(d){const L=dosesFor(d),t=takenOn(d);return {n:L.filter(q=>t[q.key]).length,of:L.length}}
 function pill(x,sz=38){
   const c=x.color, dk=`color-mix(in oklab,${c} 70%,black)`;
   let b="";
@@ -2189,17 +2195,18 @@ function pill(x,sz=38){
   return `<svg width="${sz}" height="${sz}" viewBox="0 0 40 40" aria-hidden="true">${b}</svg>`;
 }
 const SLOT_ICON={
+ ogle:`<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><circle cx="12" cy="13" r="5" fill="currentColor" fill-opacity=".25"/><path d="M12 3v2.5M4.5 13H3M21 13h-1.5M6.3 7.3l1.3 1.3M17.7 7.3l-1.3 1.3"/></svg>`,
  sabah:`<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><circle cx="12" cy="12" r="4.2" fill="currentColor" fill-opacity=".25"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></svg>`,
  aksam:`<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M6.5 16a5.5 5.5 0 0 1 11 0" fill="currentColor" fill-opacity=".25"/><path d="M3 16h18M7 20h10M12 4v3M4.6 8.6l1.8 1.8M19.4 8.6l-1.8 1.8"/></svg>`,
  gece:`<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z" fill="currentColor" fill-opacity=".25"/></svg>`};
 function suppMini(){
-  const d=today(),L=suppsFor(d); if(!L.length) return "";
-  const t=takenOn(d),n=L.filter(x=>t[x.id]).length,R=20,C=2*Math.PI*R;
-  const nextSlot=SLOTS_S.find(([k])=>L.some(x=>x.slot===k&&!t[x.id]));
+  const d=today(),L=dosesFor(d); if(!L.length) return "";
+  const t=takenOn(d),n=L.filter(q=>t[q.key]).length,R=20,C=2*Math.PI*R;
+  const nextSlot=SLOTS_S.find(([k])=>L.some(q=>q.k===k&&!t[q.key]));
   return `<button type="button" class="card smini" data-go="takviye">
     <span class="smring"><svg width="52" height="52" viewBox="0 0 52 52"><circle cx="26" cy="26" r="${R}" fill="none" stroke="var(--sunk)" stroke-width="6"/><circle cx="26" cy="26" r="${R}" fill="none" stroke="var(--accent)" stroke-width="6" stroke-linecap="round" stroke-dasharray="${C*n/L.length} ${C}" transform="rotate(-90 26 26)"/></svg><b>${n}/${L.length}</b></span>
     <span class="smt"><span class="eyebrow">Bugünün takviyeleri</span><b>${n===L.length?"Hepsi alındı":nextSlot?`Sıradaki: ${nextSlot[1]} · ${sTimes()[nextSlot[0]]}`:""}</b>
-      <span class="smp">${L.map(x=>`<span class="${t[x.id]?"ok":""}">${pill(x,22)}</span>`).join("")}</span></span>
+      <span class="smp">${L.map(q=>`<span class="${t[q.key]?"ok":""}">${pill(q.x,22)}</span>`).join("")}</span></span>
     <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="var(--muted)" stroke-width="2" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg></button>`;
 }
 function weekOf(d){const dt=toD(d),wd=(dt.getDay()+6)%7;const mon=addDays(d,-wd);return [...Array(7)].map((_,i)=>addDays(mon,i))}
@@ -2218,12 +2225,12 @@ function suppHead(){
     <div class="week2">${wk}</div></div>`;
 }
 function vTakviye(){
-  supps(); const d=suppDate||today(),L=suppsFor(d),t=takenOn(d),fut=d>today(),T=sTimes();
-  const slots=SLOTS_S.map(([k,n])=>{const items=L.filter(x=>x.slot===k);if(!items.length)return "";const done=items.filter(x=>t[x.id]).length;
+  supps(); const d=suppDate||today(),L=dosesFor(d),t=takenOn(d),fut=d>today(),T=sTimes();
+  const slots=SLOTS_S.map(([k,n])=>{const items=L.filter(q=>q.k===k);if(!items.length)return "";const done=items.filter(q=>t[q.key]).length;
     return `<div class="card slot s-${k}"><div class="slh"><span class="sli">${SLOT_ICON[k]}</span><div style="flex:1;min-width:0"><h2>${n}</h2><span class="muted" style="font-size:12.5px">${T[k]} · ${items.length} ilaç</span></div>
       ${fut?"":done<items.length?`<button type="button" class="allbtn" data-sall="${k}">Hepsini al</button>`:`<span class="sldone">Tamam</span>`}</div>
-      <div class="slist">${items.map(x=>{const on=!!t[x.id];return `<button type="button" class="srow${on?" on":""}" data-supp="${x.id}" ${fut?"disabled":""} aria-pressed="${on}">
-        <span class="spill">${pill(x)}</span><span class="sname"><b>${esc(x.name)}</b><small>${on?`${new Date(t[x.id]).toLocaleTimeString("tr-TR",{hour:"2-digit",minute:"2-digit"})} alındı`:fut?"henüz değil":x.days.length===7?"her gün":x.days.map(i=>DAYN[i]).join(", ")}</small></span>
+      <div class="slist">${items.map(({x,key})=>{const on=!!t[key];return `<button type="button" class="srow${on?" on":""}" data-supp="${key}" ${fut?"disabled":""} aria-pressed="${on}">
+        <span class="spill">${pill(x)}</span><span class="sname"><b>${esc(x.name)}</b><small>${on?`${new Date(t[key]).toLocaleTimeString("tr-TR",{hour:"2-digit",minute:"2-digit"})} alındı`:fut?"henüz değil":suppSub(x)}</small></span>
         <span class="chk"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path pathLength="1" d="M5 12.5l4.5 4.5L19 7.5"/></svg></span></button>`}).join("")}</div></div>`}).join("");
   return `<section><div id="suppHead">${suppHead()}</div>
     ${L.length?slots:`<div class="card empty"><h2>Bu gün takviye yok</h2><p class="muted" style="margin:0">Programında bu gün için ilaç bulunmuyor.</p></div>`}
@@ -2231,11 +2238,12 @@ function vTakviye(){
     ${weekTable()}
   </section>`;
 }
+function suppSub(x){return [x.days.length===7?"her gün":x.days.map(i=>DAYN[i]).join(", "),timesTxt(x)].filter(Boolean).join(" · ")}
 function weekTable(){
   const L=supps(),days=[1,2,3,4,5,6,0];
   return `<div class="card"><div style="margin-bottom:10px"><h2>Haftalık program</h2><span class="muted" style="font-size:13px">Hangi gün ne alıyorsun</span></div>
     <div style="overflow-x:auto"><table class="wtab"><thead><tr><th></th>${days.map(i=>`<th class="${toD(today()).getDay()===i?"tdy":""}">${DAYN[i]}</th>`).join("")}</tr></thead><tbody>
-    ${L.map(x=>`<tr><td><span class="wtn">${pill(x,22)}<span>${esc(x.name)}</span></span></td>${days.map(i=>`<td class="${toD(today()).getDay()===i?"tdy":""}">${x.days.includes(i)?`<i style="background:${x.color}"></i>`:""}</td>`).join("")}</tr>`).join("")}
+    ${L.map(x=>`<tr><td><span class="wtn">${pill(x,22)}<span>${esc(x.name)}${slotsOf(x).length>1?` <small class="muted">×${slotsOf(x).length}</small>`:""}</span></span></td>${days.map(i=>`<td class="${toD(today()).getDay()===i?"tdy":""}">${x.days.includes(i)?`<i style="background:${x.color}"></i>`:""}</td>`).join("")}</tr>`).join("")}
     </tbody></table></div></div>`;
 }
 function toggleSupp(id,force){
@@ -2243,7 +2251,7 @@ function toggleSupp(id,force){
   S.suppLog=S.suppLog||{}; const t=S.suppLog[d]=S.suppLog[d]||{};
   const on=force!=null?force:!t[id]; if(on)t[id]=t[id]||Date.now(); else delete t[id];
   holdUntil=Date.now()+1500; save();
-  const row=document.querySelector(`[data-supp="${id}"]`); if(row){row.classList.toggle("on",on);row.setAttribute("aria-pressed",on);row.querySelector("small").textContent=on?`${new Date(t[id]).toLocaleTimeString("tr-TR",{hour:"2-digit",minute:"2-digit"})} alındı`:(()=>{const x=supps().find(z=>z.id===id);return x.days.length===7?"her gün":x.days.map(i=>DAYN[i]).join(", ")})()}
+  const row=document.querySelector(`[data-supp="${id}"]`); if(row){row.classList.toggle("on",on);row.setAttribute("aria-pressed",on);row.querySelector("small").textContent=on?`${new Date(t[id]).toLocaleTimeString("tr-TR",{hour:"2-digit",minute:"2-digit"})} alındı`:(()=>{const x=suppOfKey(id);return x?suppSub(x):""})()}
 }
 function refreshSuppHead(){const r=dayDone(suppDate||today());$("#suppHead").innerHTML=suppHead();
   document.querySelectorAll(".slot").forEach(c=>{const ids=[...c.querySelectorAll("[data-supp]")].map(b=>b.dataset.supp),t=takenOn(suppDate||today()),done=ids.every(i=>t[i]);
@@ -2256,7 +2264,7 @@ function bindSupp(){
 $("#view").addEventListener("click",e=>{
   if(tab!=="takviye")return;
   const r=e.target.closest("[data-supp]"); if(r){toggleSupp(r.dataset.supp);refreshSuppHead();return}
-  const a=e.target.closest("[data-sall]"); if(a){const d=suppDate||today();suppsFor(d).filter(x=>x.slot===a.dataset.sall).forEach(x=>toggleSupp(x.id,true));refreshSuppHead();return}
+  const a=e.target.closest("[data-sall]"); if(a){const d=suppDate||today();dosesFor(d).filter(q=>q.k===a.dataset.sall).forEach(q=>toggleSupp(q.key,true));refreshSuppHead();return}
   const dd=e.target.closest("[data-sday]"); if(dd){suppDate=dd.dataset.sday===today()?null:dd.dataset.sday;ANIM=false;render();return}
   if(e.target.closest("#suppEdit")){openSuppEdit();return}
 });
@@ -2265,13 +2273,14 @@ function openSuppEdit(){
   const SH=[["caps","Kapsül"],["tab","Tablet"],["soft","Yumuşak"],["oval","Oval"]];
   const rowH=(x,i)=>`<div class="sedit" data-i="${i}">
       <div class="seh"><span class="spill" style="width:34px;height:34px">${pill(x,34)}</span><input class="se-name" value="${esc(x.name)}" placeholder="İlaç adı" aria-label="İlaç adı"><button type="button" class="ibtn se-del" aria-label="Sil"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M9 7V4.8c0-.4.4-.8.8-.8h4.4c.4 0 .8.4.8.8V7M6.5 7l.9 12.2c.1.9.8 1.8 1.8 1.8h5.6c1 0 1.7-.9 1.8-1.8L17.5 7"/></svg></button></div>
-      <div class="segs">${SLOTS_S.map(([k,n])=>`<button type="button" class="se-slot${x.slot===k?" on":""}" data-v="${k}">${n}</button>`).join("")}</div>
+      <span class="muted" style="font-size:12px;margin:-2px 0 -4px">Ne zaman? Birden fazla seçebilirsin</span>
+      <div class="segs">${SLOTS_S.map(([k,n])=>`<button type="button" class="se-slot${slotsOf(x).includes(k)?" on":""}" data-v="${k}" aria-pressed="${slotsOf(x).includes(k)}">${n}</button>`).join("")}</div>
       <div class="sdays">${[1,2,3,4,5,6,0].map(dn=>`<button type="button" class="se-day${x.days.includes(dn)?" on":""}" data-v="${dn}">${DAYN[dn]}</button>`).join("")}</div>
       <div class="segs">${SH.map(([k,n])=>`<button type="button" class="se-shape${x.shape===k?" on":""}" data-v="${k}">${n}</button>`).join("")}<input type="color" class="se-color" value="${x.color}" aria-label="Renk"></div></div>`;
   $("#sheetRoot").innerHTML=`<div class="scrim"><div class="sheet" role="dialog" aria-modal="true" aria-label="Programı düzenle"><div class="grab"></div>
     <header><h2>Programı düzenle</h2><button class="del" data-x>Kapat</button></header>
     <div style="display:flex;flex-direction:column;gap:12px">
-      <div class="three"><label>Sabah<input type="time" id="st-sabah" value="${T.sabah}"></label><label>Akşam<input type="time" id="st-aksam" value="${T.aksam}"></label><label>Gece<input type="time" id="st-gece" value="${T.gece}"></label></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">${SLOTS_S.map(([k,n])=>`<label>${n}<input type="time" id="st-${k}" value="${T[k]}"></label>`).join("")}</div>
       <div id="seList" style="display:flex;flex-direction:column;gap:10px">${L.map(rowH).join("")}</div>
       <button type="button" class="btn ghost" id="seAdd">+ Yeni takviye</button>
       <button type="button" class="btn" id="seSave">Kaydet</button>
@@ -2283,12 +2292,13 @@ function openSuppEdit(){
   list.addEventListener("input",sync);
   list.addEventListener("click",e=>{const el=e.target.closest(".sedit");if(!el)return;const x=L[+el.dataset.i];
     const b=e.target.closest("button");if(!b)return;
-    if(b.classList.contains("se-slot")){x.slot=b.dataset.v;el.querySelectorAll(".se-slot").forEach(z=>z.classList.toggle("on",z===b))}
+    if(b.classList.contains("se-slot")){const cur=slotsOf(x),v=b.dataset.v;let nx=cur.includes(v)?cur.filter(q=>q!==v):[...cur,v];if(!nx.length){toast("En az bir vakit seç");return}
+      x.slots=SLOTS_S.map(z=>z[0]).filter(k=>nx.includes(k));x.slot=x.slots[0];el.querySelectorAll(".se-slot").forEach(z=>{const o=x.slots.includes(z.dataset.v);z.classList.toggle("on",o);z.setAttribute("aria-pressed",o)})}
     else if(b.classList.contains("se-day")){const v=+b.dataset.v;x.days=x.days.includes(v)?x.days.filter(q=>q!==v):[...x.days,v];b.classList.toggle("on")}
     else if(b.classList.contains("se-shape")){x.shape=b.dataset.v;el.querySelectorAll(".se-shape").forEach(z=>z.classList.toggle("on",z===b));el.querySelector(".spill").innerHTML=pill(x,34)}
     else if(b.classList.contains("se-del")){if(!b.classList.contains("armed")){b.classList.add("armed");b.textContent="Sil?";return}L[+el.dataset.i]=null;el.remove()}});
   $("#seAdd").addEventListener("click",()=>{const x={id:uid(),name:"",slot:"sabah",days:[0,1,2,3,4,5,6],shape:"caps",color:"#3BA58A"};L.push(x);list.insertAdjacentHTML("beforeend",rowH(x,L.length-1));const n=list.lastElementChild.querySelector(".se-name");n.focus()});
-  $("#seSave").addEventListener("click",()=>{sync();const out=L.filter(x=>x&&x.name&&x.days.length);S.supps=out;S.suppTimes={sabah:$("#st-sabah").value||"07:30",aksam:$("#st-aksam").value||"19:00",gece:$("#st-gece").value||"22:30"};save();closeSheet();toast("Program kaydedildi")});
+  $("#seSave").addEventListener("click",()=>{sync();const out=L.filter(x=>x&&x.name&&x.days.length);S.supps=out;S.suppTimes=Object.fromEntries(SLOTS_S.map(([k])=>[k,$("#st-"+k).value||SUPP_TIMES[k]]));save();closeSheet();toast("Program kaydedildi")});
 }
 const ymd=t=>{const d=new Date(t);return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")};
 /* ---------- döngü kartı tasarımları ---------- */
@@ -2845,8 +2855,8 @@ function remBuild(){
       if(R.shot)add(1000,new Date(shotTs(nx)),"Bugün iğne günü",`${dose}önerilen bölge: ${site}. Yaptıktan sonra kaydetmeyi unutma.`,"IGNE",{tab:"igne"});
       if(R.shotEve)add(1001,atOf(addDays(nx.date,-1),"20:00"),"Yarın iğne günü",`Saat ${shotTime(nx)} · sıradaki bölgen ${site}. Kalemini ve iğne ucunu hazırla.`,"BILGI",{tab:"igne"})}}
   for(let i=0;i<14;i++){const d=addDays(today(),i);
-    if(R.supp&&Array.isArray(S.supps))SLOTS_S.forEach(([k,n],si)=>{const it=suppsFor(d).filter(x=>x.slot===k);if(!it.length)return;const t=takenOn(d);if(it.every(x=>t[x.id]))return;
-      add(2000+i*3+si,atOf(d,sTimes()[k]),`${n} takviyeleri`,it.map(x=>x.name).join(" · "),"SUPP",{tab:"takviye",date:d,slot:k})});
+    if(R.supp&&Array.isArray(S.supps))SLOTS_S.forEach(([k,n],si)=>{const it=dosesFor(d).filter(q=>q.k===k);if(!it.length)return;const t=takenOn(d);if(it.every(q=>t[q.key]))return;
+      add(2000+i*4+si,atOf(d,sTimes()[k]),`${n} takviyeleri`,it.map(q=>q.x.name).join(" · "),"SUPP",{tab:"takviye",date:d,slot:k})});
     if(R.water)["11:00","15:00","19:00"].forEach((hm,j)=>{const w=dayRec(d).w,g=wGoal();if(i===0&&w>=g)return;
       add(3000+i*3+j,atOf(d,hm),"Bir bardak su?",i===0?`Bugün ${ml(w)} ml içtin, hedefe ${ml(g-w)} ml kaldı.`:`Günlük hedefin ${ml(g)} ml. Bir bardak suyla devam et.`,"SU",{tab:"besin"})});
     if(R.prot){const p=dayRec(d).p,g=pGoal();if(!(i===0&&p>=g))add(4000+i,atOf(d,"18:30"),i===0?"Protein hedefine az kaldı":"Protein hedefin",i===0?`${ml(p)} / ${g} g. Akşam yemeğinde ${ml(g-p)} g protein hedefini tamamlar.`:`Günlük protein hedefin ${g} g. Akşam tabağında proteini öne al.`,"PROT",{tab:"besin"})}
@@ -2911,7 +2921,7 @@ function remAction(a){
   const id=a.actionId,n=a.notification||{},x=n.extra||{};
   const go=t=>{tab=t;ANIM=true;closeSheet();window.scrollTo(0,0)};
   if(id==="ertele"){const N=LN();if(N)N.schedule({notifications:[{id:9000+Math.floor(Math.random()*900),title:n.title,body:n.body,actionTypeId:n.actionTypeId,extra:x,schedule:{at:new Date(Date.now()+36e5),allowWhileIdle:true},isExactNotification:false}]});toast("1 saat sonra tekrar hatırlatılacak");return}
-  if(id==="aldim"&&x.date&&x.slot){suppsFor(x.date).filter(s=>s.slot===x.slot).forEach(s=>{S.suppLog=S.suppLog||{};const t=S.suppLog[x.date]=S.suppLog[x.date]||{};t[s.id]=t[s.id]||Date.now()});save();go("takviye");toast("Takviyeler işaretlendi");return}
+  if(id==="aldim"&&x.date&&x.slot){dosesFor(x.date).filter(q=>q.k===x.slot).forEach(q=>{S.suppLog=S.suppLog||{};const t=S.suppLog[x.date]=S.suppLog[x.date]||{};t[q.key]=t[q.key]||Date.now()});save();go("takviye");toast("Takviyeler işaretlendi");return}
   if(id==="su250"||id==="su500"){const amt=id==="su250"?250:500,r=ensureDay(today());r.w+=amt;r.log.push([Date.now(),"w",amt]);save();go("besin");toast(`+${amt} ml su eklendi`);return}
   if(id==="kaydet"){go("ozet");openSheet("shot");return}
   if(id==="kilo"){go("ozet");openSheet("weight");return}
@@ -3075,6 +3085,7 @@ function openSheet(kind,editId){
     <header><h2>${ew?"Tartıyı düzenle":"Kilo gir"}</h2><button class="del" data-close>Kapat</button></header>
     <form id="fW">
       <label>Kilo (kg)<input id="w-kg" class="bignum" inputmode="decimal" value="${ew?c1(ew.kg):""}" placeholder="${lw?kg(lw.kg):"00,0"}" autocomplete="off" required></label>
+      ${ew?"":`<p class="muted" style="margin:-4px 0 0;font-size:12.5px;line-height:1.45">Tartıdaki sayı değişmese de girişini yap. Trendin ve haftalık hızın bu girişlere göre hesaplanır; aynı sayı da yolun bir parçası.</p>`}
       <label>Yağ oranı (%)<input id="w-fat" inputmode="decimal" value="${ew?c1(ew.fat):""}" placeholder="${lw&&lw.fat!=null?String(lw.fat).replace(".",","):"ör. 28,4"}" autocomplete="off"></label>
       <label>Tarih<input id="w-date" type="date" value="${ew?ew.date:today()}" max="${today()}"></label>
       <label>Not (isteğe bağlı)<input id="w-note" value="${ew?esc(ew.note||""):""}" placeholder="ör. sabah, aç karnına"></label>
