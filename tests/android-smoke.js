@@ -36,6 +36,9 @@ const step = (ad, sonuc, detay) => { report.adimlar.push({ ad, sonuc, detay }); 
     const onb = await page.evaluate(() => !!document.querySelector('#onb'));
     step('İlk kurulum ekranı açıldı', onb);
     await shot('kurulum-hosgeldin');
+    const kilitli = await page.evaluate(() => document.querySelector('[data-ob="next"]').disabled);
+    await tap(page, '#obTos'); await wait(300);
+    step('Tıbbi uyarı onaylanmadan başlanamıyor', kilitli && await page.evaluate(() => !document.querySelector('[data-ob="next"]').disabled));
     await tap(page, '[data-ob="next"]'); await wait(500);
     await tap(page, '[data-ob-uses="1"]'); await tap(page, '[data-ob="next"]'); await wait(500); await shot('kurulum-igne');
     await tap(page, '[data-ob="next"]'); await wait(500); await shot('kurulum-hedef');
@@ -117,6 +120,26 @@ const step = (ad, sonuc, detay) => { report.adimlar.push({ ad, sonuc, detay }); 
     const kayit2 = await page.evaluate(() => { const d = JSON.parse(localStorage.getItem('doz-defteri') || '{}'); return { tarti: (d.weights || []).length, igne: (d.shots || []).length }; });
     await shot('yeniden-acildi');
     step('Uygulama kapatılıp açılınca veriler duruyor', kayit2.tarti === 1 && kayit2.igne === 1, JSON.stringify(kayit2));
+
+    // Kayıt düzenleme: tartıya dokun → değiştir
+    await tap(page, '.tab[data-tab="kilo"]'); await wait(600);
+    await tap(page, '[data-edit-w]'); await wait(600);
+    const baslik = await page.textContent('#sheetRoot h2');
+    await type(page, '#w-kg', '87,9'); await shot('tarti-duzenle');
+    await tap(page, '#sheetRoot [type="submit"]'); await wait(1200);
+    const duz = await page.evaluate(() => { const d = JSON.parse(localStorage.getItem('doz-defteri')); return { tarti: d.weights.length, kg: d.weights[0].kg }; });
+    step('Tartı düzenlendi', baslik.includes('düzenle') && duz.tarti === 1 && duz.kg === 87.9, baslik + ' ' + JSON.stringify(duz));
+    await tap(page, '.tab[data-tab="ozet"]'); await wait(1500);
+
+    // Veri dosyası (otomatik yedeğe giren kopya) yazıldı mı, web depolaması silinince geri geliyor mu?
+    const dosya = (await device.shell(`run-as ${PKG} cat files/hafif-veri.json`)).toString();
+    step('Veri dosyası yazıldı', dosya.includes('"kg":87.9'), dosya.slice(0, 120));
+    await device.shell(`am force-stop ${PKG}`); await wait(800);
+    await device.shell(`run-as ${PKG} rm -rf app_webview`); await wait(500);
+    page = await launch(); await wait(1500);
+    const geri = await page.evaluate(() => { const d = JSON.parse(localStorage.getItem('doz-defteri') || '{}'); return { tarti: (d.weights || []).length, igne: (d.shots || []).length, kurulum: !!document.querySelector('#onb') }; });
+    await shot('yedekten-geri-yuklendi');
+    step('Web depolaması silinince veriler dosyadan geri yüklendi', geri.tarti === 1 && geri.igne === 1 && !geri.kurulum, JSON.stringify(geri));
 
     // Geri tuşu: alt sayfa kapanmalı
     await tap(page, '[data-open="weight"]'); await wait(600);
