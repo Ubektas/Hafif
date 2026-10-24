@@ -2421,7 +2421,6 @@ function kiloKpi(){
       <div style="display:flex;flex-direction:column;gap:6px"><span class="eyebrow">Güncel kilo · ${fmtShort(L.date)}</span>
         <div class="mega">${kg(L.kg)}<small>kg</small></div>
         <div class="fromto">${pr?`son tartıdan <b>${sgn(L.kg-pr.kg)} kg</b>`:"ilk tartı"}</div></div>
-      ${T?`<div class="ktrend"><span>Eğilim</span><b>${kg(T.cur)}</b><em>${sgn(T.slope*7)} kg/hafta</em></div>`:""}
     </div>
     <svg class="spark" viewBox="0 0 320 72" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="kks" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7FE0C2" stop-opacity=".4"/><stop offset="1" stop-color="#7FE0C2" stop-opacity="0"/></linearGradient></defs>
       <path d="${line}L320 72L0 72Z" fill="url(#kks)"/><path class="${A("draw")}" pathLength="1" d="${line}" fill="none" stroke="#9FF0D6" stroke-width="2.2" stroke-linejoin="round" vector-effect="non-scaling-stroke"/></svg>
