@@ -1,0 +1,209 @@
+{
+  "adimlar": [
+    {
+      "ad": "İlk kurulum ekranı açıldı",
+      "sonuc": true
+    },
+    {
+      "ad": "Tıbbi uyarı onaylanmadan başlanamıyor",
+      "sonuc": true
+    },
+    {
+      "ad": "İlk kurulum tamamlandı",
+      "sonuc": true
+    },
+    {
+      "ad": "Adım kartı görünüyor",
+      "sonuc": true,
+      "detay": "{\"platform\":\"android\",\"available\":true}"
+    },
+    {
+      "ad": "Health Connect izin penceresi açıldı",
+      "sonuc": true,
+      "detay": "mCurrentFocus=Window{814b744 u0 com.google.android.permissioncontroller/com.android.permissioncontroller.permission.ui.GrantPermissionsActivity}"
+    },
+    {
+      "ad": "Hatırlatıcılar kuruldu",
+      "sonuc": true,
+      "detay": "2 bekleyen bildirim"
+    },
+    {
+      "ad": "Bildirim telefonda göründü",
+      "sonuc": true
+    },
+    {
+      "ad": "Uygulama açıldı (Capacitor)",
+      "sonuc": true,
+      "detay": "{\"native\":true,\"eklentiler\":[\"App\",\"HafifWidget\",\"InAppReview\",\"SystemBars\",\"LocalNotifications\",\"Health\",\"CapacitorCookies\",\"WebView\",\"Filesystem\",\"Share\",\"CapacitorHttp\"],\"fontlar\":[\"Outfit:true\",\"Figtree:true\"],\"ekran\":[412,842],\"navAlt\":842,\"padUst\":\"0px\",\"padAlt\":\"0px\",\"senkron\":\"Bu cihazda kayıtlı\"}"
+    },
+    {
+      "ad": "Tüm sekmeler açıldı",
+      "sonuc": true,
+      "detay": ""
+    },
+    {
+      "ad": "Kayıt eklendi",
+      "sonuc": true,
+      "detay": "{\"tarti\":1,\"igne\":1,\"gun\":1}"
+    },
+    {
+      "ad": "Uygulama kapatılıp açılınca veriler duruyor",
+      "sonuc": true,
+      "detay": "{\"tarti\":1,\"igne\":1}"
+    },
+    {
+      "ad": "Tartı düzenlendi",
+      "sonuc": true,
+      "detay": "Tartıyı düzenle {\"tarti\":1,\"kg\":87.9}"
+    },
+    {
+      "ad": "Veri dosyası yazıldı",
+      "sonuc": true,
+      "detay": "{\"app\":\"Hafif\",\"version\":1,\"saved\":\"2026-10-24T17:58:01.741Z\",\"data\":{\"profile\":{\"drug\":null,\"startWeight\":88.4,\"goalWei"
+    },
+    {
+      "ad": "Web depolaması silinince veriler dosyadan geri yüklendi",
+      "sonuc": true,
+      "detay": "{\"tarti\":1,\"igne\":1,\"kurulum\":false}"
+    },
+    {
+      "ad": "Yan etki kaydedildi",
+      "sonuc": true,
+      "detay": "{\"2026-10-24\":{\"bulanti\":2}}"
+    },
+    {
+      "ad": "Kalem stoğu iğneyle azaldı",
+      "sonuc": true,
+      "detay": "kalan 3"
+    },
+    {
+      "ad": "Vücut ölçüsü kaydedildi",
+      "sonuc": true,
+      "detay": "[{\"id\":\"hkm9abyqmvmpcs9s\",\"date\":\"2026-10-24\",\"bel\":96.5,\"kalca\":110}]"
+    },
+    {
+      "ad": "Karanlık tema açıldı",
+      "sonuc": true,
+      "detay": "dark"
+    },
+    {
+      "ad": "Geri tuşu açık pencereyi kapatıyor",
+      "sonuc": true
+    },
+    {
+      "ad": "Geri tuşu Özet sekmesine dönüyor",
+      "sonuc": true,
+      "detay": "ozet"
+    },
+    {
+      "ad": "Özet'te geri tuşu uygulamadan çıkıyor",
+      "sonuc": true,
+      "detay": "mCurrentFocus=Window{983593d u0 com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLauncherActivity}"
+    },
+    {
+      "ad": "Yedek dosyası → paylaş penceresi",
+      "sonuc": true,
+      "detay": "mCurrentFocus=Window{3a1ad56 u0 com.android.intentresolver/com.android.intentresolver.ChooserActivityLauncher}\n  mFocusedApp=ActivityRecord{bcb259c u0 com.android.intentresolver/.ChooserActivityLauncher t12}"
+    },
+    {
+      "ad": "Yedek dosyası hata mesajı yok",
+      "sonuc": true,
+      "detay": ""
+    },
+    {
+      "ad": "Excel dosyası hata mesajı yok",
+      "sonuc": true,
+      "detay": ""
+    },
+    {
+      "ad": "Google Play faturalandırma eklentisi yüklendi",
+      "sonuc": true
+    },
+    {
+      "ad": "Ücretsiz dönemde doktor raporu (PDF) → paylaş penceresi",
+      "sonuc": true,
+      "detay": "mCurrentFocus=Window{5dea94e u0 com.android.intentresolver/com.android.intentresolver.ChooserActivityLauncher}"
+    },
+    {
+      "ad": "Ücretsiz dönem bitince ödeme ekranı bir kez açıldı",
+      "sonuc": true
+    },
+    {
+      "ad": "Rapor (Plus) → ödeme ekranı açıldı",
+      "sonuc": true,
+      "detay": "{\"acik\":true,\"planlar\":3,\"baslik\":\"Kilo vermeninen hafif yolu.\"}"
+    },
+    {
+      "ad": "Geri tuşu ödeme ekranını kapatıyor",
+      "sonuc": true
+    },
+    {
+      "ad": "Plus grafikleri kilitli görünüyor",
+      "sonuc": true
+    },
+    {
+      "ad": "10 widget sağlayıcısı kayıtlı",
+      "sonuc": true,
+      "detay": "10 sağlayıcı"
+    },
+    {
+      "ad": "Widget veri dosyası yazıldı",
+      "sonuc": true,
+      "detay": "{\"v\":1,\"gen\":1792864785738,\"date\":\"2026-10-24\",\"shots\":true,\"plusUntil\":1578441600000,\"cyc\":{\"t0\":17"
+    },
+    {
+      "ad": "Widget çizimleri üretildi",
+      "sonuc": true,
+      "detay": "1-170x170.png,1-360x170.png,2-170x80.png,2-360x80.png,2-360x170.png,3-170x170.png,3-360x170.png,4-170x80.png,4-360x80.png,4-360x170.png,5-170x170.png,5-360x170.png,6-170x170.png,6-360x170.png,7-170x170.png,7-360x170.png,8-170x170.png,8-360x170.png,9-170x170.png,9-360x170.png,10-170x170.png,10-360x170.png,kilitli.png"
+    },
+    {
+      "ad": "Widget bağlantısı (+250 ml su) çalıştı",
+      "sonuc": true,
+      "detay": "1750 → 2000"
+    }
+  ],
+  "hatalar": [],
+  "konsol": [
+    "error: Failed to load resource: the server responded with a status of 404 (Not Found)",
+    "error: Failed to load resource: the server responded with a status of 404 (Not Found)",
+    "error: {message: 'readFile' failed because file at '/data/user/0/co…ktas.hafif/files/hafif-veri.json' does not exist., code: OS-PLUG-FILE-0008}",
+    "error: Failed to load resource: the server responded with a status of 404 (Not Found)",
+    "error: Failed to load resource: the server responded with a status of 404 (Not Found)",
+    "error: Failed to load resource: the server responded with a status of 404 (Not Found)",
+    "error: {message: Share canceled}",
+    "error: {message: Share canceled}",
+    "error: {message: Share canceled}",
+    "error: {message: android.health.connect.HealthConnectException: jav…lass android.health.connect.datatypes.StepsRecord, code: permission-denied}",
+    "error: {message: android.health.connect.HealthConnectException: jav…lass android.health.connect.datatypes.StepsRecord, code: permission-denied}",
+    "error: {message: android.health.connect.HealthConnectException: jav…ass android.health.connect.datatypes.WeightRecord}",
+    "error: {message: android.health.connect.HealthConnectException: jav…ss android.health.connect.datatypes.BodyFatRecord}"
+  ],
+  "fps": {
+    "ozet": 61,
+    "takviye": 57,
+    "besin": 7,
+    "kilo": 61,
+    "igne": 61
+  },
+  "sekme_takviye": {
+    "sonuc": "Takviyeler",
+    "ms": 61
+  },
+  "sekme_besin": {
+    "sonuc": "Protein & Su",
+    "ms": 61
+  },
+  "sekme_kilo": {
+    "sonuc": "Kilo",
+    "ms": 467
+  },
+  "sekme_igne": {
+    "sonuc": "İğneler",
+    "ms": 53
+  },
+  "sekme_ozet": {
+    "sonuc": "Hafif",
+    "ms": 46
+  },
+  "sonuc": "BAŞARILI"
+}
