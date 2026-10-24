@@ -47,8 +47,16 @@ jobs:
           echo "SURUM=$AD" >> "$GITHUB_ENV"
       - run: npm ci
       - run: npx cap sync android
-      - run: chmod +x gradlew && ./gradlew bundleRelease assembleRelease
+      - name: Derle (AAB + APK)
         working-directory: android
+        run: |
+          chmod +x gradlew
+          set -o pipefail
+          if ! ./gradlew bundleRelease assembleRelease 2>&1 | tee derleme.log; then
+            # hata satırları GitHub notu olarak görünsün
+            grep -E "error:|e: |What went wrong|Lint found|Error:|\.java:[0-9]+|\.xml:[0-9]+" -A3 derleme.log | head -40 | while IFS= read -r l; do echo "::error::$l"; done
+            exit 1
+          fi
       - name: Dosyaları adlandır
         run: |
           mkdir -p cikti
