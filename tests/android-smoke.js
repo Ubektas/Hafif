@@ -141,6 +141,30 @@ const step = (ad, sonuc, detay) => { report.adimlar.push({ ad, sonuc, detay }); 
     await shot('yedekten-geri-yuklendi');
     step('Web depolaması silinince veriler dosyadan geri yüklendi', geri.tarti === 1 && geri.igne === 1 && !geri.kurulum, JSON.stringify(geri));
 
+    // Yan etki, kalem stoğu, ölçü, karanlık tema
+    const D = () => page.evaluate(() => JSON.parse(localStorage.getItem('doz-defteri') || '{}'));
+    await tap(page, '.tab[data-tab="igne"]'); await wait(700);
+    await tap(page, '[data-se="bulanti"]'); await wait(300); await tap(page, '[data-se="bulanti"]'); await wait(500);
+    await tap(page, '#penStart'); await wait(700);
+    await shot('yan-etki-kalem');
+    await tap(page, '[data-open="shot"]'); await wait(600); await type(page, '#s-dose', '5'); await tap(page, '#sheetRoot [type="submit"]'); await wait(1000);
+    const yk = await D();
+    const bugun = Object.keys(yk.sides || {})[0];
+    step('Yan etki kaydedildi', bugun && yk.sides[bugun].bulanti === 2, JSON.stringify(yk.sides));
+    step('Kalem stoğu iğneyle azaldı', yk.profile.penLeft === 3, 'kalan ' + yk.profile.penLeft);
+    await tap(page, '.tab[data-tab="kilo"]'); await wait(600);
+    await tap(page, '#mAdd'); await wait(600); await type(page, '#m-bel', '96,5'); await type(page, '#m-kalca', '110');
+    await tap(page, '#fM [type="submit"]'); await wait(900);
+    const ol = await D();
+    step('Vücut ölçüsü kaydedildi', (ol.meas || []).length === 1 && ol.meas[0].bel === 96.5, JSON.stringify(ol.meas));
+    await tap(page, '#gearBtn'); await wait(600);
+    await tap(page, '[data-theme-set="dark"]'); await wait(800);
+    const koyu = await page.evaluate(() => document.documentElement.dataset.hf);
+    await tap(page, '.tab[data-tab="ozet"]'); await wait(900); await shot('karanlik-ozet');
+    step('Karanlık tema açıldı', koyu === 'dark', koyu);
+    await tap(page, '#gearBtn'); await wait(600); await tap(page, '[data-theme-set="sys"]'); await wait(500);
+    await tap(page, '.tab[data-tab="ozet"]'); await wait(700);
+
     // Geri tuşu: alt sayfa kapanmalı
     await tap(page, '[data-open="weight"]'); await wait(600);
     await page.evaluate(() => document.activeElement && document.activeElement.blur()); await device.shell('input keyevent 111'); await wait(800); // klavyeyi kapat
@@ -175,6 +199,14 @@ const step = (ad, sonuc, detay) => { report.adimlar.push({ ad, sonuc, detay }); 
     await device.shell('input keyevent 4'); await wait(1000);
     const msg2 = await page.textContent('#dataMsg');
     step('Excel dosyası hata mesajı yok', !msg2, msg2);
+
+    await tap(page, '#exPdf'); await wait(5000);
+    await shot('rapor-paylas-penceresi');
+    const pencere3 = (await device.shell('dumpsys window | grep mCurrentFocus')).toString();
+    step('Doktor raporu (PDF) → paylaş penceresi', !/hafif\/.*MainActivity/.test(pencere3), pencere3.trim());
+    await device.shell('input keyevent 4'); await wait(1000);
+    const msg3 = await page.textContent('#dataMsg');
+    step('Rapor hata mesajı yok', !msg3, msg3);
   } catch (e) {
     report.hatalar.push('TEST HATASI: ' + (e && e.stack || e));
     try { await shot('hata-ani'); } catch (_) {}

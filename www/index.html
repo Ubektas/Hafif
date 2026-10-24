@@ -8,7 +8,7 @@
   /* Layout: one-column phone app; light porcelain ground with emerald-tinted neutrals; the summary hero is the one dark "Zümrüt" piece and buttons echo it */
   --bg:#F1F5F3; --glow:#DDEFE7; --surface:#FFFFFF; --surface-2:#FFFFFF; --sunk:#EDF3F0; --fg:#0B2420; --muted:#5F726C; --line:#E0E8E4;
   --accent:#0E7C66; --accent-soft:#E1F3EC; --accent-ink:#FFFFFF; --fat:#7B5BD0; --fat-soft:#EEE9FB; --shot:#E2643D; --shot-soft:#FCEDE7; --protein-ink:#8A5A10; --mint:#9FF0D6;
-  --emerald-1:#126B58; --emerald-2:#0B3B33;
+  --emerald-1:#126B58; --emerald-2:#0B3B33; --head:#0B3B33; --chipbg:rgba(255,255,255,.75); --warnbg:#FFF4E5; --warnfg:#8A5A10;
   --good:#12855D; --bad:#D04545; --water:#2C8FE0; --water-2:#7CC0F4; --water-soft:#E7F3F6; --protein:#D08A1E; --protein-soft:#FDF3E2;
   --shadow:0 1px 2px rgba(11,36,32,.04),0 14px 34px -18px rgba(11,59,51,.22);
   --f-display:"Bricolage Grotesque", ui-rounded, system-ui, sans-serif;
@@ -16,12 +16,27 @@
   --f-num:"Figtree", system-ui, -apple-system, sans-serif;
   color-scheme:light;
 }
+:root[data-hf="dark"]{
+  --bg:#08171A; --glow:#0E2D27; --surface:#10221F; --surface-2:#132824; --sunk:#0B1C19; --fg:#E4F1EC; --muted:#8FA8A1; --line:#1D3631;
+  --accent:#43C9A0; --accent-soft:#103A30; --accent-ink:#04201A; --fat:#A68BF0; --fat-soft:#251E3D; --shot:#F07A52; --shot-soft:#3A1F17; --protein-ink:#F0C27A; --mint:#9FF0D6;
+  --emerald-1:#167A64; --emerald-2:#0C4A3F; --head:#CFEDE3; --chipbg:rgba(255,255,255,.06); --warnbg:#3A2A10; --warnfg:#F3C77B;
+  --good:#3FC48F; --bad:#F06B6B; --water:#4FA9E8; --water-2:#7CC0F4; --water-soft:#10293A; --protein:#E09A2E; --protein-soft:#33260F;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 14px 34px -18px rgba(0,0,0,.6);
+  color-scheme:dark; --seinsfg:#F6B79F; --step:#7C8BEA; --step-soft:#1E2648;
+}
+:root[data-hf="dark"] nav.tabs{background:rgba(10,24,22,.88)}
+:root[data-hf="dark"] .nextms{background:linear-gradient(135deg,var(--accent-soft),var(--surface));border-color:rgba(67,201,160,.15)}
+:root[data-hf="dark"] .segrid button .sv i u{background:#24403A}
+:root[data-hf="dark"] .segrid button[data-lv="2"]{border-color:#7A3A26}:root[data-hf="dark"] .segrid button[data-lv="3"]{background:#4A2116;border-color:var(--shot)}
+:root[data-hf="dark"] .pblocks i:not([style]){background:#183330}
+:root[data-hf="dark"] .chips span{background:var(--chipbg)}
 *{box-sizing:border-box}
+html{background:var(--bg)}
 body{font-variant-numeric:tabular-nums;background-color:var(--bg);background-image:radial-gradient(140% 460px at 85% -140px,var(--glow) 0%,var(--bg) 72%);background-repeat:no-repeat;color:var(--fg);font:15px/1.45 var(--f-body);-webkit-text-size-adjust:100%}
 .wrap{max-width:560px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:16px calc(96px + env(safe-area-inset-bottom,0px))}
 h1,h2,h3{font-family:var(--f-display);margin:0;text-wrap:balance}
 h1{font-size:26px;font-weight:700;letter-spacing:-.01em}
-h2{font-size:18px;font-weight:700;color:var(--emerald-2)}
+h2{font-size:18px;font-weight:700;color:var(--head)}
 .num{font-family:var(--f-num);font-variant-numeric:tabular-nums}
 .eyebrow{font-size:11px;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);font-weight:600}
 .muted{color:var(--muted)}
@@ -178,8 +193,36 @@ input[type=range].wr::-moz-range-thumb{width:20px;height:20px;border-radius:50%;
 .linkbtn{border:0;background:none;color:var(--muted);font:500 13px var(--f-body);padding:4px;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
 @media (prefers-reduced-motion:reduce){.wave,.bub{animation:none}.liquid,.pring svg circle.v,.week .bars i{transition:none}}
 
+.segrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.segrid button{border:1px solid var(--line);background:var(--surface);border-radius:16px;padding:10px 12px;display:flex;flex-direction:column;align-items:flex-start;gap:6px;text-align:left;cursor:pointer;color:var(--fg);transition:background .2s,border-color .2s}
+.segrid button b{font:600 14px var(--f-body)}
+.segrid button .sv{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted)}
+.segrid button .sv i{display:flex;gap:3px}.segrid button .sv i u{width:16px;height:6px;border-radius:9px;background:var(--sunk);display:block}
+.segrid button[data-lv="1"]{background:var(--shot-soft);border-color:transparent}.segrid button[data-lv="1"] .sv i u:nth-child(-n+1),.segrid button[data-lv="2"] .sv i u:nth-child(-n+2),.segrid button[data-lv="3"] .sv i u{background:var(--shot)}
+.segrid button[data-lv="2"]{background:var(--shot-soft);border-color:#F2B9A6}.segrid button[data-lv="3"]{background:#FADBD0;border-color:var(--shot)}
+.sedays{display:flex;gap:6px}.sedays button{border:1px solid var(--line);background:var(--surface);border-radius:99px;padding:6px 12px;font:600 13px var(--f-body);color:var(--muted);cursor:pointer}.sedays button[aria-pressed="true"]{background:var(--emerald-2);border-color:var(--emerald-2);color:#fff}
+.sepat{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;align-items:end;height:92px}
+.sepat div{display:flex;flex-direction:column;align-items:center;gap:4px;height:100%;justify-content:flex-end}
+.sepat i{display:block;width:100%;max-width:28px;border-radius:7px 7px 3px 3px;background:color-mix(in oklab,var(--shot) 35%,var(--surface))}.sepat i.hi{background:var(--shot)}
+.sepat span{font:600 11px var(--f-num);color:var(--muted)}
+.seins{background:var(--shot-soft);border-radius:14px;padding:10px 12px;font-size:13.5px;line-height:1.45;color:var(--seinsfg,#7A2E15)}
+.mgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.mgrid div{background:var(--sunk);border-radius:14px;padding:10px 10px 9px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.mgrid span{font-size:12px;color:var(--muted)}.mgrid b{font:700 20px/1.1 var(--f-display);color:var(--head);letter-spacing:-.02em}.mgrid b small{font:500 12px var(--f-body);color:var(--muted);margin-left:2px}
+.mgrid em{font:600 12px var(--f-num);font-style:normal;color:var(--muted)}.mgrid em.down{color:var(--accent)}.mgrid em.up{color:var(--shot)}
+.mtotal{display:flex;align-items:center;gap:12px;background:var(--accent-soft);border-radius:16px;padding:12px 14px}.mtotal b{font:700 28px/1 var(--f-display);color:var(--accent);letter-spacing:-.03em}.mtotal span{font-size:13px;color:var(--head);line-height:1.35}
+.mhist{display:flex;flex-direction:column}.mhist div{display:flex;align-items:center;gap:10px;padding:8px 0;border-top:1px solid var(--line);font-size:13px}.mhist div b{min-width:84px;font-weight:600}.mhist div span{flex:1;color:var(--muted);min-width:0}
+.mhist button{border:0;background:none;color:var(--muted);font-size:18px;padding:4px 2px 4px 8px;cursor:pointer}
+.seg3{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;background:var(--sunk);border-radius:14px;padding:4px}
+.seg3 button{border:0;background:none;border-radius:11px;padding:10px;font:600 14px var(--f-body);color:var(--muted);cursor:pointer}
+.seg3 button[aria-checked="true"]{background:var(--surface);color:var(--fg);box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.pen{display:flex;align-items:center;gap:14px}
+.pendots{display:flex;gap:5px;flex-wrap:wrap}.pendots i{width:22px;height:30px;border-radius:7px;background:var(--sunk);border:1px solid var(--line)}.pendots i.on{background:linear-gradient(180deg,#F08A62,var(--shot));border-color:transparent}
+.penrow{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.penrow .stepper{flex:none}
+.pencard.warn{box-shadow:inset 0 0 0 1.5px var(--shot)}
 .phead{display:flex;justify-content:space-between;align-items:flex-end;gap:12px}
-.pbig{font:700 48px/1 var(--f-display);letter-spacing:-.04em;color:var(--emerald-2);margin-top:6px}.pbig small{font:500 19px var(--f-body);letter-spacing:0;color:var(--muted);margin-left:4px}
+.pbig{font:700 48px/1 var(--f-display);letter-spacing:-.04em;color:var(--head);margin-top:6px}.pbig small{font:500 19px var(--f-body);letter-spacing:0;color:var(--muted);margin-left:4px}
 .ppill{background:var(--protein-soft);color:var(--protein-ink);border-radius:99px;padding:6px 12px;font:600 13px var(--f-num);white-space:nowrap}
 .pblocks{display:grid;grid-template-columns:repeat(12,1fr);gap:4px;margin-top:14px}
 .pblocks i{aspect-ratio:1;border-radius:6px;background:var(--sunk);transition:background .35s}
@@ -297,10 +340,10 @@ input[type=range].pr::-moz-range-thumb{width:22px;height:22px;border-radius:50%;
 
 .mscard{display:flex;flex-direction:column;gap:16px;background:radial-gradient(120% 60% at 0% 0%,rgba(217,169,62,.08),transparent 50%),radial-gradient(130% 70% at 100% 0%,rgba(14,124,102,.07),transparent 55%),var(--surface)}
 .msh{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
-.mscount{display:flex;align-items:baseline;font-family:var(--f-display);color:var(--emerald-2)}
+.mscount{display:flex;align-items:baseline;font-family:var(--f-display);color:var(--head)}
 .mscount b{font-size:34px;font-weight:700;letter-spacing:-.03em;line-height:1}.mscount span{font-size:16px;color:var(--muted);font-weight:500}
 .nextms{display:flex;gap:14px;align-items:center;border-radius:20px;padding:14px;background:linear-gradient(135deg,var(--accent-soft),#F7FBF9);border:1px solid rgba(14,124,102,.10)}
-.nmt{font:700 18px var(--f-display);letter-spacing:-.01em;color:var(--emerald-2);text-wrap:balance}
+.nmt{font:700 18px var(--f-display);letter-spacing:-.01em;color:var(--head);text-wrap:balance}
 .nchips{display:flex;flex-wrap:wrap;gap:5px}
 .nchips span{font-size:12px;padding:4px 9px;border-radius:99px;background:var(--surface);color:var(--muted);box-shadow:0 1px 2px rgba(11,36,32,.06)}
 .nchips b{color:var(--fg);font-weight:700}
@@ -327,7 +370,7 @@ h2{font-size:17.5px;letter-spacing:-.01em}
 section{gap:16px}
 .seg{border-radius:13px;padding:4px}
 .seg button{border-radius:10px;padding:8px 2px;font-weight:600}
-.seg button[aria-selected="true"]{box-shadow:0 1px 2px rgba(11,36,32,.08),0 4px 10px -6px rgba(11,59,51,.3);color:var(--emerald-2)}
+.seg button[aria-selected="true"]{box-shadow:0 1px 2px rgba(11,36,32,.08),0 4px 10px -6px rgba(11,59,51,.3);color:var(--head)}
 .legend{gap:16px;font-size:12px}
 .draw{stroke-dasharray:1;stroke-dashoffset:1;animation:draw 1.1s cubic-bezier(.45,0,.2,1) .1s forwards}
 @keyframes draw{to{stroke-dashoffset:0}}
@@ -345,7 +388,7 @@ section{gap:16px}
 .minis{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
 .minis div{background:var(--surface);border-radius:16px;padding:12px 14px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:2px;min-width:0}
 .minis span{font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);font-weight:600}
-.minis b{font:700 21px var(--f-display);letter-spacing:-.02em;color:var(--emerald-2);white-space:nowrap}.minis small{font:500 11px var(--f-body);color:var(--muted);letter-spacing:0}
+.minis b{font:700 21px var(--f-display);letter-spacing:-.02em;color:var(--head);white-space:nowrap}.minis small{font:500 11px var(--f-body);color:var(--muted);letter-spacing:0}
 .mgroup{padding:16px 16px 6px}
 .mhead{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:0 4px 8px;border-bottom:1px solid var(--line)}
 .mhead h2{text-transform:capitalize}
@@ -353,7 +396,7 @@ section{gap:16px}
 .wrow{display:grid;grid-template-columns:46px 1fr auto auto;gap:10px;align-items:center;padding:11px 4px;border-top:1px solid var(--line)}
 .wrow:first-child{border-top:0}
 .wdate{display:flex;flex-direction:column;align-items:center;justify-content:center;width:46px;height:46px;border-radius:14px;background:var(--sunk);line-height:1.05}
-.wdate b{font:700 18px var(--f-display);color:var(--emerald-2)}.wdate span{font-size:10.5px;color:var(--muted);text-transform:capitalize}
+.wdate b{font:700 18px var(--f-display);color:var(--head)}.wdate span{font-size:10.5px;color:var(--muted);text-transform:capitalize}
 .wmain{min-width:0}
 .wkg{font:700 19px var(--f-display);letter-spacing:-.02em;display:flex;align-items:baseline;gap:3px;flex-wrap:wrap}
 .wkg small{font:500 12px var(--f-body);color:var(--muted)}
@@ -378,7 +421,7 @@ section{gap:16px}
 .dose.big{font-size:15px;padding:8px 12px;border-radius:12px}
 .dosecard{display:flex;align-items:center;gap:14px;background:var(--sunk);border-radius:16px;padding:12px 14px}
 .dstats{flex:1;display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
-.dstats div{display:flex;flex-direction:column;gap:1px}.dstats b{font:700 19px var(--f-display);letter-spacing:-.02em;color:var(--emerald-2)}.dstats span{font-size:11px;color:var(--muted)}
+.dstats div{display:flex;flex-direction:column;gap:1px}.dstats b{font:700 19px var(--f-display);letter-spacing:-.02em;color:var(--head)}.dstats span{font-size:11px;color:var(--muted)}
 .form2{gap:12px}
 .fsec{display:flex;align-items:center;gap:10px;margin-top:6px;font-size:11px;text-transform:uppercase;letter-spacing:.09em;color:var(--accent);font-weight:700}
 .fsec:first-child{margin-top:0}
@@ -395,7 +438,7 @@ input:focus{background:var(--surface);border-color:var(--accent);outline:none}
 .chalka{display:grid;grid-template-columns:140px 1fr;gap:16px;align-items:center}
 .donut{position:relative;width:140px;height:140px}
 .donut .dc{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
-.donut .dc b{font:700 26px var(--f-display);letter-spacing:-.03em;color:var(--emerald-2)}.donut .dc span{font-size:11px;color:var(--muted)}
+.donut .dc b{font:700 26px var(--f-display);letter-spacing:-.03em;color:var(--head)}.donut .dc span{font-size:11px;color:var(--muted)}
 .dleg{display:flex;flex-direction:column;gap:10px;min-width:0}
 .dleg>div{display:grid;grid-template-columns:10px 1fr auto;column-gap:8px;align-items:baseline}
 .dleg i{width:10px;height:10px;border-radius:3px;align-self:center}
@@ -407,16 +450,16 @@ input:focus{background:var(--surface);border-color:var(--accent);outline:none}
 @media (prefers-reduced-motion:reduce){.gx,.dash{animation:none}}
 
 .hright{display:flex;align-items:center;gap:8px}
-.gear{width:38px;height:38px;border-radius:12px;border:0;background:var(--surface);color:var(--emerald-2);display:grid;place-items:center;cursor:pointer;box-shadow:var(--shadow)}
+.gear{width:38px;height:38px;border-radius:12px;border:0;background:var(--surface);color:var(--head);display:grid;place-items:center;cursor:pointer;box-shadow:var(--shadow)}
 .gear:active{transform:scale(.94)}
 .smini{display:flex;align-items:center;gap:14px;text-align:left;cursor:pointer;font:inherit;color:inherit;width:100%;padding:14px 16px}
-.smring{position:relative;flex:none;width:52px;height:52px}.smring b{position:absolute;inset:0;display:grid;place-items:center;font:700 13px var(--f-display);color:var(--emerald-2)}
+.smring{position:relative;flex:none;width:52px;height:52px}.smring b{position:absolute;inset:0;display:grid;place-items:center;font:700 13px var(--f-display);color:var(--head)}
 .smt{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}.smt>b{font:700 15.5px var(--f-display);color:var(--fg)}
 .smp{display:flex;gap:2px;flex-wrap:wrap}.smp span{opacity:.35;filter:grayscale(.6)}.smp span.ok{opacity:1;filter:none}
 .shead{display:flex;flex-direction:column;gap:16px;background:radial-gradient(130% 80% at 100% 0%,rgba(14,124,102,.08),transparent 55%),var(--surface)}
 .shtop{display:flex;justify-content:space-between;align-items:center;gap:12px}
 .sring{position:relative;width:84px;height:84px;flex:none}.sring>div{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
-.sring b{font:700 20px var(--f-display);color:var(--emerald-2);letter-spacing:-.02em}.sring span{font-size:10.5px;color:var(--muted)}
+.sring b{font:700 20px var(--f-display);color:var(--head);letter-spacing:-.02em}.sring span{font-size:10.5px;color:var(--muted)}
 .week2{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
 .wd{border:0;background:none;border-radius:14px;padding:8px 0 7px;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;font:inherit;color:var(--fg)}
 .wd span{font-size:10.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}.wd b{font:700 16px var(--f-display)}
@@ -443,7 +486,7 @@ input:focus{background:var(--surface);border-color:var(--accent);outline:none}
 .srow.on{background:linear-gradient(90deg,var(--accent-soft),var(--surface));border-color:rgba(14,124,102,.18)}
 .srow.on .chk{background:var(--accent);border-color:var(--accent);transform:scale(1.08)}
 .srow.on .chk svg path{stroke-dashoffset:0}
-.srow.on .sname b{color:var(--emerald-2)}
+.srow.on .sname b{color:var(--head)}
 .srow.on .spill{transform:rotate(-8deg) scale(.95)}
 .wtab{border-collapse:collapse;width:100%;font-size:12.5px}
 .wtab th{font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);font-weight:600;padding:0 2px 8px;text-align:center}
@@ -485,12 +528,12 @@ input:focus{background:var(--surface);border-color:var(--accent);outline:none}
 
 #cycWrap{touch-action:pan-y}
 .cycard{display:flex;flex-direction:column;gap:14px;background:radial-gradient(120% 70% at 100% 0%,rgba(14,124,102,.07),transparent 55%),var(--surface)}
-.cyline{margin:0;font-size:13.5px;color:var(--muted);line-height:1.5}.cyline b{color:var(--emerald-2)}
+.cyline{margin:0;font-size:13.5px;color:var(--muted);line-height:1.5}.cyline b{color:var(--head)}
 .cinfo{display:grid;grid-template-columns:repeat(3,1fr);background:var(--sunk);border-radius:16px;padding:10px 6px}
 .cinfo div{display:flex;flex-direction:column;align-items:center;gap:2px}.cinfo div+div{border-left:1px solid var(--line)}
-.cinfo span{font-size:10.5px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);font-weight:600}.cinfo b{font:700 16px var(--f-display);color:var(--emerald-2)}
+.cinfo span{font-size:10.5px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);font-weight:600}.cinfo b{font:700 16px var(--f-display);color:var(--head)}
 .gtop{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
-.gstate{font:700 30px var(--f-display);letter-spacing:-.03em;color:var(--emerald-2);display:flex;align-items:baseline;gap:8px;margin-top:2px;line-height:1}
+.gstate{font:700 30px var(--f-display);letter-spacing:-.03em;color:var(--head);display:flex;align-items:baseline;gap:8px;margin-top:2px;line-height:1}
 .gstate small{font:600 14px var(--f-body);color:var(--muted);letter-spacing:0}
 .gnext{display:flex;flex-direction:column;align-items:flex-end;background:var(--sunk);border-radius:14px;padding:8px 12px;text-align:right}
 .gnext span{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:600}.gnext b{font:700 18px var(--f-display);color:var(--fg)}.gnext em{font-style:normal;font-size:11px;color:var(--muted)}
@@ -501,8 +544,8 @@ input:focus{background:var(--surface);border-color:var(--accent);outline:none}
 .dtube i{display:block;width:100%;border-radius:12px}
 .dcol.fut .dtube i{border:1.5px dashed #9CCDBB;box-sizing:border-box;background:transparent}
 .dcol.today .dtube{box-shadow:0 0 0 2px var(--emerald-2)}
-.dcol.today .dmg{color:var(--emerald-2)}
-.dshot{position:absolute;top:6px;left:50%;transform:translateX(-50%);color:var(--emerald-2);z-index:1}
+.dcol.today .dmg{color:var(--head)}
+.dshot{position:absolute;top:6px;left:50%;transform:translateX(-50%);color:var(--head);z-index:1}
 .dday{font-size:12px;color:var(--fg)}.dcol.today .dday{color:var(--accent)}
 .dph{font-size:9.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.03em}
 
@@ -514,7 +557,7 @@ input:focus{background:var(--surface);border-color:var(--accent);outline:none}
 .mixl>div{display:flex;gap:8px;align-items:flex-start}
 .mixl>div>i{flex:none;width:10px;height:10px;border-radius:3px;margin-top:4px}
 .mixl span{display:block;font-size:11.5px;color:var(--muted)}
-.mixl b{display:block;font:700 20px var(--f-display);letter-spacing:-.02em;color:var(--emerald-2)}
+.mixl b{display:block;font:700 20px var(--f-display);letter-spacing:-.02em;color:var(--head)}
 .mixl em{display:block;font-style:normal;font-size:11px;color:var(--muted);line-height:1.3}
 .mixn{display:flex;justify-content:space-between;align-items:baseline;background:var(--sunk);border-radius:12px;padding:9px 12px;font-size:12.5px;color:var(--muted)}
 .mixn b{font:700 16px var(--f-display);color:var(--fg)}
@@ -529,15 +572,15 @@ input:focus{background:var(--surface);border-color:var(--accent);outline:none}
 .phsel button[aria-selected="true"].cur::after{background:#9FF0D6}
 .phd{display:flex;flex-direction:column;gap:10px;background:var(--sunk);border-radius:16px;padding:14px}
 .phdh{display:flex;justify-content:space-between;align-items:flex-end;gap:10px}
-.phdh h3{font-size:19px;color:var(--emerald-2);margin-top:2px}
+.phdh h3{font-size:19px;color:var(--head);margin-top:2px}
 .phdr{font-size:12px;color:var(--muted);text-align:right}
 .phd p{margin:0;font-size:14px;line-height:1.5}
 .phd .tips li::before{background:var(--accent)}
 
-.seeall{border:0;background:var(--sunk);color:var(--emerald-2);font:600 12.5px var(--f-body);padding:6px 10px;border-radius:99px;cursor:pointer}
+.seeall{border:0;background:var(--sunk);color:var(--head);font:600 12.5px var(--f-body);padding:6px 10px;border-radius:99px;cursor:pointer}
 button.mscount{border:0;background:none;cursor:pointer;padding:0;font:inherit;align-items:baseline}
 button.mscount i{font-style:normal;font-size:22px;color:var(--muted);margin-left:4px}
-.backbtn{align-self:flex-start;border:0;background:var(--surface);box-shadow:var(--shadow);color:var(--emerald-2);font:600 13.5px var(--f-body);padding:8px 14px;border-radius:99px;cursor:pointer}
+.backbtn{align-self:flex-start;border:0;background:var(--surface);box-shadow:var(--shadow);color:var(--head);font:600 13.5px var(--f-body);padding:8px 14px;border-radius:99px;cursor:pointer}
 .bgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px 8px}
 .bcell{display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center}
 .bcell b{font-size:12.5px;line-height:1.25;color:var(--fg)}
@@ -549,9 +592,9 @@ button.mscount i{font-style:normal;font-size:22px;color:var(--muted);margin-left
 .onb{position:fixed;inset:0;z-index:40;overflow-y:auto;background-color:var(--bg);background-image:radial-gradient(140% 460px at 85% -140px,var(--glow) 0%,var(--bg) 72%);background-repeat:no-repeat}
 .onbin{max-width:480px;min-height:100%;margin:0 auto;display:flex;flex-direction:column;padding:calc(22px + env(safe-area-inset-top,0px)) max(22px,env(safe-area-inset-right,0px)) calc(22px + env(safe-area-inset-bottom,0px)) max(22px,env(safe-area-inset-left,0px))}
 .obtop{display:flex;align-items:center;justify-content:space-between;min-height:36px;margin-bottom:18px}
-.obback{border:0;background:var(--surface);box-shadow:var(--shadow);color:var(--emerald-2);font:600 13.5px var(--f-body);padding:8px 14px;border-radius:99px;cursor:pointer}
+.obback{border:0;background:var(--surface);box-shadow:var(--shadow);color:var(--head);font:600 13.5px var(--f-body);padding:8px 14px;border-radius:99px;cursor:pointer}
 .obdots{display:flex;gap:6px}.obdots i{width:7px;height:7px;border-radius:9px;background:var(--line);transition:width .25s,background .25s}.obdots i.on{width:22px;background:var(--accent)}
-.obh1{font:700 32px/1.08 var(--f-display);letter-spacing:-.03em;margin:0;color:var(--emerald-2)}.obh1 em{font-style:normal;color:var(--accent)}
+.obh1{font:700 32px/1.08 var(--f-display);letter-spacing:-.03em;margin:0;color:var(--head)}.obh1 em{font-style:normal;color:var(--accent)}
 .obsub{color:var(--muted);font-size:15.5px;margin:12px 0 0}
 .obgrow{flex:1;min-height:18px}
 .oblogo{width:92px;height:92px;border-radius:28px;background:linear-gradient(155deg,#1F8A70,#0B3B33);display:grid;place-items:center;color:#9FF0D6;box-shadow:0 20px 40px -18px rgba(11,59,51,.7);margin:12px 0 28px}.oblogo svg{width:50px;height:50px}
@@ -575,7 +618,7 @@ button.mscount i{font-style:normal;font-size:22px;color:var(--muted);margin-left
 .obu{position:relative}.obu input{padding-right:46px}.obu span{position:absolute;right:14px;top:50%;transform:translateY(-50%);font-size:13px;color:var(--muted);pointer-events:none}
 .onb input{background:var(--surface);border:1px solid var(--line)}
 .onb input:focus{border-color:var(--accent)}
-.obinfo{margin-top:16px;background:var(--accent-soft);border-radius:16px;padding:14px;font-size:13.5px;color:var(--emerald-2)}.obinfo b{font:700 19px var(--f-display)}
+.obinfo{margin-top:16px;background:var(--accent-soft);border-radius:16px;padding:14px;font-size:13.5px;color:var(--head)}.obinfo b{font:700 19px var(--f-display)}
 .obok{width:84px;height:84px;border-radius:50%;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center;margin:18px 0 22px}.obok svg{width:44px;height:44px}
 .obsum{display:flex;flex-direction:column;background:var(--surface);border-radius:20px;padding:4px 16px;box-shadow:var(--shadow);margin-top:22px}
 .obsum div{display:flex;justify-content:space-between;gap:12px;padding:12px 0;border-top:1px solid var(--line);font-size:14.5px}.obsum div:first-child{border:0}.obsum span{color:var(--muted)}
@@ -587,9 +630,9 @@ button.mscount i{font-style:normal;font-size:22px;color:var(--muted);margin-left
 .sthead{display:flex;justify-content:space-between;align-items:baseline}
 .sta{display:grid;grid-template-columns:118px 1fr;gap:16px;align-items:center}
 .string{position:relative;width:118px;height:118px}.string>div{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
-.string b{font:700 24px var(--f-display);letter-spacing:-.03em;color:var(--emerald-2)}.string span{font-size:11px;color:var(--muted)}
+.string b{font:700 24px var(--f-display);letter-spacing:-.03em;color:var(--head)}.string span{font-size:11px;color:var(--muted)}
 .sttrio{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
-.sttrio div{background:var(--sunk);border-radius:12px;padding:8px;min-width:0}.sttrio b{display:block;font:700 16px var(--f-display);color:var(--emerald-2);white-space:nowrap}.sttrio span{font-size:10.5px;color:var(--muted)}
+.sttrio div{background:var(--sunk);border-radius:12px;padding:8px;min-width:0}.sttrio b{display:block;font:700 16px var(--f-display);color:var(--head);white-space:nowrap}.sttrio span{font-size:10.5px;color:var(--muted)}
 .stwk{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;align-items:end;height:60px}
 .stwk div{display:flex;flex-direction:column;align-items:center;gap:4px;height:100%;justify-content:flex-end}
 .stwk i{display:block;width:16px;border-radius:6px;background:var(--step-soft);min-height:4px}.stwk i.ok{background:linear-gradient(var(--step-2),var(--step))}.stwk i.td{box-shadow:0 0 0 3px var(--step-soft)}
@@ -597,7 +640,7 @@ button.mscount i{font-style:normal;font-size:22px;color:var(--muted);margin-left
 .sthours{display:flex;align-items:flex-end;gap:3px;height:76px}.sthours i{flex:1;border-radius:3px;background:var(--step-soft);min-height:3px}.sthours i.h{background:var(--step)}
 .sthx{display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-top:4px}
 .stbig{position:relative;width:200px;height:200px;margin:0 auto}.stbig>div{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
-.stbig b{font:700 40px var(--f-display);letter-spacing:-.04em;color:var(--emerald-2)}.stbig span{font-size:12.5px;color:var(--muted)}
+.stbig b{font:700 40px var(--f-display);letter-spacing:-.04em;color:var(--head)}.stbig span{font-size:12.5px;color:var(--muted)}
 .pvtag{font:600 11px var(--f-body);letter-spacing:.06em;text-transform:uppercase;color:var(--step);background:var(--step-soft);border-radius:99px;padding:3px 9px}
 .stsrc{display:flex;align-items:center;gap:10px;font-size:12.5px;color:var(--muted)}
 .stcta{display:flex;align-items:center;gap:14px;padding:14px 16px;cursor:pointer;text-align:left;font:inherit;color:inherit;width:100%;border:0}
@@ -609,7 +652,7 @@ button.mscount i{font-style:normal;font-size:22px;color:var(--muted);margin-left
 .obtos{display:flex;gap:12px;align-items:flex-start;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:12px 14px;font-size:13px;line-height:1.45;color:var(--fg);cursor:pointer;margin:14px 0 4px;text-align:left}
 .obtos input{width:22px;height:22px;flex:none;margin:1px 0 0;accent-color:var(--accent)}
 .edit{cursor:pointer}
-.bkline{font-size:13px;border-radius:12px;padding:10px 12px;background:var(--sunk);color:var(--muted)}.bkline.warn{background:#FFF4E5;color:#8A5A10}
+.bkline{font-size:13px;border-radius:12px;padding:10px 12px;background:var(--sunk);color:var(--muted)}.bkline.warn{background:var(--warnbg);color:var(--warnfg)}
 .remrow{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center}
 .remtime{display:flex;gap:8px;margin:-2px 0 6px}.remtime select,.remtime input{padding:9px 10px;font-size:14px}
 .remcta{display:flex;align-items:center;gap:14px;padding:14px 16px}
@@ -820,7 +863,17 @@ function doseTable(){
 function nextSite(){const s=sortedS();if(!s.length)return SITES[0];const i=SITES.indexOf(s[s.length-1].site);return SITES[(i+1)%SITES.length]}
 
 /* ---------- views ---------- */
+/* görünüm: sistem / açık / koyu */
+const darkMQ=window.matchMedia?matchMedia("(prefers-color-scheme: dark)"):null;
+function applyTheme(){const t=(S.profile&&S.profile.theme)||"sys",d=t==="dark"||(t==="sys"&&darkMQ&&darkMQ.matches);
+  document.documentElement.dataset.hf=d?"dark":"light";const m=document.querySelector('meta[name="theme-color"]');if(m)m.content=d?"#08171A":"#F1F5F3";
+  try{const SB=window.Capacitor&&window.Capacitor.Plugins&&window.Capacitor.Plugins.SystemBars;if(SB){SB.setStyle({style:d?"DARK":"LIGHT"}).catch(()=>{})}}catch(_){}}
+if(darkMQ&&darkMQ.addEventListener)darkMQ.addEventListener("change",()=>{applyTheme();if(typeof GLASS!=="undefined")render()});
+function themeCard(){const t=S.profile.theme||"sys";
+  return `<div class="card" style="display:flex;flex-direction:column;gap:10px"><div><h2>Görünüm</h2><span class="muted" style="font-size:13px">Koyu tema gece gözünü yormaz.</span></div>
+    <div class="seg3" role="radiogroup" aria-label="Görünüm">${[["sys","Sistem"],["light","Açık"],["dark","Koyu"]].map(([k,n])=>`<button type="button" role="radio" data-theme-set="${k}" aria-checked="${k===t}">${n}</button>`).join("")}</div></div>`}
 function render(){
+  applyTheme();
   const ig=document.querySelector('.tab[data-tab="igne"]');
   if(ig){ig.hidden=!SHOTS();document.querySelector("nav.tabs .in").style.gridTemplateColumns=`repeat(${SHOTS()?5:4},1fr)`}
   if(!SHOTS()&&tab==="igne")tab="ozet";
@@ -855,7 +908,7 @@ function vOzetMain(){
       ${actionsHtml()}
       ${suppMini()}
       ${stepCard()}
-      ${remCta()}
+      ${penWarn()}${remCta()}
       <button class="btn ghost" data-go="ayar">Hedefini ayarla</button></section>`;
   }
   if(!w.length){
@@ -867,7 +920,7 @@ function vOzetMain(){
       ${actionsHtml()}
       ${suppMini()}
       ${stepCard()}
-      ${remCta()}
+      ${penWarn()}${remCta()}
       ${s.length?`<div id="cycWrap" class="cycw" data-v="kadran">${cycleHtml("kadran")}</div>`:`<button class="btn ghost" data-go="ayar">Hedef ve ilaç bilgisini ayarla</button>`}</section>`;
   }
   const latest=w[w.length-1], first=w[0];
@@ -904,7 +957,7 @@ function vOzetMain(){
     ${actionsHtml()}
     ${suppMini()}
     ${stepCard()}
-    ${remCta()}
+    ${penWarn()}${remCta()}
     ${w.length>1?chartCard():""}
     ${comp}
     ${milestoneCard()}
@@ -1775,11 +1828,15 @@ async function exportXlsx(){
     const X=await loadXLSX();
     const W=[...S.weights].sort((a,b)=>a.date<b.date?-1:a.date>b.date?1:0).map(x=>({"Tarih":x.date,"Kilo (kg)":x.kg,"Yağ oranı (%)":x.fat??"","Yağ kütlesi (kg)":x.fat!=null?Math.round(x.kg*x.fat)/100:"","Not":x.note||""}));
     const R=shotRows();const SH=R.map(r=>({"No":r.n,"Tarih":r.date,"Saat":shotTime(r),"Doz (mg)":num(r.dose)??"","Bölge":r.site||"","Not":r.note||"","Sonraki iğneye kadar (kg)":r.loss!=null?Math.round(r.loss*10)/10:""}));
+    const SE_=Object.keys(S.sides||{}).sort().map(d=>{const r=S.sides[d],n=shotDayOf(d),o={"Tarih":d,"İğneden sonra gün":n??"","Evre":phaseOfDay(n)||""};for(const [k,t] of SE)o[t]=r[k]?SE_LV[r[k]]:"";return o});
     const DL=Object.keys(S.daily||{}).sort().map(d=>({"Tarih":d,"Protein (g)":S.daily[d].p||0,"Su (ml)":S.daily[d].w||0}));
     const wb=X.utils.book_new();
     X.utils.book_append_sheet(wb,X.utils.json_to_sheet(W.length?W:[{"Tarih":""}]),"Tartılar");
     if(SHOTS()||SH.length)X.utils.book_append_sheet(wb,X.utils.json_to_sheet(SH.length?SH:[{"Tarih":""}]),"İğneler");
     X.utils.book_append_sheet(wb,X.utils.json_to_sheet(DL.length?DL:[{"Tarih":""}]),"Protein ve Su");
+    const ME=sortedM().map(x=>{const o={"Tarih":x.date};for(const [k,n] of MP)o[n+" (cm)"]=x[k]??"";return o});
+    if(ME.length)X.utils.book_append_sheet(wb,X.utils.json_to_sheet(ME),"Ölçüler");
+    if(SE_.length)X.utils.book_append_sheet(wb,X.utils.json_to_sheet(SE_),"Yan etkiler");
     const buf=X.write(wb,{bookType:"xlsx",type:"array"});
     st.textContent="";await dlSave(`hafif-veriler-${today()}.xlsx`,new Uint8Array(buf));toast("Excel dosyası hazır");
   }catch(e){st.textContent=e&&e.code==="lib"?"Excel kütüphanesi yüklenemedi. İnternet bağlantını kontrol edip tekrar dene.":dlMsg(e)}
@@ -1803,22 +1860,118 @@ function bkLine(){
   const txt=g==null?"Henüz yedek dosyası almadın.":g===0?"Son yedek dosyası: bugün.":`Son yedek dosyası: ${g} gün önce.`;
   return `<div class="bkline${old?" warn":""}" id="bkLine">${txt}${FSP()?" Android'in otomatik yedeklemesi açıksa verilerin Google hesabına da yedeklenir; yeni telefonda Hafif'i açınca geri gelir.":""}${old?" Ayda bir yedek dosyası almanı öneririz.":""}</div>`;
 }
+/* ---------- doktor raporu (PDF): sayfalar canvas'a çizilir, JPEG olarak PDF'e konur ---------- */
+function pdfFromJpegs(pages){
+  const enc=new TextEncoder(),parts=[],offs=[];let len=0;
+  const push=b=>{if(typeof b==="string")b=enc.encode(b);parts.push(b);len+=b.length};
+  const obj=(n,body,stream)=>{offs[n]=len;push(`${n} 0 obj\n${body}\n`);if(stream){push("stream\n");push(stream);push("\nendstream\n")}push("endobj\n")};
+  push("%PDF-1.4\n%\xE2\xE3\xCF\xD3\n");
+  const n=pages.length,W=595.28,H=841.89,kids=pages.map((_,i)=>`${3+i*3} 0 R`).join(" ");
+  obj(1,"<< /Type /Catalog /Pages 2 0 R >>");
+  obj(2,`<< /Type /Pages /Kids [${kids}] /Count ${n} >>`);
+  pages.forEach((pg,i)=>{const p=3+i*3,im=p+1,ct=p+2,c=enc.encode(`q ${W} 0 0 ${H} 0 0 cm /Im0 Do Q`);
+    obj(p,`<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${W} ${H}] /Resources << /XObject << /Im0 ${im} 0 R >> >> /Contents ${ct} 0 R >>`);
+    obj(im,`<< /Type /XObject /Subtype /Image /Width ${pg.w} /Height ${pg.h} /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ${pg.data.length} >>`,pg.data);
+    obj(ct,`<< /Length ${c.length} >>`,c)});
+  const total=3+n*3,xref=len;let x=`xref\n0 ${total}\n0000000000 65535 f \n`;for(let i=1;i<total;i++)x+=String(offs[i]).padStart(10,"0")+" 00000 n \n";
+  push(x+`trailer\n<< /Size ${total} /Root 1 0 R >>\nstartxref\n${xref}\n%%EOF`);
+  const out=new Uint8Array(len);let o=0;for(const b of parts){out.set(b,o);o+=b.length}return out;
+}
+function rpPages(){
+  const PW=1240,PH=1754,M=90,F=s=>`${s}px Figtree, sans-serif`,FD=s=>`700 ${s}px "Bricolage Grotesque", sans-serif`;
+  const C={em:"#0B3B33",ac:"#0E7C66",mu:"#5F726C",ln:"#E0E8E4",sk:"#EDF3F0",sh:"#E2643D",shs:"#FCEDE7",pr:"#D08A1E",fg:"#0B2420"};
+  const pages=[];let cv,c,y;
+  const page=()=>{cv=document.createElement("canvas");cv.width=PW;cv.height=PH;c=cv.getContext("2d");c.fillStyle="#fff";c.fillRect(0,0,PW,PH);pages.push(cv);
+    c.fillStyle=C.em;c.font=FD(30);c.textBaseline="alphabetic";c.fillText("Hafif",M,M+6);c.fillStyle=C.mu;c.font=F(20);c.textAlign="right";c.fillText("İlerleme raporu · "+toD(today()).toLocaleDateString("tr-TR",{day:"numeric",month:"long",year:"numeric"}),PW-M,M+4);c.textAlign="left";
+    c.fillStyle=C.ln;c.fillRect(M,M+26,PW-2*M,2);y=M+80};
+  const T=(t,x,yy,font,col,al)=>{c.font=font;c.fillStyle=col||C.fg;c.textAlign=al||"left";c.fillText(t,x,yy);c.textAlign="left"};
+  const wrap=(t,x,yy,w,font,col,lh)=>{c.font=font;c.fillStyle=col||C.fg;let line="",n=0;for(const wd of t.split(" ")){const tt=line?line+" "+wd:wd;if(c.measureText(tt).width>w&&line){c.fillText(line,x,yy+n*lh);n++;line=wd}else line=tt}if(line){c.fillText(line,x,yy+n*lh);n++}return n*lh};
+  const rr=(x,yy,w,h,r,col)=>{c.fillStyle=col;c.beginPath();c.roundRect?c.roundRect(x,yy,w,h,r):c.rect(x,yy,w,h);c.fill()};
+  const H2=t=>{y+=14;T(t,M,y,FD(34),C.em);y+=26};
+  const need=h=>{if(y+h>PH-130){foot();page()}};
+  const foot=()=>{c.fillStyle=C.ln;c.fillRect(M,PH-118,PW-2*M,2);wrap("Bu rapor, kişinin Hafif uygulamasına kendi girdiği kayıtlardan otomatik oluşturulmuştur. İlaç düzeyi ve evreler genel bir modele dayalı tahminlerdir. Tıbbi değerlendirme yerine geçmez.",M,PH-84,PW-2*M-120,F(17),C.mu,24);T(String(pages.length),PW-M,PH-84,F(17),C.mu,"right")};
+  const P=S.profile,w=[...S.weights].sort((a,b)=>a.date<b.date?-1:a.date>b.date?1:(a.t||0)-(b.t||0)),s=sortedS();
+  page();
+  // kişi bilgisi
+  const info=[P.age?P.age+" yaş":null,P.sex==="k"?"Kadın":P.sex==="e"?"Erkek":null,P.heightCm?P.heightCm+" cm":null,SHOTS()&&P.drug?"İlaç: "+P.drug:null,P.goalWeight?"Hedef: "+kg(P.goalWeight)+" kg":null].filter(Boolean).join("   ·   ");
+  if(info){T(info,M,y,F(22),C.mu);y+=50}
+  // özet kutuları
+  if(w.length){const a=w[0],b=w[w.length-1],d=b.kg-a.kg,days=Math.max(1,diffDays(a.date,b.date)),hm=P.heightCm?P.heightCm/100:null;
+    const tiles=[["Başlangıç",kg(a.kg)+" kg",fmtD(a.date)],["Son tartı",kg(b.kg)+" kg",fmtD(b.date)],["Değişim",sgn(d)+" kg",(d/a.kg*100).toLocaleString("tr-TR",{maximumFractionDigits:1})+"% · "+Math.round(days/7)+" hafta"],
+      hm?["Vücut kitle indeksi",(b.kg/hm/hm).toLocaleString("tr-TR",{maximumFractionDigits:1}),"başta "+(a.kg/hm/hm).toLocaleString("tr-TR",{maximumFractionDigits:1})]:["Haftalık ortalama",sgn(d/days*7)+" kg","hafta başına"]];
+    const fa=w.find(x=>x.fat!=null),fb=[...w].reverse().find(x=>x.fat!=null);if(fa&&fb&&fa!==fb)tiles.push(["Yağ oranı","%"+String(fb.fat).replace(".",","),"başta %"+String(fa.fat).replace(".",",")]);
+    const tw=(PW-2*M-(tiles.length-1)*16)/tiles.length;
+    tiles.forEach((t,i)=>{const x=M+i*(tw+16);rr(x,y,tw,140,22,C.sk);T(t[0],x+22,y+40,F(19),C.mu);T(t[1],x+22,y+88,FD(36),i===2?C.ac:C.em);T(t[2],x+22,y+122,F(17),C.mu)});y+=190;
+    // grafik
+    H2("Kilo seyri");y+=20;const gx=M+70,gw=PW-2*M-90,gh=380,gy=y;const lo=Math.min(...w.map(x=>x.kg)),hi=Math.max(...w.map(x=>x.kg)),pad=Math.max(1,(hi-lo)*.12),y0=lo-pad,y1=hi+pad;
+    const t0=toD(w[0].date).getTime(),t1=Math.max(t0+864e5,toD(w[w.length-1].date).getTime()),X=d=>gx+(toD(d).getTime()-t0)/(t1-t0)*gw,Y=v=>gy+gh-(v-y0)/(y1-y0)*gh;
+    c.strokeStyle=C.ln;c.lineWidth=2;for(let i=0;i<=4;i++){const v=y0+(y1-y0)*i/4,yy=Y(v);c.beginPath();c.moveTo(gx,yy);c.lineTo(gx+gw,yy);c.stroke();T(kg(v),gx-14,yy+7,F(17),C.mu,"right")}
+    s.filter(x=>x.date>=w[0].date).forEach((x,i,arr)=>{const xx=X(x.date);c.strokeStyle="rgba(226,100,61,.35)";c.lineWidth=2;c.setLineDash([6,6]);c.beginPath();c.moveTo(xx,gy);c.lineTo(xx,gy+gh);c.stroke();c.setLineDash([]);
+      if(x.dose&&(i===0||arr[i-1].dose!==x.dose)){rr(xx-4,gy-34,c.measureText(x.dose+" mg").width+30,30,15,C.shs);T(x.dose+" mg",xx+10,gy-12,"600 "+F(17),C.sh)}});
+    c.strokeStyle=C.ac;c.lineWidth=5;c.lineJoin="round";c.beginPath();w.forEach((x,i)=>{i?c.lineTo(X(x.date),Y(x.kg)):c.moveTo(X(x.date),Y(x.kg))});c.stroke();
+    c.fillStyle=C.ac;w.forEach(x=>{c.beginPath();c.arc(X(x.date),Y(x.kg),5,0,7);c.fill()});
+    T(fmtD(w[0].date),gx,gy+gh+34,F(17),C.mu);T(fmtD(w[w.length-1].date),gx+gw,gy+gh+34,F(17),C.mu,"right");
+    if(s.length)T("Kesikli çizgiler iğne günleri, turuncu etiketler doz değişiklikleri.",gx+gw/2,gy+gh+34,F(17),C.mu,"center");
+    y=gy+gh+90}
+  // doz geçmişi
+  if(SHOTS()&&s.length){need(200);H2("Doz geçmişi");y+=16;
+    const dt=doseTable().map(r=>{const xs=s.filter(x=>(x.dose??"?")===r.dose);return Object.assign({},r,{from:xs[0]&&xs[0].date,to:xs[xs.length-1]&&xs[xs.length-1].date})}).sort((a,b)=>(a.from||"")<(b.from||"")?-1:1);
+    const cols=[["Doz",0],["İlk iğne",180],["Son iğne",420],["İğne",660],["Bu dozda değişim",800]];
+    rr(M,y,PW-2*M,52,14,C.sk);cols.forEach(([t,x])=>T(t,M+20+x,y+34,"600 "+F(18),C.mu));y+=52;
+    dt.forEach(r=>{need(56);T(r.dose+" mg",M+20,y+38,FD(24),C.sh);T(r.from?fmtD(r.from):"–",M+200,y+38,F(20));T(r.to?fmtD(r.to):"–",M+440,y+38,F(20));T(String(r.count),M+680,y+38,F(20));T(r.has?sgn(r.loss)+" kg":"–",M+820,y+38,"600 "+F(20),r.has&&r.loss<0?C.ac:C.fg);
+      c.fillStyle=C.ln;c.fillRect(M,y+56,PW-2*M,1.5);y+=56});
+    y+=24;T(`Toplam ${s.length} iğne · ilk ${fmtD(s[0].date)} · uygulama aralığı ${P.intervalDays||7} gün`,M,y+10,F(18),C.mu);y+=60}
+  // yan etkiler
+  const sd=Object.keys(S.sides||{});
+  if(SHOTS()&&sd.length){need(300);H2("Yan etkiler");y+=10;T(`${sd.length} gün kayıt · son kayıt ${fmtD(sd.sort().pop())}`,M,y+18,F(18),C.mu);y+=44;
+    const rows=SE.map(([k,t])=>{const c3=[0,0,0];for(const d of Object.keys(S.sides))if(S.sides[d][k])c3[S.sides[d][k]-1]++;return [t,c3]}).filter(r=>r[1].some(Boolean));
+    const cols=[["Belirti",0],["Hafif",380],["Orta",560],["Şiddetli",740]];rr(M,y,PW-2*M,52,14,C.sk);cols.forEach(([t,x])=>T(t,M+20+x,y+34,"600 "+F(18),C.mu));y+=52;
+    rows.forEach(([t,c3])=>{need(52);T(t,M+20,y+36,"600 "+F(20));c3.forEach((v,i)=>T(v?v+" gün":"–",M+400+i*180,y+36,F(20),i===2&&v?C.sh:C.fg));c.fillStyle=C.ln;c.fillRect(M,y+52,PW-2*M,1.5);y+=52});
+    const st=seStats(),mx=Math.max(...st.avg);if(mx>0){need(260);y+=30;T("İğneden sonraki güne göre ortalama yoğunluk",M,y+14,"600 "+F(19),C.mu);y+=34;const bw=(PW-2*M)/7;
+      st.avg.forEach((v,i)=>{const h=Math.max(6,v/mx*140);rr(M+i*bw+bw*.2,y+150-h,bw*.6,h,10,v===mx?C.sh:"#F4C3B2");T(i===0?"İğne günü":i+". gün",M+i*bw+bw/2,y+184,F(17),C.mu,"center")});y+=220}}
+  // ölçüler
+  const m=sortedM();
+  if(m.length){need(240);H2("Vücut ölçüleri");y+=16;const a=m[0],b=m[m.length-1],parts=MP.filter(([k])=>m.some(x=>x[k]!=null));
+    const cols=[["Bölge",0],[fmtD(a.date),300],[m.length>1?fmtD(b.date):"",560],[m.length>1?"Değişim":"",820]];rr(M,y,PW-2*M,52,14,C.sk);cols.forEach(([t,x])=>T(t,M+20+x,y+34,"600 "+F(18),C.mu));y+=52;
+    parts.forEach(([k,n])=>{need(52);const fa=m.find(x=>x[k]!=null)[k],fb=[...m].reverse().find(x=>x[k]!=null)[k];T(n,M+20,y+36,"600 "+F(20));T(cm(fa)+" cm",M+320,y+36,F(20));if(m.length>1){T(cm(fb)+" cm",M+580,y+36,F(20));const d=fb-fa;T(d?(d<0?"−":"+")+cm(Math.abs(d))+" cm":"±0",M+840,y+36,"600 "+F(20),d<0?C.ac:C.fg)}
+      c.fillStyle=C.ln;c.fillRect(M,y+52,PW-2*M,1.5);y+=52});y+=40}
+  // beslenme
+  const days=[...Array(14)].map((_,i)=>dayRec(addDays(today(),-i))).filter(r=>r.p||r.w);
+  if(days.length){need(200);H2("Son 14 gün beslenme");y+=20;const ap=days.reduce((a,r)=>a+r.p,0)/days.length,aw=days.reduce((a,r)=>a+r.w,0)/days.length,hp=days.filter(r=>r.p>=pGoal()).length;
+    const tiles=[["Ortalama protein",Math.round(ap)+" g","hedef "+pGoal()+" g"],["Protein hedefi tutan gün",hp+" / "+days.length,"kayıt girilen günler"],["Ortalama su",ml(aw)+" ml","hedef "+ml(wGoal())+" ml"]];
+    const tw=(PW-2*M-32)/3;tiles.forEach((t,i)=>{const x=M+i*(tw+16);rr(x,y,tw,130,22,C.sk);T(t[0],x+22,y+38,F(19),C.mu);T(t[1],x+22,y+84,FD(34),C.em);T(t[2],x+22,y+114,F(17),C.mu)});y+=170}
+  // tartı listesi
+  if(w.length){need(160);H2("Tartı kayıtları");y+=16;const ws=w.slice(-24).reverse(),colw=(PW-2*M)/2;
+    ws.forEach((x,i)=>{const col=i%2,row=Math.floor(i/2);if(col===0)need(44);const xx=M+col*colw,yy=y+row*0;T(fmtD(x.date),xx+10,y+30,F(19),C.mu);T(kg(x.kg)+" kg"+(x.fat!=null?"  ·  %"+String(x.fat).replace(".",",")+" yağ":""),xx+colw-20,y+30,"600 "+F(19),C.fg,"right");if(col===1||i===ws.length-1){c.fillStyle=C.ln;c.fillRect(M,y+44,PW-2*M,1.5);y+=44}});
+    if(w.length>24){y+=16;T(`Son 24 tartı gösteriliyor; toplam ${w.length} kayıt Excel dosyasında.`,M,y+20,F(17),C.mu)}}
+  foot();
+  return pages;
+}
+async function exportPdf(){
+  const st=$("#dataMsg");if(!S.weights.length&&!S.shots.length){st.textContent="Rapor için önce birkaç kayıt gir.";return}
+  st.textContent="Rapor hazırlanıyor…";
+  try{try{await document.fonts.ready}catch(_){}
+    const pages=rpPages().map(cv=>{const b64=cv.toDataURL("image/jpeg",.86).split(",")[1],bin=atob(b64),u=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i);return {w:cv.width,h:cv.height,data:u}});
+    const pdf=pdfFromJpegs(pages);st.textContent="";await dlSave(`hafif-rapor-${today()}.pdf`,pdf);toast("Rapor hazır");
+  }catch(e){st.textContent=dlMsg(e)}
+}
 function dataCard(){
   return `<div class="card" style="display:flex;flex-direction:column;gap:12px">
     <div><h2>Verilerim</h2><span class="muted" style="font-size:13px">${S.weights.length} tartı${SHOTS()?` · ${S.shots.length} iğne`:""} · ${Object.keys(S.daily||{}).length} gün protein ve su</span></div>
     ${bkLine()}
-    <button type="button" class="btn" id="exXlsx">Excel olarak indir</button>
+    <button type="button" class="btn" id="exPdf" style="background:var(--emerald-2)">Doktor için rapor (PDF)</button>
+    <button type="button" class="btn ghost" id="exXlsx">Excel olarak indir</button>
     <div style="display:flex;gap:8px"><button type="button" class="btn ghost" id="exJson" style="flex:1">Yedek dosyası indir</button>
       <label class="btn ghost" style="flex:1;text-align:center;flex-direction:row;display:block;color:var(--fg);font-size:15px">Yedekten yükle<input type="file" id="rsFile" accept=".json,application/json" hidden></label></div>
     <div class="restore" id="restoreAsk" hidden><b>Yedek yüklensin mi?</b><span class="muted" id="restoreInfo" style="font-size:13px"></span><span style="font-size:13px">Şu anki kayıtların bu yedekle değiştirilecek.</span>
       <div style="display:flex;gap:8px"><button type="button" class="btn ghost" id="rsNo" style="flex:1">Vazgeç</button><button type="button" class="btn" id="rsYes" style="flex:1;background:var(--bad)">Yedeği yükle</button></div></div>
     <p class="muted" id="dataMsg" style="margin:0;font-size:12.5px" role="status"></p>
-    <p class="muted" style="margin:0;font-size:12.5px">Excel dosyasında Tartılar${SHOTS()?", İğneler":""} ve Protein ve Su ayrı sayfalarda. Yedek dosyasını sakla; telefon değiştirsen bile buradan geri yükleyebilirsin.</p>
+    <p class="muted" style="margin:0;font-size:12.5px">Rapor; kilo grafiğini, doz geçmişini, yan etkileri ve ölçüleri kontrole götürebileceğin tek bir PDF'te toplar. Excel dosyasında tüm kayıtlar ayrı sayfalarda. Yedek dosyasını sakla; telefon değiştirsen bile buradan geri yükleyebilirsin.</p>
   </div>`;
 }
 function bindData(){
   if(!$("#exXlsx"))return;
-  $("#exXlsx").addEventListener("click",exportXlsx);$("#exJson").addEventListener("click",exportJson);
+  $("#exXlsx").addEventListener("click",exportXlsx);$("#exPdf").addEventListener("click",exportPdf);$("#exJson").addEventListener("click",exportJson);
   $("#rsFile").addEventListener("change",onRestoreFile);
   $("#rsNo").addEventListener("click",()=>{pendingRestore=null;$("#restoreAsk").hidden=true});
   $("#rsYes").addEventListener("click",doRestore);
@@ -1853,7 +2006,7 @@ function compHtml(X){
         <rect class="${AN("gb gbp")}" style="animation-delay:.15s" x="${x}" y="${base-hl-hf-3}" width="74" height="${hf}" rx="10" fill="url(#cf)"/>
         <text x="${x+37}" y="${base-hl/2+4}" text-anchor="middle" font-size="12" font-weight="700" fill="#fff" font-family="Figtree, sans-serif">${p1c(l)}</text>
         <text x="${x+37}" y="${base-hl-hf/2+1}" text-anchor="middle" font-size="12" font-weight="700" fill="#fff" font-family="Figtree, sans-serif">${p1c(f)}</text>
-        <text x="${x+37}" y="${base-hl-hf-12}" text-anchor="middle" font-size="15" font-weight="700" fill="var(--emerald-2)" font-family="Bricolage Grotesque, sans-serif">${p1c(o)} kg</text>
+        <text x="${x+37}" y="${base-hl-hf-12}" text-anchor="middle" font-size="15" font-weight="700" fill="var(--head)" font-family="Bricolage Grotesque, sans-serif">${p1c(o)} kg</text>
         <text x="${x+37}" y="${base+18}" text-anchor="middle" font-size="11" fill="var(--muted)" font-family="Figtree, sans-serif">${lbl}</text></g>`};
     body=`<svg class="chart" viewBox="0 0 ${W} ${H+10}" aria-hidden="true"><defs>
         <linearGradient id="cl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2BB38F"/><stop offset="1" stop-color="#0E7C66"/></linearGradient>
@@ -1897,7 +2050,7 @@ function compHtml(X){
       ${ticks}
       <circle cx="${ax}" cy="${ay}" r="9" fill="var(--surface)" stroke="var(--fat)" stroke-width="3"/>
       <circle class="${AN("pop2")}" cx="${bx}" cy="${by}" r="12" fill="var(--fat)" stroke="var(--surface)" stroke-width="4"/>
-      <text x="${cx}" y="${cy-28}" text-anchor="middle" font-size="40" font-weight="700" fill="var(--emerald-2)" font-family="Bricolage Grotesque, sans-serif" letter-spacing="-1.5">%${p1c(B.fat)}</text>
+      <text x="${cx}" y="${cy-28}" text-anchor="middle" font-size="40" font-weight="700" fill="var(--head)" font-family="Bricolage Grotesque, sans-serif" letter-spacing="-1.5">%${p1c(B.fat)}</text>
       <text x="${cx}" y="${cy-6}" text-anchor="middle" font-size="12.5" fill="var(--muted)" font-family="Figtree, sans-serif">yağ oranı · başta %${p1c(A.fat)}</text>
       </svg>
       <div class="comp3"><div><span class="eyebrow">Puan</span><div class="v" style="color:var(--fat)">${sgn(B.fat-A.fat)}</div></div><div><span class="eyebrow">Yağ</span><div class="v">−${p1c(dFat)}<small style="font-size:13px;color:var(--muted)"> kg</small></div></div><div><span class="eyebrow">Yağsız</span><div class="v">−${p1c(Math.max(0,dLean))}<small style="font-size:13px;color:var(--muted)"> kg</small></div></div></div>`;
@@ -1960,7 +2113,7 @@ function suppHead(){
   return `<div class="card shead">
     <div class="shtop"><div style="min-width:0"><span class="eyebrow" style="color:var(--accent)">${isT?"Bugün":fut?"İleri tarih":"Geçmiş gün"}</span>
       <h2 style="font-size:24px;text-transform:capitalize">${dt.toLocaleDateString("tr-TR",{weekday:"long"})}</h2>
-      <span class="muted" style="font-size:13px">${dt.toLocaleDateString("tr-TR",{day:"numeric",month:"long"})}${st?` · <b style="color:var(--emerald-2)">${st} gün</b> seri`:""}</span></div>
+      <span class="muted" style="font-size:13px">${dt.toLocaleDateString("tr-TR",{day:"numeric",month:"long"})}${st?` · <b style="color:var(--head)">${st} gün</b> seri`:""}</span></div>
       <div class="sring"><svg width="84" height="84" viewBox="0 0 84 84"><circle cx="42" cy="42" r="${R}" fill="none" stroke="var(--sunk)" stroke-width="8"/><circle id="sRing" cx="42" cy="42" r="${R}" fill="none" stroke="url(#srg)" stroke-width="8" stroke-linecap="round" stroke-dasharray="${C*(r.of?r.n/r.of:0)} ${C}" transform="rotate(-90 42 42)" style="transition:stroke-dasharray .7s cubic-bezier(.2,.8,.2,1)"/><defs><linearGradient id="srg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#5ECFAE"/><stop offset="1" style="stop-color:var(--accent)"/></linearGradient></defs></svg><div><b id="sCount">${r.n}/${r.of}</b><span>alındı</span></div></div></div>
     <div class="week2">${wk}</div></div>`;
 }
@@ -2081,11 +2234,11 @@ function cycleHtml(vv){
       <path class="${AN("fade")}" d="${area(pa)}" fill="url(#kw)"/>
       <path class="${AN("draw")}" pathLength="1" d="${line(pa)}" fill="none" stroke="var(--accent)" stroke-width="2.6" stroke-linejoin="round"/>
       ${fu.length?`<path d="${line(fu)}" fill="none" stroke="var(--accent)" stroke-width="2" stroke-dasharray="3 4" opacity=".55"/>`:""}
-      <line x1="${ix}" y1="${iy}" x2="${hx}" y2="${hy}" stroke="var(--emerald-2)" stroke-width="2" stroke-linecap="round"/>
-      <circle cx="${hx}" cy="${hy}" r="7" fill="var(--surface)" stroke="var(--emerald-2)" stroke-width="3"/>
+      <line x1="${ix}" y1="${iy}" x2="${hx}" y2="${hy}" stroke="var(--head)" stroke-width="2" stroke-linecap="round"/>
+      <circle cx="${hx}" cy="${hy}" r="7" fill="var(--surface)" stroke="var(--head)" stroke-width="3"/>
       <circle cx="${cx}" cy="${cy}" r="${R0-14}" fill="var(--surface)" style="filter:drop-shadow(0 6px 14px rgba(11,59,51,.14))"/>
       <text x="${cx}" y="${cy-14}" text-anchor="middle" font-size="9.5" letter-spacing="1.4" font-weight="700" fill="var(--muted)" font-family="Figtree, sans-serif">VÜCUTTA</text>
-      <text x="${cx}" y="${cy+14}" text-anchor="middle" font-size="30" font-weight="700" letter-spacing="-1" fill="var(--emerald-2)" font-family="Bricolage Grotesque, sans-serif">${mgT(cur)}</text>
+      <text x="${cx}" y="${cy+14}" text-anchor="middle" font-size="30" font-weight="700" letter-spacing="-1" fill="var(--head)" font-family="Bricolage Grotesque, sans-serif">${mgT(cur)}</text>
       <text x="${cx}" y="${cy+30}" text-anchor="middle" font-size="11" fill="var(--muted)" font-family="Figtree, sans-serif">mg · ${state.toLocaleLowerCase("tr-TR")}</text>
     </svg></div>
     <div class="cinfo"><div><span>Evre</span><b>${ph.k}</b></div><div><span>Döngü günü</span><b>${Math.min(I.days,diffDays(P.last.date,today())+1)}/${I.days}</b></div><div><span>Yeni iğne</span><b>${X.left==null?"–":X.left>1?X.left+" gün":X.left===1?"Yarın":"Bugün"}</b></div></div>
@@ -2106,8 +2259,8 @@ function cycleHtml(vv){
     const samp=(a,b,n)=>{const o=[];for(let k=0;k<=n;k++){const t=a+(b-a)*k/n;o.push([x(t),y(lv(t))])}return o};
     const pa=samp(t0,P.now,80),fu=samp(P.now,t1,40),ln=a=>a.map(([X,Y],i)=>(i?"L":"M")+X.toFixed(1)+" "+Y.toFixed(1)).join("");
     let band="";PHASES.forEach((p,i)=>{const a=x(I.t0+I.starts[i]*864e5),b=x(I.t0+I.ends[i]*864e5);band+=`<rect x="${a+1}" y="${H-30}" width="${Math.max(2,b-a-2)}" height="${i===I.cur?10:6}" rx="3" fill="${phCol(i)}" ${i===I.cur?"":`transform="translate(0 2)"`}/>`;
-      if(i===I.cur)band+=`<text x="${(a+b)/2}" y="${H-8}" text-anchor="middle" font-size="10.5" font-weight="700" fill="var(--emerald-2)" font-family="Figtree, sans-serif">${p.k}</text>`});
-    const shots=P.past.concat(P.next?[P.next]:[]).filter(s=>shotTs(s)>=t0&&shotTs(s)<=t1).map(s=>{const X=x(shotTs(s)),fut=shotTs(s)>P.now;return `<g transform="translate(${X} ${H-B+4})"><path d="M0 -5 L5 0 L0 5 L-5 0Z" fill="${fut?"var(--surface)":"var(--emerald-2)"}" stroke="var(--emerald-2)" stroke-width="1.5"/></g>`}).join("");
+      if(i===I.cur)band+=`<text x="${(a+b)/2}" y="${H-8}" text-anchor="middle" font-size="10.5" font-weight="700" fill="var(--head)" font-family="Figtree, sans-serif">${p.k}</text>`});
+    const shots=P.past.concat(P.next?[P.next]:[]).filter(s=>shotTs(s)>=t0&&shotTs(s)<=t1).map(s=>{const X=x(shotTs(s)),fut=shotTs(s)>P.now;return `<g transform="translate(${X} ${H-B+4})"><path d="M0 -5 L5 0 L0 5 L-5 0Z" fill="${fut?"var(--surface)":"var(--head)"}" stroke="var(--head)" stroke-width="1.5"/></g>`}).join("");
     const nx=x(P.now);
     body=`<div class="gtop"><div><span class="eyebrow">İlaç dalgası</span><div class="gstate">${state}<small>${mgT(cur)} mg</small></div></div><div class="gnext"><span>Sonraki iğne</span><b>${X.left==null?"–":X.left>1?X.left+" gün":X.left===1?"Yarın":"Bugün"}</b><em>${P.next?fmtShort(P.next.date)+" "+shotTime(P.next):""}</em></div></div>
       <svg class="chart" viewBox="0 0 ${W} ${H}" aria-hidden="true" style="overflow:visible"><defs><linearGradient id="gw" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2BB38F" stop-opacity=".45"/><stop offset="1" stop-color="#2BB38F" stop-opacity="0"/></linearGradient>
@@ -2118,8 +2271,8 @@ function cycleHtml(vv){
         <path class="${AN("draw")}" pathLength="1" d="${ln(pa)}" fill="none" stroke="var(--accent)" stroke-width="2.6" stroke-linejoin="round"/>
         <path d="${ln(fu)}" fill="none" stroke="var(--accent)" stroke-width="2" stroke-dasharray="3 4" opacity=".6"/>
         <rect x="${nx-1}" y="${T-8}" width="2" height="${H-B-T+14}" fill="url(#gn)"/>
-        <circle cx="${nx}" cy="${y(cur)}" r="6" fill="var(--surface)" stroke="var(--emerald-2)" stroke-width="3"/>
-        <text x="${nx}" y="${T-12}" text-anchor="middle" font-size="9.5" letter-spacing="1" font-weight="700" fill="var(--emerald-2)" font-family="Figtree, sans-serif">ŞİMDİ</text>
+        <circle cx="${nx}" cy="${y(cur)}" r="6" fill="var(--surface)" stroke="var(--head)" stroke-width="3"/>
+        <text x="${nx}" y="${T-12}" text-anchor="middle" font-size="9.5" letter-spacing="1" font-weight="700" fill="var(--head)" font-family="Figtree, sans-serif">ŞİMDİ</text>
         ${shots}${band}</svg>`;
   } else if(cycV==="gunler"){
     const nd=Math.round((I.tn-I.t0)/864e5),cols=[];
@@ -2334,18 +2487,117 @@ function vKilo(){
       <button class="ibtn del" data-del-w="${x.id}" aria-label="Tartıyı sil"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M9 7V4.8c0-.4.4-.8.8-.8h4.4c.4 0 .8.4.8.8V7M6.5 7l.9 12.2c.1.9.8 1.8 1.8 1.8h5.6c1 0 1.7-.9 1.8-1.8L17.5 7"/></svg></button></div>`};
   return `<section><button class="btn" data-open="weight">Kilo gir</button>
     ${kiloKpi()}
+    ${measCard()}
     ${groups.map(g=>{const a=g.items[g.items.length-1].x,b=g.items[0].x,ch=b.kg-a.kg;const name=toD(g.k+"-01").toLocaleDateString("tr-TR",{month:"long",year:"numeric"});
       return `<div class="card mgroup"><div class="mhead"><div><h2>${name}</h2><span class="muted" style="font-size:12.5px">${g.items.length} tartı · düzenlemek için dokun</span></div>${g.items.length>1?`<span class="dchip ${ch<0?"down":ch>0?"up":""}">${sgn(ch)} kg</span>`:""}</div>
         <div class="wlist">${g.items.map(row).join("")}</div></div>`}).join("")}
   </section>`;
 }
 
+/* ---------- vücut ölçüleri ---------- */
+const MP=[["bel","Bel"],["kalca","Kalça"],["gogus","Göğüs"],["kol","Kol"],["uyluk","Uyluk"],["boyun","Boyun"]];
+const sortedM=()=>[...(S.meas||[])].sort((a,b)=>a.date<b.date?-1:a.date>b.date?1:0);
+const cm=v=>v==null?"–":(Math.round(v*10)/10).toLocaleString("tr-TR");
+function measCard(){
+  const m=sortedM();
+  if(!m.length) return `<div class="card" style="display:flex;flex-direction:column;gap:10px"><div><h2>Vücut ölçüleri</h2><span class="muted" style="font-size:13px">Tartı yerinde saydığında bile santimler düşer. Ayda bir bel, kalça ve kol çevreni ölç.</span></div><button type="button" class="btn ghost" id="mAdd">Ölçü ekle</button></div>`;
+  const last=m[m.length-1],first=k=>{const x=m.find(y=>y[k]!=null);return x?x[k]:null},lastOf=k=>{for(let i=m.length-1;i>=0;i--)if(m[i][k]!=null)return m[i][k];return null};
+  const parts=MP.filter(([k])=>lastOf(k)!=null);let tot=0,has=false;
+  const cells=parts.map(([k,n])=>{const a=first(k),b=lastOf(k),d=a!=null&&b!=null&&m.length>1?b-a:null;if(d!=null){tot+=d;has=true}
+    return `<div><span>${n}</span><b>${cm(b)}<small>cm</small></b><em class="${d==null?"":d<0?"down":d>0?"up":""}">${d==null||!d?"—":(d<0?"−":"+")+cm(Math.abs(d))+" cm"}</em></div>`}).join("");
+  return `<div class="card" style="display:flex;flex-direction:column;gap:12px">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px"><div><h2>Vücut ölçüleri</h2><span class="muted" style="font-size:13px">Son ölçüm ${fmtD(last.date)}${m.length>1?" · ilk ölçüme göre":""}</span></div><button type="button" class="btn ghost" id="mAdd" style="padding:9px 14px;width:auto;flex:none">+ Ölçü</button></div>
+    ${has&&tot<0?`<div class="mtotal"><b>−${cm(-tot)} cm</b><span>${parts.length} bölgeden toplam<br>ilk ölçümden bu yana</span></div>`:""}
+    <div class="mgrid">${cells}</div>
+    <div class="mhist">${m.slice(-4).reverse().map(x=>`<div><b>${fmtD(x.date)}</b><span>${MP.filter(([k])=>x[k]!=null).map(([k,n])=>n+" "+cm(x[k])).join(" · ")}</span><button type="button" data-mdel="${x.id}" aria-label="Ölçümü sil">×</button></div>`).join("")}</div>
+  </div>`;
+}
+function openMeasSheet(){
+  const m=sortedM(),lastOf=k=>{for(let i=m.length-1;i>=0;i--)if(m[i][k]!=null)return m[i][k];return null};
+  $("#sheetRoot").innerHTML=`<div class="scrim" data-close><div class="sheet" role="dialog" aria-modal="true" aria-label="Ölçü ekle"><div class="grab"></div>
+    <header><h2>Ölçü ekle</h2><button class="del" data-x>Kapat</button></header>
+    <form id="fM">
+      <div class="two">${MP.map(([k,n])=>`<label>${n} (cm)<input id="m-${k}" inputmode="decimal" placeholder="${lastOf(k)!=null?cm(lastOf(k)):"–"}" autocomplete="off"></label>`).join("")}</div>
+      <label>Tarih<input id="m-date" type="date" value="${today()}" max="${today()}"></label>
+      <p class="muted" style="margin:0;font-size:12.5px">Mezurayı tenine değecek ama sıkmayacak şekilde tut. Bel: göbek hizası; kalça: en geniş yer; kol ve uyluk: en kalın yer. Boş bıraktıkların kaydedilmez.</p>
+      <button class="btn" type="submit">Kaydet</button>
+    </form></div></div>`;
+  const root=$("#sheetRoot");
+  root.querySelector(".scrim").addEventListener("click",e=>{if(e.target.classList.contains("scrim"))closeSheet()});
+  root.querySelector("[data-x]").addEventListener("click",closeSheet);
+  $("#fM").addEventListener("submit",e=>{e.preventDefault();const r={id:uid(),date:$("#m-date").value||today()};let n=0;
+    for(const [k] of MP){const v=num($("#m-"+k).value);if(v!=null&&v>=10&&v<=250){r[k]=v;n++}}
+    if(!n){toast("En az bir ölçü gir");return}S.meas=S.meas||[];S.meas.push(r);save();closeSheet();toast("Ölçüler kaydedildi")});
+}
+function bindKilo(){
+  const a=$("#mAdd");if(a)a.addEventListener("click",openMeasSheet);
+  document.querySelectorAll("[data-mdel]").forEach(b=>b.addEventListener("click",()=>{if(!b.classList.contains("armed")){b.classList.add("armed");b.textContent="Sil?";return}
+    S.meas=(S.meas||[]).filter(x=>x.id!==b.dataset.mdel);save();render();toast("Silindi")}));
+}
+
+/* ---------- yan etki günlüğü ---------- */
+const SE=[["bulanti","Bulantı"],["kabiz","Kabızlık"],["ishal","İshal"],["reflu","Reflü, hazımsızlık"],["yorgun","Yorgunluk"],["bas","Baş ağrısı"]];
+const SE_LV=["Yok","Hafif","Orta","Şiddetli"];
+let seDay=null;
+function seOn(d){return (S.sides&&S.sides[d])||{}}
+function shotDayOf(d){const s=sortedS().filter(x=>x.date<=d);if(!s.length)return null;const last=s[s.length-1];return diffDays(last.date,d)}
+function phaseOfDay(n){if(n==null)return null;const iv=S.profile.intervalDays||7,f=Math.min(1,iv/7),e=[0.75*f,1.5*f,3.25*f,5*f,Math.max(5*f+0.25,iv-1),iv];const i=e.findIndex(x=>n+0.4<x);return PHASES[i<0?5:i].k}
+function seStats(){
+  const by=Array(7).fill(0),cnt=Array(7).fill(0),tot={};let days=0;
+  for(const [d,r] of Object.entries(S.sides||{})){const n=shotDayOf(d);const sum=SE.reduce((a,[k])=>a+(r[k]||0),0);days++;
+    for(const [k] of SE)if(r[k])tot[k]=(tot[k]||0)+1;
+    if(n!=null&&n<7){by[n]+=sum;cnt[n]++}}
+  return {avg:by.map((v,i)=>cnt[i]?v/cnt[i]:0),cnt,tot,days};
+}
+function sideCard(){
+  if(!SHOTS()||!S.shots.length) return "";
+  const d=seDay||today(),r=seOn(d),n=shotDayOf(d),ph=phaseOfDay(n);
+  const st=seStats(),mx=Math.max(...st.avg),any=st.days>=3&&mx>0;
+  let ins="";if(any){const top=st.avg.indexOf(mx);const tk=Object.entries(st.tot).sort((a,b)=>b[1]-a[1])[0];
+    ins=`Yan etkilerin en çok <b>${top===0?"iğne günü":"iğneden "+top+" gün sonra"}</b> (${phaseOfDay(top)} evresi) oluyor.${tk?` En sık: <b>${SE.find(x=>x[0]===tk[0])[1].toLocaleLowerCase("tr-TR")}</b> (${tk[1]} gün).`:""}`}
+  return `<div class="card" id="seCard" style="display:flex;flex-direction:column;gap:12px">
+    <div><h2>Yan etkiler</h2><span class="muted" style="font-size:13px">${n==null?"":n===0?"İğne günü":`İğneden sonraki ${n}. gün`}${ph?" · "+ph+" evresi":""}</span></div>
+      <div class="sedays">${[0,1,2].map(i=>{const dd=addDays(today(),-i);return `<button type="button" data-sed="${dd}" aria-pressed="${dd===d}">${i===0?"Bugün":i===1?"Dün":toD(dd).toLocaleDateString("tr-TR",{weekday:"long"})}</button>`}).join("")}</div>
+    <div class="segrid">${SE.map(([k,t])=>{const lv=r[k]||0;return `<button type="button" data-se="${k}" data-lv="${lv}" aria-label="${t}: ${SE_LV[lv]}"><b>${t}</b><span class="sv"><i><u></u><u></u><u></u></i>${SE_LV[lv]}</span></button>`}).join("")}</div>
+    <span class="muted" style="font-size:12.5px">Dokundukça artar: yok → hafif → orta → şiddetli. Şiddetli ya da geçmeyen yan etkilerde doktoruna danış.</span>
+    ${any?`<div class="hr"></div><div><span class="eyebrow">İğneden sonraki günlere göre</span><div class="sepat" style="margin-top:10px">${st.avg.map((v,i)=>`<div><i class="${v===mx?"hi":""}" style="height:${Math.max(6,v/mx*100)}%"></i><span>${i===0?"İğne":i+". g"}</span></div>`).join("")}</div></div><div class="seins">${ins}</div>`:st.days?`<span class="muted" style="font-size:12.5px">Birkaç gün daha kaydedince yan etkilerinin hangi günlerde yoğunlaştığını burada göreceksin.</span>`:""}
+  </div>`;
+}
+/* ---------- kalem stoğu ---------- */
+function penCard(){
+  if(!SHOTS()) return "";
+  const P=S.profile,size=P.penSize||4;
+  if(P.penLeft==null) return `<div class="card pencard" style="display:flex;flex-direction:column;gap:10px"><div><h2>Kalemim</h2><span class="muted" style="font-size:13px">Kalemde kaç doz kaldığını takip et; bitmeden haber verelim, eczaneye zamanında uğra.</span></div>
+    <div class="penrow"><label style="flex:1;min-width:150px">Bir kalemde kaç doz var<select id="penSize">${[1,2,4,5,6,8].map(v=>`<option value="${v}" ${v===size?"selected":""}>${v} doz</option>`).join("")}</select></label><button type="button" class="btn ghost" id="penStart" style="align-self:flex-end">Takibi başlat</button></div></div>`;
+  const left=P.penLeft;
+  return `<div class="card pencard${left<=1?" warn":""}" style="display:flex;flex-direction:column;gap:12px">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start"><div><h2>Kalemim</h2><span class="muted" style="font-size:13px">${left===0?"Kalemin bitti. Yeni kalemi açınca dokun.":left===1?"Son doz kaldı, eczaneye uğramayı unutma.":"Her iğne kaydında bir doz düşer."}</span></div>
+      <div style="text-align:right"><b style="font:700 34px/1 var(--f-display);color:${left<=1?"var(--shot)":"var(--emerald-2)"}">${left}</b><span class="muted" style="font-size:13px"> / ${size} doz</span></div></div>
+    <div class="pendots">${Array.from({length:size},(_,i)=>`<i class="${i<left?"on":""}"></i>`).join("")}</div>
+    <div class="penrow"><button type="button" class="btn shotbtn" id="penNew" style="flex:1">Yeni kalem açtım</button>
+      <div class="stepper" role="group" aria-label="Kalan dozu düzelt"><button type="button" data-pen="-1" aria-label="Bir azalt">−</button><div><b>${left}</b><span>doz</span></div><button type="button" data-pen="1" aria-label="Bir artır">+</button></div></div>
+  </div>`;
+}
+function penWarn(){
+  const P=S.profile;if(!SHOTS()||P.penLeft==null||P.penLeft>1)return "";
+  return `<button type="button" class="card stcta" data-go="igne" style="box-shadow:inset 0 0 0 1.5px var(--shot)"><span class="mi" style="background:var(--shot-soft);color:var(--shot)">${P.penLeft}</span><span style="flex:1;min-width:0"><b>${P.penLeft===0?"Kalemin bitti":"Kaleminde son doz kaldı"}</b><small>Eczaneye uğramayı unutma; yeni kalemi açınca İğneler'den işaretle</small></span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="var(--muted)" stroke-width="2" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg></button>`;
+}
+function bindIgne(){
+  document.querySelectorAll("[data-se]").forEach(b=>b.addEventListener("click",()=>{const d=seDay||today();S.sides=S.sides||{};const r=Object.assign({},S.sides[d]||{});const k=b.dataset.se;r[k]=((r[k]||0)+1)%4;
+    if(!r[k])delete r[k];if(Object.keys(r).length)S.sides[d]=r;else delete S.sides[d];holdUntil=Date.now()+800;save();const y=window.scrollY;$("#seCard").outerHTML=sideCard();bindIgne();window.scrollTo(0,y)}));
+  document.querySelectorAll("[data-sed]").forEach(b=>b.addEventListener("click",()=>{seDay=b.dataset.sed===today()?null:b.dataset.sed;const y=window.scrollY;$("#seCard").outerHTML=sideCard();bindIgne();window.scrollTo(0,y)}));
+  const ps=$("#penStart");if(ps)ps.addEventListener("click",()=>{const v=+$("#penSize").value||4;S.profile.penSize=v;S.profile.penLeft=v;save();render();toast("Kalem takibi başladı")});
+  const pn=$("#penNew");if(pn)pn.addEventListener("click",()=>{S.profile.penLeft=S.profile.penSize||4;save();render();toast("Yeni kalem: "+S.profile.penLeft+" doz")});
+  document.querySelectorAll("[data-pen]").forEach(b=>b.addEventListener("click",()=>{const P=S.profile;P.penLeft=Math.max(0,Math.min(P.penSize||4,P.penLeft+ +b.dataset.pen));save();render()}));
+}
 function vIgne(){
   const s=sortedS();
   if(!s.length) return `<section><div class="card empty"><h2>Henüz iğne yok</h2><p class="muted" style="margin:0">İğneyi yaptığın gün ekle. Dozu ve bölgeyi yazarsan doz başına verdiğin kiloyu ayrıca görürsün.</p></div><button class="btn shotbtn" data-open="shot">İğne ekle</button></section>`;
   const dt=doseTable();
   return `<section><div class="cycw" data-v="gunler">${cycleHtml("gunler")}</div>
     <button class="btn shotbtn" data-open="shot">İğne ekle</button>
+    ${sideCard()}
+    ${penCard()}
     <div class="card" style="display:flex;flex-direction:column;gap:12px"><div><h2>Doz özeti</h2><span class="muted" style="font-size:13px">Her dozda geçen sürede verdiğin kilo</span></div>
       ${dt.map(r=>`<div class="dosecard"><span class="dose big">${esc(r.dose)} mg</span><div class="dstats"><div><b>${r.count}</b><span>iğne</span></div><div><b>${r.has?sgn(r.loss):"–"}</b><span>kg toplam</span></div><div><b>${r.has?sgn(r.loss/r.count):"–"}</b><span>iğne başına</span></div></div></div>`).join("")}</div>
     <div class="card"><div style="margin-bottom:6px"><h2>İğne geçmişi</h2><span class="muted" style="font-size:13px">Her iğne günündeki kilodan bir sonrakine kadar olan değişim · düzenlemek için dokun</span></div>${shotList()}</div></section>`;
@@ -2374,6 +2626,7 @@ function vAyar(){
     <button class="btn" type="submit">Kaydet</button>
   </form>
   ${remCard()}
+  ${themeCard()}
   ${dataCard()}
   <p class="muted" style="font-size:12.5px;margin:0">Hafif kişisel bir takip aracıdır; tıbbi bir cihaz değildir, teşhis koymaz ve tıbbi tavsiye vermez. İlaç, doz ve hedeflerin için her zaman doktoruna danış. Tahmini ilaç düzeyi ve döngü evreleri genel bir modele dayanır.</p>
   <p class="muted" style="font-size:13px;margin:0">${mode==="db"?"Kayıtların Claude hesabında, yalnızca senin görebileceğin bir alanda tutuluyor. iPhone'da ve bilgisayarda aynı veriyi görürsün.":"Kayıtlar şu an sadece bu cihazda. Claude uygulamasında giriş yapmış olarak açarsan hesabına taşınır."}</p></section>`;
@@ -2396,7 +2649,7 @@ function stepCard(){
     <div class="sthead"><h2>Bugün hareket</h2>${PV()?'<span class="pvtag">Önizleme</span>':'<span class="muted" style="font-size:12.5px">Health Connect</span>'}</div>
     <div class="sta"><div class="string">${stRing(n,118,12)}<div><b>${fmtN(n)}</b><span>/ ${fmtN(g)} adım</span></div></div>
       <div style="min-width:0"><span class="eyebrow" style="color:var(--step)">Hedef · %${Math.round(Math.min(1,n/g)*100)} tamam</span>
-        <div style="font:700 17px var(--f-display);color:var(--emerald-2);margin:4px 0 10px">${left?fmtN(left)+" adım kaldı":"Hedef tamam 🎉"}</div>
+        <div style="font:700 17px var(--f-display);color:var(--head);margin:4px 0 10px">${left?fmtN(left)+" adım kaldı":"Hedef tamam 🎉"}</div>
         <div class="sttrio"><div><b>${E.km.toLocaleString("tr-TR",{maximumFractionDigits:1})}</b><span>km</span></div><div><b>${fmtN(E.kcal)}</b><span>kcal</span></div><div><b>${fmtN(E.min)}</b><span>dk</span></div></div></div></div>
     <div class="stwk">${stWeek()}</div></button>`;
 }
@@ -2477,7 +2730,7 @@ document.addEventListener("visibilitychange",()=>{if(document.visibilityState===
 
 /* ---------- hatırlatıcılar (yalnızca Android; telefon kendisi zamanlar) ---------- */
 const LN=()=>window.Capacitor&&window.Capacitor.isNativePlatform&&window.Capacitor.isNativePlatform()&&window.Capacitor.Plugins&&window.Capacitor.Plugins.LocalNotifications||null;
-const REM_DEF={shot:true,shotEve:true,supp:true,water:false,prot:false,weigh:true,weighDay:1,weighTime:"07:30",backup:true};
+const REM_DEF={shot:true,shotEve:true,supp:true,water:false,prot:false,weigh:true,weighDay:1,weighTime:"07:30",backup:true,pen:true};
 const rem=()=>Object.assign({},REM_DEF,S.profile.rem||{});
 const remOn=()=>!!(S.profile.rem&&S.profile.rem.on);
 const BELL=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/></svg>`;
@@ -2496,6 +2749,9 @@ function remBuild(){
     if(R.prot){const p=dayRec(d).p,g=pGoal();if(!(i===0&&p>=g))add(4000+i,atOf(d,"18:30"),i===0?"Protein hedefine az kaldı":"Protein hedefin",i===0?`${ml(p)} / ${g} g. Akşam yemeğinde ${ml(g-p)} g protein hedefini tamamlar.`:`Günlük protein hedefin ${g} g. Akşam tabağında proteini öne al.`,"PROT",{tab:"besin"})}
     if(R.weigh&&toD(d).getDay()===+R.weighDay&&!(i===0&&S.weights.some(x=>x.date===d)))add(5000+i,atOf(d,R.weighTime),"Haftalık tartı zamanı","Sabah, aç karnına ve aynı saatte tartılmak en tutarlı sonucu verir.","TARTI",{tab:"kilo"});
   }
+  if(SHOTS()&&R.pen&&S.profile.penLeft!=null&&S.profile.penLeft<=1){const nx=pkState().next,left=S.profile.penLeft;
+    add(7000,atOf(addDays(today(),1),"10:00"),left===0?"Kalemin bitti":"Kaleminde son doz kaldı",left===0?"Sıradaki iğnen için yeni kalem gerekiyor. Eczaneye uğramayı unutma.":"Bir sonraki iğneden sonra kalemin bitecek. Yeni kalemi şimdiden ayarla.","BILGI",{tab:"igne"});
+    if(nx&&left===0)add(7001,atOf(addDays(nx.date,-2),"10:00"),"Yeni kalem hazır mı?",`İğnen ${fmtD(nx.date)}. Kalemin bitmişti; eczaneye uğradın mı?`,"BILGI",{tab:"igne"})}
   if(R.backup&&S.weights.length+S.shots.length>0){const le=S.profile.lastExport,f=[...S.weights,...S.shots].map(x=>x.date).sort()[0];
     const due=le?addDays(le,30):addDays(f,14);let d=due>today()?due:today();for(let i=0;i<7&&toD(d).getDay()!==0;i++)d=addDays(d,1);
     const g=le?diffDays(le,d):null;add(6000,atOf(d,"20:00"),"Yedeğini al",g!=null?`Son yedek dosyan ${g} gün önce. Bir dakikada yeni bir yedek al.`:"Verilerini güvenceye al: Ayarlar'dan bir dakikada yedek dosyası al.","YEDEK",{tab:"ayar"})}
@@ -2535,7 +2791,7 @@ function remCard(){
   if(!remOn()) return `<div class="card" style="display:flex;flex-direction:column;gap:12px"><div><h2>Hatırlatıcılar</h2><span class="muted" style="font-size:13px">Bildirimler telefonunda zamanlanır, internet gerekmez.</span></div><button type="button" class="btn" data-rem-on>Hatırlatıcıları aç</button></div>`;
   const R=rem(),sw=(k,l,d)=>`<label class="sw"><span><b>${l}</b><small>${d}</small></span><input type="checkbox" data-rem="${k}" ${R[k]?"checked":""}><i></i></label>`;
   return `<div class="card" style="display:flex;flex-direction:column;gap:10px"><div class="remrow"><div><h2>Hatırlatıcılar</h2><span class="muted" style="font-size:13px">Saatler birkaç dakika oynayabilir</span></div><button type="button" class="linkbtn" data-rem-off>Tümünü kapat</button></div>
-    <div class="sws">${SHOTS()?sw("shot","İğne günü","iğne saatinde, doz ve bölge önerisiyle")+sw("shotEve","Bir gün önce","20:00'de hazırlık hatırlatması"):""}${sw("supp","Takviyeler","programındaki sabah, akşam ve gece saatlerinde")}${sw("water","Su","11:00, 15:00 ve 19:00'da, hedefin dolmadıysa")}${sw("prot","Protein","18:30'da, hedefin dolmadıysa")}${sw("weigh","Haftalık tartı","seçtiğin gün ve saatte")}${sw("backup","Yedek hatırlatması","son yedek dosyan 30 günü geçince, pazar 20:00")}</div>
+    <div class="sws">${SHOTS()?sw("shot","İğne günü","iğne saatinde, doz ve bölge önerisiyle")+sw("shotEve","Bir gün önce","20:00'de hazırlık hatırlatması"):""}${sw("supp","Takviyeler","programındaki sabah, akşam ve gece saatlerinde")}${sw("water","Su","11:00, 15:00 ve 19:00'da, hedefin dolmadıysa")}${sw("prot","Protein","18:30'da, hedefin dolmadıysa")}${sw("weigh","Haftalık tartı","seçtiğin gün ve saatte")}${SHOTS()?sw("pen","Kalem stoğu","kalemde son doz kalınca"):""}${sw("backup","Yedek hatırlatması","son yedek dosyan 30 günü geçince, pazar 20:00")}</div>
     <div class="remtime" ${R.weigh?"":"hidden"} id="remW"><select data-rem-day aria-label="Tartı günü">${[1,2,3,4,5,6,0].map(i=>`<option value="${i}" ${+R.weighDay===i?"selected":""}>${toD(lastDow(i)).toLocaleDateString("tr-TR",{weekday:"long"})}</option>`).join("")}</select><input type="time" data-rem-time value="${R.weighTime}" aria-label="Tartı saati"></div></div>`;
 }
 function bindRem(){
@@ -2758,7 +3014,8 @@ function openSheet(kind,editId){
       S.shots.push({id:uid(),date,time:$("#s-time").value||"09:00",dose:dose==null?null:dose.toLocaleString("tr-TR"),site,note:$("#s-note").value.trim()||null});
       const k=num($("#s-kg").value);
       if(k!=null&&k>=20&&k<=400){S.weights.push({id:uid(),date,kg:k,note:"iğne günü",t:Date.now()});if(S.profile.startWeight==null)S.profile.startWeight=k}
-      save(); closeSheet(); toast("İğne kaydedildi");
+      let pm="";const P=S.profile;if(P.penLeft!=null&&P.penLeft>0){P.penLeft--;pm=P.penLeft===0?" · kalemin bitti":P.penLeft===1?" · kalemde son doz kaldı":` · kalemde ${P.penLeft} doz kaldı`}
+      save(); closeSheet(); toast("İğne kaydedildi"+pm);
     });
   }
 }
@@ -2771,7 +3028,8 @@ function bindView(){
   v.querySelectorAll("[data-edit-w]").forEach(b=>b.addEventListener("click",()=>openSheet("weight",b.dataset.editW)));
   v.querySelectorAll("[data-edit-shot]").forEach(b=>b.addEventListener("click",()=>openSheet("shot",b.dataset.editShot)));
   v.querySelectorAll("svg[data-sid]").forEach(bindScrub);
-  bindToday();
+  bindToday(); bindIgne(); bindKilo();
+  v.querySelectorAll("[data-theme-set]").forEach(b=>b.addEventListener("click",()=>{S.profile.theme=b.dataset.themeSet;save();render()}));
   v.querySelectorAll("[data-chart]").forEach(b=>b.addEventListener("click",()=>{chartMode=b.dataset.chart;ANIM=true;try{localStorage.setItem("dd-chart",chartMode)}catch(e){}render()}));
   v.querySelectorAll("[data-go]").forEach(b=>b.addEventListener("click",()=>{selPhase=null;ANIM=true;tab=b.dataset.go;render();window.scrollTo(0,0)}));
   v.querySelectorAll("[data-del-w],[data-del-shot]").forEach(b=>b.addEventListener("click",()=>{
