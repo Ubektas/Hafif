@@ -1,0 +1,206 @@
+<title>Hafif Android Önizleme</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700&family=Figtree:wght@400;500;600;700&display=swap">
+<style>
+/* Düzen: solda Android'de çalışan uygulama, sağda aynı veriden çizilen ana ekran widget'ları; dar ekranda alt alta */
+:root{
+  --bg:#E4ECE8; --panel:#F6F9F7; --fg:#0B2420; --muted:#56706A; --line:#CFDDD7; --accent:#0E7C66; --deep:#0B3B33; --mint:#9FF0D6;
+  --wall1:#E8D9CC; --wall2:#B9CFD6; --wall3:#F3C9A8; --wall4:#9BC7D9; --wl:#20403A;
+  --display:"Bricolage Grotesque",ui-rounded,system-ui,sans-serif; --body:"Figtree",system-ui,-apple-system,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#0C1A17;--panel:#12241F;--fg:#E4F1EC;--muted:#93ABA4;--line:#22403A;--accent:#43C9A0;--deep:#0B3B33;--wall1:#2A2D33;--wall2:#1C3440;--wall3:#4A3326;--wall4:#163A4A;--wl:#E4F1EC;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0C1A17;--panel:#12241F;--fg:#E4F1EC;--muted:#93ABA4;--line:#22403A;--accent:#43C9A0;--deep:#0B3B33;--wall1:#2A2D33;--wall2:#1C3440;--wall3:#4A3326;--wall4:#163A4A;--wl:#E4F1EC;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font:15px/1.5 var(--body);padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:24px 40px}
+.wrap{max-width:1180px;margin:0 auto;display:flex;flex-direction:column;gap:20px}
+header h1{margin:0;font:700 clamp(26px,4vw,36px)/1.05 var(--display);letter-spacing:-.03em;color:var(--fg);text-wrap:balance}
+header h1 span{color:var(--accent)}
+header p{margin:8px 0 0;color:var(--muted);max-width:68ch}
+.ctl{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.ctl button{font:600 13.5px var(--body);border:1px solid var(--line);background:var(--panel);color:var(--fg);border-radius:99px;padding:8px 14px;cursor:pointer}
+.ctl button:hover{border-color:var(--accent)}
+.ctl button:focus-visible,.seg button:focus-visible,.wg:focus-visible,.wb:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.ctl .st{font-size:13px;color:var(--muted)}
+.stage{display:grid;grid-template-columns:minmax(0,420px) minmax(0,1fr);gap:28px;align-items:start}
+@media (max-width:900px){.stage{grid-template-columns:minmax(0,1fr)}}
+.col{display:flex;flex-direction:column;gap:10px;min-width:0}
+.lab{display:flex;justify-content:space-between;align-items:baseline;gap:10px;font:700 13px var(--body);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.phone{background:#0B1513;border-radius:44px;padding:12px;box-shadow:0 30px 60px -30px rgba(5,30,24,.55);width:100%;max-width:420px}
+.phone iframe{display:block;width:100%;height:min(820px,80vh);min-height:600px;border:0;border-radius:32px;background:#F1F5F3}
+.home{border-radius:36px;padding:22px 18px 28px;min-height:600px;background:radial-gradient(90% 50% at 85% 0%,var(--wall3) 0%,transparent 60%),radial-gradient(90% 60% at 0% 100%,var(--wall4) 0%,transparent 60%),linear-gradient(170deg,var(--wall1),var(--wall2));box-shadow:0 30px 60px -30px rgba(5,30,24,.45)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:16px}
+.grid.big{grid-template-columns:repeat(auto-fill,minmax(330px,1fr))}
+.seg{display:inline-flex;background:var(--panel);border:1px solid var(--line);border-radius:99px;padding:3px}
+.seg button{border:0;background:none;color:var(--muted);font:600 13px var(--body);padding:6px 12px;border-radius:99px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--accent);color:#fff}
+.note{font-size:13px;color:var(--muted);max-width:70ch}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:#0B2420;color:#fff;border-radius:14px;padding:10px 16px;font:600 13.5px var(--body);box-shadow:0 12px 30px -12px rgba(0,0,0,.5);z-index:50;max-width:calc(100vw - 32px)}
+.notif{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:12px 14px;display:flex;flex-direction:column;gap:8px}
+.notif b{font:700 14px var(--body)}.notif .n{display:flex;gap:10px;font-size:13px}.notif .n time{color:var(--muted);min-width:96px;font-variant-numeric:tabular-nums}
+details.how{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:12px 16px}
+details.how summary{cursor:pointer;font-weight:700}
+details.how ol{margin:10px 0 0;padding-left:20px;display:flex;flex-direction:column;gap:6px}
+details.how code{background:var(--bg);border-radius:6px;padding:1px 6px;font-size:13px}
+
+/* widget'lar (Android'deki çizimin aynısı) */
+.wg{position:relative;border-radius:24px;overflow:hidden;color:#fff;cursor:pointer;box-shadow:0 16px 34px -18px rgba(0,0,0,.45);font-family:var(--body);text-align:left;border:0;padding:0;width:100%}
+.wg.s{aspect-ratio:1/1}.wg.s1{aspect-ratio:170/80}.wg.l{aspect-ratio:360/170}.wg.l1{aspect-ratio:360/80}
+.wg.dk{background:radial-gradient(120% 120% at 100% 0%,#1F8A70 0%,transparent 55%),linear-gradient(160deg,#0B3B33,#062520)}
+.wg.lt{background:#FFFFFFF5;color:#0B2420}
+.wi{position:absolute;inset:0;padding:6.5% 7%;display:flex;flex-direction:column;container-type:inline-size}
+.wg .logo{display:flex;align-items:center;gap:5px;font:700 11px var(--body);opacity:.8}
+.wg .ey{font:700 9.5px var(--body);letter-spacing:.12em;text-transform:uppercase;opacity:.7}
+.wg .big{font:700 28px/1 var(--display);letter-spacing:-.03em}
+.wg .mid{font:700 17px/1.15 var(--display)}
+.wg .sm{font-size:11.5px;opacity:.78}
+.wg .chip{display:inline-block;border-radius:99px;padding:3px 9px;font:700 10.5px var(--body);background:rgba(255,255,255,.12);white-space:nowrap}
+.wg .wbar{height:7px;border-radius:9px;background:rgba(255,255,255,.14);overflow:hidden}.wg .wbar i{display:block;height:100%;border-radius:9px}
+.wg .btns{display:flex;gap:8px;margin-top:auto}
+.wb{flex:1;border:0;border-radius:12px;padding:8px 0;font:700 12px var(--body);cursor:pointer}
+.lockov{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center;padding:12px;background:rgba(6,37,32,.55);backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px)}
+.lockov b{font:700 12px var(--body);letter-spacing:.12em;color:#9FF0D6}.lockov span{font-size:12.5px;color:#fff}
+.lockov i{font-style:normal;background:#9FF0D6;color:#0B3B33;border-radius:99px;padding:5px 16px;font:700 12px var(--body)}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>Hafif <span>Android</span> önizlemesi</h1>
+    <p>Solda uygulamanın Android sürümü çalışıyor; telefon özellikleri (bildirimler, Health Connect, Google Play aboneliği, paylaşma) bu sayfada taklit ediliyor. Sağdaki ana ekran widget'ları uygulamanın yazdığı veriden çiziliyor: uygulamada su ya da tartı ekleyince widget'lar da değişir, widget düğmesine basınca işlem uygulamada yapılır. Örnek verilerle açılır; burada girdiklerin yalnızca bu tarayıcıda kalır.</p>
+  </header>
+  <div class="ctl" role="group" aria-label="Önizleme ayarları">
+    <button type="button" id="cReset">Örnek verilerle baştan başla</button>
+    <button type="button" id="cTrial">14 gün geçmiş gibi yap</button>
+    <button type="button" id="cUnplus">Plus aboneliğini kaldır</button>
+    <span class="st" id="cState"></span>
+  </div>
+  <div class="stage">
+    <div class="col">
+      <div class="lab"><span>Uygulama</span><span style="text-transform:none;letter-spacing:0;font-weight:500">Android 15 · taklit</span></div>
+      <div class="phone"><iframe id="app" title="Hafif uygulaması"></iframe></div>
+    </div>
+    <div class="col">
+      <div class="lab"><span>Ana ekran</span>
+        <span class="seg" role="group" aria-label="Widget boyutu"><button type="button" data-sz="s" aria-pressed="true">Küçük</button><button type="button" data-sz="l" aria-pressed="false">Büyük</button></span></div>
+      <div class="home"><div class="grid" id="grid"></div></div>
+      <div class="notif" id="notif" hidden><b>Zamanlanan bildirimler</b><div id="nlist"></div></div>
+      <details class="how"><summary>Gerçek Android'de denemek için</summary>
+        <ol>
+          <li>Son sürümün APK dosyasını indir: GitHub → Ubektas/Hafif → Releases → <code>hafif-x.y.z.apk</code>.</li>
+          <li>Tarayıcıda sanal Android telefon açan bir servise (ör. appetize.io) APK'yı yükle; uygulama birkaç dakikalık ücretsiz oturumda çalışır.</li>
+          <li>Widget denemek için sanal telefonda ana ekrana dön, boş bir yere uzun bas → Widget'lar → Hafif.</li>
+          <li>Abonelik satın alma yalnızca Play'den yüklenen sürümde çalışır; APK ile kurulumda ödeme ekranı açılır ama fiyatlar gelmez.</li>
+        </ol></details>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast" hidden role="status"></div>
+
+<script id="appb64" type="text/plain">__APP_B64__</script>
+<script>
+(function(){
+const $=s=>document.querySelector(s);
+const MOCK=__MOCK_JSON__;
+let D=null, size='s';
+try{size=localStorage.getItem('hf-demo-sz')||'s'}catch(_){}
+const frame=$('#app');
+function b64(s){const bin=atob(s),u=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i);return new TextDecoder().decode(u)}
+const APP=b64($('#appb64').textContent.trim());
+function load(){frame.srcdoc=APP.replace('<head>','<head><script>'+MOCK+'<\/script>')}
+function appLS(){try{return frame.contentWindow.localStorage}catch(_){return null}}
+function toast(m){const t=$('#toast');t.textContent=m;t.hidden=false;clearTimeout(t._t);t._t=setTimeout(()=>{t.hidden=true},2600)}
+function state(){const ls=appLS();let s='';try{const d=JSON.parse(ls.getItem('doz-defteri'));const owned=ls.getItem('hf-plus')==='1';
+  const since=d&&d.profile&&d.profile.since;const left=since?Math.max(0,14-Math.round((Date.now()-new Date(since+'T12:00').getTime())/864e5)):14;
+  s=owned?'Plus: abone (deneme satın alma)':left>0?`Plus: ücretsiz dönem · ${left} gün kaldı`:'Plus: ücretsiz dönem bitti, kilitli'}catch(_){}
+  $('#cState').textContent=s}
+$('#cReset').onclick=()=>{const ls=appLS();if(ls){ls.clear()}try{sessionStorage.clear()}catch(_){}D=null;render();load();toast('Örnek veriler yüklendi')};
+$('#cTrial').onclick=()=>{const ls=appLS();if(!ls)return;try{const d=JSON.parse(ls.getItem('doz-defteri'));d.profile.since='2020-01-01';delete d.profile.trialEndSeen;ls.setItem('doz-defteri',JSON.stringify(d));ls.setItem('hf-plus','0')}catch(_){}load();toast('Ücretsiz dönem bitti: Plus alanları kilitlendi')};
+$('#cUnplus').onclick=()=>{const ls=appLS();if(!ls)return;ls.setItem('hf-plus','0');load();toast('Plus aboneliği kaldırıldı')};
+document.querySelectorAll('[data-sz]').forEach(b=>b.onclick=()=>{size=b.dataset.sz;try{localStorage.setItem('hf-demo-sz',size)}catch(_){}document.querySelectorAll('[data-sz]').forEach(x=>x.setAttribute('aria-pressed',x===b));render()});
+document.querySelectorAll('[data-sz]').forEach(x=>x.setAttribute('aria-pressed',x.dataset.sz===size));
+window.addEventListener('message',e=>{const m=e.data||{};if(!m.hafif)return;
+  if(m.t==='wj'){try{D=JSON.parse(m.d)}catch(_){}render();state()}
+  else if(m.t==='toast')toast(m.m);
+  else if(m.t==='notif'){const n=$('#notif');n.hidden=!m.first.length;$('#nlist').innerHTML=m.first.map(x=>`<div class="n"><time>${new Date(x.at).toLocaleString('tr-TR',{weekday:'short',hour:'2-digit',minute:'2-digit'})}</time><span><b style="font-size:13px">${esc(x.title)}</b> · ${esc(x.body)}</span></div>`).join('')}});
+function link(a){frame.contentWindow.postMessage({hafifLink:'hafif://w/'+a},'*')}
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+/* ---- Android'deki WidgetData.java ile aynı hesaplar ---- */
+const TR='tr-TR',n0=v=>Math.round(v).toLocaleString(TR),n1=v=>v.toLocaleString(TR,{minimumFractionDigits:1,maximumFractionDigits:1});
+const sgn=v=>Math.abs(v)<.05?'±'+n1(Math.abs(v)):(v<0?'−':'+')+n1(Math.abs(v));
+const ymd=t=>{const d=new Date(t);return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')};
+const dd=(a,b)=>{const x=new Date(a),y=new Date(b);x.setHours(12,0,0,0);y.setHours(12,0,0,0);return Math.round((y-x)/864e5)};
+const cap=s=>s?s[0].toLocaleUpperCase(TR)+s.slice(1):'';
+function W(o){const now=Date.now(),today=ymd(now),fresh=o&&o.date===today,c=o&&o.cyc,day=o&&o.day||{};
+  const el=c?(now-c.t0)/864e5:0;let ph=-1;if(c){ph=c.ends.findIndex(e=>el<e);if(ph<0)ph=5}
+  const overdue=c&&now>c.tn+6*3600e3;
+  const mg=()=>{if(!c)return 0;const k=(now-c.lvT0)/3600e3,lv=c.lv;if(k<=0)return lv[0];if(k>=lv.length-1)return lv[lv.length-1];const i=Math.floor(k),f=k-i;return lv[i]*(1-f)+lv[i+1]*f};
+  const nts=o&&o.next?o.next.ts:0;
+  const left=()=>{if(!nts)return '–';const d=dd(now,nts);if(nts<now-6*3600e3)return 'Gecikti';if(d<=0)return 'Bugün';if(d===1)return 'Yarın';return d+' gün'};
+  return {o,now,today,fresh,plus:o&&now<o.plusUntil,shots:o&&o.shots,c,ph,phName:c&&ph>=0?c.ph[ph]:'',tip:overdue?"İğne zamanı geçti. Yaptıysan Hafif'e eklemeyi unutma.":c&&ph>=0?c.tip[ph]:'',
+    frac:c?Math.max(0,Math.min(1,(now-c.t0)/Math.max(1,c.tn-c.t0))):0,cday:c?Math.floor(el)+1:0,cdays:c?c.days:7,mg:mg(),left:left(),
+    when:nts?cap(new Date(nts).toLocaleDateString(TR,{weekday:'short'}))+' '+new Date(nts).toLocaleTimeString(TR,{hour:'2-digit',minute:'2-digit'}):'',
+    whenL:nts?cap(new Date(nts).toLocaleDateString(TR,{weekday:'long'}))+' · '+new Date(nts).toLocaleTimeString(TR,{hour:'2-digit',minute:'2-digit'}):'',
+    water:fresh?day.w||0:0,wg:day.wg||2500,prot:fresh?day.p||0:0,pg:day.pg||100,hs:day.st!=null,steps:fresh?day.st||0:0,sg:day.sg||7500}}
+
+const leaf='<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 21V12a8 8 0 0 1 8-8h6v6a8 8 0 0 1-8 8H7"/><path d="M9 15l6-6"/></svg>';
+const logo=t=>`<div class="logo">${leaf}${t}</div>`;
+const ring=(f,sz,st,col,inner,track='rgba(255,255,255,.12)')=>{f=Math.max(0,Math.min(1,f));const r=(sz-st)/2,C=2*Math.PI*r;return `<div style="position:relative;width:${sz}px;height:${sz}px;flex:none;margin:auto"><svg width="${sz}" height="${sz}" style="display:block"><circle cx="${sz/2}" cy="${sz/2}" r="${r}" fill="none" stroke="${track}" stroke-width="${st}"/><circle cx="${sz/2}" cy="${sz/2}" r="${r}" fill="none" stroke="${col}" stroke-width="${st}" stroke-linecap="round" stroke-dasharray="${C*f} ${C}" transform="rotate(-90 ${sz/2} ${sz/2})"/></svg><div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center">${inner}</div></div>`};
+const bar=(f,c)=>`<div class="wbar"><i style="width:${Math.max(0,Math.min(1,f))*100}%;background:${c}"></i></div>`;
+const btns=list=>`<div class="btns">${list.map(([t,a,bg,fg])=>`<button type="button" class="wb" data-a="${a}" style="background:${bg};color:${fg}">${esc(t)}</button>`).join('')}</div>`;
+function spark(pts,shots,w,h,shotLines){if(!pts||pts.length<2)return '';let mn=Math.min(...pts.map(p=>p[1]))-.3,mx=Math.max(...pts.map(p=>p[1]))+.3,d0=Math.min(...pts.map(p=>p[0])),d1=Math.max(...pts.map(p=>p[0]));const byI=d1-d0<1;if(byI){d0=0;d1=pts.length-1}const sp=Math.max(1,d1-d0);
+  const X=(v,i)=>((byI?i:v)-d0)/sp*w,Y=v=>4+(mx-v)/(mx-mn)*(h-8);const d=pts.map((p,i)=>(i?'L':'M')+X(p[0],i).toFixed(1)+' '+Y(p[1]).toFixed(1)).join('');
+  const sl=shotLines&&shots&&!byI?shots.filter(s=>s>=d0&&s<=d1).map(s=>`<line x1="${X(s)}" x2="${X(s)}" y1="0" y2="${h}" stroke="#E2643D" stroke-opacity=".5" stroke-dasharray="3 3"/>`).join(''):'';
+  return `<svg width="100%" height="${h}" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none" style="display:block">${sl}<path d="${d}L${X(pts[pts.length-1][0],pts.length-1)} ${h}L${X(pts[0][0],0)} ${h}Z" fill="#0E7C66" opacity=".12"/><path d="${d}" fill="none" stroke="#0E7C66" stroke-width="2.4" vector-effect="non-scaling-stroke" stroke-linejoin="round"/></svg>`}
+function blocks(cols,of,per,sz){return `<div style="display:grid;grid-template-columns:repeat(${per},${sz}px);gap:3px">${Array.from({length:of},(_,i)=>`<i style="width:${sz}px;height:${sz}px;border-radius:4px;background:${cols&&cols[i]||'rgba(255,255,255,.12)'}"></i>`).join('')}</div>`}
+const glass=(f,h)=>`<svg width="${h*.62}" height="${h}" viewBox="0 0 62 100" style="flex:none"><clipPath id="gc${h}"><path d="M4 4h54l-6 94H10z"/></clipPath><path d="M4 4h54l-6 94H10z" fill="rgba(255,255,255,.1)"/><rect clip-path="url(#gc${h})" x="0" y="${4+94*(1-Math.min(1,f))}" width="62" height="100" fill="#5BC0F5"/><rect clip-path="url(#gc${h})" x="0" y="${4+94*(1-Math.min(1,f))}" width="62" height="3" fill="#8FD6F8"/><path d="M4 4h54l-6 94H10z" fill="none" stroke="rgba(255,255,255,.4)" stroke-width="2"/></svg>`;
+const empty=(t,s,a)=>({main:a,html:`${logo('Hafif')}<div style="margin:auto;text-align:center"><div class="mid" style="font-size:15px">${t}</div><div class="sm">${s}</div></div>`});
+
+/* 10 widget; her biri {main, html, cls} döndürür */
+const K=[null,
+ (w,L)=>{if(!w.shots||!w.c)return empty(w.shots?'Henüz iğne yok':'İğne takibi kapalı',w.shots?"İlk iğneni Hafif'e ekle":"Ayarlar'dan açabilirsin",w.shots?'shot':'tab/ayar');
+  if(!L)return {main:'tab/ozet',html:`${logo('Hafif')}${ring(w.frac,104,10,'#9FF0D6',`<span class="ey" style="font-size:8.5px">yeni iğne</span><span class="big" style="font-size:24px">${w.left}</span>`)}<div style="text-align:center"><b class="mid" style="font-size:14px">${esc(w.phName)}</b><span class="sm"> · ${n1(w.mg)} mg</span></div>`};
+  return {main:'tab/ozet',html:`<div style="display:flex;gap:16px;align-items:center;height:100%">${ring(w.frac,128,12,'#9FF0D6',`<span class="ey" style="font-size:8.5px">vücutta</span><span class="big" style="font-size:28px">${n1(w.mg)}</span><span class="sm">mg</span>`)}<div style="display:flex;flex-direction:column;gap:6px;min-width:0;flex:1">${logo('Hafif')}<span class="mid">${esc(w.phName)} · ${w.cday}/${w.cdays}</span><span class="sm" style="line-height:1.35">${esc(w.tip)}</span><span class="chip" style="align-self:flex-start">Yeni iğne · ${w.left} · ${w.when}</span></div></div>`}},
+ (w,L)=>{if(!w.shots||!w.c)return empty('Henüz iğne yok',"İlk iğneni Hafif'e ekle",'shot');const n=w.o.next||{};
+  if(!L)return {main:'shot',cls:'s1',html:`<div style="display:flex;gap:12px;align-items:center;height:100%"><span style="width:40px;height:40px;border-radius:12px;background:rgba(226,100,61,.25);display:grid;place-items:center;font-size:18px;flex:none">💉</span><div><span class="ey">yeni iğne</span><div class="mid">${w.left}</div><span class="sm">${w.when}</span></div></div>`};
+  return {main:'shot',html:`<div style="display:flex;justify-content:space-between">${logo('Hafif')}<span class="sm">${w.whenL}</span></div><div style="display:flex;gap:18px;align-items:flex-end;margin-top:10px"><div><span class="ey">yeni iğne</span><div class="big" style="font-size:30px">${w.left}</div></div><div style="display:flex;flex-direction:column;gap:3px;font-size:12.5px;min-width:0"><span>💊 <b>${esc(n.dose||'–')} mg</b>${n.drug?' · '+esc(n.drug):''}</span><span>📍 Önerilen: <b>${esc(n.site||'–')}</b></span>${n.pen!=null?`<span>🖊️ Kalemde <b style="color:${n.pen<=1?'#F4A586':'inherit'}">${n.pen} doz</b> kaldı</span>`:''}</div></div>${btns([['İğneyi kaydet','shot','rgba(226,100,61,.3)','#FFD2C2']])}`}},
+ (w,L)=>{const rows=[['💧','Su',w.water,w.wg,'#5BC0F5',n0(w.water)+' / '+n0(w.wg)+' ml',n1(w.water/1000)+' L'],['🥚','Protein',w.prot,w.pg,'#E6B35A',n0(w.prot)+' / '+n0(w.pg)+' g',n0(w.prot)+' g']].concat(w.hs?[['👣','Adım',w.steps,w.sg,'#8C9BF0',n0(w.steps)+' / '+n0(w.sg),n0(w.steps)]]:[]);
+  if(!L)return {main:'tab/besin',html:`${logo('Bugün')}<div style="display:flex;justify-content:space-around;margin-top:auto">${rows.map(r=>`<div style="text-align:center">${ring(r[2]/r[3],46,6,r[4],`<span style="font-size:15px">${r[0]}</span>`)}<div style="font:700 11px var(--body);margin-top:4px">${r[6]}</div></div>`).join('')}</div>`};
+  return {main:'tab/besin',html:`<div style="display:flex;justify-content:space-between">${logo('Hafif')}<span class="sm">${cap(new Date().toLocaleDateString(TR,{weekday:'long',day:'numeric',month:'long'}))}</span></div><div style="display:flex;flex-direction:column;gap:8px;margin-top:10px">${rows.map(r=>`<div><div style="display:flex;justify-content:space-between;font-size:11.5px"><span>${r[0]} ${r[1]}</span><b>${r[5]}</b></div><div style="margin-top:3px">${bar(r[2]/r[3],r[4])}</div></div>`).join('')}</div>${btns([['+250 ml su','water/250','rgba(91,192,245,.2)','#BFE6FB'],['Kilo gir','weight','rgba(159,240,214,.16)','#9FF0D6']])}`}},
+ (w,L)=>{const k=w.o.w;if(!k)return {main:'weight',cls:L?'l1':'s1',lt:1,html:'<div style="margin:auto;font-weight:700;color:#0B3B33">İlk tartını gir</div>'};
+  const head=`<div><span class="ey" style="color:#0E7C66;opacity:1">${L?'Hafif · güncel':'güncel'}</span><div class="big" style="color:#0B3B33;font-size:26px">${n1(k.cur)}<small style="font:500 12px var(--body);color:#5F726C"> kg</small></div><span style="font:700 11px var(--body);color:#0E7C66">${sgn(k.change)} kg${L&&k.pct!=null?' · hedefe %'+Math.round(k.pct):''}</span></div>`;
+  return {main:'weight',cls:L?'l1':'s1',lt:1,html:L?`<div style="display:flex;align-items:center;gap:12px;height:100%">${head}<div style="flex:1;min-width:0">${spark(k.pts,null,150,46)}</div><span style="width:34px;height:34px;border-radius:50%;background:#0B3B33;color:#9FF0D6;display:grid;place-items:center;font:700 20px var(--body);flex:none">+</span></div>`:`<div style="margin:auto 0">${head}</div>`}},
+ (w,L)=>{const k=w.o.w;if(!k||!k.pts||k.pts.length<2)return {main:'tab/kilo',lt:1,html:'<div style="margin:auto;font-weight:700;color:#0B3B33;text-align:center">Grafik için 2 tartı gerekli</div>'};
+  if(!L)return {main:'tab/kilo',lt:1,html:`<span class="ey" style="color:#0E7C66;opacity:1">son 30 gün</span><div class="mid" style="color:#0B3B33">${sgn(k.d30)} kg</div><div style="margin-top:auto">${spark(k.pts,null,140,80)}</div>`};
+  return {main:'tab/kilo',lt:1,html:`<div style="display:flex;justify-content:space-between;align-items:baseline"><span class="ey" style="color:#0E7C66;opacity:1">Kilo · son 30 gün</span>${k.perWeek!=null?`<span style="font:700 12px var(--body);color:#0E7C66">haftada ${sgn(k.perWeek)} kg</span>`:''}</div><div style="display:flex;align-items:baseline;gap:8px"><span class="big" style="color:#0B3B33;font-size:22px">${n1(k.cur)}</span><span style="font-size:12px;color:#5F726C">${n1(k.first30)} → ${n1(k.cur)} kg</span></div><div style="margin-top:auto">${spark(k.pts,k.shots,330,80,true)}</div>`}},
+ (w,L)=>{const k=w.o.w;if(!k||k.pct==null)return empty('Hedef kilonu belirle','Ayarlar → Hedef','tab/ayar');const b=w.o.badge;
+  if(!L)return {main:'tab/basari',html:`${logo('Hedef')}${ring(k.pct/100,104,10,'#9FF0D6',`<span class="big" style="font-size:26px">%${Math.round(k.pct)}</span><span class="sm">${n0(k.goal)} kg hedef</span>`)}<div style="text-align:center;font:700 12px var(--body);color:#9FF0D6">${n1(Math.max(0,k.left))} kg kaldı</div>`};
+  return {main:'tab/basari',html:`<div style="display:flex;gap:16px;align-items:center;height:100%">${ring(k.pct/100,124,11,'#9FF0D6',`<span class="big" style="font-size:30px">%${Math.round(k.pct)}</span><span class="sm">hedefe</span>`)}<div style="display:flex;flex-direction:column;gap:7px;min-width:0">${logo('Hafif')}<div><span class="ey">kalan</span><div class="mid">${n1(Math.max(0,k.left))} kg</div></div>${b?`<div style="display:flex;align-items:center;gap:8px;background:rgba(201,160,74,.18);border-radius:14px;padding:7px 10px"><span style="font-size:20px">🏅</span><div><span class="ey" style="color:#E8C877;opacity:1">sıradaki rozet</span><div style="font:700 13px var(--body)">${esc(b.t)} · ${n1(b.left)} kg kaldı</div></div></div>`:''}</div></div>`}},
+ (w,L)=>{const f=w.water/w.wg;
+  if(!L)return {main:'tab/besin',html:`<div style="display:flex;gap:10px;align-items:center;flex:1;min-height:0">${glass(f,92)}<div><span class="ey">su</span><div class="mid">${n0(w.water)}</div><span class="sm">/ ${n0(w.wg)} ml</span></div></div>${btns([['+250 ml','water/250','rgba(91,192,245,.25)','#BFE6FB']])}`};
+  return {main:'tab/besin',html:`<div style="display:flex;gap:16px;height:100%">${glass(f,130)}<div style="flex:1;display:flex;flex-direction:column;gap:8px;min-width:0">${logo('Hafif')}<div><span class="big">${n0(w.water)}</span><span class="sm"> / ${n0(w.wg)} ml</span></div>${bar(f,'#5BC0F5')}${btns([['+250 ml','water/250','rgba(91,192,245,.25)','#BFE6FB'],['+500 ml','water/500','rgba(91,192,245,.25)','#BFE6FB']])}</div></div>`}},
+ (w,L)=>{const day=w.o.day||{},cols=w.fresh?day.pc:null,of=Math.max(12,Math.ceil(w.pg/5));
+  if(!L)return {main:'protein',html:`<div style="display:flex;justify-content:space-between"><span class="ey">protein</span><span class="sm">%${Math.round(Math.min(100,w.prot/w.pg*100))}</span></div><div><span class="big" style="font-size:24px">${n0(w.prot)}</span><span class="sm"> / ${n0(w.pg)} g</span></div><div style="margin-top:auto">${blocks(cols,of,8,13)}</div>`};
+  return {main:'protein',html:`<div style="display:flex;justify-content:space-between">${logo('Hafif')}<span class="sm">${n0(Math.max(0,w.pg-w.prot))} g kaldı</span></div><div style="display:flex;gap:14px;align-items:center;margin-top:8px"><div><span class="big">${n0(w.prot)}</span><span class="sm"> / ${n0(w.pg)} g</span></div>${blocks(cols,of,11,14)}</div><div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:auto">${(w.fresh&&day.foods||[]).map(f=>`<span class="chip">${esc(f)}</span>`).join('')}<span class="chip" style="background:rgba(230,179,90,.25);color:#F3D29A">+ Ekle</span></div>`}},
+ (w,L)=>{if(!w.hs)return empty('Adımlarını bağla','Health Connect ile','tab/adim');const day=w.o.day||{},km=w.fresh?n1(day.km||0):'0',mn=w.fresh?n0(day.min||0):'0';
+  if(!L)return {main:'tab/adim',html:`${logo('Adım')}${ring(w.steps/w.sg,104,10,'#8C9BF0',`<span class="big" style="font-size:22px">${n0(w.steps)}</span><span class="sm">/ ${n0(w.sg)}</span>`)}<div class="sm" style="text-align:center">${km} km · ${mn} dk</div>`};
+  const wk=day.wk||[],mx=Math.max(w.sg,...wk);
+  return {main:'tab/adim',html:`<div style="display:flex;gap:16px;align-items:center;height:100%">${ring(w.steps/w.sg,116,10,'#8C9BF0',`<span class="big" style="font-size:22px">${n0(w.steps)}</span><span class="sm">adım</span>`)}<div style="flex:1;display:flex;flex-direction:column;gap:6px;min-width:0">${logo('Hafif')}<span class="sm">${n0(Math.max(0,w.sg-w.steps))} adım kaldı · ${km} km</span><div style="display:flex;align-items:flex-end;gap:5px;height:58px">${wk.map((v,i)=>`<i style="flex:1;height:${Math.max(3,(i===wk.length-1&&!w.fresh?0:v)/mx*58)}px;border-radius:4px;background:${v>=w.sg?'#8C9BF0':'rgba(140,155,240,.4)'}"></i>`).join('')}</div><div style="display:flex;gap:5px;font-size:9.5px;opacity:.6">${(day.wkl||[]).map(l=>`<span style="flex:1;text-align:center">${l}</span>`).join('')}</div></div></div>`}},
+ (w,L)=>{const days=w.o.supp||[],x=days.find(z=>z.d===w.today),sl=x?x.s:[];if(!sl.length)return empty('Bugün takviye yok','Programı Takviye sekmesinden kur','tab/takviye');
+  let done=0,of=0,nx=null;sl.forEach(s=>{const dn=w.fresh?s.done:0;done+=dn;of+=s.of;if(!nx&&dn<s.of)nx=s});
+  if(!L)return {main:'tab/takviye',html:`<div style="display:flex;justify-content:space-between;align-items:center">${logo('Takviye')}<span class="chip">${done}/${of}</span></div>${nx?`<span class="ey" style="margin-top:8px">sıradaki · ${nx.t}</span><span class="mid">${esc(nx.n)}</span><span class="sm">${esc(nx.names)}</span>${btns([['Hepsini aldım','supp/'+nx.k,'rgba(123,91,208,.3)','#D6CBF7']])}`:'<div class="mid" style="margin:auto;color:#9FF0D6">Bugün hepsi alındı</div>'}`};
+  const ni=nx?sl.indexOf(nx):0,a=Math.max(0,Math.min(ni-(nx?1:0),sl.length-2)),show=sl.slice(a,a+2);
+  return {main:'tab/takviye',html:`<div style="display:flex;justify-content:space-between;align-items:center">${logo('Hafif')}<span class="chip">Bugün ${done}/${of}</span></div><div style="display:grid;grid-template-columns:repeat(${show.length},1fr);gap:8px;margin-top:8px">${show.map(s=>{const ok=w.fresh&&s.done>=s.of;return `<div style="background:rgba(255,255,255,.07);border-radius:14px;padding:8px 10px;min-width:0"><div style="font:700 11.5px var(--body)">${s.e} ${esc(s.n)} · ${s.t}</div><div class="sm" style="margin:2px 0 4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(s.names)}</div><span style="font:700 11px var(--body);color:${ok?'#9FF0D6':'#D6CBF7'}">${ok?'✓ alındı':'bekliyor'}</span></div>`}).join('')}</div>${nx?btns([[nx.n+' takviyelerini aldım','supp/'+nx.k,'rgba(123,91,208,.3)','#D6CBF7']]):''}`}}
+];
+const NAMES=[null,'Döngü','Sıradaki iğne','Bugün','Kilo','Kilo grafiği','Hedefe ilerleme','Su','Protein','Adım','Takviyeler'];
+function render(){const g=$('#grid');g.className='grid'+(size==='l'?' big':'');
+  if(!D){g.innerHTML='<div style="grid-column:1/-1;color:var(--wl);font-weight:600">Uygulama açılıyor…</div>';return}
+  const w=W(D),L=size==='l';
+  g.innerHTML=K.slice(1).map((f,i)=>{const r=f(w,L),k=i+1,cls=r.cls||(L?'l':'s'),locked=!w.plus;
+    return `<div><div class="wg ${cls} ${r.lt?'lt':'dk'}" role="button" tabindex="0" data-a="${locked?'plus':r.main}" aria-label="Hafif · ${NAMES[k]}"><div class="wi">${r.html}</div>${locked?'<div class="lockov"><b>✦ HAFİF PLUS</b><span>Widget\'lar Plus\'ta</span><i>Aç</i></div>':''}</div><div style="font-size:11.5px;font-weight:600;color:var(--wl);text-align:center;margin-top:5px">Hafif · ${NAMES[k]}</div></div>`}).join('')}
+$('#grid').addEventListener('click',e=>{const b=e.target.closest('[data-a]');if(!b)return;e.stopPropagation();link(b.dataset.a)});
+$('#grid').addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e.target.matches('.wg')){e.preventDefault();link(e.target.dataset.a)}});
+setInterval(()=>{if(D)render();state()},60000);
+render();load();setTimeout(state,2500);
+})();
+</script>
