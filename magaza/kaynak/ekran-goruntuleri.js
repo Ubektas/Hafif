@@ -17,7 +17,10 @@ function ornekVeri() {
   ofs.forEach((n, i) => { const k = 98.4 - 8.9 * (1 - Math.exp(-n / 34)) + [0, .3, -.2, .1, .2, -.1][i % 6]; weights.push({ id: 'w' + i, date: gun(n), kg: Math.round(k * 10) / 10, fat: Math.round((34.2 - 3.4 * n / 59) * 10) / 10, note: null, t: i }); });
   const t = Date.UTC(2026, 9, 22, 21, 0); // 23 Ekim 00:00, İstanbul
   for (let n = 1; n <= 7; n++) { const d = new Date(2026, 9, 23 - n); daily[iso(d)] = { p: [96, 104, 88, 112, 99, 107, 92][n - 1], w: [2250, 2500, 2000, 2750, 2500, 2250, 2500][n - 1], log: [] }; }
-  daily[BUGUN] = { p: 74, w: 1750, log: [[t + 8.5 * 36e5, 'p', 12, 'Yumurta'], [t + 13 * 36e5, 'p', 31, 'Tavuk göğsü'], [t + 16 * 36e5, 'p', 31, null], [t + 8 * 36e5, 'w', 500], [t + 11 * 36e5, 'w', 250], [t + 13.2 * 36e5, 'w', 500], [t + 15 * 36e5, 'w', 500]] };
+  daily[BUGUN] = { p: 74, w: 1750, log: [[t + 8.4 * 36e5, 'p', 6, 'yumurta'], [t + 8.5 * 36e5, 'p', 6, 'yumurta'], [t + 8.6 * 36e5, 'p', 7, 'peynir'], [t + 13 * 36e5, 'p', 31, 'tavuk'], [t + 16 * 36e5, 'p', 15, 'yogurt'], [t + 17 * 36e5, 'p', 9, null], [t + 8 * 36e5, 'w', 500], [t + 11 * 36e5, 'w', 250], [t + 13.2 * 36e5, 'w', 500], [t + 15 * 36e5, 'w', 500]] };
+  const sides = {};
+  for (let i = 0; i < 9; i++) { const k = i % 3; sides[gun(i * 7 + 1)] = { bulanti: i < 4 ? 2 : 1, ...(k ? { yorgun: 1 } : {}) }; sides[gun(i * 7 + 2)] = { bulanti: 1, ...(k === 1 ? { reflu: 1 } : {}) }; if (i % 2 === 0 || i === 8) sides[gun(i * 7 + 3)] = { kabiz: 1 }; }
+  const meas = [{ id: 'm1', date: gun(0), bel: 108, kalca: 121, gogus: 112, kol: 37.5, uyluk: 66 }, { id: 'm2', date: gun(28), bel: 103.5, kalca: 118, gogus: 109, kol: 36, uyluk: 64 }, { id: 'm3', date: gun(57), bel: 99, kalca: 115.5, gogus: 106.5, kol: 35, uyluk: 62.5 }];
   const supps = [
     { id: 'mg', name: 'Magnezyum', slot: 'sabah', days: [0, 1, 2, 3, 4, 5, 6], shape: 'caps', color: '#4F8FDB' },
     { id: 'd3', name: 'D3 vitamini', slot: 'sabah', days: [1, 3, 5], shape: 'soft', color: '#F2C94C' },
@@ -25,8 +28,8 @@ function ornekVeri() {
     { id: 'b12', name: 'B12', slot: 'sabah', days: [1, 4], shape: 'tab', color: '#F1B3C3' },
     { id: 'mgn', name: 'Magnezyum (gece)', slot: 'gece', days: [0, 1, 2, 3, 4, 5, 6], shape: 'caps', color: '#7A52D6' }];
   return {
-    profile: { drug: null, startWeight: 98.4, goalWeight: 80, heightCm: 172, intervalDays: 7, proteinGoal: 110, waterGoal: 2500, noCelebrate: true },
-    weights, shots, daily, supps, suppTimes: { sabah: '08:00', aksam: '19:00', gece: '22:30' },
+    profile: { onboarded: true, usesShots: true, disclaimer: gun(0), age: 42, sex: 'k', penSize: 4, penLeft: 2, drug: null, startWeight: 98.4, goalWeight: 80, heightCm: 172, intervalDays: 7, proteinGoal: 110, waterGoal: 2500, noCelebrate: true },
+    weights, shots, daily, sides, meas, supps, suppTimes: { sabah: '08:00', aksam: '19:00', gece: '22:30' },
     suppLog: { [BUGUN]: { mg: t + 8.1 * 36e5, d3: t + 8.15 * 36e5 } },
     hc: { on: true, last: t + 14.3 * 36e5, wFrom: BUGUN }
   };
@@ -70,5 +73,10 @@ function ornekVeri() {
   await tab('takviye'); await shot('takviyeler');
   await tab('ozet'); await kaydir('.stcard'); await shot('adim-kart');
   await p.click('.stcard'); await p.waitForTimeout(800); await p.evaluate(() => scrollTo(0, 0)); await shot('adimlar');
+  await tab('igne'); await kaydir('#seCard'); await shot('yan-etkiler');
+  await kaydir('.pencard'); await shot('kalem');
+  await tab('kilo'); await kaydir('.mgrid'); await p.evaluate(() => scrollBy(0, -150)); await shot('olculer');
+  await p.click('#gearBtn'); await p.waitForTimeout(400); await p.click('[data-theme-set="dark"]'); await tab('ozet'); await shot('karanlik-ozet');
+  await tab('igne'); await kaydir('#seCard'); await shot('karanlik-yan-etkiler');
   await b.close();
 })();

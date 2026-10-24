@@ -4,41 +4,56 @@
 Hafif: Kilo ve İğne Takibi
 
 ## Kısa açıklama (en fazla 80 karakter)
-Kilo, haftalık iğne, protein, su ve takviyeler tek bir sade uygulamada.
+Kilo, adım, iğne, yan etki, protein ve su takibi tek bir sade uygulamada.
 
 ## Tam açıklama (en fazla 4000 karakter)
-Hafif, kilo verme yolculuğunu sade ve motive edici bir şekilde takip etmen için tasarlandı. Tartılarını, haftalık iğnelerini, günlük protein ve suyunu, takviyelerini tek bir yerde tutar; ilerlemeni anlaşılır grafiklerle gösterir.
+Hafif, kilo verme yolculuğunu sade ve motive edici bir şekilde takip etmen için tasarlandı. Tartılarını, adımlarını, haftalık iğnelerini, yan etkilerini, protein ve suyunu, takviyelerini tek bir yerde tutar; ilerlemeni anlaşılır grafiklerle gösterir.
 
-KİLO VE VÜCUT KOMPOZİSYONU
-• Tartılarını saniyeler içinde kaydet, isteğe bağlı yağ oranı ve not ekle
-• Başlangıçtan bugüne değişimi, haftalık ortalama hızını ve hedefe kalan yolu gör
-• Kilo, yağ kütlesi ve yağsız kütle değişimini grafiklerle izle
+KİLO, ÖLÇÜLER VE VÜCUT KOMPOZİSYONU
+• Tartılarını saniyeler içinde kaydet; yağ oranı ve not ekle, yanlış girdiğini dokunarak düzelt
+• Başlangıçtan bugüne değişimi, haftalık hızını ve hedefe kalan yolu gör
+• Bel, kalça, göğüs, kol, uyluk ve boyun ölçülerini kaydet; tartı yerinde saysa da santimleri izle
+• Akıllı tartın Health Connect'e yazıyorsa ölçümlerin kendiliğinden gelir
 
-HAFTALIK İĞNE TAKİBİ
-• Her iğneyi tarih, saat, doz ve uygulama bölgesiyle kaydet
-• Sıradaki iğne zamanını ve bir sonraki bölge önerisini gör
-• Her iğne arasında kaç kilo verdiğini ve doz özetini incele
-• Haftalık döngünün hangi aşamasında olduğunu ve o aşamaya uygun genel ipuçlarını oku
+ADIM SAYAR
+• Health Connect ile günlük ve saatlik adımlarını gör
+• Adım hedefi, tahmini mesafe, kalori ve yürüyüş süresi
+
+HAFTALIK İĞNE TAKİBİ (isteğe bağlı)
+• Her iğneyi tarih, saat, doz ve bölgeyle kaydet; sıradaki bölge önerisini al
+• Haftalık döngünün hangi evresinde olduğunu ve evreye uygun ipuçlarını gör
+• Doz başına verdiğin kiloyu incele
+• Kalem stoğu: kalemde kaç doz kaldığını izle, bitmeden haber al
+
+YAN ETKİ GÜNLÜĞÜ
+• Bulantı, kabızlık, reflü, yorgunluk ve diğer belirtileri şiddetiyle tek dokunuşla kaydet
+• Yan etkilerinin iğneden sonraki hangi günlerde yoğunlaştığını gör
+
+DOKTOR İÇİN RAPOR
+• Kilo grafiği, doz geçmişi, yan etkiler, ölçüler ve beslenme özeti tek bir PDF'te
+• Kontrole giderken telefonundan paylaş ya da yazdır
 
 PROTEİN VE SU
-• Sık yediğin besinlerle protein ekle, günlük hedefine ne kadar kaldığını gör
-• Bardak, şişe ve hızlı ekle düğmeleriyle suyunu kolayca kaydet
-• Son 7 günün protein ve su geçmişine göz at
+• Yediklerin protein hedefini renkli bloklarla doldurur; sık yediklerin tek dokunuşta
+• Bardak ve şişe düğmeleriyle suyunu kolayca kaydet; son 7 günü gör
 
 TAKVİYELER
-• Sabah, akşam ve gece için kendi takviye programını oluştur
-• Hangi gün neyi alacağını belirle, aldıklarını tek dokunuşla işaretle
-• Haftalık tabloyla düzenini takip et
+• Sabah, akşam ve gece için kendi programını kur; aldıklarını işaretle
 
-ARA HEDEFLER VE PAYLAŞIM
-• Ara hedeflere ulaştıkça rozet kazan
-• İlerlemeni şık bir görsel olarak kaydet ve paylaş
+HATIRLATICILAR
+• İğne günü, takviyeler, su, protein, haftalık tartı, kalem stoğu ve yedek hatırlatmaları
+• Bildirimden tek dokunuşla kaydet: "+250 ml", "Hepsini aldım" gibi
+
+ROZETLER VE PAYLAŞIM
+• Ara hedeflere ulaştıkça rozet kazan; ilerlemeni şık bir görselle paylaş
+
+KOYU TEMA
+• Telefonunun ayarını izler ya da Açık / Koyu olarak sen seç
 
 VERİLERİN SENİN
-• Tüm veriler yalnızca telefonunda saklanır; hesap açman gerekmez
-• Reklam yok, takip yok, veri toplama yok
-• İnternet bağlantısı olmadan çalışır
-• Verilerini Excel dosyası olarak dışa aktar, yedek dosyası alıp yeni telefonuna geri yükle
+• Hesap yok; tüm veriler yalnızca telefonunda saklanır
+• Reklam yok, takip yok, veri toplama yok; internetsiz çalışır
+• Android yedeklemesiyle yeni telefonuna taşınır; Excel'e aktar, yedek dosyası al
 
 Önemli: Hafif bir kişisel takip aracıdır; tıbbi bir cihaz değildir ve tıbbi tavsiye vermez. İlaç kullanımın, dozun ve hedeflerin konusunda her zaman doktoruna danış.
 

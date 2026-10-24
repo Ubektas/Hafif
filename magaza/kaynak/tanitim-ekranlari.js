@@ -18,6 +18,9 @@ const REKLAMYOK = svgI('<rect x="3.5" y="5.5" width="17" height="13" rx="3"/><pa
 const WIFIYOK = svgI('<path d="M5 12.5a10 10 0 0 1 3.2-2M12 9a10 10 0 0 1 7 3.5M8.5 16a5 5 0 0 1 7 0"/><circle cx="12" cy="19.5" r=".8" fill="currentColor"/><path d="M3 3l18 18"/>');
 const YEDEK = svgI('<path d="M12 3v11M7.5 9.5 12 14l4.5-4.5"/><path d="M4 15v3a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3v-3"/>');
 const ADIMI = svgI('<path d="M8.5 3.5c1.6 0 2.5 1.6 2.5 3.8S10 11 8.6 11 6 9.5 6 7.3s.9-3.8 2.5-3.8zM6.6 13h4l-.4 3a2.2 2.2 0 0 1-4.3-.3z"/><path d="M15.5 7.5c1.6 0 2.5 1.6 2.5 3.8S17 15 15.6 15 13 13.5 13 11.3s.9-3.8 2.5-3.8zM13.6 17h4l-.4 3a2.2 2.2 0 0 1-4.3-.3z"/>');
+const NABIZ = svgI('<path d="M3 12h4l2-5 4 10 2-5h6"/>');
+const RAPOR = svgI('<path d="M7 3h7l5 5v11a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/><path d="M14 3v5h5M9 17v-3M12 17v-5M15 17v-2"/>');
+const AY = svgI('<path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/>');
 const ROZET = '<svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="6"/><path d="M8.5 13.8 7 21l5-2.6L17 21l-1.5-7.2"/></svg>';
 
 // Her özelliğin rengi uygulamadaki rengiyle aynı
@@ -35,8 +38,11 @@ const EKRANLAR = [
   { ad: '02-adim', renk: 'adim', ikon: ADIMI, etiket: 'Adım sayar', baslik: ['Her adım', 'sayılır.'], alt: 'Health Connect ile adımların ve akıllı tartın kendiliğinden gelir.', ekran: '10-adimlar.png', kart: ['Bu hafta ortalama', '8.240 adım'], kartYer: 'sag', kartTop: 1690 },
   { ad: '03-igne', renk: 'igne', ikon: ikon('igne'), etiket: 'İğne takibi', baslik: ['Haftanı', 'tanı.'], alt: 'Döngünün hangi evresinde olduğunu ve sıradaki iğneni hep bil.', ekran: '02-dongu.png', kart: ['Bugünkü evre', 'Zirve · 4. gün'], kartYer: 'sol' },
   { ad: '04-rozet', renk: 'rozet', ikon: ROZET, etiket: 'Başarılar', baslik: ['Her eşik', 'bir rozet.'], alt: 'Ara hedeflere ulaştıkça rozet kazan, motivasyonun hep diri kalsın.', ekran: '04-rozetler.png', kart: ['Yeni rozet', '%5 vücut ağırlığı'], kartYer: 'sag' },
-  { ad: '05-protein-su', renk: 'su', ikon: ikon('besin'), etiket: 'Su ve protein', baslik: ['Tabağın ve', 'bardağın hazır.'], alt: 'Protein ve suyu tek dokunuşla ekle, günlük hedefini kaçırma.', ekran: '07-protein-su.png', kart: ['Bugün', '74 g · 1.750 ml'], kartYer: 'sol' },
+  { ad: '05-protein-su', renk: 'su', ikon: ikon('besin'), etiket: 'Su ve protein', baslik: ['Proteinin', 'blok blok.'], alt: 'Yediklerin hedefini renkli bloklarla doldurur; suyu tek dokunuşla ekle.', ekran: '07-protein-su.png', kart: ['Bugün', '74 g · 1.750 ml'], kartYer: 'sol' },
   { ad: '06-takviye', renk: 'takviye', ikon: ikon('takviye'), etiket: 'Takviye takibi', baslik: ['Takviyelerin', 'tek dokunuşta.'], alt: 'Sabah, akşam ve gece programını kur; aldıklarını işaretle.', ekran: '08-takviyeler.png', kart: ['Bugün alındı', '2 / 4'], kartYer: 'sag' },
+  { ad: '09-yan-etki', renk: 'igne', ikon: NABIZ, etiket: 'Yan etki günlüğü', baslik: ['Yan etkilerini', 'öngör.'], alt: 'Belirtilerini kaydet; iğneden sonraki hangi günlerde yoğunlaştığını gör.', ekran: '11-yan-etkiler.png', kart: ['En yoğun gün', 'İğneden 1 gün sonra'], kartYer: 'sag', kartTop: 1760 },
+  { ad: '10-rapor', renk: 'kilo', ikon: RAPOR, etiket: 'Ölçüler ve rapor', baslik: ['Kontrole', 'hazır git.'], alt: 'Ölçülerini kaydet; kilo, doz ve yan etkilerini tek PDF raporla doktoruna göster.', ekran: '13-olculer.png', kart: ['Bel çevresi', '−9 cm'], kartYer: 'sol' },
+  { ad: '11-karanlik', renk: 'adim', ikon: AY, etiket: 'Koyu tema', baslik: ['Gece de', 'göz yormaz.'], alt: 'Koyu tema telefonunun ayarını izler ya da istediğini sen seçersin.', ekran: '14-karanlik-ozet.png', kart: ['Görünüm', 'Sistem · Açık · Koyu'], kartYer: 'sag' },
 ];
 
 const yaziCSS = `@font-face{font-family:"Bricolage Grotesque";src:url(../../www/fonts/BricolageGrotesque-700-latin.woff2) format("woff2");font-weight:700;unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}`;
