@@ -35,9 +35,9 @@ const R = {
 
 const EKRANLAR = [
   { ad: '01-kilo', renk: 'kilo', ikon: ikon('kilo'), etiket: 'Kilo takibi', baslik: ['Her tartı', 'bir adım.'], alt: 'Verdiğin kiloyu, hızını ve hedefe kalan yolu gör; her eşikte bir rozet kazan.', ekran: '01-ozet.png', kart: ['Yeni rozet', '%5 vücut ağırlığı'], kartIkon: ROZET, kartRenk: 'rozet', kartYer: 'sag' },
-  { ad: '02-igne', renk: 'igne', ikon: ikon('igne'), etiket: 'İğne takibi · isteğe bağlı', baslik: ['Haftanı', 'tanı.'], alt: 'Döngünün evresini, sıradaki iğneni ve kaleminde kaç doz kaldığını hep bil.', ekran: '02-dongu.png', kart: ['Kalemde kalan', '2 doz'], kartYer: 'sol', kartTop: 1720 },
+  { ad: '02-igne', renk: 'igne', ikon: ikon('igne'), etiket: 'İğne takibi · isteğe bağlı', baslik: ['Haftanı', 'tanı.'], alt: 'Döngünün evresini, sıradaki iğneni ve kaleminde kaç doz kaldığını hep bil.', plus: 1, ekran: '02-dongu.png', kart: ['Kalemde kalan', '2 doz'], kartYer: 'sol', kartTop: 1720 },
   { ad: '03-yan-etki', renk: 'igne', ikon: NABIZ, etiket: 'Yan etki günlüğü', baslik: ['Yan etkilerini', 'öngör.'], alt: 'Belirtilerini kaydet; iğneden sonraki hangi günlerde yoğunlaştığını gör.', ekran: '11-yan-etkiler.png', kart: ['En yoğun gün', 'İğneden 1 gün sonra'], kartYer: 'sag', kartTop: 1760 },
-  { ad: '04-rapor', renk: 'kilo', ikon: RAPOR, etiket: 'Doktor raporu', baslik: ['Kontrole', 'hazır git.'], alt: 'Kilo, doz, yan etkiler ve vücut ölçülerin tek PDF raporda; doktoruna telefondan göster.', sayfalar: ['rapor-1.png', 'rapor-2.png'], kart: ['Bel çevresi', '−9 cm'], kartYer: 'sol', kartTop: 1640 },
+  { ad: '04-rapor', renk: 'kilo', ikon: RAPOR, etiket: 'Doktor raporu', baslik: ['Kontrole', 'hazır git.'], alt: 'Kilo, doz, yan etkiler ve vücut ölçülerin tek PDF raporda; doktoruna telefondan göster.', plus: 1, sayfalar: ['rapor-1.png', 'rapor-2.png'], kart: ['Bel çevresi', '−9 cm'], kartYer: 'sol', kartTop: 1640 },
   { ad: '05-adim', renk: 'adim', ikon: ADIMI, etiket: 'Adım sayar', baslik: ['Her adım', 'sayılır.'], alt: 'Health Connect ile adımların ve akıllı tartın kendiliğinden gelir.', ekran: '10-adimlar.png', kart: ['Bu hafta ortalama', '8.240 adım'], kartYer: 'sag', kartTop: 1690 },
   { ad: '06-protein-su', renk: 'su', ikon: ikon('besin'), etiket: 'Protein ve su', baslik: ['Protein ve su', 'hep hedefte.'], alt: 'Protein ve su takibi tek ekranda: yediklerin hedefini doldurur, suyu tek dokunuşla eklersin.', ekran: '07-protein-su.png', kart: ['Bugün', '74 g · 1.750 ml'], kartYer: 'sol' },
 ];
@@ -82,13 +82,14 @@ function sayfa(e) {
   .pdf.p1{left:70px;top:760px;transform:rotate(-4deg);z-index:2}.pdf.p2{left:330px;top:840px;transform:rotate(5deg)}
   .pdfetk{position:absolute;right:70px;top:700px;z-index:4;display:flex;align-items:center;gap:14px;background:${r.koyu};color:#fff;border-radius:99px;padding:14px 28px 14px 14px;font:600 26px Figtree;transform:rotate(3deg)}
   .pdfetk b{background:#E2643D;border-radius:99px;padding:6px 16px;font:700 24px Figtree}
+  .pl{display:inline-block;margin-left:14px;vertical-align:middle;background:#0B3B33;color:#9FF0D6;border-radius:99px;padding:12px 22px;font:700 26px Figtree;letter-spacing:.06em}
   .gz{position:absolute;left:84px;right:84px;top:720px;display:flex;flex-direction:column;gap:26px}
   .gz div{display:flex;align-items:center;gap:30px;background:#fff;border-radius:40px;padding:36px 40px;box-shadow:0 30px 60px -36px ${r.koyu}77}
   .gz i{flex:none;width:96px;height:96px;border-radius:28px;background:${r.acik};color:${r.ana};padding:22px;box-sizing:border-box}
   .gz b{display:block;font:700 46px "Bricolage Grotesque";letter-spacing:-.02em}
   .gz span{display:block;font:500 30px Figtree;color:${r.koyu}AA;margin-top:4px}
   </style></head><body><div class="s">
-  <div class="ust"><span class="etk"><i>${e.ikon}</i>${e.etiket}</span>
+  <div class="ust"><span class="etk"><i>${e.ikon}</i>${e.etiket}</span>${e.plus ? '<span class="pl">✦ Plus</span>' : ''}
     <h1>${e.baslik[0]}<br><em>${e.baslik[1]}</em></h1><p>${e.alt}</p></div>
   ${telefon}${e.gz || ''}
   </div></body></html>`;
