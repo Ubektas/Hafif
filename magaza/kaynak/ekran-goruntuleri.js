@@ -47,7 +47,10 @@ function ornekVeri() {
     const gun = n => { const d = new FD(); d.setHours(0, 0, 0, 0); d.setDate(d.getDate() - n); return d; };
     const GUNLUK = [8240, 10450, 4120, 9180, 5630, 9870, 7340, 8810, 11020, 6150, 9460, 7980, 10230, 5210];
     const SAAT = [0, 0, 0, 0, 0, 0, 0, 420, 1650, 820, 380, 290, 1240, 560, 260, 300, 120, 0, 0, 0, 0, 0, 0, 0];
-    window.Capacitor = { isNativePlatform: () => true, addListener: () => {}, Plugins: { App: {}, Health: {
+    window.Capacitor = { isNativePlatform: () => true, addListener: () => {}, Plugins: { App: {},
+      Filesystem: { writeFile: async o => { if (/\.pdf$/.test(o.path)) window.__pdf = o.data; return { uri: 'file:///' + o.path }; }, readFile: async () => { throw new Error('yok'); } },
+      Share: { share: async () => ({}) },
+      Health: {
       isAvailable: async () => ({ available: true }),
       requestAuthorization: async o => ({ readAuthorized: o.read }),
       readSamples: async () => ({ samples: [] }),
@@ -78,5 +81,11 @@ function ornekVeri() {
   await tab('kilo'); await kaydir('.mgrid'); await p.evaluate(() => scrollBy(0, -150)); await shot('olculer');
   await p.click('#gearBtn'); await p.waitForTimeout(400); await p.click('[data-theme-set="dark"]'); await tab('ozet'); await shot('karanlik-ozet');
   await tab('igne'); await kaydir('#seCard'); await shot('karanlik-yan-etkiler');
+  // Doktor raporu: örnek verilerle PDF, sayfaları PNG olarak
+  await p.click('[data-theme-set="sys"]').catch(() => {}); await p.click('#gearBtn'); await p.waitForTimeout(500); await p.click('[data-theme-set="light"]'); await p.waitForTimeout(300);
+  await p.click('#exPdf'); await p.waitForFunction(() => window.__pdf, null, { timeout: 20000 });
+  const pdf = path.join(OUT, 'rapor.pdf');
+  require('fs').writeFileSync(pdf, Buffer.from(await p.evaluate(() => window.__pdf), 'base64'));
+  require('child_process').execFileSync('pdftoppm', ['-r', '110', '-png', pdf, path.join(OUT, 'rapor')]);
   await b.close();
 })();

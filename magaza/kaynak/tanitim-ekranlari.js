@@ -34,19 +34,17 @@ const R = {
 };
 
 const EKRANLAR = [
-  { ad: '01-kilo', renk: 'kilo', ikon: ikon('kilo'), etiket: 'Kilo takibi', baslik: ['Her tartı', 'bir adım.'], alt: 'Verdiğin kiloyu, hızını ve hedefe kalan yolu tek bakışta gör.', ekran: '01-ozet.png', kart: ['Hedefe ilerleme', '%39 tamam'], kartYer: 'sag' },
-  { ad: '02-adim', renk: 'adim', ikon: ADIMI, etiket: 'Adım sayar', baslik: ['Her adım', 'sayılır.'], alt: 'Health Connect ile adımların ve akıllı tartın kendiliğinden gelir.', ekran: '10-adimlar.png', kart: ['Bu hafta ortalama', '8.240 adım'], kartYer: 'sag', kartTop: 1690 },
-  { ad: '03-igne', renk: 'igne', ikon: ikon('igne'), etiket: 'İğne takibi', baslik: ['Haftanı', 'tanı.'], alt: 'Döngünün hangi evresinde olduğunu ve sıradaki iğneni hep bil.', ekran: '02-dongu.png', kart: ['Bugünkü evre', 'Zirve · 4. gün'], kartYer: 'sol' },
-  { ad: '04-rozet', renk: 'rozet', ikon: ROZET, etiket: 'Başarılar', baslik: ['Her eşik', 'bir rozet.'], alt: 'Ara hedeflere ulaştıkça rozet kazan, motivasyonun hep diri kalsın.', ekran: '04-rozetler.png', kart: ['Yeni rozet', '%5 vücut ağırlığı'], kartYer: 'sag' },
-  { ad: '05-protein-su', renk: 'su', ikon: ikon('besin'), etiket: 'Su ve protein', baslik: ['Protein ve su', 'hep hedefte.'], alt: 'Protein ve su takibi tek ekranda: yediklerin hedefini doldurur, suyu tek dokunuşla eklersin.', ekran: '07-protein-su.png', kart: ['Bugün', '74 g · 1.750 ml'], kartYer: 'sol' },
-  { ad: '06-takviye', renk: 'takviye', ikon: ikon('takviye'), etiket: 'Takviye takibi', baslik: ['Takviyelerin', 'tek dokunuşta.'], alt: 'Sabah, akşam ve gece programını kur; aldıklarını işaretle.', ekran: '08-takviyeler.png', kart: ['Bugün alındı', '2 / 4'], kartYer: 'sag' },
-  { ad: '09-yan-etki', renk: 'igne', ikon: NABIZ, etiket: 'Yan etki günlüğü', baslik: ['Yan etkilerini', 'öngör.'], alt: 'Belirtilerini kaydet; iğneden sonraki hangi günlerde yoğunlaştığını gör.', ekran: '11-yan-etkiler.png', kart: ['En yoğun gün', 'İğneden 1 gün sonra'], kartYer: 'sag', kartTop: 1760 },
-  { ad: '10-rapor', renk: 'kilo', ikon: RAPOR, etiket: 'Ölçüler ve rapor', baslik: ['Kontrole', 'hazır git.'], alt: 'Ölçülerini kaydet; kilo, doz ve yan etkilerini tek PDF raporla doktoruna göster.', ekran: '13-olculer.png', kart: ['Bel çevresi', '−9 cm'], kartYer: 'sol' },
-  { ad: '11-karanlik', renk: 'adim', ikon: AY, etiket: 'Koyu tema', baslik: ['Gece de', 'göz yormaz.'], alt: 'Koyu tema telefonunun ayarını izler ya da istediğini sen seçersin.', ekran: '14-karanlik-ozet.png', kart: ['Görünüm', 'Sistem · Açık · Koyu'], kartYer: 'sag' },
+  { ad: '01-kilo', renk: 'kilo', ikon: ikon('kilo'), etiket: 'Kilo takibi', baslik: ['Her tartı', 'bir adım.'], alt: 'Verdiğin kiloyu, hızını ve hedefe kalan yolu gör; her eşikte bir rozet kazan.', ekran: '01-ozet.png', kart: ['Yeni rozet', '%5 vücut ağırlığı'], kartIkon: ROZET, kartRenk: 'rozet', kartYer: 'sag' },
+  { ad: '02-igne', renk: 'igne', ikon: ikon('igne'), etiket: 'İğne takibi · isteğe bağlı', baslik: ['Haftanı', 'tanı.'], alt: 'Döngünün evresini, sıradaki iğneni ve kaleminde kaç doz kaldığını hep bil.', ekran: '02-dongu.png', kart: ['Kalemde kalan', '2 doz'], kartYer: 'sol', kartTop: 1720 },
+  { ad: '03-yan-etki', renk: 'igne', ikon: NABIZ, etiket: 'Yan etki günlüğü', baslik: ['Yan etkilerini', 'öngör.'], alt: 'Belirtilerini kaydet; iğneden sonraki hangi günlerde yoğunlaştığını gör.', ekran: '11-yan-etkiler.png', kart: ['En yoğun gün', 'İğneden 1 gün sonra'], kartYer: 'sag', kartTop: 1760 },
+  { ad: '04-rapor', renk: 'kilo', ikon: RAPOR, etiket: 'Doktor raporu', baslik: ['Kontrole', 'hazır git.'], alt: 'Kilo, doz, yan etkiler ve vücut ölçülerin tek PDF raporda; doktoruna telefondan göster.', sayfalar: ['rapor-1.png', 'rapor-2.png'], kart: ['Bel çevresi', '−9 cm'], kartYer: 'sol', kartTop: 1640 },
+  { ad: '05-adim', renk: 'adim', ikon: ADIMI, etiket: 'Adım sayar', baslik: ['Her adım', 'sayılır.'], alt: 'Health Connect ile adımların ve akıllı tartın kendiliğinden gelir.', ekran: '10-adimlar.png', kart: ['Bu hafta ortalama', '8.240 adım'], kartYer: 'sag', kartTop: 1690 },
+  { ad: '06-protein-su', renk: 'su', ikon: ikon('besin'), etiket: 'Protein ve su', baslik: ['Protein ve su', 'hep hedefte.'], alt: 'Protein ve su takibi tek ekranda: yediklerin hedefini doldurur, suyu tek dokunuşla eklersin.', ekran: '07-protein-su.png', kart: ['Bugün', '74 g · 1.750 ml'], kartYer: 'sol' },
 ];
 
 const yaziCSS = `@font-face{font-family:"Bricolage Grotesque";src:url(../../www/fonts/BricolageGrotesque-700-latin.woff2) format("woff2");font-weight:700;unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}`;
 
+const kartH = (e, r) => { const k = e.kartRenk ? R[e.kartRenk] : r; return `<div class="kart ${e.kartYer}"${e.kartTop ? ` style="top:${e.kartTop}px"` : ''}><span class="ki" style="background:${k.acik};color:${k.ana}">${e.kartIkon || e.ikon}</span><div><small>${e.kart[0]}</small><b>${e.kart[1]}</b></div></div>`; };
 function sayfa(e) {
   const r = R[e.renk];
   const telefon = e.ekran ? `
@@ -54,7 +52,10 @@ function sayfa(e) {
       <div class="durum"><span>14:20</span><span class="ik"><i></i><i></i><b></b></span></div>
       <img src="../ekran/${e.ekran}">
     </div>
-    <div class="kart ${e.kartYer}"${e.kartTop ? ` style="top:${e.kartTop}px"` : ''}><span class="ki" style="background:${r.acik};color:${r.ana}">${e.ikon}</span><div><small>${e.kart[0]}</small><b>${e.kart[1]}</b></div></div>` : '';
+    ${kartH(e, r)}` : e.sayfalar ? `
+    <div class="pdf p2"><img src="../ekran/${e.sayfalar[1]}"></div><div class="pdf p1"><img src="../ekran/${e.sayfalar[0]}"></div>
+    <div class="pdfetk"><b>PDF</b>hafif-rapor.pdf · 3 sayfa</div>
+    ${kartH(e, r)}` : '';
   return `<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="../../www/fonts/fonts.css"><style>
   html,body{margin:0}
   .s{width:1080px;height:1920px;position:relative;overflow:hidden;font-family:Figtree,sans-serif;color:${r.koyu};
@@ -76,7 +77,12 @@ function sayfa(e) {
   .kart .ki{width:84px;height:84px;border-radius:24px;padding:20px;box-sizing:border-box;display:block}
   .kart small{display:block;font:600 26px Figtree;color:${r.koyu}99}
   .kart b{display:block;font:700 54px "Bricolage Grotesque";letter-spacing:-.03em;color:${r.koyu};white-space:nowrap}
-  .gz{position:absolute;left:84px;right:84px;top:760px;display:flex;flex-direction:column;gap:30px}
+  .pdf{position:absolute;width:760px;background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 50px 100px -40px ${r.koyu}AA,0 0 0 1px ${r.koyu}14}
+  .pdf img{display:block;width:100%}
+  .pdf.p1{left:70px;top:760px;transform:rotate(-4deg);z-index:2}.pdf.p2{left:330px;top:840px;transform:rotate(5deg)}
+  .pdfetk{position:absolute;right:70px;top:700px;z-index:4;display:flex;align-items:center;gap:14px;background:${r.koyu};color:#fff;border-radius:99px;padding:14px 28px 14px 14px;font:600 26px Figtree;transform:rotate(3deg)}
+  .pdfetk b{background:#E2643D;border-radius:99px;padding:6px 16px;font:700 24px Figtree}
+  .gz{position:absolute;left:84px;right:84px;top:720px;display:flex;flex-direction:column;gap:26px}
   .gz div{display:flex;align-items:center;gap:30px;background:#fff;border-radius:40px;padding:36px 40px;box-shadow:0 30px 60px -36px ${r.koyu}77}
   .gz i{flex:none;width:96px;height:96px;border-radius:28px;background:${r.acik};color:${r.ana};padding:22px;box-sizing:border-box}
   .gz b{display:block;font:700 46px "Bricolage Grotesque";letter-spacing:-.02em}
@@ -96,7 +102,8 @@ EKRANLAR.push({
     <div><i>${KISI}</i><span><b>Hesap yok</b><span>Kayıt olmadan hemen başla.</span></span></div>
     <div><i>${REKLAMYOK}</i><span><b>Reklam ve takip yok</b><span>Verilerin hiçbir sunucuya gitmez.</span></span></div>
     <div><i>${WIFIYOK}</i><span><b>İnternetsiz çalışır</b><span>Her şey telefonunda saklanır.</span></span></div>
-    <div><i>${YEDEK}</i><span><b>Yedekle, taşı</b><span>Excel'e aktar, yeni telefonuna geri yükle.</span></span></div>
+    <div><i>${YEDEK}</i><span><b>Yedekle, taşı</b><span>Android yedeğiyle yeni telefonuna geçer.</span></span></div>
+    <div><i>${AY}</i><span><b>Açık ya da koyu</b><span>Gece gözünü yormayan koyu tema.</span></span></div>
   </div>`
 });
 

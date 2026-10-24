@@ -93,7 +93,7 @@ const KILIT_CSS = `
     p.alt{margin:30px 0 0;font:500 36px/1.38 Figtree;color:${z.koyu}B3;max-width:860px}
     .tw{position:absolute;left:50%;top:760px;margin-left:-370px}</style>
     <div class="s"><div class="ust"><span class="etk"><i>${zil}</i>Hatırlatıcılar</span>
-      <h1>Hiçbir şeyi<br><em>unutma.</em></h1><p class="alt">İğne günü, takviyeler, su ve tartı; hepsi zamanında, internetsiz.</p></div>
+      <h1>Hiçbir şeyi<br><em>unutma.</em></h1><p class="alt">Takviye programın, iğne günün, su, tartı ve kalem stoğu; hepsi zamanında.</p></div>
       <div class="tw">${kilit(secili)}</div></div>`));
   await p.evaluate(() => document.fonts.ready); await p.waitForTimeout(200);
   await p.screenshot({ path: path.join(ROOT, 'magaza/tanitim/07-hatirlatici.png') });
