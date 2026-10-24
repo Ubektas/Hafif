@@ -26,6 +26,9 @@ const step = (ad, sonuc, detay) => { report.adimlar.push({ ad, sonuc, detay }); 
   const tap = async (page, sel) => { await page.waitForSelector(sel, { state: 'attached', timeout: 20000 }); await page.evaluate(s => document.querySelector(s).click(), sel); };
   const type = (page, sel, v) => page.evaluate(([s, v]) => { const e = document.querySelector(s); e.value = v; e.dispatchEvent(new Event('input', { bubbles: true })); }, [sel, v]);
   try {
+    // Emülatörde başka uygulamaların "yanıt vermiyor" pencereleri testi kapatmasın
+    await device.shell('settings put global hide_error_dialogs 1');
+    await device.shell('settings put secure anr_show_background 0');
     await device.shell(`pm clear ${PKG}`);
     await device.shell(`am start -n ${PKG}/.MainActivity`);
     for (const ms of [300, 500, 500]) { await wait(ms); await shot('acilis-ekrani'); }

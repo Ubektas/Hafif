@@ -1,0 +1,58 @@
+<!doctype html><html lang="tr"><head><meta charset="utf-8">
+<link rel="stylesheet" href="../../www/fonts/fonts.css">
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Figtree,sans-serif;background:#DCE6E1;display:flex;gap:0}
+.col{width:520px;padding:30px;display:flex;flex-direction:column;gap:14px}
+.lab{font:700 30px "Bricolage Grotesque";letter-spacing:-.02em;color:#0B3B33}.lab span{color:#0E7C66}
+.sub{font-size:15px;color:#5F726C;margin-top:-8px;line-height:1.4;min-height:42px}
+.home{position:relative;height:640px;border-radius:36px;overflow:hidden;padding:26px 22px;background:radial-gradient(90% 60% at 80% 0%,#F3C9A8 0%,transparent 60%),radial-gradient(90% 70% at 0% 100%,#9BC7D9 0%,transparent 60%),linear-gradient(170deg,#E8D9CC,#B9CFD6)}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:22px 14px}
+.app{display:flex;flex-direction:column;align-items:center;gap:6px;font-size:12px;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.3)}
+.app i{width:58px;height:58px;border-radius:18px;background:rgba(255,255,255,.55);display:block}
+.app.h i{background:linear-gradient(160deg,#126B58,#0B3B33);display:grid;place-items:center}
+.w{border-radius:28px;box-shadow:0 18px 40px -20px rgba(0,0,0,.45);overflow:hidden}
+.dark{background:radial-gradient(120% 120% at 100% 0%,#1F8A70 0%,transparent 55%),linear-gradient(160deg,#0B3B33,#062520);color:#fff}
+.light{background:rgba(255,255,255,.92);color:#0B2420;backdrop-filter:blur(10px)}
+.ey{font:700 10.5px Figtree;letter-spacing:.12em;text-transform:uppercase;opacity:.7}
+.big{font:700 34px/1 "Bricolage Grotesque";letter-spacing:-.03em}
+.mint{color:#9FF0D6}
+.bar{height:8px;border-radius:9px;background:rgba(255,255,255,.14);overflow:hidden}.light .bar{background:#EDF3F0}
+.bar i{display:block;height:100%;border-radius:9px}
+.btns{display:flex;gap:8px}.btns b{flex:1;text-align:center;border-radius:14px;padding:9px 0;font:700 13px Figtree}
+.logo{display:flex;align-items:center;gap:6px;font:700 12px Figtree;opacity:.8}
+</style></head><body>
+<script>
+const leaf='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M5 21V12a8 8 0 0 1 8-8h6v6a8 8 0 0 1-8 8H7"/><path d="M9 15l6-6"/></svg>';
+const apps=n=>Array.from({length:n},(_,i)=>`<div class="app${i===1?' h':''}"><i>${i===1?'<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#9FF0D6" stroke-width="2.2" stroke-linecap="round"><path d="M5 21V12a8 8 0 0 1 8-8h6v6a8 8 0 0 1-8 8H7"/><path d="M9 15l6-6"/></svg>':''}</i>${['Saat','Hafif','Takvim','Fotoğraf','Mesaj','Harita','Ayarlar','Müzik'][i]}</div>`).join('');
+const ring=(f,sz,st,c1,c2,inner)=>{const r=(sz-st)/2,C=2*Math.PI*r;return `<div style="position:relative;width:${sz}px;height:${sz}px;flex:none"><svg width="${sz}" height="${sz}"><circle cx="${sz/2}" cy="${sz/2}" r="${r}" fill="none" stroke="${c2}" stroke-width="${st}"/><circle cx="${sz/2}" cy="${sz/2}" r="${r}" fill="none" stroke="${c1}" stroke-width="${st}" stroke-linecap="round" stroke-dasharray="${C*f} ${C}" transform="rotate(-90 ${sz/2} ${sz/2})"/></svg><div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center">${inner}</div></div>`};
+document.body.innerHTML=`
+<div class="col"><div class="lab"><span>A</span> · Döngü (2×2)</div><div class="sub">Küçük kare. Döngü halkası, sıradaki iğneye kalan gün, evre ve vücuttaki mg.</div>
+<div class="home"><div class="grid">
+ <div class="w dark" style="grid-column:span 2;grid-row:span 2;padding:16px;display:flex;flex-direction:column;align-items:center;gap:8px">
+  <div class="logo" style="align-self:flex-start">${leaf}Hafif</div>
+  ${ring(4/7,120,11,'#9FF0D6','rgba(255,255,255,.12)',`<span class="ey" style="font-size:9.5px">yeni iğne</span><span class="big" style="font-size:32px">3 gün</span><span style="font-size:11px;opacity:.75">Paz 09:00</span>`)}
+  <div style="text-align:center"><b style="font:700 16px 'Bricolage Grotesque'">Zirve</b><span style="opacity:.7;font-size:12px"> · 5,0 mg</span></div>
+ </div>${apps(4)}</div></div></div>
+
+<div class="col"><div class="lab"><span>B</span> · Bugün (4×2)</div><div class="sub">Geniş. Solda döngü, sağda bugünkü su, protein ve adım; altta tek dokunuşla +250 ml ve Kilo gir.</div>
+<div class="home"><div class="grid">
+ <div class="w dark" style="grid-column:span 4;padding:16px 18px;display:flex;flex-direction:column;gap:12px">
+  <div style="display:flex;justify-content:space-between;align-items:center"><div class="logo">${leaf}Hafif</div><span style="font-size:12px;opacity:.7">Cuma 23 Ekim</span></div>
+  <div style="display:flex;gap:16px;align-items:center">
+   ${ring(4/7,96,9,'#9FF0D6','rgba(255,255,255,.12)',`<b style="font:700 18px 'Bricolage Grotesque'">Zirve</b><span style="font-size:10.5px;opacity:.75">iğne 3 gün</span>`)}
+   <div style="flex:1;display:flex;flex-direction:column;gap:9px">
+    <div><div style="display:flex;justify-content:space-between;font-size:12px"><span>💧 Su</span><b>1.750 / 2.500 ml</b></div><div class="bar" style="margin-top:4px"><i style="width:70%;background:#5BC0F5"></i></div></div>
+    <div><div style="display:flex;justify-content:space-between;font-size:12px"><span>🥚 Protein</span><b>74 / 110 g</b></div><div class="bar" style="margin-top:4px"><i style="width:67%;background:#E6B35A"></i></div></div>
+    <div><div style="display:flex;justify-content:space-between;font-size:12px"><span>👣 Adım</span><b>6.240 / 7.500</b></div><div class="bar" style="margin-top:4px"><i style="width:83%;background:#8C9BF0"></i></div></div>
+   </div></div>
+  <div class="btns"><b style="background:rgba(91,192,245,.2);color:#BFE6FB">+250 ml su</b><b style="background:rgba(159,240,214,.16);color:#9FF0D6">Kilo gir</b></div>
+ </div>${apps(8)}</div></div></div>
+
+<div class="col"><div class="lab"><span>C</span> · Kilo (4×1, açık)</div><div class="sub">İnce şerit. Güncel kilo, başlangıçtan bu yana değişim, hedefe ilerleme ve mini grafik. İğne kullanmayanlar için de anlamlı.</div>
+<div class="home"><div class="grid">
+ <div class="w light" style="grid-column:span 4;padding:14px 18px;display:flex;align-items:center;gap:14px">
+  <div style="display:flex;flex-direction:column;gap:2px;min-width:0"><span class="ey" style="color:#0E7C66;opacity:1">Hafif · bugün</span><span class="big" style="color:#0B3B33">88,6<small style="font:500 14px Figtree;color:#5F726C"> kg</small></span><span style="font-size:12px;color:#0E7C66;font-weight:700">−7,1 kg · hedefe %40</span></div>
+  <svg width="150" height="56" viewBox="0 0 150 56" style="flex:1"><path d="M0 8 L15 10 L30 14 L45 13 L60 20 L75 22 L90 28 L105 30 L120 37 L135 40 L150 46" fill="none" stroke="#0E7C66" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/><path d="M0 8 L15 10 L30 14 L45 13 L60 20 L75 22 L90 28 L105 30 L120 37 L135 40 L150 46 L150 56 L0 56Z" fill="#0E7C66" opacity=".12"/></svg>
+ </div>${apps(8)}</div></div></div>`;
+</script></body></html>
