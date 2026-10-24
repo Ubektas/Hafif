@@ -233,6 +233,25 @@ const step = (ad, sonuc, detay) => { report.adimlar.push({ ad, sonuc, detay }); 
     const kilit = await page.evaluate(() => !!document.querySelector('.plock [data-plus]'));
     await shot('kilitli-grafik');
     step('Plus grafikleri kilitli görünüyor', kilit);
+
+    // Ana ekran widget'ları: 10 sağlayıcı kayıtlı, veri dosyası yazılıyor, çizimler üretiliyor, widget bağlantısı çalışıyor
+    const aw = (await device.shell('dumpsys appwidget')).toString();
+    const saglayici = new Set((aw.match(/com\.ugurbektas\.hafif\/\.widget\.HafifWidgets\$\w+/g) || [])).size;
+    step('10 widget sağlayıcısı kayıtlı', saglayici === 10, saglayici + ' sağlayıcı');
+    await wait(1500);
+    const wj = (await device.shell(`run-as ${PKG} cat files/widget.json`)).toString();
+    step('Widget veri dosyası yazıldı', wj.includes('"cyc"') && wj.includes('"day"'), wj.slice(0, 100));
+    const pv = await page.evaluate(async () => { try { return (await window.Capacitor.Plugins.HafifWidget.preview()).files; } catch (e) { return 'HATA ' + e.message; } });
+    const dosyalar = String(pv).split(',').filter(Boolean);
+    for (const f of dosyalar) {
+      const b64 = (await device.shell(`run-as ${PKG} base64 files/wprev/${f}`)).toString().replace(/\s+/g, '');
+      if (b64) fs.writeFileSync(`${OUT}/widget-${f}`, Buffer.from(b64, 'base64'));
+    }
+    step('Widget çizimleri üretildi', dosyalar.length >= 20, pv);
+    const suOnce = await page.evaluate(() => { const d = JSON.parse(localStorage.getItem('doz-defteri')); return (d.daily[Object.keys(d.daily).sort().pop()] || {}).w || 0; });
+    await device.shell(`am start -W -a android.intent.action.VIEW -d "hafif://w/water/250" -n ${PKG}/.MainActivity`); await wait(2500);
+    const suSonra = await page.evaluate(() => { const d = JSON.parse(localStorage.getItem('doz-defteri')); return (d.daily[Object.keys(d.daily).sort().pop()] || {}).w || 0; });
+    step('Widget bağlantısı (+250 ml su) çalıştı', suSonra - suOnce === 250, suOnce + ' → ' + suSonra);
     await page.evaluate(() => { const b = document.querySelector('[data-chart="egri"]'); if (b) b.click(); }); await wait(500);
   } catch (e) {
     report.hatalar.push('TEST HATASI: ' + (e && e.stack || e));

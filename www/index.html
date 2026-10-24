@@ -835,6 +835,7 @@ function save(){
     }
     if(typeof remQueue==="function")remQueue();
     if(typeof fileBackup==="function")fileBackup();
+    if(typeof widgetSync==="function")widgetSync();
   },250);
 }
 async function boot(){
@@ -960,6 +961,48 @@ function openPaywall(src){
   $("#pwManage").addEventListener("click",()=>{const st=IAP();if(st&&st.manageSubscriptions)st.manageSubscriptions().catch(()=>{});else window.open("https://play.google.com/store/account/subscriptions","_blank")});
 }
 document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-plus]");if(b){e.stopPropagation();e.preventDefault();openPaywall("kilit")}},true);
+/* ---------- Android ana ekran widget'ları: veri files/widget.json'a yazılır, widget'lar yerel olarak çizilir ---------- */
+const WGP=()=>NATIVE()&&window.Capacitor.Plugins&&window.Capacitor.Plugins.HafifWidget||null;
+let wgT=null;
+function widgetSync(){if(!WGP()||!FSP()||!loaded)return;clearTimeout(wgT);wgT=setTimeout(async()=>{try{await FSP().writeFile({path:"widget.json",directory:"DATA",encoding:"utf8",data:JSON.stringify(widgetData())});await WGP().refresh()}catch(_){}},900)}
+const FEM={yumurta:["🥚","Yumurta"],tavuk:["🍗","Tavuk"],et:["🥩","Et"],ton:["🐟","Ton"],yogurt:["🥛","Yoğurt"],peynir:["🧀","Peynir"],sut:["🥛","Süt"],shake:["🥤","Shake"],bar:["🍫","Bar"],psut:["🥛","Protein süt"],psutpro:["🥛","Pro süt"],mercimek:["🍲","Mercimek"]};
+function widgetData(){
+  const P=S.profile,now=Date.now(),td=today(),o={v:1,gen:now,date:td,shots:SHOTS(),plusUntil:plusOwned?4102444800000:toD(plusSince()).getTime()+TRIAL_DAYS*864e5};
+  const ps=pkState();
+  if(SHOTS()&&ps.last){const I=phaseInfo(),lvAt=t=>level(t,t<=ps.now?ps.past:ps.fut),t0=now-864e5,lv=[];
+    for(let k=0;k<=240;k++)lv.push(Math.round(lvAt(t0+k*36e5)*100)/100);
+    o.cyc={t0:I.t0,tn:I.tn,days:I.days,ends:I.ends,ph:PHASES.map(x=>x.k),tip:PHASES.map(x=>x.txt.split(". ")[0].replace(/\.$/,"")+"."),lvT0:t0,lv};
+    if(ps.next)o.next={ts:shotTs(ps.next),dose:ps.next.dose||"",drug:P.drug||"",site:nextSite(),pen:P.penLeft??null}}
+  const r=dayRec(td),hs=!!(S.hc&&S.hc.on),E=hs?stepEst(stepsOn(td)):null,pg=pGoal();
+  const G={};for(const x of pItems()){const k=x[3]||"_";G[k]=G[k]||{k,n:0,g:0};G[k].n++;G[k].g+=x[2]}
+  const foods=Object.values(G).sort((a,b)=>b.g-a.g).slice(0,3).map(z=>{const f=FOODS.find(y=>y.k===z.k);const e=FEM[z.k]||["🍽️","Diğer"];return `${e[0]} ${e[1]} ${z.n>1&&f&&!f.pick?"×"+z.n:ml(z.g)+" g"}`});
+  let acc=0;const seg=pItems().map(x=>{const a=acc;acc+=x[2];return [a,acc,FCOL[x[3]]||FCOL.genel]}),pc=[];
+  for(let i=0;i<Math.max(12,Math.ceil(pg/5));i++){const m=i*5+2.5,sg=seg.find(z=>m>=z[0]&&m<z[1]);if(!sg)break;pc.push(sg[2])}
+  const wkD=[...Array(7)].map((_,i)=>addDays(td,i-6));
+  o.day={w:r.w,wg:wGoal(),p:r.p,pg,st:hs?stepsOn(td):null,sg:stepGoal(),km:E?Math.round(E.km*10)/10:0,min:E?Math.round(E.min):0,pc,foods,wk:hs?wkD.map(stepsOn):null,wkl:wkD.map(d=>DAYN[toD(d).getDay()])};
+  const w=sortedW();
+  if(w.length){const L=w[w.length-1],st=w[0].kg,g=P.goalWeight,from=addDays(L.date,-30),w30=w.filter(x=>x.date>=from),T=trendInfo();
+    o.w={cur:L.kg,change:L.kg-st,goal:g??null,pct:g!=null&&st>g?Math.max(0,Math.min(100,(st-L.kg)/(st-g)*100)):null,left:g!=null?L.kg-g:null,
+      pts:w30.map(x=>[diffDays(from,x.date),x.kg]),shots:sortedS().filter(x=>x.date>=from).map(x=>diffDays(from,x.date)),first30:w30[0].kg,d30:L.kg-w30[0].kg,perWeek:T?T.slope*7:null};
+    const M=milestones(),nx=M&&M.L.find(m=>!m.done);if(nx)o.badge={t:nx.t+(nx.u?" "+nx.u:""),left:Math.max(0,L.kg-nx.kg)}}
+  const T=sTimes(),SE_={sabah:"☀️",ogle:"🌤️",aksam:"🌆",gece:"🌙"};
+  o.supp=Array.isArray(S.supps)?[...Array(7)].map((_,i)=>{const d=addDays(td,i),t=takenOn(d);return {d,s:SLOTS_S.map(([k,n])=>{const it=dosesFor(d).filter(q=>q.k===k);return it.length?{k,n,t:T[k],e:SE_[k],names:it.map(q=>q.x.name).join(" · "),done:it.filter(q=>t[q.key]).length,of:it.length}:null}).filter(Boolean)}}):[];
+  return o;
+}
+/* widget düğmeleri hafif://w/<eylem> bağlantısıyla uygulamayı açar */
+function wLink(url){const m=/^hafif:\/\/w\/(.+)$/.exec(url||"");if(!m||$("#onb"))return;const [a,b]=m[1].split("/");
+  closePaywall();const go=t=>{tab=t;selPhase=null;ANIM=true;$("#sheetRoot").innerHTML="";render();window.scrollTo(0,0)};
+  if(a==="tab"){go(b||"ozet");return}
+  if(a==="water"){const v=+b||250,r=ensureDay(today());r.w+=v;r.log.push([Date.now(),"w",v]);save();go("besin");toast(`+${v} ml su eklendi`);return}
+  if(a==="weight"||a==="shot"){go("ozet");setTimeout(()=>openSheet(a),350);return}
+  if(a==="protein"){go("besin");setTimeout(openProteinSheet,350);return}
+  if(a==="supp"){const d=today();S.suppLog=S.suppLog||{};const t=S.suppLog[d]=S.suppLog[d]||{};dosesFor(d).filter(q=>q.k===b).forEach(q=>{t[q.key]=t[q.key]||Date.now()});save();go("takviye");toast("Takviyeler işaretlendi");return}
+  if(a==="plus"){go("ozet");setTimeout(()=>openPaywall("widget"),350)}
+}
+if(NATIVE()&&window.Capacitor.Plugins&&window.Capacitor.Plugins.App){
+  try{window.Capacitor.addListener("App","appUrlOpen",e=>wLink(e&&e.url))}catch(_){}
+  try{window.Capacitor.Plugins.App.getLaunchUrl().then(r=>{const u=r&&r.url;let seen=null;try{seen=sessionStorage.getItem("hf-lu")}catch(_){}if(u&&seen!==u){try{sessionStorage.setItem("hf-lu",u)}catch(_){}setTimeout(()=>wLink(u),1200)}}).catch(()=>{})}catch(_){}
+}
 const plock=(html,title,sub)=>`<div class="plock"><div class="pbl" aria-hidden="true">${html}</div><div class="pov"><b>${title}</b><span>${sub}</span><button type="button" class="plusbtn" data-plus>✦ Plus'a geç</button></div></div>`;
 function plusCard(){
   if(NATIVE()&&!plusOwned&&trialLeft()>0) return `<button type="button" class="plcard" data-plus><span class="st">✦</span><span style="flex:1"><b>Plus özellikleri açık · ${trialLeft()} gün</b><small>İlk ${TRIAL_DAYS} gün her şey ücretsiz. Sonrası için abonelik seçeneklerine bak.</small></span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg></button>`;
@@ -995,7 +1038,7 @@ function render(){
   if(!$("#mdefs").firstChild)$("#mdefs").innerHTML=medalDefs();
   const mt=$("#mtrack"),nn=mt&&mt.querySelector(".next");if(nn)mt.scrollLeft=nn.offsetLeft-mt.clientWidth/2+nn.clientWidth/2;
   if(tab==="ozet")setTimeout(checkCelebrate,450);
-  maybeOnboard(); trialEndCheck();
+  maybeOnboard(); trialEndCheck(); if(typeof widgetSync==="function")widgetSync();
   if(loaded&&HP())syncHealth();
   if(loaded&&LN()&&!remT)remQueue();
   if(tab==="adim"&&HP()&&!HOURS)syncHealth(true);

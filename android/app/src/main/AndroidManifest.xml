@@ -21,6 +21,47 @@
             </intent-filter>
         </activity>
 
+        <!-- Ana ekran widget'ları (Hafif Plus) -->
+        <receiver android:name=".widget.HafifWidgets$Dongu" android:exported="false" android:label="@string/w_name_1">
+            <intent-filter><action android:name="android.appwidget.action.APPWIDGET_UPDATE" /></intent-filter>
+            <meta-data android:name="android.appwidget.provider" android:resource="@xml/hafif_widget_1" />
+        </receiver>
+        <receiver android:name=".widget.HafifWidgets$Siradaki" android:exported="false" android:label="@string/w_name_2">
+            <intent-filter><action android:name="android.appwidget.action.APPWIDGET_UPDATE" /></intent-filter>
+            <meta-data android:name="android.appwidget.provider" android:resource="@xml/hafif_widget_2" />
+        </receiver>
+        <receiver android:name=".widget.HafifWidgets$Bugun" android:exported="false" android:label="@string/w_name_3">
+            <intent-filter><action android:name="android.appwidget.action.APPWIDGET_UPDATE" /></intent-filter>
+            <meta-data android:name="android.appwidget.provider" android:resource="@xml/hafif_widget_3" />
+        </receiver>
+        <receiver android:name=".widget.HafifWidgets$Kilo" android:exported="false" android:label="@string/w_name_4">
+            <intent-filter><action android:name="android.appwidget.action.APPWIDGET_UPDATE" /></intent-filter>
+            <meta-data android:name="android.appwidget.provider" android:resource="@xml/hafif_widget_4" />
+        </receiver>
+        <receiver android:name=".widget.HafifWidgets$Grafik" android:exported="false" android:label="@string/w_name_5">
+            <intent-filter><action android:name="android.appwidget.action.APPWIDGET_UPDATE" /></intent-filter>
+            <meta-data android:name="android.appwidget.provider" android:resource="@xml/hafif_widget_5" />
+        </receiver>
+        <receiver android:name=".widget.HafifWidgets$Hedef" android:exported="false" android:label="@string/w_name_6">
+            <intent-filter><action android:name="android.appwidget.action.APPWIDGET_UPDATE" /></intent-filter>
+            <meta-data android:name="android.appwidget.provider" android:resource="@xml/hafif_widget_6" />
+        </receiver>
+        <receiver android:name=".widget.HafifWidgets$Su" android:exported="false" android:label="@string/w_name_7">
+            <intent-filter><action android:name="android.appwidget.action.APPWIDGET_UPDATE" /></intent-filter>
+            <meta-data android:name="android.appwidget.provider" android:resource="@xml/hafif_widget_7" />
+        </receiver>
+        <receiver android:name=".widget.HafifWidgets$Protein" android:exported="false" android:label="@string/w_name_8">
+            <intent-filter><action android:name="android.appwidget.action.APPWIDGET_UPDATE" /></intent-filter>
+            <meta-data android:name="android.appwidget.provider" android:resource="@xml/hafif_widget_8" />
+        </receiver>
+        <receiver android:name=".widget.HafifWidgets$Adim" android:exported="false" android:label="@string/w_name_9">
+            <intent-filter><action android:name="android.appwidget.action.APPWIDGET_UPDATE" /></intent-filter>
+            <meta-data android:name="android.appwidget.provider" android:resource="@xml/hafif_widget_9" />
+        </receiver>
+        <receiver android:name=".widget.HafifWidgets$Takviye" android:exported="false" android:label="@string/w_name_10">
+            <intent-filter><action android:name="android.appwidget.action.APPWIDGET_UPDATE" /></intent-filter>
+            <meta-data android:name="android.appwidget.provider" android:resource="@xml/hafif_widget_10" />
+        </receiver>
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.fileprovider"

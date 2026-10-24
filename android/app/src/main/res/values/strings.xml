@@ -4,4 +4,24 @@
     <string name="title_activity_main">Hafif</string>
     <string name="package_name">com.ugurbektas.hafif</string>
     <string name="custom_url_scheme">com.ugurbektas.hafif</string>
+    <string name="w_name_1">Hafif · Döngü</string>
+    <string name="w_desc_1">İğne döngün, evre ve vücuttaki ilaç</string>
+    <string name="w_name_2">Hafif · Sıradaki iğne</string>
+    <string name="w_desc_2">Kaç gün kaldı, doz ve bölge</string>
+    <string name="w_name_3">Hafif · Bugün</string>
+    <string name="w_desc_3">Su, protein ve adım bir arada</string>
+    <string name="w_name_4">Hafif · Kilo</string>
+    <string name="w_desc_4">Güncel kilo ve değişim</string>
+    <string name="w_name_5">Hafif · Kilo grafiği</string>
+    <string name="w_desc_5">Son 30 günün kilo grafiği</string>
+    <string name="w_name_6">Hafif · Hedefe ilerleme</string>
+    <string name="w_desc_6">Hedefe yüzde ve sıradaki rozet</string>
+    <string name="w_name_7">Hafif · Su</string>
+    <string name="w_desc_7">Bardak ve tek dokunuşla su</string>
+    <string name="w_name_8">Hafif · Protein</string>
+    <string name="w_desc_8">Protein blokları</string>
+    <string name="w_name_9">Hafif · Adım</string>
+    <string name="w_desc_9">Günlük adım halkası</string>
+    <string name="w_name_10">Hafif · Takviyeler</string>
+    <string name="w_desc_10">Sıradaki vakit ve hepsini aldım</string>
 </resources>
