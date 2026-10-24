@@ -194,18 +194,20 @@ final class WidgetRenderer {
         }
         logo(14, 24, "Hafif", WHITE);
         textR(WidgetData.todayLong(d.now), W - 14, 24, 11.5f, fm, 0xB3FFFFFF);
-        float y = 46, mw = W - 28;
-        y = barRow("💧 Su", WidgetData.n0(w) + " / " + WidgetData.n0(wg) + " ml", w / wg, WATER, y, mw);
-        y = barRow("🥚 Protein", WidgetData.n0(pr) + " / " + WidgetData.n0(pg) + " g", pr / pg, PROT, y, mw);
-        if (hs && H >= 170) barRow("👣 Adım", WidgetData.n0(st) + " / " + WidgetData.n0(sg), st / sg, STEP, y, mw);
+        // üç satır düğmelerin üstüne sığsın diye aralık daralır
+        boolean three = hs && H >= 170;
+        float y = three ? 38 : 46, step = three ? 28 : 33, mw = W - 28;
+        y = barRow("💧 Su", WidgetData.n0(w) + " / " + WidgetData.n0(wg) + " ml", w / wg, WATER, y, mw, step);
+        y = barRow("🥚 Protein", WidgetData.n0(pr) + " / " + WidgetData.n0(pg) + " g", pr / pg, PROT, y, mw, step);
+        if (three) barRow("👣 Adım", WidgetData.n0(st) + " / " + WidgetData.n0(sg), st / sg, STEP, y, mw, step);
         buttons(r, new String[][]{{"+250 ml su", "water/250"}, {"Kilo gir", "weight"}}, new int[]{0x335BC0F5, 0x299FF0D6}, new int[]{0xFFBFE6FB, MINT});
     }
 
-    private float barRow(String a, String b, double f, int col, float y, float mw) {
+    private float barRow(String a, String b, double f, int col, float y, float mw, float step) {
         text(a, 14, y + 10, 11.5f, fm, WHITE, mw / 2);
         textR(b, W - 14, y + 10, 11.5f, fb, WHITE);
-        bar(14, y + 16, mw, 7, (float) f, col, 0x24FFFFFF);
-        return y + 33;
+        bar(14, y + 15, mw, 6, (float) f, col, 0x24FFFFFF);
+        return y + step;
     }
 
     private void kilo(WidgetData d, Result r, boolean wide) {
