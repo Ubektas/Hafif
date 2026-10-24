@@ -73,7 +73,7 @@ const HIKAYELER = [
         <span style="padding-right:${pl ? 50 : 0}px"><b style="display:block;font:700 30px/1.15 Outfit">${b}</b><span style="display:block;font:500 24px/1.3 Figtree;opacity:.65;margin-top:4px">${s}</span></span>
         ${pl ? '<em style="position:absolute;top:12px;right:16px;font:700 17px Figtree;font-style:normal;letter-spacing:.06em;color:#3552B0">✦ PLUS</em>' : ''}</div>`).join('')}
     </div>
-    <div style="position:absolute;left:60px;right:60px;top:1640px;text-align:center;font:600 28px Figtree;opacity:.65">✦ Plus özellikleri ilk 14 gün ücretsiz</div>` },
+    <div style="position:absolute;left:60px;right:60px;top:1640px;text-align:center;font:600 28px Figtree;opacity:.65">✦ Plus özellikleri ilk 7 gün ücretsiz</div>` },
   { ad: 'hikaye-3-soru', sinif: 'koyu', html: `${marka}
     <div style="position:absolute;left:80px;right:80px;top:380px"><h1 style="font-size:100px">Kilo verirken<br>en çok neyi<br><em>unutuyorsun?</em></h1>
       <p>Anket çıkartmasıyla cevapla, sonraki gönderiyi senin cevabına göre hazırlayalım.</p></div>

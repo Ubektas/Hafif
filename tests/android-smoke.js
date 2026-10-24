@@ -207,7 +207,7 @@ const step = (ad, sonuc, detay) => { report.adimlar.push({ ad, sonuc, detay }); 
     const msg2 = await page.textContent('#dataMsg');
     step('Excel dosyası hata mesajı yok', !msg2, msg2);
 
-    // Hafif Plus: ilk 14 gün açık → rapor paylaşılır
+    // Hafif Plus: ilk 7 gün açık → rapor paylaşılır
     const iap = await page.evaluate(() => !!(window.CdvPurchase && window.CdvPurchase.store));
     step('Google Play faturalandırma eklentisi yüklendi', iap);
     await tap(page, '#exPdf'); await wait(5000);
@@ -215,7 +215,7 @@ const step = (ad, sonuc, detay) => { report.adimlar.push({ ad, sonuc, detay }); 
     const pencere3 = (await device.shell('dumpsys window | grep mCurrentFocus')).toString();
     step('Ücretsiz dönemde doktor raporu (PDF) → paylaş penceresi', !/hafif\/.*MainActivity/.test(pencere3), pencere3.trim());
     await device.shell('input keyevent 4'); await wait(1000);
-    // 14 gün geçmiş gibi: Plus alanları kilitlenir, dönem bitince ödeme ekranı bir kez açılır
+    // 7 gün geçmiş gibi: Plus alanları kilitlenir, dönem bitince ödeme ekranı bir kez açılır
     await wait(1000);
     await page.evaluate(() => { const S = JSON.parse(localStorage.getItem('doz-defteri')); S.profile.since = '2020-01-01'; delete S.profile.trialEndSeen; localStorage.setItem('doz-defteri', JSON.stringify(S)); });
     await page.reload(); await page.waitForSelector('#view'); await wait(3500);

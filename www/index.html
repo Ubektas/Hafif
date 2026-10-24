@@ -904,8 +904,8 @@ const PLUS_ID="hafif_plus";
 const PLANS=[{k:"aylik",n:"Aylık",p:"99,99 ₺",m:"/ ay",sub:"her ay yenilenir",mo:1},{k:"uc-aylik",n:"3 aylık",p:"229,99 ₺",m:"76,66 ₺ / ay",sub:"%23 tasarruf",mo:3},{k:"yillik",n:"Yıllık",p:"499,99 ₺",m:"41,67 ₺ / ay",sub:"%58 tasarruf",mo:12,best:true}];
 const NATIVE=()=>!!(window.Capacitor&&window.Capacitor.isNativePlatform&&window.Capacitor.isNativePlatform());
 let plusOwned=(()=>{try{return localStorage.getItem("hf-plus")==="1"}catch(e){return false}})();
-/* ilk 14 gün Plus özellikleri herkese açık (ödeme bilgisi istenmez) */
-const TRIAL_DAYS=14;
+/* ilk 7 gün Plus özellikleri herkese açık (ödeme bilgisi istenmez) */
+const TRIAL_DAYS=7;
 function plusSince(){const P=S.profile;if(!P.since)P.since=P.disclaimer||today();return P.since}
 const trialLeft=()=>Math.max(0,TRIAL_DAYS-diffDays(plusSince(),today()));
 function PLUS(){return NATIVE()?(plusOwned||trialLeft()>0):!S.profile.pvFree}
@@ -940,7 +940,7 @@ function openPaywall(src){
   closePaywall();if(PLUS()&&NATIVE())return;iapInit();
   const d=document.createElement("div");d.id="paywall";d.setAttribute("role","dialog");d.setAttribute("aria-modal","true");d.setAttribute("aria-label","Hafif Plus");
   const c=pwCta();
-  d.innerHTML=`<div class="pwtop"><button type="button" class="pwx" id="pwX" aria-label="Kapat">✕</button><span class="pwk">✦ Hafif Plus</span><h1>Kilo vermenin<br>en hafif yolu.</h1><p>${src==="trialEnd"?"14 günlük ücretsiz Plus dönemin bitti. Vücuttaki ilaç düzeyi, tüm grafikler ve doktor raporu için devam et.":"İlaç düzeyi, tüm grafikler, doktor raporu ve yan etki analizi tek abonelikte."}</p></div>
+  d.innerHTML=`<div class="pwtop"><button type="button" class="pwx" id="pwX" aria-label="Kapat">✕</button><span class="pwk">✦ Hafif Plus</span><h1>Kilo vermenin<br>en hafif yolu.</h1><p>${src==="trialEnd"?"7 günlük ücretsiz Plus dönemin bitti. Vücuttaki ilaç düzeyi, tüm grafikler ve doktor raporu için devam et.":"İlaç düzeyi, tüm grafikler, doktor raporu ve yan etki analizi tek abonelikte."}</p></div>
     <div class="pwb">
       <div class="pwf">
         ${SHOTS()?`<div><i style="background:var(--shot-soft)">💉</i><span>Vücuttaki ilaç düzeyi<br><small>Tahmini mg, birikim ve tüm evrelerin ipuçları</small></span></div>`:""}

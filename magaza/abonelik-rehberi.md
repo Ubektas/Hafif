@@ -8,7 +8,7 @@ Uygulamadaki kod hazır. Ürünü ve planları Play Console'da **tam olarak bu k
 | Temel plan 1 | `aylik`: 1 ay, otomatik yenilenen, **99,99 ₺** |
 | Temel plan 2 | `uc-aylik`: 3 ay, otomatik yenilenen, **229,99 ₺** |
 | Temel plan 3 | `yillik`: 1 yıl, otomatik yenilenen, **499,99 ₺** |
-| (İsteğe bağlı) Deneme teklifi | `yillik` planına teklif: `deneme`, 7 gün ücretsiz, uygunluk: "Yeni müşteri kazanımı" |
+| (İsteğe bağlı, şimdilik açma) Deneme teklifi | `yillik` planına teklif: `deneme`, 7 gün ücretsiz; uygulama zaten ilk 7 günü ücretsiz veriyor (bkz. 3. adım) |
 
 ## 0. Önce
 1. **Ödeme profili:** Play Console → Ayarlar → Ödeme profili. Banka hesabı (IBAN) ve vergi bilgileri girilmeden ücretli ürün açılamaz.
@@ -36,6 +36,8 @@ Aboneliğin içinde → **Temel plan ekle** (üç kez)
 - Her planı kaydettikten sonra **Etkinleştir**'e bas.
 
 ## 3. (İsteğe bağlı) 7 gün ücretsiz deneme
+> **Şimdilik açma.** Uygulama zaten her yeni kullanıcıya ilk **7 gün** Plus'ı ödeme bilgisi istemeden açıyor. Play'deki deneme teklifi bunun üstüne ikinci bir ücretsiz hafta verir. İleride uygulama içi ücretsiz dönemi kaldırırsan bu teklifi kullanırsın.
+
 `yillik` temel planı → **Teklif ekle**
 - Teklif kimliği: `deneme`
 - Uygunluk: **Yeni müşteri kazanımı** ("Bu aboneliği hiç almamış kullanıcılar")
