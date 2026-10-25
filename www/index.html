@@ -71,7 +71,29 @@ header.top{display:flex;align-items:flex-end;justify-content:space-between;gap:1
 .tile .v{font-family:var(--f-display);font-weight:700;font-size:24px;letter-spacing:-.03em}
 .tile .v small{font-size:13px;font-weight:500;color:var(--muted);margin-left:3px;letter-spacing:0}
 .tile .s{font-size:12px;color:var(--muted)}
-.sync{font-size:12px;color:var(--muted)}@media (max-width:340px){.sync{display:none}}
+.sync{font-size:12px;color:var(--muted)}
+.coach{position:relative;overflow:hidden;--c:var(--accent);--cs:var(--accent-soft);padding-left:24px}
+.coach::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--c)}
+.cc-shot{--c:var(--shot);--cs:var(--shot-soft)}.cc-water{--c:var(--water);--cs:var(--water-soft)}.cc-protein{--c:var(--protein);--cs:var(--protein-soft)}
+.cc-warn{--c:var(--warnfg);--cs:var(--warnbg)}.cc-bad{--c:var(--bad);--cs:rgba(208,69,69,.1)}
+.coach-top{display:flex;align-items:center;gap:8px;font:700 11px var(--f-body);letter-spacing:.08em;text-transform:uppercase;color:var(--c)}
+.coach-top svg{width:17px;height:17px;flex:none}
+.coach-x{margin-left:auto;border:0;background:transparent;color:var(--muted);font-size:22px;line-height:1;padding:0 2px;cursor:pointer;margin-top:-4px}
+.coach h3{margin:8px 0 0;font:700 19px/1.2 var(--f-display);letter-spacing:-.01em;color:var(--head)}
+.coach p{margin:6px 0 0;font-size:14px;line-height:1.45;color:var(--muted)}.coach p b{color:var(--fg)}.coach p b.good{color:var(--good)}
+.coach ul{margin:8px 0 0;padding:0;list-style:none}.coach li{position:relative;padding-left:16px;font-size:14px;line-height:1.45;color:var(--muted);margin-top:4px}
+.coach li::before{content:"";position:absolute;left:2px;top:8px;width:6px;height:6px;border-radius:50%;background:var(--c)}
+.coach-ch{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.coach-ch button{display:flex;align-items:center;gap:6px;border:1.5px solid var(--cs);background:transparent;color:var(--fg);border-radius:12px;padding:7px 10px;font:600 13px var(--f-body);cursor:pointer}
+.coach-ch b{color:var(--c)}
+.coach-dots{display:flex;gap:5px;margin-top:12px}.coach-dots span{flex:1;text-align:center;font-size:11px;color:var(--muted)}
+.coach-dots i{display:block;height:22px;border-radius:8px;background:var(--sunk);margin-bottom:4px}.coach-dots i.ok{background:var(--c)}.coach-dots .t i{box-shadow:inset 0 0 0 2px var(--c)}
+.coach-bar{height:8px;border-radius:6px;background:var(--sunk);margin-top:12px;overflow:hidden}.coach-bar i{display:block;height:100%;background:var(--c);border-radius:6px}
+.coach-a{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.coach-a button{border:0;border-radius:12px;padding:9px 14px;font:600 14px var(--f-body);background:var(--c);color:#fff;cursor:pointer}
+.coach-a button.g{background:var(--cs);color:var(--c)}
+:root[data-hf="dark"] .coach-a button:not(.g){color:#0B1C19}
+.coach-n{font-size:12px;color:var(--muted);margin-top:10px}@media (max-width:340px){.sync{display:none}}
 section{display:flex;flex-direction:column;gap:14px}
 .card{background:radial-gradient(130% 70% at 100% 0%,rgba(14,124,102,.06) 0%,transparent 55%),var(--surface);border:1px solid rgba(11,59,51,.05);border-radius:22px;padding:18px;box-shadow:var(--shadow)}
 .hero{display:grid;grid-template-columns:1fr 1fr;gap:16px}
@@ -1051,10 +1073,141 @@ function render(){
 function vOzet(){
   return vOzetMain();
 }
+/* ---------- Hafif Koç: kayıtlara bakıp o an için tek bir kart seçer. Her şey cihazda hesaplanır.
+   Kural: emin değilse susar (asgari veri eşikleri), suçlamaz, günde en fazla 2 kart; güvenlik kartı hep önce gelir. ---------- */
+const COACH_CD={hizli:7,donus:2};
+const sevDay=d=>{const r=seOn(d);return SE.filter(([k])=>(r[k]||0)>=3).map(([k,n])=>n)};
+function lastActivity(){
+  let m=null;const up=d=>{if(d&&(!m||d>m))m=d};
+  S.weights.forEach(x=>up(x.date));S.shots.forEach(x=>up(x.date));
+  for(const [d,r] of Object.entries(S.daily||{}))if((r.p||0)>0||(r.w||0)>0)up(d);
+  for(const [d,r] of Object.entries(S.sides||{}))if(Object.values(r).some(v=>v>0))up(d);
+  for(const [d,r] of Object.entries(S.suppLog||{}))if(Object.keys(r).length)up(d);
+  (S.meas||[]).forEach(x=>up(x.date));
+  return m;
+}
+function nauseaPattern(){
+  // iğneden sonraki her gün için ortalama bulantı; en az 3 farklı döngüde kayıt yoksa örüntü yok sayılır
+  const iv=S.profile.intervalDays||7,sum=Array(iv).fill(0),cnt=Array(iv).fill(0),cyc=new Set();
+  for(const [d,r] of Object.entries(S.sides||{})){const n=shotDayOf(d);if(n==null||n>=iv)continue;
+    const last=sortedS().filter(x=>x.date<=d).pop();cyc.add(last.date);sum[n]+=r.bulanti||0;cnt[n]++}
+  if(cyc.size<3)return null;
+  const avg=sum.map((v,i)=>cnt[i]>=2?v/cnt[i]:null),mx=Math.max(...avg.filter(v=>v!=null));
+  if(!(mx>0))return null;
+  const peak=avg.map((v,i)=>[v,i]).filter(([v])=>v!=null&&v>=mx*.6).map(([,i])=>i).slice(0,2);
+  const after=avg.findIndex((v,i)=>i>peak[peak.length-1]&&v!=null&&v<=mx*.35);
+  return {peak,after:after<0?null:after,cycles:cyc.size};
+}
+const gunAdi=n=>n===0?"iğne günü":`${n}. gün`;
+const gunlerde=a=>{const z=a.includes(0),r=a.filter(n=>n>0);const t=r.length?`iğneden sonraki ${r.join(". ve ")}. ${r.length>1?"günlerde":"günde"}`:"";return z?(t?"iğne gününde ve "+t:"iğne gününde"):t};
+function coachCards(){
+  const td=today(),P=S.profile,hr=new Date().getHours(),out=[];
+  const w=sortedW(),T=trendInfo(),L=w[w.length-1];
+  const bmiOk=!(P.heightCm&&P.goalWeight!=null&&P.goalWeight/((P.heightCm/100)**2)<18.5);
+  // 1) güvenlik: iki gün üst üste şiddetli yan etki
+  const s0=sevDay(td),s1=sevDay(addDays(td,-1)),s2=sevDay(addDays(td,-2));
+  const sev=s0.length&&s1.length?[...new Set([...s0,...s1])]:s1.length&&s2.length?[...new Set([...s1,...s2])]:null;
+  if(sev)out.push({id:"guvenlik",c:"bad",ic:"uyari",k:"Önemli",t:"Doktoruna danışmanın zamanı.",
+    b:`2 gündür şiddetli ${esc(sev.map(x=>x.toLocaleLowerCase("tr-TR")).join(", "))} kaydettin. Bu, beklenen yan etkilerin ötesinde olabilir. Kayıtlarını doktoruna göstermen işini kolaylaştırır.`,
+    a:[["Kayıtlarımı gör","go:igne"]],n:"Koç teşhis koymaz; yalnızca kayıtlarına bakarak yönlendirir.",safe:1});
+  // 2) çok hızlı kayıp: son 14–21 günde haftada vücut ağırlığının %1,5'inden fazla
+  let hizli=false;
+  const w21=w.filter(x=>x.date>=addDays(td,-21));
+  if(w21.length>=4){const f=w21[0],l=w21[w21.length-1],sp=diffDays(f.date,l.date);
+    if(sp>=14){const pw=(f.kg-l.kg)/f.kg/sp*7*100;if(pw>1.5){hizli=true;
+      out.push({id:"hizli",c:"warn",ic:"uyari",k:"Hız",t:"Çok hızlı gidiyorsun.",
+        b:`Son ${sp} günde ${kg(f.kg-l.kg)} kg verdin; haftada vücut ağırlığının yaklaşık %${p1c(pw)}'i. Bu hız genelde önerilenden fazla. Doktoruna söylemen ve proteini aksatmaman iyi olur.`,
+        a:[["Protein & su","go:besin"]]})}}}
+  // 3) dönüş: 3+ gündür hiç kayıt yok
+  const la=lastActivity(),gap=la?diffDays(la,td):null;
+  if(gap!=null&&gap>=3)out.push({id:"donus",c:"accent",ic:"yaprak",k:"Hoş geldin",t:"Kaldığın yerden devam.",
+    b:`${gap} gündür kayıt yok, sorun değil. Aradaki günleri doldurmaya çalışma; bugün tek bir tartı girmen yeterli, eğri kendini toparlar.`,a:[["Kilo gir","open:weight"]]});
+  // 4) iğne günü: yarın / bugün / gecikti
+  const ls=SHOTS()?sortedS().pop():null;
+  if(ls){const iv=P.intervalDays||7,nd=addDays(ls.date,iv),left=diffDays(td,nd),site=nextSite(),pen=P.penLeft;
+    const penTxt=pen==null?"":pen<=0?" Kaleminde doz kalmadı; yeni kalem gerekiyor.":pen===1?" Kaleminde son doz kaldı; sonraki iğne için yeni kalem al.":` Kaleminde ${pen} doz var.`;
+    if(left===1)out.push({id:"yarin",c:"shot",ic:"kalem",k:"Yarın iğne günü",t:`Yarın ${shotTime(ls)} · ${site}`,
+      b:`${ls.site?`Son iğne: ${esc(ls.site)}. Bölgeyi`:"Bölgeyi her seferinde"} değiştirmek ciltte iz kalmasını önler.${penTxt}`,a:[["İğneler","go:igne"]]});
+    else if(left===0)out.push({id:"bugun",c:"shot",ic:"kalem",k:"Bugün iğne günü",t:`Saat ${shotTime(ls)} · ${site}`,
+      b:`Yaptıktan sonra kaydetmeyi unutma; döngün ve hatırlatıcıların buna göre ayarlanır.${penTxt}`,a:[["İğneyi kaydet","open:shot"]]});
+    else if(left<0&&left>=-3)out.push({id:"gecikti",c:"shot",ic:"kalem",k:"İğne",t:`İğnen ${-left} gün gecikmiş görünüyor.`,
+      b:`Yaptıysan kaydetmeyi unutmuş olabilirsin. Yapmadıysan ne yapacağını doktoruna ya da eczacına sor.`,a:[["İğneyi kaydet","open:shot"]]})}
+  // 5) bulantı: bugün kaydedildiyse, kişisel örüntüyle
+  if(SHOTS()&&S.shots.length&&(seOn(td).bulanti||0)>=1&&!sev){const n=shotDayOf(td),ph=phaseOfDay(n),NP=nauseaPattern();
+    const early=["Emilim","Yükseliş","Zirve"].includes(ph);
+    const kisi=NP?`Son ${NP.cycles} döngünde bulantı en çok ${gunlerde(NP.peak)} olmuş${NP.after!=null?`, ${NP.after}. günden itibaren hafiflemiş`:""}. `:"";
+    out.push({id:"bulanti",c:"shot",ic:"nabiz",k:`${ph} · ${gunAdi(n)}`,t:early?"Bu evrede bulantı beklenen bir şey.":"Bulantı mı? Küçük ve sık ye.",
+      b:`${kisi}Bugün midene yük bindirme.`,l:["Kraker, pirinç ya da muz gibi yumuşak bir şey","Suyu tek seferde değil, yudum yudum"],a:[["Yan etkilerimi gör","go:igne"]]})}
+  // 6) tartı yükseldi ama gidiş aşağı (en az 6 tartı, 14 gün)
+  if(!hizli&&bmiOk&&w.length>=6&&diffDays(w[0].date,L.date)>=14&&L.date===td&&T&&T.slope*7<=-0.1){
+    const prev=w[w.length-2],d=L.kg-prev.kg;
+    if(d>2.5&&prev.date>=addDays(td,-7))out.push({id:"tarti",c:"warn",ic:"grafik",k:"Tartı",t:`Bugünkü tartı ${kg(d)} kg fazla.`,
+      b:`Bir önceki tartından bu kadar fark genelde yazım hatasından olur. Doğruysa sorun yok; günlük oynamalar haftalık gidişi bozmaz.`,a:[["Düzelt",`edit:${L.id}`],["Doğru","x"]]});
+    else if(d>=0.3&&prev.date<td)out.push({id:"tarti",c:"warn",ic:"grafik",k:"Tartı",t:`+${kg(d)} kg mı? Panik yok.`,
+      b:`Günlük tartı su, tuz ve sindirimle 1–2 kg oynayabilir. Haftalık gidişin hâlâ <b class="good">haftada ${kg(T.slope*7).replace("-","−")} kg</b>.`,a:[["Eğrime bak","go:kilo"]]})}
+  // 7) eşiğe yaklaşma
+  if(!hizli&&bmiOk&&T&&T.slope<-0.01){const M=milestones(),nx=M&&M.L.find(m=>!m.done);
+    if(nx){const left=M.cur-nx.kg;if(left>0&&left<=0.6){
+      const ad=nx.goal?"Hedefine":nx.u==="kg"?`${nx.t} kg'ın altına`:`${nx.t} eşiğine`;
+      const eta=nx.eta&&diffDays(td,nx.eta)<=14&&diffDays(td,nx.eta)>=1?` Bu hızla <b>${toD(nx.eta).toLocaleDateString("tr-TR",{weekday:"long"})}</b> civarı.`:"";
+      out.push({id:"esik",c:"accent",ic:"rozet",k:"Rozet",t:`${ad} ${kg(left)} kg kaldı.`,
+        b:`${eta.trim()} Başladığından beri ${kg(M.start-M.cur)} kg verdin.`.trim(),bar:Math.max(0,Math.min(1,(M.start-M.cur)/(M.start-nx.kg)))})}}}
+  // 8) protein geride (16:00 sonrası)
+  const pg=pGoal(),r=dayRec(td),rem=pg-(r.p||0);
+  if(hr>=16&&rem>=15&&(r.p||0)<pg*.75){
+    const use={};for(const d of Object.values(S.daily||{}))for(const x of d.log||[])if(x[1]==="p"&&x[3])use[x[3]]=(use[x[3]]||0)+1;
+    const ch=FOODS.filter(f=>f.g>=10&&f.g<=rem+10).sort((a,b)=>(use[b.k]||0)-(use[a.k]||0)||b.g-a.g).slice(0,3);
+    const hic=!(r.p>0),R=Math.round(rem);
+    out.push({id:"protein",c:"protein",ic:"yumurta",k:"Protein",t:hic?"Bugün protein kaydı yok.":hr>=20?`Günü tamamlamaya ${R} g kaldı.`:`Akşama ${R} g kaldı.${rem<=45?" Yetişir.":""}`,
+      b:hic?"Yediklerini eklemeyi unutmuş olabilirsin. Henüz yemediysen yoğun bir kaynakla başla:":rem>60?"Hepsine yetişmek zorunda değilsin; yarısı bile fark yaratır. En kolayı yoğun kaynaklar:":"İştahın azken en kolayı yoğun kaynaklar:",ch:ch.map(f=>[(FEM[f.k]||["🍽️"])[0],f.n,f.g,f.k]),a:[["Protein & su","go:besin"]]})}
+  // 9) su serisi (öğleden sonra, en az 3 gün)
+  const wg=wGoal();let st=0;for(let i=1;i<=60;i++){if((dayRec(addDays(td,-i)).w||0)>=wg)st++;else break}
+  if(st>=3&&hr>=12&&(r.w||0)<wg){let best=0,run=0;for(let i=60;i>st;i--){if((dayRec(addDays(td,-i)).w||0)>=wg){run++;best=Math.max(best,run)}else run=0}
+    out.push({id:"su",c:"water",ic:"damla",k:"Su",t:`${st} gündür su hedefindesin.`,
+      b:`Bugün de tamamlarsan ${st+1+"."} gün olacak${best>=3&&st+1>best?"; son iki ayın en uzun serisi":""}. ${ml(wg-(r.w||0))} ml kaldı.`,
+      dots:[...Array(7)].map((_,i)=>{const d=addDays(td,i-6);return [DAYN[toD(d).getDay()],(dayRec(d).w||0)>=wg,d===td]}),a:[["+250 ml","water:250"],["+500 ml","water:500"]]})}
+  return out;
+}
+function coachPick(){
+  const td=today(),C=S.coach||{},x=C.d===td?C.x||[]:[],last=C.last||{};
+  const all=coachCards();
+  const ok=all.filter(c=>c.safe||!x.includes(c.id)&&!(COACH_CD[c.id]&&last[c.id]&&last[c.id]<td&&diffDays(last[c.id],td)<COACH_CD[c.id]));
+  const safe=ok.find(c=>c.safe);if(safe)return safe;
+  return x.length>=2?null:ok[0]||null;
+}
+const COACH_IC={uyari:'<path d="M12 3l9.5 17h-19z"/><path d="M12 10v4M12 17h.01"/>',yaprak:'<path d="M20 4C11 4 5 9 5 17v3"/><path d="M20 4c0 9-5 14-13 14"/><path d="M9 14l5-5"/>',
+  kalem:'<path d="M18 3l3 3M16 5l3 3-9 9H7v-3z"/>',nabiz:'<path d="M3 12h4l2-5 4 10 2-5h6"/>',grafik:'<path d="M4 19h16"/><path d="M5 15l4-4 3 2 6-6"/>',
+  rozet:'<circle cx="12" cy="9" r="6"/><path d="M8.5 13.8 7 21l5-2.6L17 21l-1.5-7.2"/>',damla:'<path d="M12 3.5s6 6.4 6 10.5a6 6 0 0 1-12 0c0-4.1 6-10.5 6-10.5z"/>',yumurta:'<path d="M12 3.5c3.5 0 6 4.5 6 9.5a6 6 0 0 1-12 0c0-5 2.5-9.5 6-9.5z"/>'};
+function coachHtml(card){
+  const c=card||coachPick();if(!c)return "";
+  const L=S.coach&&S.coach.last||{};if(L[c.id]!==today()){S.coach=S.coach||{};S.coach.last=Object.assign({},L,{[c.id]:today()})}
+  return `<div class="card coach cc-${c.c}" data-coach="${c.id}">
+    <div class="coach-top"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${COACH_IC[c.ic]||""}</svg><span>${esc(c.k)}</span>${c.safe?"":`<button type="button" class="coach-x" data-coach-act="x" aria-label="Bugünlük kapat">×</button>`}</div>
+    <h3>${esc(c.t)}</h3>${c.b?`<p>${c.b}</p>`:""}
+    ${c.l?`<ul>${c.l.map(t=>`<li>${esc(t)}</li>`).join("")}</ul>`:""}
+    ${c.ch&&c.ch.length?`<div class="coach-ch">${c.ch.map(([e,n,g,k])=>`<button type="button" data-coach-act="prot:${k}"><span aria-hidden="true">${e}</span>${esc(n)} <b>+${g} g</b></button>`).join("")}</div>`:""}
+    ${c.dots?`<div class="coach-dots">${c.dots.map(([n,ok,t])=>`<span${t?' class="t"':""}><i${ok?' class="ok"':""}></i>${n}</span>`).join("")}</div>`:""}
+    ${c.bar!=null?`<div class="coach-bar"><i style="width:${Math.round(c.bar*100)}%"></i></div>`:""}
+    ${c.a&&c.a.length?`<div class="coach-a">${c.a.map(([t,a],i)=>`<button type="button" class="${i?"g":""}" data-coach-act="${a}">${esc(t)}</button>`).join("")}</div>`:""}
+    ${c.n?`<div class="coach-n">${esc(c.n)}</div>`:""}
+  </div>`;
+}
+/* koç simülatörü (tests/koc-simulator.js) için: veriyi verip kartları sorar, kaydetmez */
+window.__hafifKoc={set:j=>{S=j},get:()=>S,cards:()=>coachCards(),pick:()=>coachPick(),html:c=>coachHtml(c)};
+function coachAct(a,id){
+  const td=today();
+  if(a==="x"){const C=S.coach=S.coach||{};if(C.d!==td){C.d=td;C.x=[]}if(!C.x.includes(id))C.x.push(id);save();ANIM=true;render();return}
+  const [k,v]=a.split(":");
+  if(k==="open")openSheet(v);
+  else if(k==="edit")openSheet("weight",v);
+  else if(k==="go"){selPhase=null;ANIM=true;tab=v;render();window.scrollTo(0,0)}
+  else if(k==="water"){const r=ensureDay(td),amt=+v,from=r.w;r.w+=amt;r.log.push([Date.now(),"w",amt]);save();toast(from<wGoal()&&r.w>=wGoal()?"Su hedefi tamam":`+${amt} ml su`);render()}
+  else if(k==="prot"){const f=FOODS.find(x=>x.k===v);if(f){addProtein(f.g,f.k);toast(`+${f.g} g protein`);render()}}
+}
 function vOzetMain(){
   const w=sortedW(), s=sortedS(), P=S.profile;
   if(!w.length&&!s.length&&!SHOTS()){
-    return `<section><div class="card empty">
+    return `<section>${coachHtml()}<div class="card empty">
       <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5"><rect x="3" y="4" width="18" height="16" rx="4"/><path d="M8 9a4 4 0 0 1 8 0M12 9l1.5-2"/></svg>
       <h2>Takibe başla</h2>
       <p class="muted" style="margin:0;max-width:34ch">Önce bugünkü kilonu gir. Tartıların, hedefine ilerlemen ve rozetlerin burada görünecek.</p>
@@ -1066,7 +1219,7 @@ function vOzetMain(){
       <button class="btn ghost" data-go="ayar">Hedefini ayarla</button></section>`;
   }
   if(!w.length){
-    return `<section><div class="card empty">
+    return `<section>${coachHtml()}<div class="card empty">
       <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="var(--shot)" stroke-width="1.5"><path d="M14 4l6 6M17 7l-9 9-3 1 1-3 9-9M6 18l-3 3M11 8l2 2M8 11l2 2"/></svg>
       <h2>Takibe başla</h2>
       <p class="muted" style="margin:0;max-width:34ch">${s.length?"İğnen kaydedildi. Şimdi bugünkü kilonu gir; her iğne arasında kaç kilo verdiğini burada göreceksin.":"Önce bugünkü kilonu gir, sonra iğnelerini ekle. Her iğne arasında kaç kilo verdiğini burada göreceksin."}</p>
@@ -1106,7 +1259,7 @@ function vOzetMain(){
     const dKg=A.kg-B.kg, dFat=fA-fB, dLean=dKg-dFat, share=dKg>0?Math.max(0,Math.min(100,dFat/dKg*100)):null;
     comp=`<div id="compWrap">${compHtml({A,B,fA,fB,dKg,dFat,dLean,share})}</div>`;
   }
-  return `<section>
+  return `<section>${coachHtml()}
     <div id="heroWrap">${heroHtml({w,s,lost,start,latest,goal,pct,ring,perWeek,totalDays})}</div>
     ${actionsHtml()}
     ${suppMini()}
@@ -3222,6 +3375,7 @@ function toast(m){const t=document.createElement("div");t.className="toast";t.te
 function bindView(){
   const v=$("#view");
   v.querySelectorAll("[data-open]").forEach(b=>b.addEventListener("click",()=>openSheet(b.dataset.open)));
+  v.querySelectorAll("[data-coach-act]").forEach(b=>b.addEventListener("click",()=>coachAct(b.dataset.coachAct,b.closest("[data-coach]").dataset.coach)));
   v.querySelectorAll("[data-edit-w]").forEach(b=>b.addEventListener("click",()=>openSheet("weight",b.dataset.editW)));
   v.querySelectorAll("[data-edit-shot]").forEach(b=>b.addEventListener("click",()=>openSheet("shot",b.dataset.editShot)));
   v.querySelectorAll("svg[data-sid]").forEach(bindScrub);

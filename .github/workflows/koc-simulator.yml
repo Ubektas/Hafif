@@ -1,0 +1,24 @@
+name: Koç simülatörü
+on:
+  push:
+    branches: [main]
+    paths: ['www/**', 'tests/koc-simulator.js', '.github/workflows/koc-simulator.yml']
+  workflow_dispatch:
+jobs:
+  sim:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - run: npm i --no-save playwright@1.56.1 && npx playwright install --with-deps chromium
+      - name: 500 sanal kullanıcı
+        run: |
+          OUT=koc-sonuclari node tests/koc-simulator.js playwright 500 || {
+            node -e "const r=require('./koc-sonuclari/koc-rapor.json');for(const h of r.hatalar.slice(0,20))console.log('::error::'+JSON.stringify(h))"; exit 1; }
+      - uses: actions/upload-artifact@v5
+        if: always()
+        with:
+          name: koc-sonuclari
+          path: koc-sonuclari
