@@ -58,7 +58,7 @@ body.dikey h1{font-size:118px;margin-top:30px}
 body.dikey .sub{font-size:36px;margin-top:26px;max-width:900px}
 body.dikey .tel{left:250px;top:900px;width:580px;height:1172px;border-radius:84px;padding:20px}
 body.dikey .tel .scr{border-radius:66px}
-body.dikey .call{left:60px!important;top:1330px!important}
+body.dikey .call{left:60px!important;top:1330px!important}body.dikey .call.alt{top:1600px!important}
 body.dikey .gz{left:84px;right:84px;width:auto;top:860px;bottom:auto;justify-content:flex-start}
 body.dikey .center{padding:0 70px}
 body.dikey .icon{width:240px;height:240px}
@@ -103,7 +103,7 @@ const C = {
 const S = [
   { tip: 'giris', d: 3.6, r: 'koyu' },
   { d: 4.3, r: 'kilo', ic: 'kilo', et: 'Kilo takibi', h: ['Her tartı', 'bir adım.'], sub: 'Verdiğin kiloyu, hızını ve hedefe kalan yolu gör; her eşikte bir rozet kazan.', img: '01-ozet.png', call: ['Başlangıçtan bu yana', -7.2, ' kg', 1], cx: 'sol' },
-  { d: 4.3, r: 'kilo', ic: 'koc', et: 'Kişisel koç', h: ['Seni tanıyan', 'bir koç.'], sub: 'Kayıtlarına bakar, doğru anda tek bir öneri verir. Hepsi telefonunda hesaplanır.', img: '16-koc.png', call: ['Son 9 iğnene göre', 'Sana özel öneri'], cx: 'sol' },
+  { d: 4.3, r: 'kilo', ic: 'koc', et: 'Kişisel koç', h: ['Seni tanıyan', 'bir koç.'], sub: 'Kayıtlarına bakar, doğru anda tek bir öneri verir. Hepsi telefonunda hesaplanır.', img: '16-koc.png', call: ['Son 9 iğnene göre', 'Sana özel öneri'], cx: 'sol', altCall: 1 },
   { d: 4.3, r: 'igne', ic: 'igne', et: 'İğne takibi · isteğe bağlı', h: ['Haftanı', 'tanı.'], sub: 'Döngünün evresini, sıradaki iğneni ve kaleminde kaç doz kaldığını hep bil.', img: '02-dongu.png', call: ['Kalemde kalan', '2 doz'], cx: 'sol' },
   { d: 4.0, r: 'igne', ic: 'nabiz', et: 'Yan etki günlüğü', h: ['Yan etkilerini', 'öngör.'], sub: 'Belirtilerini kaydet; iğneden sonraki hangi günlerde yoğunlaştığını gör.', img: '11-yan-etkiler.png', call: ['En yoğun gün', 'İğneden 1 gün sonra'], cx: 'sol' },
   { d: 4.0, r: 'kilo', ic: 'rapor', et: 'Doktor raporu', h: ['Kontrole', 'hazır git.'], sub: 'Kilo, doz, yan etkiler ve vücut ölçülerin tek PDF raporda; doktoruna telefondan göster.', img: '13-olculer.png', call: ['Bel çevresi', -9, ' cm', 0], cx: 'sol' },
@@ -136,7 +136,7 @@ S.forEach((s, i) => {
       ${s.tip === 'gizlilik' ? `<div class="gz">${[['kisi', 'Hesap yok', 'Kayıt olmadan hemen başla.'], ['reklam', 'Reklam ve takip yok', 'Verilerin hiçbir sunucuya gitmez.'], ['wifi', 'İnternetsiz çalışır', 'Her şey telefonunda saklanır.'], ['yedek', 'Yedekle, taşı', "Excel'e aktar, yeni telefonuna yükle."]].map(([k, a, b]) => `<div><i style="background:${c.acik};color:${c.ana}">${IC[k]}</i><span><b>${a}</b><span>${b}</span></span></div>`).join('')}</div>`
       : s.tip === 'bildirim' ? `<div class="tel"><div class="scr"><div class="kilit"><div class="ks">08:00</div><div class="kt">Cuma, 23 Ekim</div><div class="ky">${BILD.map(b => `<div class="bd"><div class="bh"><img src="../ikon.png"><b>Hafif</b> · ${b[0]}</div><div class="bb">${b[1]}</div><p>${b[2]}</p><div class="ba">${b[3].map(x => `<span style="color:${b[4]}">${x}</span>`).join('')}</div></div>`).join('')}</div></div></div><div class="cam"></div></div>`
       : `<div class="tel"><div class="scr"><div class="bar"><span>14:20</span><span>●●●</span></div><img src="../../ekran/${s.img}"></div><div class="cam"></div></div>
-         <div class="call" style="left:${s.cx === 'sol' ? 1030 : 1500}px;top:760px;color:${c.yazi}"><span class="ci" style="background:${c.acik};color:${c.ana}">${IC[s.ic]}</span><div><small>${s.call[0]}</small><b class="cv"></b></div></div>`}`;
+         <div class="call${s.altCall ? ' alt' : ''}" style="left:${s.cx === 'sol' ? 1030 : 1500}px;top:760px;color:${c.yazi}"><span class="ci" style="background:${c.acik};color:${c.ana}">${IC[s.ic]}</span><div><small>${s.call[0]}</small><b class="cv"></b></div></div>`}`;
   }
   st.appendChild(el); s.el = el;
 });
