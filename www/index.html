@@ -71,7 +71,7 @@ header.top{display:flex;align-items:flex-end;justify-content:space-between;gap:1
 .tile .v{font-family:var(--f-display);font-weight:700;font-size:24px;letter-spacing:-.03em}
 .tile .v small{font-size:13px;font-weight:500;color:var(--muted);margin-left:3px;letter-spacing:0}
 .tile .s{font-size:12px;color:var(--muted)}
-.sync{font-size:12px;color:var(--muted)}
+.sync{font-size:12px;color:var(--muted)}@media (max-width:340px){.sync{display:none}}
 section{display:flex;flex-direction:column;gap:14px}
 .card{background:radial-gradient(130% 70% at 100% 0%,rgba(14,124,102,.06) 0%,transparent 55%),var(--surface);border:1px solid rgba(11,59,51,.05);border-radius:22px;padding:18px;box-shadow:var(--shadow)}
 .hero{display:grid;grid-template-columns:1fr 1fr;gap:16px}
@@ -2320,6 +2320,7 @@ function vTakviye(){
 function suppSub(x){return [x.days.length===7?"her gün":x.days.map(i=>DAYN[i]).join(", "),timesTxt(x)].filter(Boolean).join(" · ")}
 function weekTable(){
   const L=supps(),days=[1,2,3,4,5,6,0];
+  if(!L.length)return "";
   return `<div class="card"><div style="margin-bottom:10px"><h2>Haftalık program</h2><span class="muted" style="font-size:13px">Hangi gün ne alıyorsun</span></div>
     <div style="overflow-x:auto"><table class="wtab"><thead><tr><th></th>${days.map(i=>`<th class="${toD(today()).getDay()===i?"tdy":""}">${DAYN[i]}</th>`).join("")}</tr></thead><tbody>
     ${L.map(x=>`<tr><td><span class="wtn">${pill(x,22)}<span>${esc(x.name)}${slotsOf(x).length>1?` <small class="muted">×${slotsOf(x).length}</small>`:""}</span></span></td>${days.map(i=>`<td class="${toD(today()).getDay()===i?"tdy":""}">${x.days.includes(i)?`<i style="background:${x.color}"></i>`:""}</td>`).join("")}</tr>`).join("")}
