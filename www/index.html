@@ -1602,7 +1602,8 @@ function heroHtml(X){
   if(heroV==="gece"){
     const pts=w.map(p=>p.kg), lo=Math.min(...pts), hi=Math.max(...pts), d0=w[0].date, sp=Math.max(1,diffDays(d0,w[w.length-1].date));
     const X2=p=>diffDays(d0,p.date)/sp*320, Y=v=>8+(hi-v)/Math.max(.1,hi-lo)*62;
-    const line=w.map((p,i)=>(i?"L":"M")+X2(p).toFixed(1)+" "+Y(p.kg).toFixed(1)).join("");
+    // tek tartı ya da hepsi aynı gün: eğim yokmuş gibi düz çizgi (yoksa dolgu üçgen gibi eğik görünür)
+    const line=diffDays(d0,w[w.length-1].date)<1?(w.length<2||hi===lo?"M0 40L320 40":w.map((p,i)=>(i?"L":"M")+(i/(w.length-1)*320).toFixed(1)+" "+Y(p.kg).toFixed(1)).join("")):w.map((p,i)=>(i?"L":"M")+X2(p).toFixed(1)+" "+Y(p.kg).toFixed(1)).join("");
     return `<div class="card hero-gece">
       <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px">
         <div style="display:flex;flex-direction:column;gap:6px"><span class="eyebrow">${sinceTxt()} bu yana · ${totalDays} gün</span>
