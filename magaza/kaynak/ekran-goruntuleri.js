@@ -31,7 +31,8 @@ function ornekVeri() {
     profile: { onboarded: true, usesShots: true, disclaimer: gun(0), age: 42, sex: 'k', penSize: 4, penLeft: 2, drug: null, startWeight: 98.4, goalWeight: 80, heightCm: 172, intervalDays: 7, proteinGoal: 110, waterGoal: 2500, noCelebrate: true },
     weights, shots, daily, sides, meas, supps, suppTimes: { sabah: '08:00', aksam: '19:00', gece: '22:30' },
     suppLog: { [BUGUN]: { mg: t + 8.1 * 36e5, d3: t + 8.15 * 36e5 } },
-    hc: { on: true, last: t + 14.3 * 36e5, wFrom: BUGUN }
+    hc: { on: true, last: t + 14.3 * 36e5, wFrom: BUGUN },
+    coach: { d: BUGUN, x: ['-', '-'] }
   };
 }
 
@@ -88,5 +89,9 @@ function ornekVeri() {
   const pdf = path.join(OUT, 'rapor.pdf');
   require('fs').writeFileSync(pdf, Buffer.from(await p.evaluate(() => window.__pdf), 'base64'));
   require('child_process').execFileSync('pdftoppm', ['-r', '110', '-png', pdf, path.join(OUT, 'rapor')]);
+  // Koç: bugün hafif bulantı kaydı → kişisel örüntü kartı (açık tema)
+  await p.evaluate(gun => { const S = window.__hafifKoc.get(); S.coach = {}; S.sides[gun] = { bulanti: 1 }; }, BUGUN);
+  await p.evaluate(() => document.querySelector('#sheetRoot') && (document.querySelector('#sheetRoot').innerHTML = ''));
+  await tab('kilo'); await tab('ozet'); await shot('koc');
   await b.close();
 })();

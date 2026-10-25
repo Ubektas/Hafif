@@ -20,6 +20,7 @@ const YEDEK = svgI('<path d="M12 3v11M7.5 9.5 12 14l4.5-4.5"/><path d="M4 15v3a3
 const ADIMI = svgI('<path d="M8.5 3.5c1.6 0 2.5 1.6 2.5 3.8S10 11 8.6 11 6 9.5 6 7.3s.9-3.8 2.5-3.8zM6.6 13h4l-.4 3a2.2 2.2 0 0 1-4.3-.3z"/><path d="M15.5 7.5c1.6 0 2.5 1.6 2.5 3.8S17 15 15.6 15 13 13.5 13 11.3s.9-3.8 2.5-3.8zM13.6 17h4l-.4 3a2.2 2.2 0 0 1-4.3-.3z"/>');
 const NABIZ = svgI('<path d="M3 12h4l2-5 4 10 2-5h6"/>');
 const RAPOR = svgI('<path d="M7 3h7l5 5v11a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/><path d="M14 3v5h5M9 17v-3M12 17v-5M15 17v-2"/>');
+const KOC = svgI('<path d="M12 3l1.8 4.7L18.5 9.5l-4.7 1.8L12 16l-1.8-4.7L5.5 9.5l4.7-1.8z"/><path d="M18.5 15.5l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8z"/>');
 const AY = svgI('<path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/>');
 const ROZET = '<svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="6"/><path d="M8.5 13.8 7 21l5-2.6L17 21l-1.5-7.2"/></svg>';
 
@@ -35,10 +36,10 @@ const R = {
 
 const EKRANLAR = [
   { ad: '01-kilo', renk: 'kilo', ikon: ikon('kilo'), etiket: 'Kilo takibi', baslik: ['Her tartı', 'bir adım.'], alt: 'Verdiğin kiloyu, hızını ve hedefe kalan yolu gör; her eşikte bir rozet kazan.', ekran: '01-ozet.png', kart: ['Yeni rozet', '%5 vücut ağırlığı'], kartIkon: ROZET, kartRenk: 'rozet', kartYer: 'sag' },
-  { ad: '02-igne', renk: 'igne', ikon: ikon('igne'), etiket: 'İğne takibi · isteğe bağlı', baslik: ['Haftanı', 'tanı.'], alt: 'Döngünün evresini, sıradaki iğneni ve kaleminde kaç doz kaldığını hep bil.', plus: 1, ekran: '02-dongu.png', kart: ['Kalemde kalan', '2 doz'], kartYer: 'sol', kartTop: 1720 },
-  { ad: '03-yan-etki', renk: 'igne', ikon: NABIZ, etiket: 'Yan etki günlüğü', baslik: ['Yan etkilerini', 'öngör.'], alt: 'Belirtilerini kaydet; iğneden sonraki hangi günlerde yoğunlaştığını gör.', ekran: '11-yan-etkiler.png', kart: ['En yoğun gün', 'İğneden 1 gün sonra'], kartYer: 'sag', kartTop: 1760 },
-  { ad: '04-rapor', renk: 'kilo', ikon: RAPOR, etiket: 'Doktor raporu', baslik: ['Kontrole', 'hazır git.'], alt: 'Kilo, doz, yan etkiler ve vücut ölçülerin tek PDF raporda; doktoruna telefondan göster.', plus: 1, sayfalar: ['rapor-1.png', 'rapor-2.png'], kart: ['Bel çevresi', '−9 cm'], kartYer: 'sol', kartTop: 1640 },
-  { ad: '05-adim', renk: 'adim', ikon: ADIMI, etiket: 'Adım sayar', baslik: ['Her adım', 'sayılır.'], alt: 'Health Connect ile adımların ve akıllı tartın kendiliğinden gelir.', ekran: '10-adimlar.png', kart: ['Bu hafta ortalama', '8.240 adım'], kartYer: 'sag', kartTop: 1690 },
+  { ad: '02-koc', renk: 'kilo', ikon: KOC, etiket: 'Kişisel koç', baslik: ['Seni tanıyan', 'bir koç.'], alt: 'Kayıtlarına bakar, doğru anda tek bir öneri verir. Hepsi telefonunda hesaplanır; hiçbir veri dışarı çıkmaz.', ekran: '16-koc.png', kart: ['Son 9 iğnene göre', 'Sana özel öneri'], kartIkon: NABIZ, kartRenk: 'igne', kartYer: 'sag', kartTop: 1640 },
+  { ad: '03-igne', renk: 'igne', ikon: ikon('igne'), etiket: 'İğne takibi · isteğe bağlı', baslik: ['Haftanı', 'tanı.'], alt: 'Döngünün evresini, sıradaki iğneni ve kaleminde kaç doz kaldığını hep bil.', plus: 1, ekran: '02-dongu.png', kart: ['Kalemde kalan', '2 doz'], kartYer: 'sol', kartTop: 1720 },
+  { ad: '04-yan-etki', renk: 'igne', ikon: NABIZ, etiket: 'Yan etki günlüğü', baslik: ['Yan etkilerini', 'öngör.'], alt: 'Belirtilerini kaydet; iğneden sonraki hangi günlerde yoğunlaştığını gör.', ekran: '11-yan-etkiler.png', kart: ['En yoğun gün', 'İğneden 1 gün sonra'], kartYer: 'sag', kartTop: 1760 },
+  { ad: '05-rapor', renk: 'kilo', ikon: RAPOR, etiket: 'Doktor raporu', baslik: ['Kontrole', 'hazır git.'], alt: 'Kilo, doz, yan etkiler ve vücut ölçülerin tek PDF raporda; doktoruna telefondan göster.', plus: 1, sayfalar: ['rapor-1.png', 'rapor-2.png'], kart: ['Bel çevresi', '−9 cm'], kartYer: 'sol', kartTop: 1640 },
   { ad: '06-protein-su', renk: 'su', ikon: ikon('besin'), etiket: 'Protein ve su', baslik: ['Protein ve su', 'hep hedefte.'], alt: 'Protein ve su takibi tek ekranda: yediklerin hedefini doldurur, suyu tek dokunuşla eklersin.', ekran: '07-protein-su.png', kart: ['Bugün', '74 g · 1.750 ml'], kartYer: 'sol' },
 ];
 

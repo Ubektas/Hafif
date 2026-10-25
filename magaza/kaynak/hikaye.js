@@ -43,6 +43,7 @@ const marka = '<div class="marka">' + YAPRAK + 'Hafif</div>';
 const tel = (img, top, rot = 0, left = 0) => `<div class="tel" style="top:${top}px;transform:translateX(${left}px) rotate(${rot}deg)"><img src="../ekran/${img}"></div>`;
 
 const OZELLIK = [
+  [svgI('<path d="M12 3l1.8 4.7L18.5 9.5l-4.7 1.8L12 16l-1.8-4.7L5.5 9.5l4.7-1.8z"/>'), 'Kişisel koç', 'doğru anda tek öneri'],
   [I.kilo, 'Kilo takibi', 'eğri, hız ve rozetler'],
   [I.igne, 'İğne takibi', 'evre ve sıradaki iğne'],
   [I.nabiz, 'Yan etki günlüğü', 'hangi gün yoğunlaşıyor'],
@@ -56,6 +57,7 @@ const OZELLIK = [
   [I.dalga, 'İlaç seviyesi', 'vücuttaki mg, evre önerileri', 1],
   [I.grafik, 'Detaylı kilo grafikleri', 'haftalık, trend, yağ oranı', 1],
   [I.widget, 'Widget\'lar', '10 ana ekran widget\'ı', 1],
+  [I.rozet, 'Paylaşım kartları', '5 farklı tasarım'],
   [I.kilit, 'Gizli ve reklamsız', 'hesap yok, veri sende'],
 ];
 
@@ -66,14 +68,14 @@ const HIKAYELER = [
     ${tel('01-ozet.png', 820)}
     <div style="position:absolute;left:0;right:0;bottom:250px;display:flex;justify-content:center"><span style="background:#9FF0D6;color:#0B3B33;border-radius:99px;padding:22px 44px;font:700 36px Figtree;box-shadow:0 20px 50px -10px #000A">Google Play'de ücretsiz</span></div>` },
   { ad: 'hikaye-2-ozellikler', sinif: 'acik', html: `${marka}
-    <div style="position:absolute;left:70px;right:70px;top:340px"><h1 style="font-size:92px">Hepsi<br><em>tek uygulamada.</em></h1></div>
-    <div style="position:absolute;left:60px;right:60px;top:590px;display:grid;grid-template-columns:1fr 1fr;gap:16px">
+    <div style="position:absolute;left:70px;right:70px;top:320px"><h1 style="font-size:92px">Hepsi<br><em>tek uygulamada.</em></h1></div>
+    <div style="position:absolute;left:60px;right:60px;top:560px;display:grid;grid-template-columns:1fr 1fr;gap:16px">
       ${OZELLIK.map(([ic, b, s, pl]) => `<div style="background:#fff;border-radius:30px;padding:20px 22px;display:flex;gap:18px;align-items:center;box-shadow:0 22px 44px -32px #0B3B3388;position:relative">
         <i style="flex:none;width:76px;height:76px;border-radius:22px;background:${pl ? '#E8EDFA' : '#E1F3EC'};color:${pl ? '#3552B0' : '#0E7C66'};padding:17px;box-sizing:border-box;display:block">${ic}</i>
         <span style="padding-right:${pl ? 50 : 0}px"><b style="display:block;font:700 30px/1.15 Outfit">${b}</b><span style="display:block;font:500 24px/1.3 Figtree;opacity:.65;margin-top:4px">${s}</span></span>
         ${pl ? '<em style="position:absolute;top:12px;right:16px;font:700 17px Figtree;font-style:normal;letter-spacing:.06em;color:#3552B0">✦ PLUS</em>' : ''}</div>`).join('')}
-    </div>
-    <div style="position:absolute;left:60px;right:60px;top:1640px;text-align:center;font:600 28px Figtree;opacity:.65">✦ Plus özellikleri ilk 7 gün ücretsiz</div>` },
+      <div style="grid-column:1/-1;text-align:center;font:600 28px Figtree;opacity:.65;margin-top:10px">✦ Plus özellikleri ilk 7 gün ücretsiz</div>
+    </div>` },
   { ad: 'hikaye-3-soru', sinif: 'koyu', html: `${marka}
     <div style="position:absolute;left:80px;right:80px;top:380px"><h1 style="font-size:100px">Kilo verirken<br>en çok neyi<br><em>unutuyorsun?</em></h1>
       <p>Anket çıkartmasıyla cevapla, sonraki gönderiyi senin cevabına göre hazırlayalım.</p></div>

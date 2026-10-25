@@ -72,6 +72,7 @@ body.dikey .feats{flex-wrap:wrap;justify-content:center;max-width:900px}
 const DIKEY=new URLSearchParams(location.search).has('dikey');if(DIKEY){document.body.classList.add('dikey');document.documentElement.style.cssText='width:1080px;height:1920px'}
 const SVG = d => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">${d}</svg>`;
 const IC = {
+  koc: SVG('<path d="M12 3l1.8 4.7L18.5 9.5l-4.7 1.8L12 16l-1.8-4.7L5.5 9.5l4.7-1.8z"/><path d="M18.5 15.5l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8z"/>'),
   kilo: SVG('<rect x="3" y="4" width="18" height="16" rx="4"/><path d="M8 9a4 4 0 0 1 8 0M12 9l1.5-2"/>'),
   adim: SVG('<path d="M8.5 3.5c1.6 0 2.5 1.6 2.5 3.8S10 11 8.6 11 6 9.5 6 7.3s.9-3.8 2.5-3.8zM6.6 13h4l-.4 3a2.2 2.2 0 0 1-4.3-.3z"/><path d="M15.5 7.5c1.6 0 2.5 1.6 2.5 3.8S17 15 15.6 15 13 13.5 13 11.3s.9-3.8 2.5-3.8zM13.6 17h4l-.4 3a2.2 2.2 0 0 1-4.3-.3z"/>'),
   igne: SVG('<path d="M14 4l6 6M17 7l-9 9-3 1 1-3 9-9M6 18l-3 3M11 8l2 2M8 11l2 2"/>'),
@@ -102,6 +103,7 @@ const C = {
 const S = [
   { tip: 'giris', d: 3.6, r: 'koyu' },
   { d: 4.3, r: 'kilo', ic: 'kilo', et: 'Kilo takibi', h: ['Her tartı', 'bir adım.'], sub: 'Verdiğin kiloyu, hızını ve hedefe kalan yolu gör; her eşikte bir rozet kazan.', img: '01-ozet.png', call: ['Başlangıçtan bu yana', -7.2, ' kg', 1], cx: 'sol' },
+  { d: 4.3, r: 'kilo', ic: 'koc', et: 'Kişisel koç', h: ['Seni tanıyan', 'bir koç.'], sub: 'Kayıtlarına bakar, doğru anda tek bir öneri verir. Hepsi telefonunda hesaplanır.', img: '16-koc.png', call: ['Son 9 iğnene göre', 'Sana özel öneri'], cx: 'sol' },
   { d: 4.3, r: 'igne', ic: 'igne', et: 'İğne takibi · isteğe bağlı', h: ['Haftanı', 'tanı.'], sub: 'Döngünün evresini, sıradaki iğneni ve kaleminde kaç doz kaldığını hep bil.', img: '02-dongu.png', call: ['Kalemde kalan', '2 doz'], cx: 'sol' },
   { d: 4.0, r: 'igne', ic: 'nabiz', et: 'Yan etki günlüğü', h: ['Yan etkilerini', 'öngör.'], sub: 'Belirtilerini kaydet; iğneden sonraki hangi günlerde yoğunlaştığını gör.', img: '11-yan-etkiler.png', call: ['En yoğun gün', 'İğneden 1 gün sonra'], cx: 'sol' },
   { d: 4.0, r: 'kilo', ic: 'rapor', et: 'Doktor raporu', h: ['Kontrole', 'hazır git.'], sub: 'Kilo, doz, yan etkiler ve vücut ölçülerin tek PDF raporda; doktoruna telefondan göster.', img: '13-olculer.png', call: ['Bel çevresi', -9, ' cm', 0], cx: 'sol' },
