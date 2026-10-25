@@ -350,7 +350,7 @@ input[type=range].pr::-moz-range-thumb{width:22px;height:22px;border-radius:50%;
 .gmeter{flex:none;display:flex;align-items:stretch;gap:10px;height:104px;margin-top:2px}
 .gm-txt{display:flex;flex-direction:column;align-items:flex-end;justify-content:flex-end;gap:1px;text-align:right}
 .gm-txt span{font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:rgba(255,255,255,.55)}
-.gm-txt b{font:700 28px var(--f-display);letter-spacing:-.03em;color:#fff;line-height:1}
+.gm-txt b{font:700 28px var(--f-display);letter-spacing:-.03em;color:#fff;line-height:1}.gm-txt b small{font-size:17px;letter-spacing:0;opacity:.8}
 .gm-txt em{font-style:normal;font-size:11px;color:#9FF0D6;margin-top:3px}
 .gm-bar{position:relative;width:7px;border-radius:8px;background:rgba(255,255,255,.12);overflow:hidden}
 .gm-bar::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;background:rgba(255,255,255,.35)}
@@ -800,6 +800,7 @@ nav.tabs .in{display:grid;grid-template-columns:repeat(5,1fr);width:100%;max-wid
 
 <script>
 (function(){
+document.documentElement.lang="tr"; // büyük harflerde İ doğru çıksın (TAKVİYELER, HEDEFİN)
 const SITES=["Karın sol","Karın sağ","Uyluk sol","Uyluk sağ","Kol sol","Kol sağ"];
 const DEFAULT={profile:{drug:"Mounjaro",startWeight:null,goalWeight:null,heightCm:null,intervalDays:7},weights:[],shots:[]};
 let S=JSON.parse(JSON.stringify(DEFAULT));
@@ -840,6 +841,8 @@ const addDays=(s,n)=>{const d=toD(s);d.setDate(d.getDate()+n);return d.getFullYe
 const diffDays=(a,b)=>Math.round((toD(b)-toD(a))/864e5);
 const fmtD=s=>toD(s).toLocaleDateString("tr-TR",{day:"numeric",month:"short",weekday:"short"});
 const fmtShort=s=>toD(s).toLocaleDateString("tr-TR",{day:"numeric",month:"short"});
+const pctEk=n=>{n=Math.round(n);const b=n%10,o=n%100;const E=["ı","i","si","ü","ü","i","sı","si","i","u"],O=["","u","si","u","ı","si","ı","i","i","ı"];return n===0?"ı":o===0?"ü":b?E[b]:O[o/10]};
+const pctTxt=n=>`%${Math.round(n)}'${pctEk(n)}`;
 const kg=n=>n==null||isNaN(n)?"–":n.toLocaleString("tr-TR",{minimumFractionDigits:1,maximumFractionDigits:1});
 const sgn=n=>(n>0?"+":n<0?"−":"±")+kg(Math.abs(n));
 const num=v=>{v=String(v??"").trim().replace(",",".");if(v==="")return null;const n=parseFloat(v);return isNaN(n)?null:n};
@@ -1250,7 +1253,7 @@ function vOzetMain(){
   const rows=shotRows().filter(r=>r.loss!=null&&!r.current);
   const perShot=rows.length?rows.reduce((a,r)=>a+r.loss,0)/rows.length:null;
   const bmi=P.heightCm&&latest?latest.kg/((P.heightCm/100)**2):null;
-  const ring=pct!=null?(()=>{const r=36,c=2*Math.PI*r;return `<div class="ring" role="img" aria-label="Hedefe yüzde ${Math.round(pct)}"><svg width="86" height="86" viewBox="0 0 86 86"><circle cx="43" cy="43" r="${r}" fill="none" stroke="var(--line)" stroke-width="7"/><circle cx="43" cy="43" r="${r}" fill="none" stroke="var(--accent)" stroke-width="7" stroke-linecap="round" stroke-dasharray="${c*pct/100} ${c}" transform="rotate(-90 43 43)"/></svg><div class="lbl"><b>%${Math.round(pct)}</b>hedef</div></div>`})():`<button class="goalset" data-go="ayar">Hedef<br>belirle</button>`;
+  const ring=pct!=null?(()=>{const r=36,c=2*Math.PI*r;return `<div class="ring" role="img" aria-label="Hedefin yüzde ${Math.round(pct)}'${pctEk(pct)} tamam"><svg width="86" height="86" viewBox="0 0 86 86"><circle cx="43" cy="43" r="${r}" fill="none" stroke="var(--line)" stroke-width="7"/><circle cx="43" cy="43" r="${r}" fill="none" stroke="var(--accent)" stroke-width="7" stroke-linecap="round" stroke-dasharray="${c*pct/100} ${c}" transform="rotate(-90 43 43)"/></svg><div class="lbl"><b>%${Math.round(pct)}</b>hedef</div></div>`})():`<button class="goalset" data-go="ayar">Hedef<br>belirle</button>`;
   const totalDays=first?diffDays(first.date,today()):0;
   // body composition since start
   const fw=w.filter(x=>x.fat!=null); let comp="";
@@ -1762,7 +1765,7 @@ function heroHtml(X){
         <div style="display:flex;flex-direction:column;gap:6px"><span class="eyebrow">${sinceTxt()} bu yana · ${totalDays} gün</span>
         <div class="mega">${big}<small>kg</small></div>
         <div class="fromto">${kg(start)} → <b>${kg(latest.kg)} kg</b></div></div>
-        ${pct!=null?`<div class="gmeter" role="img" aria-label="Hedefe yüzde ${Math.round(pct)}"><div class="gm-txt"><span>Hedefe</span><b>%${Math.round(pct)}</b>${goal!=null?`<em>${kg(goal)} kg</em>`:""}</div><div class="gm-bar"><i class="${A("gmgrow")}" style="height:${Math.max(4,pct)}%"></i></div></div>`:""}
+        ${pct!=null?`<div class="gmeter" role="img" aria-label="Hedefin yüzde ${Math.round(pct)}'${pctEk(pct)} tamam"><div class="gm-txt"><span>Hedefin</span><b>%${Math.round(pct)}<small>'${pctEk(pct)}</small></b>${goal!=null?`<em>hedef ${kg(goal)} kg</em>`:""}</div><div class="gm-bar"><i class="${A("gmgrow")}" style="height:${Math.max(4,pct)}%"></i></div></div>`:""}
       </div>
       <svg class="spark" viewBox="0 0 320 78" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="gsp" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7FE0C2" stop-opacity=".45"/><stop offset="1" stop-color="#7FE0C2" stop-opacity="0"/></linearGradient></defs>
         <path d="${line}L320 78L0 78Z" fill="url(#gsp)"/><path class="${A("draw")}" pathLength="1" d="${line}" fill="none" stroke="#9FF0D6" stroke-width="2.2" stroke-linejoin="round" vector-effect="non-scaling-stroke"/></svg>
@@ -1834,7 +1837,7 @@ function tZumrut(c,W,H,D,o){
   pathPts(c,pts);c.strokeStyle="#9FF0D6";c.lineWidth=6;c.lineJoin="round";c.shadowColor="rgba(159,240,214,.6)";c.shadowBlur=18;c.stroke();c.shadowBlur=0;
   const lp=pts[pts.length-1];c.beginPath();c.arc(Math.min(W-14,lp[0]),lp[1],13,0,Math.PI*2);c.fillStyle="#FFF";c.fill();
   let y=1010;
-  if(D.pct!=null){c.font=`600 32px ${FONT_B}`;c.fillStyle="#FFF";c.fillText(`Hedefe %${Math.round(D.pct)}`,80,y);
+  if(D.pct!=null){c.font=`600 32px ${FONT_B}`;c.fillStyle="#FFF";c.fillText(`Hedefin ${pctTxt(D.pct)}`,80,y);
     if(o.weights){c.textAlign="right";c.fillStyle="rgba(255,255,255,.6)";c.font=`500 30px ${FONT_M}`;c.fillText(`hedef ${kg(D.goal)} kg`,W-80,y);c.textAlign="left"}
     rr(c,80,y+22,W-160,18,9);c.fillStyle="rgba(255,255,255,.12)";c.fill();g=c.createLinearGradient(80,0,W-80,0);g.addColorStop(0,"#5EE0B5");g.addColorStop(1,"#9FF0D6");rr(c,80,y+22,Math.max(18,(W-160)*D.pct/100),18,9);c.fillStyle=g;c.fill();y+=90}else y+=10;
   const B=statList(D,o).slice(0,3),gap=20,bwid=(W-160-gap*(B.length-1))/B.length,bh=150;
@@ -1908,7 +1911,7 @@ function tMezura(c,W,H,D,o){
   B.forEach(([v,l],i)=>{const cw=(W-160)/B.length;c.fillStyle="#FFF";fitFont(c,v,cw-30,700,58,FONT_D,34);c.fillText(v,x+i*cw,y);c.font=`500 26px ${FONT_B}`;c.fillStyle="rgba(255,255,255,.7)";c.fillText(l,x+i*cw,y+40);
     if(i)c.fillStyle="rgba(255,255,255,.25)",c.fillRect(x+i*cw-22,y-52,2,100)});
   c.font=`500 24px ${FONT_B}`;c.fillStyle="rgba(255,255,255,.55)";c.fillText("Hafif ile takip ediliyor",80,H-46);
-  if(D.pct!=null){c.textAlign="right";c.fillText(`hedefe %${Math.round(D.pct)}`,W-80,H-46);c.textAlign="left"}
+  if(D.pct!=null){c.textAlign="right";c.fillText(`hedefin ${pctTxt(D.pct)}`,W-80,H-46);c.textAlign="left"}
 }
 
 /* ---- Basamak: her kilo bir basamak ---- */
@@ -1928,7 +1931,7 @@ function tBasamak(c,W,H,D,o){
   // büyük sayı: sol alt boşlukta
   c.fillStyle=G2;LS(c,"-8px");c.font=`700 190px ${FONT_D}`;const big=bigTxt(D);c.fillText(big,74,bot-40);const bw=c.measureText(big).width;LS(c,"0px");
   c.font=`500 64px ${FONT_D}`;c.fillStyle=G1;c.fillText("kg",74+bw+10,bot-40);
-  c.font=`500 28px ${FONT_B}`;c.fillStyle="#46605A";c.fillText(`${D.days} günde${D.pct!=null?` · hedefe %${Math.round(D.pct)}`:""}`,80,bot+2);
+  c.font=`500 28px ${FONT_B}`;c.fillStyle="#46605A";c.fillText(`${D.days} günde${D.pct!=null?` · hedefin ${pctTxt(D.pct)}`:""}`,80,bot+2);
   leaf(c,80,H-104,1.6,G1);c.font=`700 30px ${FONT_D}`;c.fillStyle=G2;c.fillText("Hafif",126,H-64);
   c.textAlign="right";c.font=`500 26px ${FONT_B}`;c.fillStyle="#46605A";c.fillText(`${fmtShort(D.a.date)} – ${fmtShort(D.b.date)}`,W-80,H-64);c.textAlign="left";
 }
