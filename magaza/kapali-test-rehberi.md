@@ -52,9 +52,8 @@ Hafif hiçbir veriyi cihazdan dışarı göndermediği için Google'ın tanımı
 - Uygulama adı, kısa açıklama, tam açıklama: `magaza/aciklama.md`
 - Uygulama simgesi: `magaza/gorseller/ikon-512.png`
 - Öne çıkan grafik: `magaza/gorseller/tanitim-1024x500.png`
-- Telefon ekran görüntüleri (en fazla 8): `magaza/tanitim/` klasöründen önerilen sıra:
-  1. 01-kilo, 2. 02-adim, 3. 03-igne, 4. 09-yan-etki, 5. 05-protein-su, 6. 10-rapor, 7. 07-hatirlatici, 8. 08-gizlilik
-  (Yedek olarak 04-rozet, 06-takviye, 11-karanlik)
+- Telefon ekran görüntüleri (en fazla 8): `magaza/tanitim/` klasöründeki 8 görseli dosya adı sırasıyla yükle:
+  01-kilo, 02-koc, 03-igne, 04-yan-etki, 05-rapor, 06-protein-su, 07-hatirlatici, 08-gizlilik
 - Video: YouTube bağlantısı
 - Kategori: **Sağlık ve Fitness**; iletişim e-postası: apphafif@gmail.com
 
@@ -63,7 +62,7 @@ Test ve yayınla → Test → **Kapalı test** → "Kanal oluştur" (ya da hazı
 1. **Test kullanıcıları** sekmesi → "E-posta listesi oluştur" → en az **12–15** Gmail adresi ekle (fazlası iyi; biri çıkarsa 12'nin altına düşmezsin). Geri bildirim URL'si/e-postası: apphafif@gmail.com
 2. **Ülkeler**: Türkiye (istersen tüm ülkeler)
 3. **Sürüm oluştur** → Play Uygulama İmzalama'yı kabul et → AAB'yi yükle → sürüm adı otomatik gelir → sürüm notu:
-   `İlk test sürümü: kilo, adım, iğne, yan etki, protein, su, takviye takibi; hatırlatıcılar ve PDF rapor.`
+   `İlk test sürümü: kilo, iğne, yan etki, protein, su, takviye ve adım takibi; kişisel koç, hatırlatıcılar, widget'lar ve PDF rapor.`
 4. **İncelemeye gönder.** İlk inceleme birkaç saatten birkaç güne kadar sürebilir.
 5. Onaylanınca **Test kullanıcıları** sekmesindeki "Katılım bağlantısı"nı testçilere gönder. Her biri:
    - bağlantıyı **Play'e giriş yaptığı Gmail ile** açar → "Test kullanıcısı ol"a basar
