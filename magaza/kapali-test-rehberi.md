@@ -25,7 +25,7 @@ Play Console → **Uygulama oluştur**
 | Madde | Cevap |
 |---|---|
 | Gizlilik politikası | `https://ubektas.github.io/hafif-gizlilik/` |
-| Uygulama erişimi | Tüm işlevler özel erişim gerektirmeden kullanılabilir |
+| Uygulama erişimi | **Evet, kısıtlı bölüm var** (Plus aboneliği). Kullanıcı adı/şifre boş; talimat: hesap yok, Plus özellikleri ilk 7 gün ödemesiz açık, inceleme sırasında hepsi erişilebilir, sonrasında abonelik gerekir |
 | Reklamlar | Hayır, uygulama reklam içermiyor |
 | İçerik derecelendirmesi | Kategori: "Diğer / Tüm diğer uygulama türleri"; şiddet, cinsellik, kumar vb. tüm sorulara **Hayır**. Kullanıcılar etkileşimde bulunabilir mi: **Hayır**. Konum paylaşımı: **Hayır** |
 | Hedef kitle | Yalnızca **18 ve üzeri**. Çocuklara hitap etmiyor |
