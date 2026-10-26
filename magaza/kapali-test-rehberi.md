@@ -56,11 +56,11 @@ Hafif hiçbir veriyi cihazdan dışarı göndermediği için Google'ın tanımı
   1. 01-kilo, 2. 02-adim, 3. 03-igne, 4. 09-yan-etki, 5. 05-protein-su, 6. 10-rapor, 7. 07-hatirlatici, 8. 08-gizlilik
   (Yedek olarak 04-rozet, 06-takviye, 11-karanlik)
 - Video: YouTube bağlantısı
-- Kategori: **Sağlık ve Fitness**; iletişim e-postası: ub.ugurbektas@gmail.com
+- Kategori: **Sağlık ve Fitness**; iletişim e-postası: apphafif@gmail.com
 
 ## 4. Kapalı test kanalı
 Test ve yayınla → Test → **Kapalı test** → "Kanal oluştur" (ya da hazır gelen "Alfa"yı kullan)
-1. **Test kullanıcıları** sekmesi → "E-posta listesi oluştur" → en az **12–15** Gmail adresi ekle (fazlası iyi; biri çıkarsa 12'nin altına düşmezsin). Geri bildirim URL'si/e-postası: ub.ugurbektas@gmail.com
+1. **Test kullanıcıları** sekmesi → "E-posta listesi oluştur" → en az **12–15** Gmail adresi ekle (fazlası iyi; biri çıkarsa 12'nin altına düşmezsin). Geri bildirim URL'si/e-postası: apphafif@gmail.com
 2. **Ülkeler**: Türkiye (istersen tüm ülkeler)
 3. **Sürüm oluştur** → Play Uygulama İmzalama'yı kabul et → AAB'yi yükle → sürüm adı otomatik gelir → sürüm notu:
    `İlk test sürümü: kilo, adım, iğne, yan etki, protein, su, takviye takibi; hatırlatıcılar ve PDF rapor.`

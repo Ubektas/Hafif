@@ -74,5 +74,5 @@ Temel takip her zaman ücretsiz. Plus ile: tahmini ilaç düzeyi ve evre öneril
 Sağlık ve Fitness
 
 ## İletişim
-E-posta: ub.ugurbektas@gmail.com
+E-posta: apphafif@gmail.com
 Gizlilik politikası: https://ubektas.github.io/hafif-gizlilik/
