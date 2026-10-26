@@ -32,7 +32,7 @@ Play Console → **Uygulama oluştur**
 | Haber uygulaması | Hayır |
 | Devlet uygulaması | Hayır |
 | Finansal özellikler | Hiçbiri |
-| Sağlık uygulamaları | Kategoriler: **Fitness ve sağlıklı yaşam** (kilo, adım, beslenme), **İlaç ve tedavi yönetimi** (iğne/doz hatırlatma ve kayıt). "Tıbbi cihaz" ya da "teşhis/tedavi" seçme |
+| Sağlık uygulamaları | Yalnızca **Aktivite ve fitness** ve **Beslenme ve kilo yönetimi**. **"Tıp" başlığından hiçbir şey seçme** (ör. "İlaç ve tedavi yönetimi"): kişisel hesaplar Tıp kategorisinde yayın yapamaz, 1.8.1 bu yüzden reddedildi. Mağaza etiketlerinde de "Tıp" olmasın |
 | Health Connect izinleri | Aşağıdaki 2a bölümüne bak |
 | Veri güvenliği | Aşağıdaki 2b bölümüne bak |
 
