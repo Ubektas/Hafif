@@ -950,11 +950,14 @@ function pwOffer(k){const st=IAP();if(!st)return null;const pr=st.get(PLUS_ID);i
   return all.find(o=>o.pricingPhases[0]&&o.pricingPhases[0].paymentMode==="FreeTrial"&&o.canPurchase!==false)||all.find(o=>o.id===PLUS_ID+"@"+k)||all[0]||null}
 function pwTrial(o){const ph=o&&o.pricingPhases[0];if(!ph||ph.paymentMode!=="FreeTrial")return "";const m=/P(\d+)([DWM])/.exec(ph.billingPeriod||"");if(!m)return "ücretsiz deneme";return `${+m[1]*(m[2]==="W"?7:1)} ${m[2]==="M"?"ay":"gün"} ücretsiz`}
 let pwSel="yillik";
+// aylık planın Play fiyatına göre "% tasarruf"; fiyatlar Play'den gelmezse PLANS'taki metin kalır
+function pwSave(P,last){const m=pwOffer("aylik"),ml=m&&m.pricingPhases[m.pricingPhases.length-1];
+  if(P.mo===1||!last||!last.priceMicros||!ml||!ml.priceMicros)return P.sub;const r=Math.round((1-last.priceMicros/P.mo/ml.priceMicros)*100);return r>0?`%${r} tasarruf`:P.sub}
 function pwPlansHtml(){
-  return PLANS.map(P=>{const o=pwOffer(P.k),last=o&&o.pricingPhases[o.pricingPhases.length-1],price=last?last.price:P.p,tr=pwTrial(o);
+  return PLANS.map(P=>{const o=pwOffer(P.k),last=o&&o.pricingPhases[o.pricingPhases.length-1],price=last?last.price:P.p,tr=pwTrial(o),sub=pwSave(P,last);
     let per=P.m;if(last&&P.mo>1&&last.priceMicros)per=(last.priceMicros/1e6/P.mo).toLocaleString("tr-TR",{style:"currency",currency:last.currency||"TRY"})+" / ay";
     const bdg=P.best?`EN AVANTAJLI${tr?" · "+tr.toLocaleUpperCase("tr-TR"):""}`:tr?tr.toLocaleUpperCase("tr-TR"):"";
-    return `<button type="button" class="pwp" role="radio" data-pw="${P.k}" aria-checked="${P.k===pwSel}">${bdg?`<span class="bdg">${bdg}</span>`:""}<span class="rd"></span><span><b>${P.n}</b><small>${P.sub}</small></span><span class="pr"><b>${price}</b><small>${per}</small></span></button>`}).join("");
+    return `<button type="button" class="pwp" role="radio" data-pw="${P.k}" aria-checked="${P.k===pwSel}">${bdg?`<span class="bdg">${bdg}</span>`:""}<span class="rd"></span><span><b>${P.n}</b><small>${sub}</small></span><span class="pr"><b>${price}</b><small>${per}</small></span></button>`}).join("");
 }
 function pwCta(){const o=pwOffer(pwSel),tr=pwTrial(o),P=PLANS.find(x=>x.k===pwSel),last=o&&o.pricingPhases[o.pricingPhases.length-1];
   return {btn:tr?tr.charAt(0).toLocaleUpperCase("tr-TR")+tr.slice(1)+" dene":"Hafif Plus'a geç",fine:`${tr?`Deneme bitince ${last?last.price:P.p} alınır. `:""}Abonelik, iptal edilmedikçe ${P.mo===1?"her ay":P.mo===3?"3 ayda bir":"yılda bir"} Google Play hesabından otomatik yenilenir. İstediğin zaman Google Play → Abonelikler'den iptal edebilirsin.`}}
@@ -972,7 +975,7 @@ function openPaywall(src){
         <div><i style="background:var(--accent-soft)">📈</i><span>Kilo değişiminin tüm grafikleri<br><small>İğne, haftalık, trend, ilaç düzeyi ve yağ</small></span></div>
         <div><i style="background:var(--accent-soft)">📄</i><span>Doktor için PDF rapor<br><small>Kilo, doz, yan etki ve ölçüler tek dosyada</small></span></div>
         <div><i style="background:var(--shot-soft)">🧭</i><span>Yan etki analizi<br><small>Hangi gün, hangi belirti yoğunlaşıyor</small></span></div>
-        <div><i style="background:var(--protein-soft)">🍽️</i><span>Kalori ve yemek takibi<br><small>yakında · aboneliğine dahil</small></span></div>
+        <div><i style="background:var(--water-soft)">📱</i><span>Ana ekran widget'ları<br><small>10 widget; uygulamayı açmadan su ekle, takviyeni işaretle</small></span></div>
       </div>
       <div id="pwPlans" role="radiogroup" aria-label="Plan" style="display:flex;flex-direction:column;gap:12px">${pwPlansHtml()}</div>
       <button type="button" class="pwcta" id="pwBuy">${c.btn}</button>
