@@ -15,14 +15,14 @@ Uygulamadaki kod hazır. Ürünü ve planları Play Console'da **tam olarak bu k
 2. Faturalandırma izni olan bir AAB'nin (1.5.0 ve sonrası) herhangi bir kanala, örneğin kapalı teste, yüklenmiş olması gerekir. Play, uygulama BILLING iznini içermeden abonelik sayfasını açmaz.
 
 ## 1. Aboneliği oluştur
-Play Console → Hafif → **Para kazanma → Ürünler → Abonelikler** → **Abonelik oluştur**
+Play Console → Hafif → **Google Play ile para kazanın → Ürünler → Abonelikler** → **Abonelik oluştur**
 - Ürün kimliği: `hafif_plus`
 - Ad: `Hafif Plus`
 - Avantajlar (en fazla 4, mağazada abonelik sayfasında görünür):
-  - Kilo değişiminin tüm grafikleri
+  - Tahmini ilaç düzeyi ve evre önerileri
+  - Tüm kilo grafikleri ve yan etki analizi
   - Doktor için PDF rapor
-  - Yan etki analizi
-  - Kalori ve yemek takibi (yakında)
+  - Ana ekran widget'ları
 
 ## 2. Temel planları ekle
 Aboneliğin içinde → **Temel plan ekle** (üç kez)
