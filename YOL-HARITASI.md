@@ -6,6 +6,11 @@
   - Ayarlarda "Hangi bölgeleri kullanıyorsun?" seçimi. Varsayılan: karın ve uyluk; kol isteğe bağlı. Bölge önerisi, koç kartları ve hatırlatıcılar yalnızca seçili bölgeler arasında döner.
   - İğne ekleme ekranında not: "Aynı bölgeye vuracaksan bir öncekinden birkaç santim uzağa."
   - Not: Semaglutid (Ozempic/Wegovy), tirzepatid (Mounjaro) ve liraglutid (Saxenda) prospektüslerinde onaylı bölgeler karın (göbeğin ~5 cm çevresi hariç), uyluk ön yüzü ve üst kolun arka-dış yüzü.
+- **Vücut kompozisyonu: "yağsız" yerine "kas"**
+  - Şu an Özet ve Kilo'daki vücut kompozisyonu kartı, "Yağsız kg" istatistiği, grafik etiketleri ve PDF rapor "yağsız kütle (su, kas, kemik)" gösteriyor; kullanıcı "kas" görmek istiyor.
+  - Dikkat: Yağsız kütle kasla aynı şey değil (su, kemik ve organlar da içinde). Yalnızca yağ oranı girilmişse kas hesaplanamaz.
+  - Plan: tartı girişine isteğe bağlı "Kas kütlesi (kg)" alanı (akıllı tartıların çoğu bunu gösterir). Kas girilmişse kartlar "Kas" gösterir; girilmemişse "Yağsız (kas, su, kemik)" adıyla devam eder ve uydurma bir kas sayısı göstermez.
+  - Health Connect'te kas kütlesi türü yok (yağ, yağsız kütle, kemik, vücut suyu var); kas elle girilecek.
 
 ## Sırada (karar bekleyen / sonraki sürümler)
 - Plus koç kartları: haftalık özet ve "gelecek haftanın tek hedefi", duraklama analizi (ölçü ve adım karşılaştırması)
