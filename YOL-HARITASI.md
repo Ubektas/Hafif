@@ -12,6 +12,8 @@
   - Plan: tartı girişine isteğe bağlı "Kas kütlesi (kg)" alanı (akıllı tartıların çoğu bunu gösterir). Kas girilmişse kartlar "Kas" gösterir; girilmemişse "Yağsız (kas, su, kemik)" adıyla devam eder ve uydurma bir kas sayısı göstermez.
   - Health Connect'te kas kütlesi türü yok (yağ, yağsız kütle, kemik, vücut suyu var); kas elle girilecek.
 - **Hata: "Programı düzenle" ekranında saat kutuları sağdan taşıyor** (iPhone'da görüldü: Öğle ve Gece kutuları ekran dışına kayıyor). Saat alanlarına `min-width:0; width:100%` verilecek, Android'de de kontrol edilecek.
+- **Hata: Haftalık program tablosunda gün başlıkları birbirine giriyor** (Android'de görüldü: "PZT SAL ÇARPER CUMCMTPAZ"). İlaç adı sütunu geniş kalınca 7 gün sütunu daralıyor. Çözüm: tabloyu sabit düzenle kur, ad sütununa üst sınır verip uzun adları "…" ile kısalt, gün başlıklarını küçük ve harf aralıksız yaz (dar ekranda tek harf: P S Ç P C C P).
+- **Hata: Takviye vaktindeki "Hepsini aldım" düğmesi sağdan taşıyor** ("Hepsini al" diye kesiliyor). Düğme küçülsün/sarmasın; dar ekranda yalnızca "Hepsi ✓" yazsın. Takviye ekranının tamamı 320–360 px genişlikte kontrol edilecek.
 - **Öneri (onay bekliyor): Alınmayan takviye / yapılmayan iğne için otomatik ikinci hatırlatma**
   - Şu an: her vakit için o saatte tek bildirim; alındıysa hiç gelmiyor; "Ertele" elle 1 saat sonraya kuruyor. Kendiliğinden ikinci hatırlatma yok.
   - Plan: vaktin saatinden X dakika sonra (varsayılan 60, ayarlardan 30/60/120 ya da kapalı) "Sabah takviyelerini aldın mı?" bildirimi. Önceden kurulur; "Hepsini aldım" işaretlenince kendiliğinden iptal edilir (uygulama açık olmasa da çalışır). Günde en fazla 1 ek hatırlatma, gece saatlerinde gönderilmez.
