@@ -16,6 +16,12 @@
   - Şu an: her vakit için o saatte tek bildirim; alındıysa hiç gelmiyor; "Ertele" elle 1 saat sonraya kuruyor. Kendiliğinden ikinci hatırlatma yok.
   - Plan: vaktin saatinden X dakika sonra (varsayılan 60, ayarlardan 30/60/120 ya da kapalı) "Sabah takviyelerini aldın mı?" bildirimi. Önceden kurulur; "Hepsini aldım" işaretlenince kendiliğinden iptal edilir (uygulama açık olmasa da çalışır). Günde en fazla 1 ek hatırlatma, gece saatlerinde gönderilmez.
   - Aynı mantık iğne günü için: iğne saatinden 3 saat sonra kaydedilmemişse "İğneni yaptın mı?".
+- **"Hafif ekibine gönder" (paylaşım kartı)**
+  - Paylaşım ekranına "Görseli kaydet / paylaş"ın altına ikinci düğme. Taslak: `magaza/taslak/gonder-akisi.png`.
+  - İzin ekranı: "Instagram'da paylaşabilirsiniz" kutusu (işaretlenmeden düğme açılmaz), görünüm seçimi (Adımla / Baş harflerle / Anonim), isteğe bağlı not, iznin geri alınabileceği bilgisi.
+  - Telefonun e-posta uygulaması alıcı apphafif@gmail.com, konu, izin metni ve ekli kartla açılır; uygulama veriyi kendisi göndermez (Android'de HafifWidget eklentisine EXTRA_EMAIL + ek dosyalı paylaşım fonksiyonu).
+  - Gizlilik politikasına bir cümle: kullanıcının kendi başlattığı e-posta gönderimi.
+- **Paylaşım ekranı metni (yapıldı, 1.9.0 ile Android'e gelecek):** "iPhone'da paylaşım menüsü açılır…" yerine "Telefonunun paylaşım menüsü açılır; WhatsApp'ı, Instagram'ı ya da galeriye kaydetmeyi seçebilirsin."
 
 ## Sırada (karar bekleyen / sonraki sürümler)
 - Plus koç kartları: haftalık özet ve "gelecek haftanın tek hedefi", duraklama analizi (ölçü ve adım karşılaştırması)
