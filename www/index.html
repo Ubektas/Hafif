@@ -1993,7 +1993,7 @@ function openShare(){
       <div class="tpls" role="radiogroup" aria-label="Şablon">${SHARE_TPLS.map(([k,n])=>`<button type="button" class="tpl" role="radio" data-tpl="${k}" aria-checked="${k===shareOpt.tpl}"><img alt=""><span>${n}</span></button>`).join("")}</div>
       <div class="sws">${sw("weights","Kilo değerleri","başlangıç, şimdiki ve hedef kilo")}${sw("fat","Yağ bilgisi","verilen yağ ve yağ oranı")}${SHOTS()?sw("shots","İğne bilgisi","iğne sayısı ve ilk iğne ifadesi"):""}</div>
       <button class="btn" id="shSave" type="button">Görseli kaydet / paylaş</button>
-      <p class="muted" id="shHint" style="margin:0;font-size:12.5px;text-align:center">iPhone'da paylaşım menüsü açılır; WhatsApp'ı ya da Fotoğraflar'a kaydet'i seçebilirsin.</p>
+      <p class="muted" id="shHint" style="margin:0;font-size:12.5px;text-align:center">Telefonunun paylaşım menüsü açılır; WhatsApp'ı, Instagram'ı ya da galeriye kaydetmeyi seçebilirsin.</p>
     </div></div></div>`;
   const root=$("#sheetRoot");
   root.querySelector(".scrim").addEventListener("click",e=>{if(e.target.classList.contains("scrim"))closeSheet()});
