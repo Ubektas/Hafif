@@ -1,0 +1,81 @@
+<!doctype html><html lang="tr"><head><meta charset="utf-8"><link rel="stylesheet" href="file:///home/user/hafif/www/fonts/fonts.css"><style>
+*{box-sizing:border-box}body{margin:0;background:#DCE6E1;font-family:Figtree,sans-serif;color:#0B2420}
+.wrap{width:1500px;padding:44px 40px 50px}
+h1{font:700 44px Outfit;color:#0B3B33;margin:0 0 6px}.lead{font:500 21px/1.4 Figtree;color:#56706A;margin:0 0 30px;max-width:1200px}
+.row{display:flex;gap:40px;justify-content:center}
+.col{display:flex;flex-direction:column;align-items:center;gap:16px}
+.cap{font:700 22px Outfit;color:#0B3B33}.cap small{display:block;font:500 16px Figtree;color:#56706A;text-align:center;margin-top:4px;max-width:400px}
+.ph{width:420px;height:860px;border-radius:56px;background:#0B2420;padding:12px;box-shadow:0 40px 80px -40px rgba(0,0,0,.5)}
+.sc{width:100%;height:100%;border-radius:46px;overflow:hidden;position:relative;background:#F1F5F3}
+.dim{position:absolute;inset:0;background:rgba(11,36,32,.45)}
+.sheet{position:absolute;left:0;right:0;bottom:0;background:#fff;border-radius:30px 30px 0 0;padding:14px 22px 26px}
+.grab{width:44px;height:5px;border-radius:9px;background:#D5DFDB;margin:0 auto 14px}
+.btn{border-radius:16px;padding:15px;text-align:center;font:600 16px Figtree;color:#fff;background:linear-gradient(160deg,#126B58,#0B3B33)}
+.btn.g{background:#EDF3F0;color:#0B3B33;display:flex;align-items:center;justify-content:center;gap:10px;border:1.5px solid #CFE3DA}
+.btn.g svg{width:20px;height:20px}
+.new{position:relative}.new::after{content:"YENİ";position:absolute;top:-10px;right:12px;background:#0E7C66;color:#fff;font:700 10px Figtree;letter-spacing:.08em;border-radius:99px;padding:3px 8px}
+.mut{font-size:12.5px;color:#5F726C;line-height:1.4}
+.sw{display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:1px solid #E0E8E4}.sw:last-child{border:0}
+.sw b{font-size:14.5px;display:block}.sw small{font-size:12px;color:#5F726C}
+.tg{width:42px;height:24px;border-radius:99px;background:#0E7C66;position:relative}.tg::after{content:"";position:absolute;right:3px;top:3px;width:18px;height:18px;border-radius:50%;background:#fff}
+.tg.off{background:#D5DFDB}.tg.off::after{right:auto;left:3px}
+.box{background:#EDF3F0;border-radius:16px;padding:4px 14px}
+.chk{display:flex;gap:12px;align-items:flex-start;background:#E1F3EC;border:1.5px solid #0E7C66;border-radius:16px;padding:14px}
+.chk i{flex:none;width:22px;height:22px;border-radius:7px;background:#0E7C66;display:grid;place-items:center;color:#fff;font:700 14px Figtree;font-style:normal}
+.chk b{font-size:14.5px}.chk span{display:block;font-size:12.5px;color:#3F5853;margin-top:3px;line-height:1.4}
+.seg{display:flex;background:#EDF3F0;border-radius:12px;padding:4px;gap:4px}.seg span{flex:1;text-align:center;font:600 13px Figtree;padding:9px 0;border-radius:9px;color:#5F726C}.seg span.on{background:#fff;color:#0B3B33;box-shadow:0 1px 3px rgba(0,0,0,.1)}
+.inp{border:1.5px solid #D5DFDB;border-radius:12px;padding:11px 14px;font-size:15px}
+.lbl{font:600 12px Figtree;color:#5F726C;letter-spacing:.06em;text-transform:uppercase;margin:16px 0 8px}
+.mail{position:absolute;inset:0;background:#fff;padding:52px 0 0}
+.mt{display:flex;align-items:center;gap:14px;padding:0 18px 14px;font:600 18px Figtree}.mt .sp{flex:1}.mt svg{width:22px;height:22px}
+.fl{display:flex;gap:10px;padding:13px 18px;border-top:1px solid #ECEFEE;font-size:14.5px}.fl span{color:#6B7774;width:52px}
+.chip{display:inline-flex;align-items:center;gap:6px;background:#EAF4EF;border-radius:99px;padding:3px 10px 3px 4px;font-size:13.5px}.chip b{width:20px;height:20px;border-radius:50%;background:#0E7C66;color:#fff;display:grid;place-items:center;font-size:11px}
+.body{padding:16px 18px;font-size:14.5px;line-height:1.55;color:#202322;border-top:1px solid #ECEFEE}
+.att{margin:4px 18px;display:flex;gap:12px;align-items:center;border:1px solid #E1E6E4;border-radius:14px;padding:8px}
+.att img{width:62px;height:78px;border-radius:8px;object-fit:cover}.att b{display:block;font-size:14px}.att small{font-size:12px;color:#6B7774}
+.send{position:absolute;top:56px;right:18px;width:40px;height:40px;border-radius:50%;background:#0E7C66;display:grid;place-items:center}
+.send svg{width:20px;height:20px;color:#fff}
+.arrow{align-self:center;font:700 40px Outfit;color:#0E7C66;margin-top:-60px}
+</style></head><body><div class="wrap">
+<h1>“Hafif ekibine gönder” · örnek akış</h1>
+<p class="lead">Kullanıcı ilerleme kartını tek dokunuşla sana e-postayla gönderir; izni de e-postayla yazılı gelir. Uygulama hiçbir veriyi kendisi göndermez, gönderen kullanıcının kendi e-posta uygulamasıdır.</p>
+<div class="row">
+ <div class="col"><div class="ph"><div class="sc">
+   <img src="gonder-kart.png" style="position:absolute;left:28px;top:30px;width:340px;border-radius:22px;box-shadow:0 20px 40px -20px rgba(0,0,0,.5)">
+   <div class="sheet" style="top:470px;border-radius:30px 30px 0 0">
+     <div class="box"><div class="sw"><span><b>Kilo değerleri</b><small>başlangıç, şimdiki ve hedef kilo</small></span><i class="tg"></i></div>
+       <div class="sw"><span><b>Yağ bilgisi</b><small>verilen yağ ve yağ oranı</small></span><i class="tg"></i></div>
+       <div class="sw"><span><b>İğne bilgisi</b><small>iğne sayısı ve ilk iğne ifadesi</small></span><i class="tg off"></i></div></div>
+     <div class="btn" style="margin-top:14px">Görseli kaydet / paylaş</div>
+     <div class="btn g new" style="margin-top:10px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M4 7l8 6 8-6"/></svg>Hafif ekibine gönder</div>
+     <div class="mut" style="text-align:center;margin-top:9px">Hikâyeni bizimle paylaş; izin verirsen Instagram'da yayınlayalım.</div>
+   </div></div></div>
+   <div class="cap">1 · Paylaşım ekranı<small>Mevcut düğmenin altına yeni bir düğme</small></div></div>
+ <div class="arrow">→</div>
+ <div class="col"><div class="ph"><div class="sc">
+   <img src="gonder-kart.png" style="position:absolute;left:28px;top:30px;width:340px;border-radius:22px;filter:blur(1px)"><div class="dim"></div>
+   <div class="sheet" style="top:150px">
+     <div class="grab"></div>
+     <div style="display:flex;gap:14px;align-items:center"><img src="gonder-kart.png" style="width:64px;height:80px;border-radius:10px;object-fit:cover"><div><div style="font:700 21px Outfit;color:#0B3B33">Hafif ekibine gönder</div><div class="mut">Kart, seçtiğin hâliyle gider.</div></div></div>
+     <div class="chk" style="margin-top:16px"><i>✓</i><div><b>Instagram'da paylaşabilirsiniz</b><span>Bu kartın Hafif'in Instagram hesabında yayınlanmasına izin veriyorum.</span></div></div>
+     <div class="lbl">Paylaşımda nasıl görüneyim?</div>
+     <div class="seg"><span>Adımla</span><span class="on">Baş harflerle</span><span>Anonim</span></div>
+     <div class="inp" style="margin-top:10px">A. K.</div>
+     <div class="lbl">Eklemek istediğin bir not (isteğe bağlı)</div>
+     <div class="inp" style="height:62px;color:#5F726C;font-size:14px">En çok protein takibi işime yaradı…</div>
+     <div class="mut" style="margin-top:12px">İzni istediğin zaman apphafif@gmail.com'a yazarak geri alabilirsin. Kilo değerlerini kapattıysan kartta görünmez.</div>
+     <div class="btn" style="margin-top:14px">E-postayı hazırla</div>
+   </div></div></div>
+   <div class="cap">2 · İzin ve görünüm<small>Açık rıza burada alınır; kutu işaretlenmeden düğme açılmaz</small></div></div>
+ <div class="arrow">→</div>
+ <div class="col"><div class="ph"><div class="sc">
+   <div class="mail">
+     <div class="mt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 5l-7 7 7 7"/></svg><span class="sp">Yeni e-posta</span></div>
+     <div class="send"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 20l18-8L3 4v6l12 2-12 2z"/></svg></div>
+     <div class="fl"><span>Kime</span><span class="chip"><b>H</b>apphafif@gmail.com</span></div>
+     <div class="fl"><span>Konu</span>Hafif ilerleme kartım</div>
+     <div class="body">Merhaba Hafif ekibi,<br><br>İlerleme kartımı gönderiyorum.<br>✅ Instagram'da paylaşılmasına izin veriyorum.<br>Görünüm: <b>baş harfler (A. K.)</b><br>Notum: En çok protein takibi işime yaradı.<br><br><span style="color:#6B7774;font-size:13px">İznimi bu adrese yazarak geri alabilirim.<br>Hafif 1.9.0 ile gönderildi</span></div>
+     <div class="att"><img src="gonder-kart.png"><div><b>hafif-kart.png</b><small>1080 × 1350 · ekli</small></div></div>
+   </div></div></div>
+   <div class="cap">3 · E-posta hazır<small>Alıcı, konu, izin metni ve kart dolu; kullanıcı yalnızca Gönder'e basar</small></div></div>
+</div></div></body></html>
