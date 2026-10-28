@@ -1,0 +1,73 @@
+<!doctype html><html lang="tr"><head><meta charset="utf-8"><link rel="stylesheet" href="../../www/fonts/fonts.css">
+<style>
+*{box-sizing:border-box;margin:0}body{background:#F1F5F3;font-family:Figtree,sans-serif;padding:36px;display:flex;gap:32px;align-items:flex-start}
+.col{width:390px;display:flex;flex-direction:column;gap:14px}.lab{font:700 20px Outfit;color:#0B3B33}.lab small{display:block;font:500 13.5px Figtree;color:#5F726C;margin-top:3px}
+.card{border-radius:24px;padding:20px;box-shadow:0 1px 2px rgba(11,36,32,.06),0 8px 24px rgba(11,36,32,.07)}
+h2{font:700 19px Outfit;letter-spacing:-.01em}.num{font-family:Outfit;font-weight:700;letter-spacing:-.03em}
+.hd{display:flex;justify-content:space-between;align-items:center}.chip{font:600 11px Figtree;letter-spacing:.08em;text-transform:uppercase;padding:5px 10px;border-radius:99px}
+.wk{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;position:relative;height:92px;align-items:end;padding-bottom:20px}
+.wk>div{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;position:relative}
+.wk i{display:block;width:100%;max-width:26px;border-radius:7px}.wk span{position:absolute;bottom:-20px;font-size:11px}
+.gl{position:absolute;left:0;right:0;border-top:1.5px dashed;pointer-events:none}.gl em{position:absolute;right:0;top:-17px;font:600 10px Figtree;font-style:normal}
+/* A */
+.A{background:#13203F;color:#fff}.A .chip{background:rgba(200,245,66,.14);color:#C8F542}
+.A .bar{height:14px;border-radius:99px;background:rgba(255,255,255,.1);position:relative;margin:12px 0 6px}.A .bar i{position:absolute;inset:0 22% 0 0;border-radius:99px;background:linear-gradient(90deg,#9BD11E,#C8F542)}
+.A .bar b{position:absolute;right:-2px;top:-5px;width:4px;height:24px;border-radius:2px;background:#fff}
+.A .trio{display:grid;grid-template-columns:repeat(3,1fr);margin:14px 0 16px;border-top:1px solid rgba(255,255,255,.1);border-bottom:1px solid rgba(255,255,255,.1)}
+.A .trio div{padding:10px 0 10px 12px;border-left:1px solid rgba(255,255,255,.1)}.A .trio div:first-child{border:0;padding-left:0}
+.A .trio b{display:block;font:700 19px Outfit}.A .trio span{font-size:11.5px;color:#A9B5D6}
+/* B */
+.B{background:#fff;color:#0B2420}.B .chip{background:#E6EEFF;color:#2457D6}
+.B .row{display:grid;grid-template-columns:132px 1fr;gap:18px;align-items:center;margin:14px 0 16px}
+.B .ring{position:relative;width:132px;height:132px}.B .ring>div{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.B .list div{display:flex;align-items:center;gap:10px;padding:7px 0;border-top:1px solid #EAF0F7;font-size:14px;color:#5F726C}.B .list div:first-child{border:0}
+.B .list b{margin-left:auto;font:700 15px Outfit;color:#0B2420}.B .ic{width:28px;height:28px;border-radius:9px;background:#EEF3FF;color:#2457D6;display:grid;place-items:center}
+/* C */
+.C{background:linear-gradient(160deg,#126B58,#0B3B33);color:#fff}.C .chip{background:rgba(255,255,255,.14);color:#CFEDE3}
+.C .path{position:relative;height:46px;margin:14px 0 4px}.C .trk{position:absolute;left:0;right:0;top:20px;height:6px;border-radius:99px;background:rgba(255,255,255,.15)}
+.C .trk i{position:absolute;left:0;top:0;bottom:0;width:78%;border-radius:99px;background:#9FF0D6}
+.C .me{position:absolute;left:78%;top:8px;transform:translateX(-50%);width:30px;height:30px;border-radius:50%;background:#9FF0D6;color:#0B3B33;display:grid;place-items:center;box-shadow:0 0 0 5px rgba(159,240,214,.25)}
+.C .flag{position:absolute;right:0;top:4px;color:#fff}
+.C .pills{display:flex;gap:8px;margin:12px 0 16px}.C .pills span{flex:1;background:rgba(255,255,255,.1);border-radius:12px;padding:8px 10px;font-size:11.5px;color:#BFE3D7}.C .pills b{display:block;font:700 17px Outfit;color:#fff}
+.C .days{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;text-align:center}
+.C .d{width:34px;height:34px;margin:0 auto 5px;border-radius:50%;display:grid;place-items:center;font:700 11px Outfit}
+.C .d.ok{background:#9FF0D6;color:#0B3B33}.C .d.no{border:2px solid rgba(255,255,255,.25);color:#BFE3D7}.C .d.td{background:conic-gradient(#9FF0D6 0 78%,rgba(255,255,255,.18) 78% 100%);color:#fff;position:relative}
+.C .d.td::before{content:"";position:absolute;inset:4px;border-radius:50%;background:#0F5A4A}.C .d.td span{position:relative}
+.C .days small{font-size:10.5px;color:#BFE3D7}.C .days .t small{color:#fff;font-weight:700}
+</style><style>
+.C{background:linear-gradient(160deg,var(--c1),var(--c2));color:#fff}.C .chip{background:rgba(255,255,255,.14);color:var(--soft)}
+.C .path{position:relative;height:46px;margin:14px 0 4px}.C .trk{position:absolute;left:0;right:0;top:20px;height:6px;border-radius:99px;background:rgba(255,255,255,.15)}
+.C .trk i{position:absolute;left:0;top:0;bottom:0;width:78%;border-radius:99px;background:var(--ac)}
+.C .me{position:absolute;left:78%;top:8px;transform:translateX(-50%);width:30px;height:30px;border-radius:50%;background:var(--ac);color:var(--c2);display:grid;place-items:center;box-shadow:0 0 0 5px var(--acg)}
+.C .flag{position:absolute;right:0;top:4px;color:#fff}
+.C .pills{display:flex;gap:8px;margin:12px 0 16px}.C .pills span{flex:1;background:rgba(255,255,255,.1);border-radius:12px;padding:8px 10px;font-size:11.5px;color:var(--soft)}.C .pills b{display:block;font:700 17px Outfit;color:#fff}
+.C .days{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;text-align:center}
+.C .d{width:36px;height:36px;margin:0 auto 5px;border-radius:50%;display:grid;place-items:center;font:700 10.5px Outfit;position:relative}
+.C .d.ok{background:var(--ac);color:var(--c2)}
+.C .d.p{background:conic-gradient(var(--pc) 0 var(--f),rgba(255,255,255,.16) var(--f) 100%);color:#fff}
+.C .d.p::before{content:"";position:absolute;inset:4px;border-radius:50%;background:var(--in)}.C .d.p span{position:relative}
+.C .d.td{box-shadow:0 0 0 2px var(--c2),0 0 0 4px #fff}
+.C .days small{font-size:10.5px;color:var(--soft)}.C .days .t small{color:#fff;font-weight:700}
+</style></head><body>
+<div class="col"><div class="lab">C1 · Okyanus<small>Derin petrol mavisi, turkuaz vurgu.</small></div>
+<div class="card C" style="--c1:#0F4C6E;--c2:#0A2C42;--ac:#5EEAD4;--acg:rgba(94,234,212,.25);--soft:#C3E3EE;--in:#0C3A55;--pc:#5EEAD4"><div class="hd"><h2>Bugün hareket</h2><span class="chip">Önizleme</span></div>
+<div style="display:flex;align-items:baseline;justify-content:space-between;margin-top:14px"><div><span class="num" style="font-size:46px;line-height:1">5.840</span> <span style="color:var(--soft);font-size:14px">adım</span></div><span style="color:var(--ac);font:600 14px Figtree">1.660 kaldı</span></div>
+<div class="path"><div class="trk"><i></i></div><div class="me"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="13" cy="4" r="2"/><path d="M7 21l3-7 3 2v5M10 14l1-5 4 3 3 1M8 9l3-1"/></svg></div><span class="flag"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 21V4M5 4h11l-2 4 2 4H5"/></svg></span></div>
+<div style="display:flex;justify-content:space-between;font-size:11.5px;color:var(--soft)"><span>0</span><span>Hedef 7.500</span></div>
+<div class="pills"><span><b>4,2 km</b>mesafe</span><span><b>279</b>kcal</span><span><b>58 dk</b>yürüyüş</span></div>
+<div style="display:flex;justify-content:space-between;font-size:12.5px;margin-bottom:10px"><span style="font-weight:600">Son 7 gün</span><span style="color:var(--ac)">🔥 3 gün seri</span></div>
+<div class="days"><div class=""><div class="d ok">✓</div><small>Per</small></div><div class=""><div class="d ok">✓</div><small>Cum</small></div><div class=""><div class="d p" style="--f:55%"><span>%55</span></div><small>Cmt</small></div><div class=""><div class="d ok">✓</div><small>Paz</small></div><div class=""><div class="d ok">✓</div><small>Pzt</small></div><div class=""><div class="d ok">✓</div><small>Sal</small></div><div class="t"><div class="d p td" style="--f:78%"><span>%78</span></div><small>Bugün</small></div></div></div></div><div class="col"><div class="lab">C2 · Gece moru<small>Mürdüm/lacivert, kehribar vurgu.</small></div>
+<div class="card C" style="--c1:#2E2563;--c2:#17123A;--ac:#FBBF24;--acg:rgba(251,191,36,.25);--soft:#CFC8F0;--in:#221B4D;--pc:#FBBF24"><div class="hd"><h2>Bugün hareket</h2><span class="chip">Önizleme</span></div>
+<div style="display:flex;align-items:baseline;justify-content:space-between;margin-top:14px"><div><span class="num" style="font-size:46px;line-height:1">5.840</span> <span style="color:var(--soft);font-size:14px">adım</span></div><span style="color:var(--ac);font:600 14px Figtree">1.660 kaldı</span></div>
+<div class="path"><div class="trk"><i></i></div><div class="me"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="13" cy="4" r="2"/><path d="M7 21l3-7 3 2v5M10 14l1-5 4 3 3 1M8 9l3-1"/></svg></div><span class="flag"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 21V4M5 4h11l-2 4 2 4H5"/></svg></span></div>
+<div style="display:flex;justify-content:space-between;font-size:11.5px;color:var(--soft)"><span>0</span><span>Hedef 7.500</span></div>
+<div class="pills"><span><b>4,2 km</b>mesafe</span><span><b>279</b>kcal</span><span><b>58 dk</b>yürüyüş</span></div>
+<div style="display:flex;justify-content:space-between;font-size:12.5px;margin-bottom:10px"><span style="font-weight:600">Son 7 gün</span><span style="color:var(--ac)">🔥 3 gün seri</span></div>
+<div class="days"><div class=""><div class="d ok">✓</div><small>Per</small></div><div class=""><div class="d ok">✓</div><small>Cum</small></div><div class=""><div class="d p" style="--f:55%"><span>%55</span></div><small>Cmt</small></div><div class=""><div class="d ok">✓</div><small>Paz</small></div><div class=""><div class="d ok">✓</div><small>Pzt</small></div><div class=""><div class="d ok">✓</div><small>Sal</small></div><div class="t"><div class="d p td" style="--f:78%"><span>%78</span></div><small>Bugün</small></div></div></div></div><div class="col"><div class="lab">C3 · Grafit<small>Koyu antrasit, turuncu vurgu. En sportif olanı.</small></div>
+<div class="card C" style="--c1:#2B3036;--c2:#15181C;--ac:#FB923C;--acg:rgba(251,146,60,.25);--soft:#C9CED4;--in:#1F2328;--pc:#FB923C"><div class="hd"><h2>Bugün hareket</h2><span class="chip">Önizleme</span></div>
+<div style="display:flex;align-items:baseline;justify-content:space-between;margin-top:14px"><div><span class="num" style="font-size:46px;line-height:1">5.840</span> <span style="color:var(--soft);font-size:14px">adım</span></div><span style="color:var(--ac);font:600 14px Figtree">1.660 kaldı</span></div>
+<div class="path"><div class="trk"><i></i></div><div class="me"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="13" cy="4" r="2"/><path d="M7 21l3-7 3 2v5M10 14l1-5 4 3 3 1M8 9l3-1"/></svg></div><span class="flag"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 21V4M5 4h11l-2 4 2 4H5"/></svg></span></div>
+<div style="display:flex;justify-content:space-between;font-size:11.5px;color:var(--soft)"><span>0</span><span>Hedef 7.500</span></div>
+<div class="pills"><span><b>4,2 km</b>mesafe</span><span><b>279</b>kcal</span><span><b>58 dk</b>yürüyüş</span></div>
+<div style="display:flex;justify-content:space-between;font-size:12.5px;margin-bottom:10px"><span style="font-weight:600">Son 7 gün</span><span style="color:var(--ac)">🔥 3 gün seri</span></div>
+<div class="days"><div class=""><div class="d ok">✓</div><small>Per</small></div><div class=""><div class="d ok">✓</div><small>Cum</small></div><div class=""><div class="d p" style="--f:55%"><span>%55</span></div><small>Cmt</small></div><div class=""><div class="d ok">✓</div><small>Paz</small></div><div class=""><div class="d ok">✓</div><small>Pzt</small></div><div class=""><div class="d ok">✓</div><small>Sal</small></div><div class="t"><div class="d p td" style="--f:78%"><span>%78</span></div><small>Bugün</small></div></div></div></div></body></html>
