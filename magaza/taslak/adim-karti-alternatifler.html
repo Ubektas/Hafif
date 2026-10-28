@@ -1,0 +1,67 @@
+<!doctype html><html lang="tr"><head><meta charset="utf-8"><link rel="stylesheet" href="../../www/fonts/fonts.css">
+<style>
+*{box-sizing:border-box;margin:0}body{background:#F1F5F3;font-family:Figtree,sans-serif;padding:36px;display:flex;gap:32px;align-items:flex-start}
+.col{width:390px;display:flex;flex-direction:column;gap:14px}.lab{font:700 20px Outfit;color:#0B3B33}.lab small{display:block;font:500 13.5px Figtree;color:#5F726C;margin-top:3px}
+.card{border-radius:24px;padding:20px;box-shadow:0 1px 2px rgba(11,36,32,.06),0 8px 24px rgba(11,36,32,.07)}
+h2{font:700 19px Outfit;letter-spacing:-.01em}.num{font-family:Outfit;font-weight:700;letter-spacing:-.03em}
+.hd{display:flex;justify-content:space-between;align-items:center}.chip{font:600 11px Figtree;letter-spacing:.08em;text-transform:uppercase;padding:5px 10px;border-radius:99px}
+.wk{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;position:relative;height:92px;align-items:end;padding-bottom:20px}
+.wk>div{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;position:relative}
+.wk i{display:block;width:100%;max-width:26px;border-radius:7px}.wk span{position:absolute;bottom:-20px;font-size:11px}
+.gl{position:absolute;left:0;right:0;border-top:1.5px dashed;pointer-events:none}.gl em{position:absolute;right:0;top:-17px;font:600 10px Figtree;font-style:normal}
+/* A */
+.A{background:#13203F;color:#fff}.A .chip{background:rgba(200,245,66,.14);color:#C8F542}
+.A .bar{height:14px;border-radius:99px;background:rgba(255,255,255,.1);position:relative;margin:12px 0 6px}.A .bar i{position:absolute;inset:0 22% 0 0;border-radius:99px;background:linear-gradient(90deg,#9BD11E,#C8F542)}
+.A .bar b{position:absolute;right:-2px;top:-5px;width:4px;height:24px;border-radius:2px;background:#fff}
+.A .trio{display:grid;grid-template-columns:repeat(3,1fr);margin:14px 0 16px;border-top:1px solid rgba(255,255,255,.1);border-bottom:1px solid rgba(255,255,255,.1)}
+.A .trio div{padding:10px 0 10px 12px;border-left:1px solid rgba(255,255,255,.1)}.A .trio div:first-child{border:0;padding-left:0}
+.A .trio b{display:block;font:700 19px Outfit}.A .trio span{font-size:11.5px;color:#A9B5D6}
+/* B */
+.B{background:#fff;color:#0B2420}.B .chip{background:#E6EEFF;color:#2457D6}
+.B .row{display:grid;grid-template-columns:132px 1fr;gap:18px;align-items:center;margin:14px 0 16px}
+.B .ring{position:relative;width:132px;height:132px}.B .ring>div{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.B .list div{display:flex;align-items:center;gap:10px;padding:7px 0;border-top:1px solid #EAF0F7;font-size:14px;color:#5F726C}.B .list div:first-child{border:0}
+.B .list b{margin-left:auto;font:700 15px Outfit;color:#0B2420}.B .ic{width:28px;height:28px;border-radius:9px;background:#EEF3FF;color:#2457D6;display:grid;place-items:center}
+/* C */
+.C{background:linear-gradient(160deg,#126B58,#0B3B33);color:#fff}.C .chip{background:rgba(255,255,255,.14);color:#CFEDE3}
+.C .path{position:relative;height:46px;margin:14px 0 4px}.C .trk{position:absolute;left:0;right:0;top:20px;height:6px;border-radius:99px;background:rgba(255,255,255,.15)}
+.C .trk i{position:absolute;left:0;top:0;bottom:0;width:78%;border-radius:99px;background:#9FF0D6}
+.C .me{position:absolute;left:78%;top:8px;transform:translateX(-50%);width:30px;height:30px;border-radius:50%;background:#9FF0D6;color:#0B3B33;display:grid;place-items:center;box-shadow:0 0 0 5px rgba(159,240,214,.25)}
+.C .flag{position:absolute;right:0;top:4px;color:#fff}
+.C .pills{display:flex;gap:8px;margin:12px 0 16px}.C .pills span{flex:1;background:rgba(255,255,255,.1);border-radius:12px;padding:8px 10px;font-size:11.5px;color:#BFE3D7}.C .pills b{display:block;font:700 17px Outfit;color:#fff}
+.C .days{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;text-align:center}
+.C .d{width:34px;height:34px;margin:0 auto 5px;border-radius:50%;display:grid;place-items:center;font:700 11px Outfit}
+.C .d.ok{background:#9FF0D6;color:#0B3B33}.C .d.no{border:2px solid rgba(255,255,255,.25);color:#BFE3D7}.C .d.td{background:conic-gradient(#9FF0D6 0 78%,rgba(255,255,255,.18) 78% 100%);color:#fff;position:relative}
+.C .d.td::before{content:"";position:absolute;inset:4px;border-radius:50%;background:#0F5A4A}.C .d.td span{position:relative}
+.C .days small{font-size:10.5px;color:#BFE3D7}.C .days .t small{color:#fff;font-weight:700}
+</style></head><body>
+<script>
+const W=[["Per",8200],["Cum",7900],["Cmt",4100],["Paz",9800],["Pzt",7600],["Sal",8400],["Bugün",5840]],G=7500,MX=10000;
+function wk(ok,no,td,lab,labT,gc){const H=72;return `<div style="position:relative;height:${H+22}px"><div class="gl" style="top:${H-H*G/MX}px;border-color:${gc}"><em style="color:${gc}">hedef</em></div><div style="display:grid;grid-template-columns:repeat(7,1fr);gap:8px;align-items:end;height:${H}px">${W.map(([d,n],i)=>`<div style="display:flex;justify-content:center;align-items:flex-end;height:100%"><i style="display:block;width:100%;max-width:26px;border-radius:7px;height:${Math.round(H*n/MX)}px;background:${i==6?td:n>=G?ok:no}"></i></div>`).join("")}</div><div style="display:grid;grid-template-columns:repeat(7,1fr);gap:8px;margin-top:6px;text-align:center;font-size:11px">${W.map(([d],i)=>`<span style="color:${i==6?labT:lab};${i==6?"font-weight:700":""}">${d}</span>`).join("")}</div></div>`}
+const fl=`<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 21V4M5 4h11l-2 4 2 4H5"/></svg>`;
+document.body.innerHTML=`
+<div class="col"><div class="lab">A · Gece<small>Lacivert zemin, neon yeşil. Halka yerine düz ilerleme çubuğu.</small></div>
+<div class="card A"><div class="hd"><h2>Bugün hareket</h2><span class="chip">Önizleme</span></div>
+<div style="display:flex;align-items:baseline;gap:8px;margin-top:14px"><span class="num" style="font-size:52px;line-height:1">5.840</span><span style="color:#A9B5D6;font-size:15px">/ 7.500 adım</span></div>
+<div class="bar"><i></i><b style="right:0"></b></div>
+<div style="display:flex;justify-content:space-between;font-size:13px"><span style="color:#C8F542;font-weight:600">%78 tamam</span><span style="color:#A9B5D6">1.660 adım kaldı · ~17 dk</span></div>
+<div class="trio"><div><b>4,2</b><span>km</span></div><div><b>279</b><span>kcal</span></div><div><b>58</b><span>dk yürüyüş</span></div></div>
+${wk("#C8F542","rgba(255,255,255,.22)","linear-gradient(#C8F542,#7FA815)","#A9B5D6","#C8F542","rgba(200,245,66,.55)")}</div></div>
+
+<div class="col"><div class="lab">B · Deniz<small>Beyaz kart, mavi halka. Değerler okunaklı bir listede.</small></div>
+<div class="card B"><div class="hd"><h2 style="color:#0B3B33">Bugün hareket</h2><span class="chip">Önizleme</span></div>
+<div class="row"><div class="ring"><svg width="132" height="132" viewBox="0 0 132 132"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#38BDF8"/><stop offset="1" stop-color="#2457D6"/></linearGradient></defs><circle cx="66" cy="66" r="56" fill="none" stroke="#EEF3FF" stroke-width="14"/><circle cx="66" cy="66" r="56" fill="none" stroke="url(#g)" stroke-width="14" stroke-linecap="round" stroke-dasharray="${2*Math.PI*56*.78} 999" transform="rotate(-90 66 66)"/></svg>
+<div><span class="num" style="font-size:28px;color:#0B3B33">5.840</span><span style="font-size:11.5px;color:#5F726C">/ 7.500 adım</span></div></div>
+<div><div style="font:700 13px Figtree;color:#2457D6;letter-spacing:.04em">%78 TAMAM</div><div style="font:700 17px Outfit;color:#0B3B33;margin:2px 0 6px">1.660 adım kaldı</div>
+<div class="list"><div><span class="ic">↗</span>Mesafe<b>4,2 km</b></div><div><span class="ic">◆</span>Kalori<b>279</b></div><div><span class="ic">◷</span>Süre<b>58 dk</b></div></div></div></div>
+${wk("#2457D6","#D6E2FB","linear-gradient(#38BDF8,#2457D6)","#5F726C","#2457D6","#7FA2EA")}</div></div>
+
+<div class="col"><div class="lab">C · Yol<small>Uygulamanın zümrüt rengi. Hedefe yürüyen işaret, haftada seri günleri.</small></div>
+<div class="card C"><div class="hd"><h2>Bugün hareket</h2><span class="chip">Önizleme</span></div>
+<div style="display:flex;align-items:baseline;justify-content:space-between;margin-top:14px"><div><span class="num" style="font-size:46px;line-height:1">5.840</span> <span style="color:#BFE3D7;font-size:14px">adım</span></div><span style="color:#9FF0D6;font:600 14px Figtree">1.660 kaldı</span></div>
+<div class="path"><div class="trk"><i></i></div><div class="me"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="13" cy="4" r="2"/><path d="M7 21l3-7 3 2v5M10 14l1-5 4 3 3 1M8 9l3-1"/></svg></div><span class="flag">${fl}</span></div>
+<div style="display:flex;justify-content:space-between;font-size:11.5px;color:#BFE3D7"><span>0</span><span>Hedef 7.500</span></div>
+<div class="pills"><span><b>4,2 km</b>mesafe</span><span><b>279</b>kcal</span><span><b>58 dk</b>yürüyüş</span></div>
+<div style="display:flex;justify-content:space-between;font-size:12.5px;margin-bottom:10px"><span style="font-weight:600">Son 7 gün</span><span style="color:#9FF0D6">🔥 3 gün seri</span></div>
+<div class="days">${W.map(([d,n],i)=>i==6?`<div class="t"><div class="d td"><span>%78</span></div><small>${d}</small></div>`:`<div><div class="d ${n>=G?"ok":"no"}">${n>=G?"✓":(n/1000).toFixed(1).replace(".",",")}</div><small>${d}</small></div>`).join("")}</div></div></div>`;
+</script></body></html>
