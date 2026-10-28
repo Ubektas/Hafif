@@ -2180,6 +2180,14 @@ function openStShare(){
 
 /* ---------- "Hafif ekibine gönder": kart + yazılı izin, kullanıcının kendi e-postasıyla gider ---------- */
 const TEAM_MAIL="apphafif@gmail.com";
+/* ekibe giden görsel Instagram hikâyesi boyutunda (1080×1920): kartın bulanık hâli zemin, kart ortada */
+function storyOf(cv){const W=1080,H=1920,o=document.createElement("canvas");o.width=W;o.height=H;const c=o.getContext("2d");
+  const sc=Math.max(W/cv.width,H/cv.height);try{c.filter="blur(48px) saturate(1.2)"}catch(_){}c.drawImage(cv,(W-cv.width*sc)/2,(H-cv.height*sc)/2,cv.width*sc,cv.height*sc);try{c.filter="none"}catch(_){}
+  c.fillStyle="rgba(0,0,0,.38)";c.fillRect(0,0,W,H);
+  const cw=900,ch=cw*cv.height/cv.width,x=(W-cw)/2,y=(H-ch)/2-20;c.save();c.shadowColor="rgba(0,0,0,.5)";c.shadowBlur=60;c.shadowOffsetY=24;rr(c,x,y,cw,ch,44);c.fillStyle="#000";c.fill();c.restore();
+  c.save();rr(c,x,y,cw,ch,44);c.clip();c.drawImage(cv,x,y,cw,ch);c.restore();
+  c.textAlign="center";c.fillStyle="rgba(255,255,255,.92)";c.font=`600 34px ${FONT_B}`;c.fillText("Google Play'de · Hafif: Kilo ve İğne Takibi",W/2,H-150);c.textAlign="left";
+  return o}
 const MAILI=`<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M4 7l8 6 8-6"/></svg>`;
 let teamVis="bas";
 function teamMailText(kind){
@@ -2187,12 +2195,12 @@ function teamMailText(kind){
   const vis=teamVis==="ad"?`adımla${nm?` (${nm})`:""}`:teamVis==="bas"?`baş harflerle${nm?` (${nm})`:""}`:"anonim";
   return {sub:`Hafif ${kind} kartım`,body:`Merhaba Hafif ekibi,\n\n${kind[0].toLocaleUpperCase("tr-TR")+kind.slice(1)} kartımı gönderiyorum.\n✅ Hafif'in Instagram hesabında paylaşılmasına izin veriyorum.\nGörünüm: ${vis}${note?`\nNotum: ${note}`:""}\n\nİznimi bu adrese yazarak istediğim zaman geri alabilirim.`};
 }
-function openTeamSend(cv,kind){
-  const prev=$("#sheetRoot").innerHTML,thumb=cv.toDataURL("image/png");
+function openTeamSend(card,kind){
+  const cv=storyOf(card),thumb=cv.toDataURL("image/jpeg",.8);
   $("#sheetRoot").innerHTML=`<div class="scrim" data-close><div class="sheet" role="dialog" aria-modal="true" aria-label="Hafif ekibine gönder"><div class="grab"></div>
     <header><button class="del" data-back>‹ Geri</button><button class="del" data-x>Kapat</button></header>
     <div style="display:flex;flex-direction:column;gap:14px">
-      <div style="display:flex;gap:14px;align-items:center"><img src="${thumb}" alt="" style="width:64px;height:80px;border-radius:10px;object-fit:cover;flex:none"><div><h2 style="margin:0">Hafif ekibine gönder</h2><span class="muted" style="font-size:13px">Kart, seçtiğin hâliyle gider.</span></div></div>
+      <div style="display:flex;gap:14px;align-items:center"><img src="${thumb}" alt="" style="width:54px;height:96px;border-radius:10px;object-fit:cover;flex:none"><div><h2 style="margin:0">Hafif ekibine gönder</h2><span class="muted" style="font-size:13px">Kart, seçtiğin hâliyle hikâye boyutunda gider.</span></div></div>
       <label class="tsck"><input type="checkbox" id="tsOk"><i aria-hidden="true"></i><span><b>Instagram'da paylaşabilirsiniz</b><small>Bu kartın Hafif'in Instagram hesabında yayınlanmasına izin veriyorum.</small></span></label>
       <div><div class="eyebrow" style="color:var(--muted);margin-bottom:8px">Paylaşımda nasıl görüneyim?</div>
         <div class="tsseg" role="radiogroup">${[["ad","Adımla"],["bas","Baş harflerle"],["anon","Anonim"]].map(([k,n])=>`<button type="button" role="radio" data-vis="${k}" aria-checked="${k===teamVis}">${n}</button>`).join("")}</div></div>
@@ -2209,21 +2217,23 @@ function openTeamSend(cv,kind){
   $("#tsOk").addEventListener("change",e=>{$("#tsGo").disabled=!e.target.checked});
   root.querySelectorAll("[data-vis]").forEach(b=>b.addEventListener("click",()=>{teamVis=b.dataset.vis;root.querySelectorAll("[data-vis]").forEach(x=>x.setAttribute("aria-checked",x===b));$("#tsNameL").hidden=teamVis==="anon";$("#tsName").placeholder=teamVis==="ad"?"Ayşe K.":"A. K."}));
   $("#tsGo").addEventListener("click",async()=>{
-    const {sub,body}=teamMailText(kind),blob=await new Promise(r=>cv.toBlob(r,"image/png")),name=`hafif-${kind==="adım"?"adim":"ilerleme"}-${today()}.png`;
+    const {sub,body}=teamMailText(kind),blob=await new Promise(r=>cv.toBlob(r,"image/png")),name=`hafif-${kind==="adım"?"adim":"ilerleme"}-hikaye-${today()}.png`;
     const cap=typeof CAP!=="undefined"&&CAP;
     if(cap&&cap.Share){ /* Android: e-posta uygulaması seçilir; 1.9.0'da alıcı da hazır gelecek */
       try{const r=new FileReader();const b64=await new Promise((ok,no)=>{r.onload=()=>ok(String(r.result).split(",")[1]);r.onerror=no;r.readAsDataURL(blob)});
         const {uri}=await cap.Filesystem.writeFile({path:name,directory:"CACHE",data:b64});
         await cap.Share.share({title:sub,text:`Alıcı: ${TEAM_MAIL}\n\n${body}`,files:[uri],dialogTitle:"E-posta uygulamanı seç"});toast("Teşekkürler!");closeSheet()}catch(_){}
       return}
-    /* web / Claude: önce görseli kaydet, sonra hazır e-postayı aç */
-    const href=`mailto:${TEAM_MAIL}?subject=${encodeURIComponent(sub)}&body=${encodeURIComponent(body+"\n\n(Kaydettiğin kart görselini bu e-postaya ekle.)")}`;
+    /* web / Claude önizlemesi: e-posta bağlantıları burada açılmaz; görsel kaydedilir, metin kopyalanır, destekleniyorsa paylaşım menüsü açılır */
+    const file=new File([blob],name,{type:"image/png"}),canShare=!!(navigator.canShare&&navigator.canShare({files:[file]}));
     const d=$("#tsDone");d.hidden=false;$("#tsGo").hidden=true;
-    d.innerHTML=`<div class="tsstep"><b>1</b><span>Kart görselini kaydet</span><button type="button" class="btn ghost" id="tsSave">Kaydet</button></div>
-      <div class="tsstep"><b>2</b><span>E-postayı aç ve görseli ekle</span><a class="btn" href="${href}" target="_blank" rel="noopener">E-postayı aç</a></div>
-      <p class="muted" style="margin:0;font-size:12.5px">E-posta açılmazsa <b>${TEAM_MAIL}</b> adresine yaz; metni kopyalayıp görseli eklemen yeterli. <button type="button" class="linkbtn" id="tsCopy">Metni kopyala</button></p>`;
+    d.innerHTML=`<div class="tsstep"><b>1</b><span>Hikâye görselini kaydet</span><button type="button" class="btn ghost" id="tsSave">Kaydet</button></div>
+      <div class="tsstep"><b>2</b><span><b style="display:inline;background:none;color:inherit;width:auto;height:auto;font-size:14px">${TEAM_MAIL}</b> adresine görseli ekleyip gönder</span><button type="button" class="btn ghost" id="tsCopy">Metni kopyala</button></div>
+      ${canShare?`<button type="button" class="btn" id="tsShare">Paylaş… (e-posta uygulamasını seç)</button>`:""}
+      <p class="muted" style="margin:0;font-size:12.5px">Claude önizlemesinde e-posta kendiliğinden açılmaz. Android uygulamasında e-posta, görsel ekli ve alıcısı dolu açılır.</p>`;
     $("#tsSave").addEventListener("click",async()=>{try{const res=await dlSave(name,blob);if(res&&res.status==="saved"){toast("Görsel kaydedildi");$("#tsSave").textContent="Kaydedildi ✓"}}catch(e){const m=dlMsg(e);if(m)toast(m)}});
-    $("#tsCopy").addEventListener("click",async()=>{const t=`${TEAM_MAIL}\n${sub}\n\n${body}`;try{await navigator.clipboard.writeText(t);toast("Metin kopyalandı")}catch(_){prompt("Metni kopyala:",t)}});
+    $("#tsCopy").addEventListener("click",async()=>{const t=`Alıcı: ${TEAM_MAIL}\nKonu: ${sub}\n\n${body}`;try{await navigator.clipboard.writeText(t);toast("Metin kopyalandı");$("#tsCopy").textContent="Kopyalandı ✓"}catch(_){prompt("Metni kopyala:",t)}});
+    if(canShare)$("#tsShare").addEventListener("click",async()=>{try{await navigator.share({files:[file],title:sub,text:`Alıcı: ${TEAM_MAIL}\n\n${body}`});toast("Teşekkürler!")}catch(e){if(e&&e.name!=="AbortError")toast("Paylaşım açılamadı; görseli kaydedip e-postayla gönderebilirsin")}});
   });
 }
 

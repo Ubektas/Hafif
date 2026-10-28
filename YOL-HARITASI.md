@@ -24,7 +24,8 @@
   - "Görseli kaydet / paylaş" ve "Hafif ekibine gönder" düğmeleri.
 - **"Hafif ekibine gönder" (Claude sürümünde yapıldı; Android için tamamlanacak)**
   - Hem ilerleme hem adım paylaşımında. İzin kutusu (işaretlenmeden düğme açılmaz), görünüm (Adımla / Baş harflerle / Anonim), görünecek ad, isteğe bağlı not.
-  - Claude/web: 1) görseli kaydet, 2) hazır e-postayı aç (mailto), açılmazsa metni kopyala.
+  - Ekibe giden görsel **hikâye boyutunda (1080×1920)**: kartın bulanık hâli zemin, kart ortada, altta "Google Play'de · Hafif". Instagram hikâyesine doğrudan konabilir.
+  - Claude/web: Claude önizlemesi e-posta bağlantılarını açmıyor (korumalı çerçeve). Bu yüzden: 1) hikâye görselini kaydet, 2) adres ve metni kopyala; tarayıcı destekliyorsa "Paylaş…" ile e-posta uygulaması seçilir.
   - Android (şu an geçici): paylaşım menüsünden e-posta uygulaması seçilir, alıcı metinde yazar. **1.9.0'da:** HafifWidget eklentisine EXTRA_EMAIL + ekli görsel ile doğrudan e-posta açan fonksiyon; alıcı, konu, metin ve görsel hazır gelsin.
   - Gizlilik politikasına bir cümle: kullanıcının kendi başlattığı e-posta gönderimi.
   - Emülatör testine adım paylaşımı ve ekip gönderimi adımları eklenecek.
