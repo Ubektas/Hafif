@@ -19,7 +19,8 @@
   - Plan: vaktin saatinden X dakika sonra (varsayılan 60, ayarlardan 30/60/120 ya da kapalı) "Sabah takviyelerini aldın mı?" bildirimi. Önceden kurulur; "Hepsini aldım" işaretlenince kendiliğinden iptal edilir (uygulama açık olmasa da çalışır). Günde en fazla 1 ek hatırlatma, gece saatlerinde gönderilmez.
   - Aynı mantık iğne günü için: iğne saatinden 3 saat sonra kaydedilmemişse "İğneni yaptın mı?".
 - **Adım paylaşımı (Claude sürümünde yapıldı, 1.9.0 ile Android'e gelecek)**
-  - Adım ekranında "Adımlarını paylaş" kartı → 5 yürüyüş temalı kart: Pist, Rota, Halka, Ayak izi, Hafta. Seçenekler: Hedef, Mesafe ve kalori.
+  - Adım ekranında "Adımlarını paylaş" kartı → 5 kart: Fotoğraf (kullanıcının kendi fotoğrafı üzerine adım bilgileri; fotoğraf kaydedilmez), Pist (lacivert/neon yeşil), Rota (harita/mavi), Halka (siyah/turkuaz), Hafta (zümrüt). Seçenekler: Hedef, Mesafe ve kalori.
+  - Android: fotoğraf seçici (input type=file) Capacitor WebView'da emülatörde ve gerçek telefonda denenecek.
   - "Görseli kaydet / paylaş" ve "Hafif ekibine gönder" düğmeleri.
 - **"Hafif ekibine gönder" (Claude sürümünde yapıldı; Android için tamamlanacak)**
   - Hem ilerleme hem adım paylaşımında. İzin kutusu (işaretlenmeden düğme açılmaz), görünüm (Adımla / Baş harflerle / Anonim), görünecek ad, isteğe bağlı not.
