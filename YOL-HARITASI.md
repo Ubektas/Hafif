@@ -29,6 +29,10 @@
   - Android (şu an geçici): paylaşım menüsünden e-posta uygulaması seçilir, alıcı metinde yazar. **1.9.0'da:** HafifWidget eklentisine EXTRA_EMAIL + ekli görsel ile doğrudan e-posta açan fonksiyon; alıcı, konu, metin ve görsel hazır gelsin.
   - Gizlilik politikasına bir cümle: kullanıcının kendi başlattığı e-posta gönderimi.
   - Emülatör testine adım paylaşımı ve ekip gönderimi adımları eklenecek.
+- **Adım kartı yeni tasarım "Okyanus" (Claude sürümünde yapıldı, 1.9.0 ile Android'e gelecek)**
+  - Özet'teki "Bugün hareket" kartı: petrol mavisi zemin, turkuaz vurgu; büyük adım sayısı + "kaldı", hedef bayrağına yürüyen işaretli ilerleme çizgisi, mesafe/kcal/süre, son 7 gün yuvarlakları (hedef tutan gün ✓, tutmayan gün yüzde ve dolu halka), "🔥 N gün seri".
+  - Adım sayfası: pembe yerine turkuaz/petrol (halka, saatlik grafik); "Son 7 gün" de yuvarlaklarla. Eski haftalık sütunların hep aynı boyda görünme hatası böylece kalkıyor.
+  - Android'de açık/koyu temada ve 320 px dar ekranda kontrol edilecek.
 - **Paylaşım ekranı metni (yapıldı, 1.9.0 ile Android'e gelecek):** "iPhone'da paylaşım menüsü açılır…" yerine "Telefonunun paylaşım menüsü açılır; WhatsApp'ı, Instagram'ı ya da galeriye kaydetmeyi seçebilirsin."
 
 ## Sırada (karar bekleyen / sonraki sürümler)
