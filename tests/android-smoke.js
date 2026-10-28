@@ -24,6 +24,8 @@ const step = (ad, sonuc, detay) => { report.adimlar.push({ ad, sonuc, detay }); 
     return page;
   };
   const tap = async (page, sel) => { await page.waitForSelector(sel, { state: 'attached', timeout: 20000 }); await page.evaluate(s => document.querySelector(s).click(), sel); };
+  // + düğmesi → hızlı ekleme panelinden kilo (w) ya da iğne (s)
+  const ekle = async (page, k) => { await tap(page, '#fab'); await new Promise(r => setTimeout(r, 500)); await tap(page, `[data-q="${k}"]`); };
   const type = (page, sel, v) => page.evaluate(([s, v]) => { const e = document.querySelector(s); e.value = v; e.dispatchEvent(new Event('input', { bubbles: true })); }, [sel, v]);
   try {
     // Emülatörde başka uygulamaların "yanıt vermiyor" pencereleri testi kapatmasın
@@ -106,11 +108,11 @@ const step = (ad, sonuc, detay) => { report.adimlar.push({ ad, sonuc, detay }); 
     step('Tüm sekmeler açıldı', report.hatalar.length === 0, report.hatalar.join(' | '));
 
     // Kilo girişi
-    await tap(page, '[data-open="weight"]'); await wait(600);
+    await ekle(page, 'w'); await wait(600);
     await type(page, '#w-kg', '88,4'); await shot('kilo-gir');
     await tap(page, '#sheetRoot [type="submit"]'); await wait(900);
     // İğne girişi
-    await tap(page, '[data-open="shot"]'); await wait(600);
+    await ekle(page, 's'); await wait(600);
     await type(page, '#s-dose', '2,5'); await shot('igne-ekle');
     await tap(page, '#sheetRoot [type="submit"]'); await wait(900);
     // Su
@@ -154,7 +156,7 @@ const step = (ad, sonuc, detay) => { report.adimlar.push({ ad, sonuc, detay }); 
     await tap(page, '[data-se="bulanti"]'); await wait(300); await tap(page, '[data-se="bulanti"]'); await wait(500);
     await tap(page, '#penStart'); await wait(700);
     await shot('yan-etki-kalem');
-    await tap(page, '[data-open="shot"]'); await wait(600); await type(page, '#s-dose', '5'); await tap(page, '#sheetRoot [type="submit"]'); await wait(1000);
+    await ekle(page, 's'); await wait(600); await type(page, '#s-dose', '5'); await tap(page, '#sheetRoot [type="submit"]'); await wait(1000);
     const yk = await D();
     const bugun = Object.keys(yk.sides || {})[0];
     step('Yan etki kaydedildi', bugun && yk.sides[bugun].bulanti === 2, JSON.stringify(yk.sides));
@@ -173,7 +175,7 @@ const step = (ad, sonuc, detay) => { report.adimlar.push({ ad, sonuc, detay }); 
     await tap(page, '.tab[data-tab="ozet"]'); await wait(700);
 
     // Geri tuşu: alt sayfa kapanmalı
-    await tap(page, '[data-open="weight"]'); await wait(600);
+    await ekle(page, 'w'); await wait(600);
     await page.evaluate(() => document.activeElement && document.activeElement.blur()); await device.shell('input keyevent 111'); await wait(800); // klavyeyi kapat
     await device.shell('input keyevent 4'); await wait(700);
     const sheetKapali = await page.evaluate(() => !document.querySelector('#sheetRoot').firstChild);
@@ -230,7 +232,7 @@ const step = (ad, sonuc, detay) => { report.adimlar.push({ ad, sonuc, detay }); 
     step('Geri tuşu ödeme ekranını kapatıyor', await page.evaluate(() => !document.querySelector('#paywall')));
     // grafik kartı için ikinci tartı (ilk iğneden sonra sayılsın diye bugün)
     await tap(page, '.tab[data-tab="ozet"]'); await wait(700);
-    await tap(page, '[data-open="weight"]'); await wait(600); await type(page, '#w-kg', '88,6');
+    await ekle(page, 'w'); await wait(600); await type(page, '#w-kg', '88,6');
     await tap(page, '#sheetRoot [type="submit"]'); await wait(1200);
     await tap(page, '.tab[data-tab="ozet"]'); await wait(700);
     await page.evaluate(() => { const b = document.querySelector('[data-chart="trend"]'); if (b) b.click(); }); await wait(900);

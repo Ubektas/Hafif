@@ -1,0 +1,32 @@
+{
+  "kullanici": 500,
+  "degerlendirme": 1500,
+  "kartli": 1251,
+  "turler": {
+    "protein": 336,
+    "bulanti": 54,
+    "gecikti": 144,
+    "guvenlik": 48,
+    "hizli": 144,
+    "esik": 63,
+    "tarti": 39,
+    "donus": 315,
+    "bugun": 39,
+    "su": 12,
+    "yarin": 57
+  },
+  "hatalar": [],
+  "tipler": {
+    "duraklama": 47,
+    "bos": 52,
+    "seyrek": 49,
+    "normal": 124,
+    "geri": 41,
+    "hizli": 58,
+    "aynigun": 45,
+    "yeni": 46,
+    "hergun": 38
+  },
+  "sonuc": "BAŞARILI",
+  "kartOrani": "83%"
+}

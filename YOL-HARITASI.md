@@ -35,6 +35,19 @@
   - Android'de açık/koyu temada ve 320 px dar ekranda kontrol edilecek.
 - **Paylaşım ekranı metni (yapıldı, 1.9.0 ile Android'e gelecek):** "iPhone'da paylaşım menüsü açılır…" yerine "Telefonunun paylaşım menüsü açılır; WhatsApp'ı, Instagram'ı ya da galeriye kaydetmeyi seçebilirsin."
 
+- **Yeni tasarım (Claude sürümünde yapıldı, 1.9.0 ile Android'e gelecek; ayrıntı: magaza/taslak/hafif-tasarim-incelemesi.html)**
+  - Renk sistemi: iğne gece mavisi (#27407A), protein kehribar, su gök mavisi, yağ lavanta; koyu temada iğne düğmesi koyu zemin + beyaz yazı.
+  - Özet tek ekran: kilo kartı, "Bugün" halkaları (protein, su, takviye), sıradaki iğne satırı (evre + önerilen bölge), adım kartı, rozet şeridi. Kilo grafiği ve vücut kompozisyonu Kilo sekmesine; döngü ve iğne geçmişi İğneler'e taşındı.
+  - Sağ altta + düğmesi: Kilo, İğne, Protein, Su (anında, "Geri al" ile), Ölçü, Yan etki.
+  - Kilo gir: −/+ ile 0,1 kg (basılı tutunca hızlanır), Bugün/Dün/Tarih seç, yağ oranı ve not isteğe bağlı açılır.
+  - İğne ekle: doz çipleri, Şimdi/Dün/Başka zaman, vücut çizimi üzerinde bölge ve her bölgenin son kullanımı. Bölge adları "Karın (sol)", "Uyluk ön (sol)", "Üst kol (sol)"; ayarlardan "Kullandığım bölgeler" (varsayılan karın + uyluk). Öneri: seçili bölgeler arasında en uzun süredir kullanılmayan. (Enjeksiyon bölgeleri maddesini karşılar.)
+  - Kilo listesi: çöp kutusu yok (silme düzenleme penceresinde), yağ oranı düz yazı, geçmiş aylar kapalı.
+  - İğneler: yedi günlük evre şeridi (güne dokununca evre), evre metni "Devamı" ile, "Vücuttaki ilaç" açılır bölümü; geçmişte çöp kutusu ve "bu aralıkta" yok.
+  - Protein & Su: hızlı yiyecek satırında solma, haftalık grafikte açıklama. Takviyeler: "Hepsini aldım", dar ekranda tek harfli gün başlıkları, saat kutuları taşmıyor. (Bu üç hata maddesini karşılar.)
+  - Ayarlar satır satır gruplar; kilolar virgülle. Hata düzeltmesi: ayarları kaydetmek tema seçimini ve kalem stoğunu sıfırlıyordu, artık korunuyor.
+  - "Bu cihazda kayıtlı" yazısı yalnızca Ayarlar'da.
+  - Emülatör testi + düğmesine göre güncellendi; koç simülatörü yeni bölge kuralıyla 0 hata.
+
 ## Sırada (karar bekleyen / sonraki sürümler)
 - Plus koç kartları: haftalık özet ve "gelecek haftanın tek hedefi", duraklama analizi (ölçü ve adım karşılaştırması)
 - Koçtaki kişisel bulantı örüntüsü ücretsiz mi kalsın, Plus'a mı bağlansın (öneri: ücretsiz)

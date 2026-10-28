@@ -1,0 +1,622 @@
+{
+  "protein": [
+    {
+      "id": "protein",
+      "c": "protein",
+      "ic": "yumurta",
+      "k": "Protein",
+      "t": "Akşama 35 g kaldı. Yetişir.",
+      "b": "İştahın azken en kolayı yoğun kaynaklar:",
+      "ch": [
+        [
+          "🥛",
+          "Süzme yoğurt",
+          15,
+          "yogurt"
+        ],
+        [
+          "🥩",
+          "Kırmızı et",
+          26,
+          "et"
+        ],
+        [
+          "🐟",
+          "Ton balığı",
+          25,
+          "ton"
+        ]
+      ],
+      "a": [
+        [
+          "Protein & su",
+          "go:besin"
+        ]
+      ],
+      "saat": 17,
+      "tip": "duraklama"
+    },
+    {
+      "id": "protein",
+      "c": "protein",
+      "ic": "yumurta",
+      "k": "Protein",
+      "t": "Günü tamamlamaya 35 g kaldı.",
+      "b": "İştahın azken en kolayı yoğun kaynaklar:",
+      "ch": [
+        [
+          "🥛",
+          "Süzme yoğurt",
+          15,
+          "yogurt"
+        ],
+        [
+          "🥩",
+          "Kırmızı et",
+          26,
+          "et"
+        ],
+        [
+          "🐟",
+          "Ton balığı",
+          25,
+          "ton"
+        ]
+      ],
+      "a": [
+        [
+          "Protein & su",
+          "go:besin"
+        ]
+      ],
+      "saat": 21,
+      "tip": "duraklama"
+    },
+    {
+      "id": "protein",
+      "c": "protein",
+      "ic": "yumurta",
+      "k": "Protein",
+      "t": "Bugün protein kaydı yok.",
+      "b": "Yediklerini eklemeyi unutmuş olabilirsin. Henüz yemediysen yoğun bir kaynakla başla:",
+      "ch": [
+        [
+          "🥛",
+          "Pınar Protein Pro Süt",
+          52,
+          "psutpro"
+        ],
+        [
+          "🍗",
+          "Tavuk göğsü",
+          31,
+          "tavuk"
+        ],
+        [
+          "🥩",
+          "Kırmızı et",
+          26,
+          "et"
+        ]
+      ],
+      "a": [
+        [
+          "Protein & su",
+          "go:besin"
+        ]
+      ],
+      "saat": 17,
+      "tip": "bos"
+    }
+  ],
+  "bulanti": [
+    {
+      "id": "bulanti",
+      "c": "shot",
+      "ic": "nabiz",
+      "k": "Yükseliş · 1. gün",
+      "t": "Bu evrede bulantı beklenen bir şey.",
+      "b": "Son 12 döngünde bulantı en çok iğneden sonraki 1. ve 2. günlerde olmuş. Bugün midene yük bindirme.",
+      "l": [
+        "Kraker, pirinç ya da muz gibi yumuşak bir şey",
+        "Suyu tek seferde değil, yudum yudum"
+      ],
+      "a": [
+        [
+          "Yan etkilerimi gör",
+          "go:igne"
+        ]
+      ],
+      "saat": 9,
+      "tip": "seyrek"
+    },
+    {
+      "id": "bulanti",
+      "c": "shot",
+      "ic": "nabiz",
+      "k": "Denge · 3. gün",
+      "t": "Bulantı mı? Küçük ve sık ye.",
+      "b": "Bugün midene yük bindirme.",
+      "l": [
+        "Kraker, pirinç ya da muz gibi yumuşak bir şey",
+        "Suyu tek seferde değil, yudum yudum"
+      ],
+      "a": [
+        [
+          "Yan etkilerimi gör",
+          "go:igne"
+        ]
+      ],
+      "saat": 9,
+      "tip": "yeni"
+    }
+  ],
+  "gecikti": [
+    {
+      "id": "gecikti",
+      "c": "shot",
+      "ic": "kalem",
+      "k": "İğne",
+      "t": "İğnen 1 gün gecikmiş görünüyor.",
+      "b": "Yaptıysan kaydetmeyi unutmuş olabilirsin. Yapmadıysan ne yapacağını doktoruna ya da eczacına sor.",
+      "a": [
+        [
+          "İğneyi kaydet",
+          "open:shot"
+        ]
+      ],
+      "saat": 9,
+      "tip": "normal"
+    },
+    {
+      "id": "gecikti",
+      "c": "shot",
+      "ic": "kalem",
+      "k": "İğne",
+      "t": "İğnen 3 gün gecikmiş görünüyor.",
+      "b": "Yaptıysan kaydetmeyi unutmuş olabilirsin. Yapmadıysan ne yapacağını doktoruna ya da eczacına sor.",
+      "a": [
+        [
+          "İğneyi kaydet",
+          "open:shot"
+        ]
+      ],
+      "saat": 9,
+      "tip": "geri"
+    },
+    {
+      "id": "gecikti",
+      "c": "shot",
+      "ic": "kalem",
+      "k": "İğne",
+      "t": "İğnen 2 gün gecikmiş görünüyor.",
+      "b": "Yaptıysan kaydetmeyi unutmuş olabilirsin. Yapmadıysan ne yapacağını doktoruna ya da eczacına sor.",
+      "a": [
+        [
+          "İğneyi kaydet",
+          "open:shot"
+        ]
+      ],
+      "saat": 9,
+      "tip": "yeni"
+    }
+  ],
+  "guvenlik": [
+    {
+      "id": "guvenlik",
+      "c": "bad",
+      "ic": "uyari",
+      "k": "Önemli",
+      "t": "Doktoruna danışmanın zamanı.",
+      "b": "2 gündür şiddetli baş ağrısı kaydettin. Bu, beklenen yan etkilerin ötesinde olabilir. Kayıtlarını doktoruna göstermen işini kolaylaştırır.",
+      "a": [
+        [
+          "Kayıtlarımı gör",
+          "go:igne"
+        ]
+      ],
+      "n": "Koç teşhis koymaz; yalnızca kayıtlarına bakarak yönlendirir.",
+      "safe": 1,
+      "saat": 9,
+      "tip": "seyrek"
+    }
+  ],
+  "su": [
+    {
+      "id": "su",
+      "c": "water",
+      "ic": "damla",
+      "k": "Su",
+      "t": "10 gündür su hedefindesin.",
+      "b": "Bugün de tamamlarsan 11. gün olacak. 2.500 ml kaldı.",
+      "dots": [
+        [
+          "Per",
+          true,
+          false
+        ],
+        [
+          "Cum",
+          true,
+          false
+        ],
+        [
+          "Cmt",
+          true,
+          false
+        ],
+        [
+          "Paz",
+          true,
+          false
+        ],
+        [
+          "Pzt",
+          true,
+          false
+        ],
+        [
+          "Sal",
+          true,
+          false
+        ],
+        [
+          "Çar",
+          false,
+          true
+        ]
+      ],
+      "a": [
+        [
+          "+250 ml",
+          "water:250"
+        ],
+        [
+          "+500 ml",
+          "water:500"
+        ]
+      ],
+      "saat": 17,
+      "tip": "geri"
+    },
+    {
+      "id": "su",
+      "c": "water",
+      "ic": "damla",
+      "k": "Su",
+      "t": "5 gündür su hedefindesin.",
+      "b": "Bugün de tamamlarsan 6. gün olacak. 2.000 ml kaldı.",
+      "dots": [
+        [
+          "Per",
+          false,
+          false
+        ],
+        [
+          "Cum",
+          true,
+          false
+        ],
+        [
+          "Cmt",
+          true,
+          false
+        ],
+        [
+          "Paz",
+          true,
+          false
+        ],
+        [
+          "Pzt",
+          true,
+          false
+        ],
+        [
+          "Sal",
+          true,
+          false
+        ],
+        [
+          "Çar",
+          false,
+          true
+        ]
+      ],
+      "a": [
+        [
+          "+250 ml",
+          "water:250"
+        ],
+        [
+          "+500 ml",
+          "water:500"
+        ]
+      ],
+      "saat": 17,
+      "tip": "aynigun"
+    },
+    {
+      "id": "su",
+      "c": "water",
+      "ic": "damla",
+      "k": "Su",
+      "t": "7 gündür su hedefindesin.",
+      "b": "Bugün de tamamlarsan 8. gün olacak. 1.500 ml kaldı.",
+      "dots": [
+        [
+          "Per",
+          true,
+          false
+        ],
+        [
+          "Cum",
+          true,
+          false
+        ],
+        [
+          "Cmt",
+          true,
+          false
+        ],
+        [
+          "Paz",
+          true,
+          false
+        ],
+        [
+          "Pzt",
+          true,
+          false
+        ],
+        [
+          "Sal",
+          true,
+          false
+        ],
+        [
+          "Çar",
+          false,
+          true
+        ]
+      ],
+      "a": [
+        [
+          "+250 ml",
+          "water:250"
+        ],
+        [
+          "+500 ml",
+          "water:500"
+        ]
+      ],
+      "saat": 17,
+      "tip": "hizli"
+    }
+  ],
+  "hizli": [
+    {
+      "id": "hizli",
+      "c": "warn",
+      "ic": "uyari",
+      "k": "Hız",
+      "t": "Çok hızlı gidiyorsun.",
+      "b": "Son 15 günde 4,1 kg verdin; haftada vücut ağırlığının yaklaşık %2,4'i. Bu hız genelde önerilenden fazla. Doktoruna söylemen ve proteini aksatmaman iyi olur.",
+      "a": [
+        [
+          "Protein & su",
+          "go:besin"
+        ]
+      ],
+      "saat": 9,
+      "tip": "hizli"
+    }
+  ],
+  "esik": [
+    {
+      "id": "esik",
+      "c": "accent",
+      "ic": "rozet",
+      "k": "Rozet",
+      "t": "120 kg'ın altına 0,1 kg kaldı.",
+      "b": "Bu hızla <b>Cuma</b> civarı. Başladığından beri 8,5 kg verdin.",
+      "bar": 0.9883720930232565,
+      "saat": 9,
+      "tip": "seyrek"
+    },
+    {
+      "id": "esik",
+      "c": "accent",
+      "ic": "rozet",
+      "k": "Rozet",
+      "t": "%10 eşiğine 0,3 kg kaldı.",
+      "b": "Bu hızla <b>Cuma</b> civarı. Başladığından beri 7,1 kg verdin.",
+      "bar": 0.9594594594594599,
+      "saat": 9,
+      "tip": "normal"
+    },
+    {
+      "id": "esik",
+      "c": "accent",
+      "ic": "rozet",
+      "k": "Rozet",
+      "t": "115 kg'ın altına 0,1 kg kaldı.",
+      "b": "Bu hızla <b>Pazar</b> civarı. Başladığından beri 2,9 kg verdin.",
+      "bar": 0.9666666666666686,
+      "saat": 9,
+      "tip": "normal"
+    }
+  ],
+  "tarti": [
+    {
+      "id": "tarti",
+      "c": "warn",
+      "ic": "grafik",
+      "k": "Tartı",
+      "t": "+0,4 kg mı? Panik yok.",
+      "b": "Günlük tartı su, tuz ve sindirimle 1–2 kg oynayabilir. Haftalık gidişin hâlâ <b class=\"good\">haftada −0,5 kg</b>.",
+      "a": [
+        [
+          "Eğrime bak",
+          "go:kilo"
+        ]
+      ],
+      "saat": 9,
+      "tip": "normal"
+    },
+    {
+      "id": "tarti",
+      "c": "warn",
+      "ic": "grafik",
+      "k": "Tartı",
+      "t": "+1,5 kg mı? Panik yok.",
+      "b": "Günlük tartı su, tuz ve sindirimle 1–2 kg oynayabilir. Haftalık gidişin hâlâ <b class=\"good\">haftada −0,6 kg</b>.",
+      "a": [
+        [
+          "Eğrime bak",
+          "go:kilo"
+        ]
+      ],
+      "saat": 9,
+      "tip": "hergun"
+    },
+    {
+      "id": "tarti",
+      "c": "warn",
+      "ic": "grafik",
+      "k": "Tartı",
+      "t": "Bugünkü tartı 6,1 kg fazla.",
+      "b": "Bir önceki tartından bu kadar fark genelde yazım hatasından olur. Doğruysa sorun yok; günlük oynamalar haftalık gidişi bozmaz.",
+      "a": [
+        [
+          "Düzelt",
+          "edit:w28"
+        ],
+        [
+          "Doğru",
+          "x"
+        ]
+      ],
+      "saat": 9,
+      "tip": "normal"
+    }
+  ],
+  "donus": [
+    {
+      "id": "donus",
+      "c": "accent",
+      "ic": "yaprak",
+      "k": "Hoş geldin",
+      "t": "Kaldığın yerden devam.",
+      "b": "4 gündür kayıt yok, sorun değil. Aradaki günleri doldurmaya çalışma; bugün tek bir tartı girmen yeterli, eğri kendini toparlar.",
+      "a": [
+        [
+          "Kilo gir",
+          "open:weight"
+        ]
+      ],
+      "saat": 9,
+      "tip": "normal"
+    }
+  ],
+  "bugun": [
+    {
+      "id": "bugun",
+      "c": "shot",
+      "ic": "kalem",
+      "k": "Bugün iğne günü",
+      "t": "Saat 21:00 · Üst kol (sağ)",
+      "b": "Yaptıktan sonra kaydetmeyi unutma; döngün ve hatırlatıcıların buna göre ayarlanır. Kaleminde 2 doz var.",
+      "a": [
+        [
+          "İğneyi kaydet",
+          "open:shot"
+        ]
+      ],
+      "saat": 9,
+      "tip": "normal"
+    },
+    {
+      "id": "bugun",
+      "c": "shot",
+      "ic": "kalem",
+      "k": "Bugün iğne günü",
+      "t": "Saat 08:00 · Karın (sağ)",
+      "b": "Yaptıktan sonra kaydetmeyi unutma; döngün ve hatırlatıcıların buna göre ayarlanır. Kaleminde 3 doz var.",
+      "a": [
+        [
+          "İğneyi kaydet",
+          "open:shot"
+        ]
+      ],
+      "saat": 9,
+      "tip": "yeni"
+    },
+    {
+      "id": "bugun",
+      "c": "shot",
+      "ic": "kalem",
+      "k": "Bugün iğne günü",
+      "t": "Saat 09:00 · Karın (sol)",
+      "b": "Yaptıktan sonra kaydetmeyi unutma; döngün ve hatırlatıcıların buna göre ayarlanır. Kaleminde doz kalmadı; yeni kalem gerekiyor.",
+      "a": [
+        [
+          "İğneyi kaydet",
+          "open:shot"
+        ]
+      ],
+      "saat": 9,
+      "tip": "geri"
+    }
+  ],
+  "yarin": [
+    {
+      "id": "yarin",
+      "c": "shot",
+      "ic": "kalem",
+      "k": "Yarın iğne günü",
+      "t": "Yarın 08:00 · Karın (sol)",
+      "b": "Son iğne: Üst kol (sol). Bölgeyi değiştirmek ciltte iz kalmasını önler.",
+      "a": [
+        [
+          "İğneler",
+          "go:igne"
+        ]
+      ],
+      "saat": 9,
+      "tip": "seyrek"
+    },
+    {
+      "id": "yarin",
+      "c": "shot",
+      "ic": "kalem",
+      "k": "Yarın iğne günü",
+      "t": "Yarın 21:00 · Karın (sol)",
+      "b": "Son iğne: Üst kol (sağ). Bölgeyi değiştirmek ciltte iz kalmasını önler. Kaleminde son doz kaldı; sonraki iğne için yeni kalem al.",
+      "a": [
+        [
+          "İğneler",
+          "go:igne"
+        ]
+      ],
+      "saat": 9,
+      "tip": "normal"
+    },
+    {
+      "id": "yarin",
+      "c": "shot",
+      "ic": "kalem",
+      "k": "Yarın iğne günü",
+      "t": "Yarın 09:00 · Karın (sağ)",
+      "b": "Son iğne: Üst kol (sol). Bölgeyi değiştirmek ciltte iz kalmasını önler. Kaleminde doz kalmadı; yeni kalem gerekiyor.",
+      "a": [
+        [
+          "İğneler",
+          "go:igne"
+        ]
+      ],
+      "saat": 9,
+      "tip": "normal"
+    }
+  ]
+}

@@ -7,9 +7,9 @@
 :root{
   /* Layout: one-column phone app; light porcelain ground with emerald-tinted neutrals; the summary hero is the one dark "Zümrüt" piece and buttons echo it */
   --bg:#F1F5F3; --glow:#DDEFE7; --surface:#FFFFFF; --surface-2:#FFFFFF; --sunk:#EDF3F0; --fg:#0B2420; --muted:#5F726C; --line:#E0E8E4;
-  --accent:#0E7C66; --accent-soft:#E1F3EC; --accent-ink:#FFFFFF; --fat:#7B5BD0; --fat-soft:#EEE9FB; --shot:#3552B0; --shot-soft:#E8EDFA; --protein-ink:#8A5A10; --mint:#9FF0D6;
+  --accent:#0E7C66; --accent-soft:#E1F3EC; --accent-ink:#FFFFFF; --fat:#7A63B8; --fat-soft:#EEEAF8; --shot:#27407A; --shot-soft:#E6EBF5; --protein-ink:#8A5A10; --mint:#9FF0D6;
   --emerald-1:#126B58; --emerald-2:#0B3B33; --head:#0B3B33; --chipbg:rgba(255,255,255,.75); --warnbg:#FFF4E5; --warnfg:#8A5A10;
-  --good:#12855D; --bad:#D04545; --water:#2C8FE0; --water-2:#7CC0F4; --water-soft:#E7F3F6; --protein:#D08A1E; --protein-soft:#FDF3E2;
+  --good:#12855D; --bad:#D04545; --water:#2E8BC0; --water-2:#7CC0E8; --water-soft:#E4F1F8; --protein:#C27A12; --protein-soft:#FBF0DC;
   --shadow:0 1px 2px rgba(11,36,32,.04),0 14px 34px -18px rgba(11,59,51,.22);
   --f-display:"Outfit", ui-rounded, system-ui, sans-serif;
   --f-body:"Figtree", system-ui, -apple-system, sans-serif;
@@ -18,9 +18,9 @@
 }
 :root[data-hf="dark"]{
   --bg:#08171A; --glow:#0E2D27; --surface:#10221F; --surface-2:#132824; --sunk:#0B1C19; --fg:#E4F1EC; --muted:#8FA8A1; --line:#1D3631;
-  --accent:#43C9A0; --accent-soft:#103A30; --accent-ink:#04201A; --fat:#A68BF0; --fat-soft:#251E3D; --shot:#7D94E6; --shot-soft:#18203A; --protein-ink:#F0C27A; --mint:#9FF0D6;
+  --accent:#43C9A0; --accent-soft:#103A30; --accent-ink:#04201A; --fat:#A493DD; --fat-soft:#241F38; --shot:#5571C2; --shot-soft:#172038; --protein-ink:#F0C27A; --mint:#9FF0D6;
   --emerald-1:#167A64; --emerald-2:#0C4A3F; --head:#CFEDE3; --chipbg:rgba(255,255,255,.06); --warnbg:#3A2A10; --warnfg:#F3C77B;
-  --good:#3FC48F; --bad:#F06B6B; --water:#4FA9E8; --water-2:#7CC0F4; --water-soft:#10293A; --protein:#E09A2E; --protein-soft:#33260F;
+  --good:#3FC48F; --bad:#F06B6B; --water:#4FA6D6; --water-2:#7CC0E8; --water-soft:#10293A; --protein:#D9952F; --protein-soft:#33260F;
   --shadow:0 1px 2px rgba(0,0,0,.3),0 14px 34px -18px rgba(0,0,0,.6);
   color-scheme:dark; --seinsfg:#B9C6F2; --step:#5EEAD4; --step-2:#2DD4BF; --step-soft:#0E3340;
 }
@@ -270,7 +270,7 @@ input[type=range].wr::-moz-range-thumb{width:20px;height:20px;border-radius:50%;
 .seg3 button{border:0;background:none;border-radius:11px;padding:10px;font:600 14px var(--f-body);color:var(--muted);cursor:pointer}
 .seg3 button[aria-checked="true"]{background:var(--surface);color:var(--fg);box-shadow:0 1px 3px rgba(0,0,0,.12)}
 .pen{display:flex;align-items:center;gap:14px}
-.pendots{display:flex;gap:5px;flex-wrap:wrap}.pendots i{width:22px;height:30px;border-radius:7px;background:var(--sunk);border:1px solid var(--line)}.pendots i.on{background:linear-gradient(180deg,#7D94E6,var(--shot));border-color:transparent}
+.pendots{display:flex;gap:5px;flex-wrap:wrap}.pendots i{width:22px;height:30px;border-radius:7px;background:var(--sunk);border:1px solid var(--line)}.pendots i.on{background:linear-gradient(180deg,#5571C2,var(--shot));border-color:transparent}
 .penrow{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 .penrow .stepper{flex:none}
 .pencard.warn{box-shadow:inset 0 0 0 1.5px var(--shot)}
@@ -291,7 +291,8 @@ input[type=range].wr::-moz-range-thumb{width:20px;height:20px;border-radius:50%;
 .pempty2{font-size:13px;color:var(--muted);padding:10px 0 2px;border-top:1px solid var(--line)}
 .paddbtn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;border:0;background:var(--protein);color:#fff;border-radius:18px;padding:15px;font:700 16px var(--f-body);cursor:pointer;box-shadow:0 12px 24px -14px var(--protein)}
 .paddbtn:active{transform:scale(.98)}
-.psugg{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin:0 -2px;padding:0 2px}.psugg::-webkit-scrollbar{display:none}
+.psugg{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin:0 -2px;padding:0 2px}.psugg{-webkit-mask-image:linear-gradient(90deg,#000 85%,transparent);mask-image:linear-gradient(90deg,#000 85%,transparent);padding-right:28px}
+.wleg{display:flex;align-items:center;gap:5px;font-size:11.5px;color:var(--muted)}.wleg i{width:9px;height:9px;border-radius:3px;margin-left:6px}.psugg::-webkit-scrollbar{display:none}
 .psugg button{flex:none;display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:99px;padding:5px 12px 5px 6px;font:500 13px var(--f-body);background:var(--surface);color:var(--fg);cursor:pointer}
 .psugg button b{color:var(--protein-ink);font-weight:700}
 .fgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
@@ -479,6 +480,19 @@ section{gap:16px}
 .fsec{display:flex;align-items:center;gap:10px;margin-top:6px;font-size:11px;text-transform:uppercase;letter-spacing:.09em;color:var(--accent);font-weight:700}
 .fsec:first-child{margin-top:0}
 .fsec::after{content:"";flex:1;height:1px;background:var(--line)}
+/* ayarlar: satır satır gruplar */
+.setf{display:flex;flex-direction:column;gap:10px}.setf .fsec{margin-top:8px}.setf .fsec::after{display:none}
+.sgroup{background:var(--surface);border-radius:18px;box-shadow:var(--shadow);overflow:hidden}
+.sgroup .setr,.sgsub .setr{display:flex;flex-direction:row;align-items:center;justify-content:space-between;gap:12px;padding:12px 16px;border-top:1px solid var(--line);font-size:14.5px;color:var(--fg);font-weight:500;min-height:52px}
+.sgroup>.setr:first-child,.sgroup>.sgsub:first-child>.setr:first-child{border-top:0}
+.setr>span:first-child{min-width:0;display:flex;flex-direction:column;gap:2px}.setr small{font-size:12px;color:var(--muted);font-weight:400}
+.sin{display:flex;align-items:baseline;gap:5px;flex:none}
+.sin input,.sin select{width:auto;max-width:130px;text-align:right;border:0;background:transparent;padding:4px 0;font:600 15px var(--f-body);color:var(--head)}
+.sin input{width:7ch}.sin input#a-drug{width:13ch}
+.sin input:focus,.sin select:focus{outline:none;box-shadow:inset 0 -2px 0 var(--accent)}
+.sin em{font-style:normal;color:var(--muted);font-size:13px}
+.setr.sstack{flex-direction:column;align-items:stretch}
+#a-sites button[aria-pressed="true"]{background:var(--shot);border-color:var(--shot);color:#fff}
 .three{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
 .hint{margin:-2px 0 0;font-size:12.5px;color:var(--muted);background:var(--sunk);border-radius:12px;padding:10px 12px}
 label{font-size:12.5px}
@@ -524,7 +538,7 @@ input:focus{background:var(--surface);border-color:var(--accent);outline:none}
 .slot{display:flex;flex-direction:column;gap:10px;padding:16px}
 .slh{display:flex;align-items:center;gap:12px}
 .sli{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;flex:none}
-.s-sabah .sli{background:#FFF4D6;color:#D99A13}.s-ogle .sli{background:#FFEFD0;color:#E08A00}.s-aksam .sli{background:#E8EDFA;color:#3552B0}.s-gece .sli{background:#E6EAFB;color:#E0507A}
+.s-sabah .sli{background:#FFF4D6;color:#D99A13}.s-ogle .sli{background:#FFEFD0;color:#E08A00}.s-aksam .sli{background:#E6EBF5;color:#27407A}.s-gece .sli{background:#E6EAFB;color:#E0507A}
 .allbtn{border:0;border-radius:99px;background:var(--accent-soft);color:var(--accent);font:700 12.5px var(--f-body);padding:8px 12px;cursor:pointer}
 .sldone{font:700 12.5px var(--f-body);color:var(--good);display:flex;align-items:center;gap:4px}
 .sldone::before{content:"✓"}
@@ -548,9 +562,13 @@ input:focus{background:var(--surface);border-color:var(--accent);outline:none}
 .wtab td.tdy{background:var(--accent-soft)}
 .wtab td:first-child{text-align:left}
 .wtab i{display:inline-block;width:10px;height:10px;border-radius:50%}
-.wtn{display:flex;align-items:center;gap:4px;white-space:nowrap;font-weight:600;font-size:12px;max-width:118px}
+.wtn{display:flex;align-items:center;gap:4px;white-space:nowrap;font-weight:600;font-size:12px;max-width:100%}
 .wtn span{overflow:hidden;text-overflow:ellipsis}
-.wtab{table-layout:fixed}.wtab th:first-child,.wtab td:first-child{width:122px}
+.wtab{table-layout:fixed}.wtab th:first-child,.wtab td:first-child{width:108px}
+.wtab td:first-child{overflow:hidden}.wtab .wtn>span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.wtab th{letter-spacing:0;white-space:nowrap}.wtab .dshort{display:none}
+@media (max-width:400px){.wtab .dlong{display:none}.wtab .dshort{display:inline}.wtab th:first-child,.wtab td:first-child{width:96px}}
+input[type=time],input[type=date]{min-width:0;width:100%;max-width:100%}
 .three input{min-width:0;padding:10px 8px;font-size:14px}
 .sedit{background:var(--sunk);border-radius:16px;padding:10px;display:flex;flex-direction:column;gap:8px}
 .seh{display:flex;align-items:center;gap:8px}.seh input{flex:1;background:var(--surface)}
@@ -799,6 +817,29 @@ input.bignum{font:500 28px var(--f-num);text-align:center}
 .site{border:1px solid var(--line);background:var(--sunk);color:var(--fg);border-radius:10px;padding:10px 4px;font:500 13px var(--f-body);cursor:pointer}
 .site[aria-pressed="true"]{background:var(--shot);color:#fff;border-color:var(--shot)}
 .site .sug{display:block;font-size:10px;opacity:.8}
+/* formlar: kilo −/+ ve iğne bölge çizimi */
+.kstep{display:flex;align-items:center;justify-content:space-between;gap:8px;background:var(--sunk);border-radius:20px;padding:8px}
+.kb{width:52px;height:52px;flex:none;border-radius:16px;border:0;background:var(--surface);color:var(--head);font:500 28px/1 var(--f-display);box-shadow:var(--shadow);cursor:pointer;touch-action:manipulation;user-select:none;-webkit-user-select:none}
+.kb:active{transform:scale(.95)}
+.kval,form .kval{display:flex;flex-direction:row;align-items:baseline;justify-content:center;gap:4px;min-width:0;flex:1;margin:0}
+.kval input.bignum{font:700 42px var(--f-display);letter-spacing:-.02em;color:var(--head);background:transparent;border:0;padding:0;width:4.2ch;min-width:3ch;max-width:170px;field-sizing:content;text-align:center;flex:0 1 auto}
+.kval input.bignum:focus{outline:none;box-shadow:inset 0 -2px 0 var(--accent)}
+.kval small{font-size:16px;color:var(--muted)}
+.fhint{margin:0;font-size:12.5px;line-height:1.45;text-align:center}
+.flbl{font:600 11px var(--f-body);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:-4px}.flbl span{text-transform:none;letter-spacing:0;font-weight:500}
+.fchips{display:flex;gap:6px;flex-wrap:wrap}
+.fchips button{border:1px solid var(--line);background:var(--sunk);color:var(--fg);border-radius:99px;padding:8px 13px;font:600 13px var(--f-body);cursor:pointer}
+.fchips button[aria-checked="true"]{background:var(--head);border-color:var(--head);color:var(--surface)}
+.fchips button.more{background:transparent;border-style:dashed;color:var(--muted)}
+.dosebox{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;background:var(--shot-soft);border-radius:16px;padding:10px 12px}
+.dosebox label{font:600 11px var(--f-body);letter-spacing:.08em;text-transform:uppercase;color:var(--shot);display:flex;flex-direction:column;gap:2px}
+.dosein{display:flex;align-items:baseline;gap:4px}.dosein input{font:700 24px var(--f-display);color:var(--shot);background:transparent;border:0;padding:0;width:3.2ch;min-width:2ch;field-sizing:content}.dosein small{font:600 14px var(--f-body);color:var(--shot);text-transform:none}
+.dosebox .fchips button{background:var(--surface);border-color:transparent}
+.sitebox{display:grid;grid-template-columns:108px 1fr;gap:12px;align-items:start}
+.bmap{width:108px;height:auto}.bmap .bb{fill:var(--sunk);stroke:var(--line)}.bmap .bs{fill:var(--shot-soft);stroke:var(--shot);stroke-width:1.5;cursor:pointer}.bmap .bs.on{fill:var(--shot);stroke:var(--surface);stroke-width:2.5}
+.sitebox .sites{display:flex;flex-direction:column;gap:6px}
+.sitebox .site{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:9px 11px;text-align:left;font-weight:600}
+.sitebox .site small{font-weight:500;font-size:11px;color:var(--muted);white-space:nowrap}.sitebox .site[aria-pressed="true"] small{color:rgba(255,255,255,.8)}
 
 /* tab bar */
 nav.tabs{position:fixed;left:0;right:0;bottom:0;background:rgba(255,255,255,.88);-webkit-backdrop-filter:saturate(1.4) blur(16px);backdrop-filter:saturate(1.4) blur(16px);border-top:1px solid var(--line);display:flex;justify-content:center;padding:6px max(8px,env(safe-area-inset-right,0px)) calc(6px + env(safe-area-inset-bottom,0px)) max(8px,env(safe-area-inset-left,0px));z-index:5}
@@ -814,7 +855,39 @@ nav.tabs .in{display:grid;grid-template-columns:repeat(5,1fr);width:100%;max-wid
 .sheet header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
 @keyframes up{from{transform:translateY(30px);opacity:.6}to{transform:none;opacity:1}}
 @media (prefers-reduced-motion:reduce){.sheet{animation:none}}
-.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(84px + env(safe-area-inset-bottom,0px));background:var(--fg);color:var(--bg);padding:10px 16px;border-radius:12px;font-size:14px;z-index:30}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(84px + env(safe-area-inset-bottom,0px));background:var(--fg);color:var(--bg);padding:10px 16px;border-radius:12px;font-size:14px;z-index:30;display:flex;align-items:center;gap:14px;max-width:calc(100vw - 32px);white-space:nowrap}
+.toast button{border:0;background:none;color:var(--mint);font:700 14px var(--f-body);padding:0;cursor:pointer}
+/* + düğmesi ve hızlı ekleme */
+.fab{position:fixed;right:max(16px,calc(50vw - 264px));bottom:calc(78px + env(safe-area-inset-bottom,0px));width:56px;height:56px;border-radius:19px;border:0;background:var(--head);color:var(--bg);display:grid;place-items:center;box-shadow:0 10px 24px -6px rgba(11,59,51,.5);z-index:15;cursor:pointer}
+.fab:active{transform:scale(.94)}.fab:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+.qgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.qgrid button{border:0;border-radius:18px;background:var(--sf);color:var(--c);padding:14px 6px;display:flex;flex-direction:column;align-items:center;gap:8px;font:600 13px var(--f-body);cursor:pointer}
+.qgrid i{width:40px;height:40px;border-radius:13px;background:var(--c);color:#fff;display:grid;place-items:center;font:700 15px var(--f-display);font-style:normal}
+/* Özet: bugün halkaları, sıradaki iğne, rozet şeridi */
+.trings{display:flex;flex-direction:column;gap:12px}.trh{display:flex;justify-content:space-between;align-items:baseline;gap:10px}.trh .muted{font-size:12.5px}
+.trrow{display:grid;gap:6px}
+.tring{border:0;background:none;padding:0;display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;font:inherit;color:inherit}
+.tring .tr{position:relative;width:60px;height:60px;display:grid;place-items:center}.tring svg{position:absolute;inset:0}
+.tring b{font:700 13px var(--f-display);color:var(--head);position:relative}.tring small{font-size:11.5px;color:var(--muted)}
+.nsrow,.msstrip{display:flex;align-items:center;gap:12px;width:100%;border:0;text-align:left;font:inherit;color:inherit;cursor:pointer}
+.nsrow>i,.msstrip>i{font-style:normal;color:var(--muted);font-size:20px}
+.nsi{width:46px;height:46px;border-radius:15px;background:var(--shot-soft);color:var(--shot);display:flex;flex-direction:column;align-items:center;justify-content:center;flex:none;line-height:1}
+.nsi b{font:700 19px var(--f-display)}:root[data-hf="dark"] .nsi{color:var(--seinsfg)}.nsi small{font-size:10px;font-weight:600}.nsrow.due .nsi{background:var(--shot);color:#fff}
+.nst{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}.nst b{font:700 15px var(--f-display);color:var(--head)}.nst small{font-size:12.5px;color:var(--muted)}
+.msstrip>svg{flex:none}
+/* Kilo: kapalı aylar */
+details.mgroup>summary{list-style:none;cursor:pointer}details.mgroup>summary::-webkit-details-marker{display:none}
+details.mgroup:not([open]) .mhead{margin-bottom:0}details.mgroup>summary .mhead h2::after{content:" ›";color:var(--muted);font-weight:500}details.mgroup[open]>summary .mhead h2::after{content:" ⌄"}
+.wsub{color:var(--muted);font-size:12px}
+/* İğneler: evre şeridi */
+.strip{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin-top:4px}
+.scell{border:0;background:none;padding:0;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;font:inherit;color:inherit;min-width:0}
+.scell i{display:block;width:100%;height:42px;border-radius:10px;background:var(--pc)}
+.scell.fut i{opacity:.4}.scell.today i{box-shadow:0 0 0 2px var(--surface),0 0 0 4px var(--shot)}.scell.sel:not(.today) i{box-shadow:0 0 0 2px var(--surface),0 0 0 4px var(--muted)}
+.scell b{font:600 11.5px var(--f-body);color:var(--muted)}.scell.today b{color:var(--shot);font-weight:700}
+.scell span{font-size:9.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+.drugd summary{font:600 14px var(--f-body);color:var(--head)}
+.phmore summary{cursor:pointer;color:var(--accent);font:600 13px var(--f-body);margin-top:6px}
 </style>
 
 <div id="mdefs"></div>
@@ -835,6 +908,7 @@ nav.tabs .in{display:grid;grid-template-columns:repeat(5,1fr);width:100%;max-wid
 
 </div></nav>
 
+<button type="button" class="fab" id="fab" aria-label="Ekle" hidden><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>
 <div id="sheetRoot"></div>
 
 <script>
@@ -960,7 +1034,15 @@ function doseTable(){
   for(const r of rows){const k=r.dose??"?";const o=m.get(k)||{dose:k,count:0,loss:0,has:false};o.count++;if(r.loss!=null){o.loss+=r.loss;o.has=true}m.set(k,o)}
   return [...m.values()].sort((a,b)=>(+a.dose||0)-(+b.dose||0));
 }
-function nextSite(){const s=sortedS();if(!s.length)return SITES[0];const i=SITES.indexOf(s[s.length-1].site);return SITES[(i+1)%SITES.length]}
+const SITE_LBL={"Karın sol":"Karın (sol)","Karın sağ":"Karın (sağ)","Uyluk sol":"Uyluk ön (sol)","Uyluk sağ":"Uyluk ön (sağ)","Kol sol":"Üst kol (sol)","Kol sağ":"Üst kol (sağ)"};
+const siteLbl=x=>SITE_LBL[x]||x||"";
+/* kullanılan bölgeler: ayarlardan seçilir; seçilmemişse karın + uyluk, geçmişte kol kullanıldıysa kol da */
+function activeSites(){const P=S.profile;if(Array.isArray(P.sites)&&P.sites.length)return SITES.filter(x=>P.sites.includes(x));
+  const used=new Set(S.shots.map(x=>x.site));return SITES.filter(x=>!x.startsWith("Kol")||used.has(x))}
+function siteLast(x){let d=null;S.shots.forEach(y=>{if(y.site===x&&(!d||y.date>d))d=y.date});return d}
+/* öneri: seçili bölgeler arasında en uzun süredir kullanılmayan (hiç kullanılmamış olan önce) */
+function nextSite(){const A=activeSites();if(!A.length)return SITES[0];let best=A[0],bd=siteLast(A[0]);
+  for(const x of A.slice(1)){const d=siteLast(x);if(bd&&(!d||d<bd)){best=x;bd=d}}return best}
 
 /* ---------- views ---------- */
 /* ---------- Hafif Plus (Google Play aboneliği; satın alma doğrudan telefon ile Google Play arasında) ---------- */
@@ -1043,7 +1125,7 @@ function widgetData(){
   if(SHOTS()&&ps.last){const I=phaseInfo(),lvAt=t=>level(t,t<=ps.now?ps.past:ps.fut),t0=now-864e5,lv=[];
     for(let k=0;k<=240;k++)lv.push(Math.round(lvAt(t0+k*36e5)*100)/100);
     o.cyc={t0:I.t0,tn:I.tn,days:I.days,ends:I.ends,ph:PHASES.map(x=>x.k),tip:PHASES.map(x=>x.txt.split(". ")[0].replace(/\.$/,"")+"."),lvT0:t0,lv};
-    if(ps.next)o.next={ts:shotTs(ps.next),dose:ps.next.dose||"",drug:P.drug||"",site:nextSite(),pen:P.penLeft??null}}
+    if(ps.next)o.next={ts:shotTs(ps.next),dose:ps.next.dose||"",drug:P.drug||"",site:siteLbl(nextSite()),pen:P.penLeft??null}}
   const r=dayRec(td),hs=!!(S.hc&&S.hc.on),E=hs?stepEst(stepsOn(td)):null,pg=pGoal();
   const G={};for(const x of pItems()){const k=x[3]||"_";G[k]=G[k]||{k,n:0,g:0};G[k].n++;G[k].g+=x[2]}
   const foods=Object.values(G).sort((a,b)=>b.g-a.g).slice(0,3).map(z=>{const f=FOODS.find(y=>y.k===z.k);const e=FEM[z.k]||["🍽️","Diğer"];return `${e[0]} ${e[1]} ${z.n>1&&f&&!f.pick?"×"+z.n:ml(z.g)+" g"}`});
@@ -1102,6 +1184,8 @@ function render(){
   $("#title").textContent={ozet:"Hafif",basari:"Başarıların",adim:"Adımlar",takviye:"Takviyeler",besin:"Protein & Su",kilo:"Kilo",igne:"İğneler",ayar:"Ayarlar"}[tab];
   $("#today").textContent=new Date().toLocaleDateString("tr-TR",{day:"numeric",month:"long",weekday:"long"});
   SCRUB=[];GID=0;
+  $("#sync").hidden=tab!=="ayar";
+  $("#fab").hidden=!["ozet","kilo","igne","besin","takviye"].includes(tab)||!S.profile.onboarded;
   $("#view").innerHTML=({ozet:vOzet,basari:vBasari,adim:vAdim,takviye:vTakviye,besin:()=>`<section>${todayCard()}</section>`,kilo:vKilo,igne:vIgne,ayar:vAyar})[tab]();
   if(ANIM){const sec=$("#view").querySelector("section");if(sec){sec.classList.add("enter");[...sec.children].forEach((el,i)=>el.style.setProperty("--i",Math.min(i,8)))}}
   ANIM=false;
@@ -1169,10 +1253,10 @@ function coachCards(){
     b:`${gap} gündür kayıt yok, sorun değil. Aradaki günleri doldurmaya çalışma; bugün tek bir tartı girmen yeterli, eğri kendini toparlar.`,a:[["Kilo gir","open:weight"]]});
   // 4) iğne günü: yarın / bugün / gecikti
   const ls=SHOTS()?sortedS().pop():null;
-  if(ls){const iv=P.intervalDays||7,nd=addDays(ls.date,iv),left=diffDays(td,nd),site=nextSite(),pen=P.penLeft;
+  if(ls){const iv=P.intervalDays||7,nd=addDays(ls.date,iv),left=diffDays(td,nd),site=siteLbl(nextSite()),pen=P.penLeft;
     const penTxt=pen==null?"":pen<=0?" Kaleminde doz kalmadı; yeni kalem gerekiyor.":pen===1?" Kaleminde son doz kaldı; sonraki iğne için yeni kalem al.":` Kaleminde ${pen} doz var.`;
     if(left===1)out.push({id:"yarin",c:"shot",ic:"kalem",k:"Yarın iğne günü",t:`Yarın ${shotTime(ls)} · ${site}`,
-      b:`${ls.site?`Son iğne: ${esc(ls.site)}. Bölgeyi`:"Bölgeyi her seferinde"} değiştirmek ciltte iz kalmasını önler.${penTxt}`,a:[["İğneler","go:igne"]]});
+      b:`${ls.site?`Son iğne: ${esc(siteLbl(ls.site))}. Bölgeyi`:"Bölgeyi her seferinde"} değiştirmek ciltte iz kalmasını önler.${penTxt}`,a:[["İğneler","go:igne"]]});
     else if(left===0)out.push({id:"bugun",c:"shot",ic:"kalem",k:"Bugün iğne günü",t:`Saat ${shotTime(ls)} · ${site}`,
       b:`Yaptıktan sonra kaydetmeyi unutma; döngün ve hatırlatıcıların buna göre ayarlanır.${penTxt}`,a:[["İğneyi kaydet","open:shot"]]});
     else if(left<0&&left>=-3)out.push({id:"gecikti",c:"shot",ic:"kalem",k:"İğne",t:`İğnen ${-left} gün gecikmiş görünüyor.`,
@@ -1286,7 +1370,7 @@ function vOzetMain(){
   if(lastShot){
     const nd=addDays(lastShot.date,iv), left=diffDays(today(),nd);
     const when=left>1?`${left} gün sonra`:left===1?"Yarın":left===0?"Bugün":`${-left} gün gecikti`;
-    nextHtml=`<div class="next"><div class="pen">${penIcon()}</div><div style="min-width:0"><span class="eyebrow">Sıradaki iğne</span><b>${when}</b><span class="muted">${fmtD(nd)} ${shotTime(lastShot)} · ${esc(lastShot.dose??"")}${lastShot.dose?" mg · ":""}öneri: ${nextSite()}</span></div></div>`;
+    nextHtml=`<div class="next"><div class="pen">${penIcon()}</div><div style="min-width:0"><span class="eyebrow">Sıradaki iğne</span><b>${when}</b><span class="muted">${fmtD(nd)} ${shotTime(lastShot)} · ${esc(lastShot.dose??"")}${lastShot.dose?" mg · ":""}öneri: ${siteLbl(nextSite())}</span></div></div>`;
   }
   const days=first&&latest?Math.max(1,diffDays(first.date,latest.date)):null;
   const perWeek=days&&lost!=null?lost/days*7:null;
@@ -1297,25 +1381,67 @@ function vOzetMain(){
   const bmi=P.heightCm&&latest?latest.kg/((P.heightCm/100)**2):null;
   const ring=pct!=null?(()=>{const r=36,c=2*Math.PI*r;return `<div class="ring" role="img" aria-label="Hedefin yüzde ${Math.round(pct)}'${pctEk(pct)} tamam"><svg width="86" height="86" viewBox="0 0 86 86"><circle cx="43" cy="43" r="${r}" fill="none" stroke="var(--line)" stroke-width="7"/><circle cx="43" cy="43" r="${r}" fill="none" stroke="var(--accent)" stroke-width="7" stroke-linecap="round" stroke-dasharray="${c*pct/100} ${c}" transform="rotate(-90 43 43)"/></svg><div class="lbl"><b>%${Math.round(pct)}</b>hedef</div></div>`})():`<button class="goalset" data-go="ayar">Hedef<br>belirle</button>`;
   const totalDays=first?diffDays(first.date,today()):0;
-  // body composition since start
-  const fw=w.filter(x=>x.fat!=null); let comp="";
-  if(fw.length>1){
-    const A=fw[0],B=fw[fw.length-1], fA=A.kg*A.fat/100, fB=B.kg*B.fat/100;
-    const dKg=A.kg-B.kg, dFat=fA-fB, dLean=dKg-dFat, share=dKg>0?Math.max(0,Math.min(100,dFat/dKg*100)):null;
-    comp=`<div id="compWrap">${compHtml({A,B,fA,fB,dKg,dFat,dLean,share})}</div>`;
-  }
+  /* Özet yalnızca "bugün"ü anlatır; grafik ve vücut kompozisyonu Kilo'da, döngü ve iğne geçmişi İğneler'de */
   return `<section>${coachHtml()}
     <div id="heroWrap">${heroHtml({w,s,lost,start,latest,goal,pct,ring,perWeek,totalDays})}</div>
-    ${actionsHtml()}
-    ${suppMini()}
+    ${todayRings()}
+    ${nextShotRow()}
     ${stepCard()}
     ${penWarn()}${remCta()}
-    ${w.length>1?chartCard():""}
-    ${comp}
-    ${milestoneCard()}
-    ${SHOTS()?`<div id="cycWrap" class="cycw" data-v="kadran">${cycleHtml("kadran")}</div>`:""}
-    ${SHOTS()&&s.length?`<div class="card"><div class="msh" style="margin-bottom:6px"><h2>İğne girişleri <span class="muted num" style="font-size:14px;font-weight:400">${s.length}</span></h2><button type="button" class="seeall" data-go="igne">İğneler ›</button></div>${shotList(9999)}</div>`:""}
+    ${msStrip()}
   </section>`;
+}
+/* vücut kompozisyonu kartı (Kilo sekmesinde) */
+function compCard(){
+  const fw=sortedW().filter(x=>x.fat!=null); if(fw.length<2) return "";
+  const A=fw[0],B=fw[fw.length-1], fA=A.kg*A.fat/100, fB=B.kg*B.fat/100;
+  const dKg=A.kg-B.kg, dFat=fA-fB, dLean=dKg-dFat, share=dKg>0?Math.max(0,Math.min(100,dFat/dKg*100)):null;
+  return `<div id="compWrap">${compHtml({A,B,fA,fB,dKg,dFat,dLean,share})}</div>`;
+}
+/* Özet: bugünün halkaları (protein, su, takviye) */
+function todayRings(){
+  const r=(S.daily||{})[today()]||{p:0,w:0},L=dosesFor(today()),t=takenOn(today()),tn=L.filter(q=>t[q.key]).length;
+  const R=24,C=2*Math.PI*R,ring=(f,col,soft,val,lbl,go,aria)=>`<button type="button" class="tring" data-go="${go}" aria-label="${aria}"><span class="tr"><svg width="60" height="60" viewBox="0 0 60 60" aria-hidden="true"><circle cx="30" cy="30" r="${R}" fill="none" stroke="${soft}" stroke-width="7"/><circle cx="30" cy="30" r="${R}" fill="none" stroke="${col}" stroke-width="7" stroke-linecap="round" stroke-dasharray="${C*Math.min(1,f)} ${C}" transform="rotate(-90 30 30)"/></svg><b>${val}</b></span><small>${lbl}</small></button>`;
+  const pg=pGoal(),wg=wGoal(),items=[ring((r.p||0)/pg,"var(--protein)","var(--protein-soft)",Math.round(r.p||0)+"g","Protein","besin",`Protein ${Math.round(r.p||0)} / ${pg} g`),
+    ring((r.w||0)/wg,"var(--water)","var(--water-soft)",((r.w||0)/1000).toLocaleString("tr-TR",{maximumFractionDigits:2})+"L","Su","besin",`Su ${r.w||0} / ${wg} ml`)];
+  if(L.length)items.push(ring(tn/L.length,"var(--accent)","var(--accent-soft)",tn+"/"+L.length,"Takviye","takviye",`Takviye ${tn} / ${L.length} alındı`));
+  const left=Math.max(0,pg-(r.p||0)),sub=left?`${Math.round(left)} g protein kaldı`:"Protein hedefi tamam";
+  return `<div class="card trings"><div class="trh"><h2>Bugün</h2><span class="muted">${sub}</span></div><div class="trrow" style="grid-template-columns:repeat(${items.length},1fr)">${items.join("")}</div></div>`;
+}
+/* Özet: sıradaki iğne tek satır */
+function nextShotRow(){
+  if(!SHOTS()) return "";
+  const ls=sortedS().pop(); if(!ls) return `<button type="button" class="card nsrow" data-open="shot"><span class="nsi">${penIcon()}</span><span class="nst"><b>İlk iğneni ekle</b><small>Döngü takvimin ve bölge önerin başlasın</small></span><i>›</i></button>`;
+  const nd=addDays(ls.date,S.profile.intervalDays||7),left=diffDays(today(),nd),X=cycData();
+  const when=left>1?`${left} gün sonra`:left===1?"Yarın":left===0?"Bugün":`${-left} gün gecikti`;
+  const day=toD(nd).toLocaleDateString("tr-TR",{weekday:"long"});
+  return `<button type="button" class="card nsrow${left<=0?" due":""}" data-go="igne"><span class="nsi"><b>${left>0?left:"!"}</b><small>${left>0?"gün":""}</small></span><span class="nst"><b>Sıradaki iğne: ${left>1?day+" "+shotTime(ls):when}</b><small>${X?`Bugün ${PHASES[X.I.cur].k} evresi · `:""}önerilen bölge: ${siteLbl(nextSite())}</small></span><i>›</i></button>`;
+}
+/* Özet: rozetler tek satır */
+function msStrip(){
+  const M=milestones(); if(!M) return "";
+  const done=M.L.filter(m=>m.done),next=M.L.find(m=>!m.done),last=done[done.length-1];
+  const pr=next?Math.max(0,Math.min(1,((last?last.kg:M.start)-M.cur)/((last?last.kg:M.start)-next.kg))):1;
+  const nm=next?(next.goal?`Hedef kilo · ${kg(next.kg)} kg`:next.id[0]==="p"?`Vücudunun %${next.id.slice(1)}'${pctEk(+next.id.slice(1))}`:`${next.kg} kg'ın altı`):"Tüm rozetler senin";
+  return `<button type="button" class="card msstrip" data-go="basari">${next?medal(next,46,pr):""}<span class="nst"><b>Rozetler ${done.length}/${M.L.length}</b><small>${next?`Sıradaki: ${nm} · ${kg(Math.max(0,M.cur-next.kg))} kg kaldı`:nm}</small></span><i>›</i></button>`;
+}
+/* + düğmesi: hızlı ekleme paneli */
+function openQuick(){
+  const it=[["w","Kilo","kg","var(--accent)","var(--accent-soft)"]];
+  if(SHOTS())it.push(["s","İğne",penIcon().replace('width="26" height="26"','width="18" height="18"'),"var(--shot)","var(--shot-soft)"]);
+  it.push(["p","Protein","P","var(--protein)","var(--protein-soft)"],["su","+"+ml(wAmt)+" ml su","+","var(--water)","var(--water-soft)"],["m","Ölçü","cm","var(--fat)","var(--fat-soft)"]);
+  if(SHOTS())it.push(["se","Yan etki","!","var(--bad)","color-mix(in oklab,var(--bad) 12%,var(--surface))"]);
+  $("#sheetRoot").innerHTML=`<div class="scrim" data-close><div class="sheet" role="dialog" aria-modal="true" aria-label="Ekle"><div class="grab"></div>
+    <header><h2>Ne eklemek istersin?</h2><button class="del" data-x>Kapat</button></header>
+    <div class="qgrid">${it.map(([k,n,ic,c,sf])=>`<button type="button" data-q="${k}" style="--c:${c};--sf:${sf}"><i>${ic}</i><span>${n}</span></button>`).join("")}</div>
+    <p class="muted" style="margin:0;font-size:12.5px;text-align:center">Su hemen eklenir; diğerleri kendi formunu açar.</p></div></div>`;
+  const root=$("#sheetRoot");
+  root.querySelector(".scrim").addEventListener("click",e=>{if(e.target.classList.contains("scrim"))closeSheet()});
+  root.querySelector("[data-x]").addEventListener("click",closeSheet);
+  root.querySelectorAll("[data-q]").forEach(b=>b.addEventListener("click",()=>{const k=b.dataset.q;
+    if(k==="w")openSheet("weight");else if(k==="s")openSheet("shot");else if(k==="p")openProteinSheet();else if(k==="m")openMeasSheet();
+    else if(k==="su"){const r=ensureDay(today()),amt=wAmt;r.w+=amt;r.log.push([Date.now(),"w",amt]);save();closeSheet();toast(`${ml(amt)} ml su eklendi`,["Geri al",()=>{const d=ensureDay(today()),i=d.log.map(x=>x[1]).lastIndexOf("w");if(i>=0){d.w=Math.max(0,d.w-d.log[i][2]);d.log.splice(i,1);save();render()}}])}
+    else if(k==="se"){$("#sheetRoot").innerHTML="";tab="igne";ANIM=true;render();setTimeout(()=>{const e=$("#seCard");if(e)scrollTo({top:e.getBoundingClientRect().top+scrollY-12,behavior:"smooth"})},60)}}));
 }
 function penIcon(){return `<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 4l6 6M17 7l-9 9-3 1 1-3 9-9M6 18l-3 3M11 8l2 2M8 11l2 2"/></svg>`}
 
@@ -1609,7 +1735,7 @@ function todayCard(){
     <div class="todayhead"><h2>Bugün</h2><span class="muted" style="font-size:13px">${toD(today()).toLocaleDateString("tr-TR",{day:"numeric",month:"long"})}</span></div>
     <div class="phead"><div><span class="eyebrow" style="color:var(--protein)">Protein</span><div class="pbig"><b id="pVal" style="font-weight:700">${ml(r.p)}</b><small>/ ${pg} g</small></div></div><span class="ppill" id="pPill">${pPill(r.p,pg)}</span></div>
     <div><div class="pblocks" id="pBlocks" aria-label="Protein: ${ml(r.p)} / ${pg} g">${pBlocksHtml()}</div>
-      <div class="pscale"><span>her blok 5 g</span><span id="pLeft">${r.p>=pg?"Hedef tamam":ml(pg-r.p)+" g kaldı"}</span></div></div>
+      <div class="pscale"><span>her blok 5 g · renk yiyeceğe göre</span><span id="pLeft">${r.p>=pg?"Hedef tamam":ml(pg-r.p)+" g kaldı"}</span></div></div>
     <div class="plist" id="pList">${pListHtml()}</div>
     <button type="button" class="paddbtn" id="pOpen"><span style="font-size:22px;line-height:0">+</span> Protein ekle</button>
     <div class="psugg">${pSugg().map(f=>`<button type="button" data-food="${f.k}">${icon(f.k,20)}${f.n.replace(" göğsü","").replace(" balığı","").replace("Kırmızı ","").replace("Protein shake","Shake")} <b>${f.g} g</b></button>`).join("")}</div>
@@ -1626,7 +1752,7 @@ function todayCard(){
     <button class="btn waterbtn" type="button" id="wAdd"><span style="font-size:22px;line-height:0">+</span> <span id="wAmtLbl">${ml(wAmt)}</span> ml su ekle</button>
     <div class="wlog" id="wLog">${wLogHtml()}</div>
     <div class="hr"></div>
-    <div><span class="eyebrow">Son 7 gün</span><div class="week" id="week" style="margin-top:8px">${weekHtml()}</div></div>
+    <div><div style="display:flex;justify-content:space-between;align-items:baseline"><span class="eyebrow">Son 7 gün</span><span class="wleg"><i style="background:var(--protein)"></i>Protein<i style="background:var(--water)"></i>Su</span></div><div class="week" id="week" style="margin-top:8px">${weekHtml()}</div></div>
     <div style="text-align:center"><button class="linkbtn" id="undo" ${r.log.length?"":"hidden"}>${undoText()}</button></div>
   </div>`;
 }
@@ -1980,7 +2106,7 @@ function tBasamak(c,W,H,D,o){
 
 /* ---- Afiş: büyük rakam, ızgara, haftalık sütunlar ---- */
 function tAfis(c,W,H,D,o){
-  const PAPER="#F6F7F5",INK="#111816",RED="#3552B0",G="#0B3B33";
+  const PAPER="#F6F7F5",INK="#111816",RED="#27407A",G="#0B3B33";
   c.fillStyle=PAPER;c.fillRect(0,0,W,H);
   c.strokeStyle="rgba(17,24,22,.12)";c.lineWidth=2;for(let x=80;x<W;x+=230){c.beginPath();c.moveTo(x,0);c.lineTo(x,H);c.stroke()}
   c.font=`700 26px ${FONT_B}`;c.fillStyle=INK;LS(c,"3px");c.fillText("HAFİF",80,110);c.fillText("KİLO GÜNLÜĞÜ",310,110);c.fillText(String(toD(today()).getFullYear()),770,110);LS(c,"0px");
@@ -2453,7 +2579,7 @@ function pdfFromJpegs(pages){
 }
 function rpPages(){
   const PW=1240,PH=1754,M=90,F=s=>`${s}px Figtree, sans-serif`,FD=s=>`700 ${s}px "Outfit", sans-serif`;
-  const C={em:"#0B3B33",ac:"#0E7C66",mu:"#5F726C",ln:"#E0E8E4",sk:"#EDF3F0",sh:"#3552B0",shs:"#E8EDFA",pr:"#D08A1E",fg:"#0B2420"};
+  const C={em:"#0B3B33",ac:"#0E7C66",mu:"#5F726C",ln:"#E0E8E4",sk:"#EDF3F0",sh:"#27407A",shs:"#E6EBF5",pr:"#C27A12",fg:"#0B2420"};
   const pages=[];let cv,c,y;
   const page=()=>{cv=document.createElement("canvas");cv.width=PW;cv.height=PH;c=cv.getContext("2d");c.fillStyle="#fff";c.fillRect(0,0,PW,PH);pages.push(cv);
     c.fillStyle=C.em;c.font=FD(30);c.textBaseline="alphabetic";c.fillText("Hafif",M,M+6);c.fillStyle=C.mu;c.font=F(20);c.textAlign="right";c.fillText("İlerleme raporu · "+toD(today()).toLocaleDateString("tr-TR",{day:"numeric",month:"long",year:"numeric"}),PW-M,M+4);c.textAlign="left";
@@ -2585,7 +2711,7 @@ function compHtml(X){
         <text x="${x+37}" y="${base+18}" text-anchor="middle" font-size="11" fill="var(--muted)" font-family="Figtree, sans-serif">${lbl}</text></g>`};
     body=`<svg class="chart" viewBox="0 0 ${W} ${H+10}" aria-hidden="true"><defs>
         <linearGradient id="cl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2BB38F"/><stop offset="1" stop-color="#0E7C66"/></linearGradient>
-        <linearGradient id="cf" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#B49CF0"/><stop offset="1" stop-color="#7B5BD0"/></linearGradient></defs>
+        <linearGradient id="cf" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#B3A3E0"/><stop offset="1" stop-color="#7A63B8"/></linearGradient></defs>
         ${col(28,A.kg,fA,lA,fmtShort(A.date))}${col(218,B.kg,fB,lB,fmtShort(B.date))}
         <g font-family="Figtree, sans-serif" text-anchor="middle"><path d="M120 ${base-60} H198" stroke="var(--line)" stroke-width="2" stroke-dasharray="3 4"/><path d="M192 ${base-65} l7 5 l-7 5" fill="none" stroke="var(--muted)" stroke-width="1.6"/>
         <rect x="124" y="${base-122}" width="72" height="24" rx="12" fill="var(--fat-soft)"/><text x="160" y="${base-105.5}" font-size="12" font-weight="700" fill="var(--fat)">−${p1c(dFat)} yağ</text>
@@ -2703,7 +2829,7 @@ function vTakviye(){
   supps(); const d=suppDate||today(),L=dosesFor(d),t=takenOn(d),fut=d>today(),T=sTimes();
   const slots=SLOTS_S.map(([k,n])=>{const items=L.filter(q=>q.k===k);if(!items.length)return "";const done=items.filter(q=>t[q.key]).length;
     return `<div class="card slot s-${k}"><div class="slh"><span class="sli">${SLOT_ICON[k]}</span><div style="flex:1;min-width:0"><h2>${n}</h2><span class="muted" style="font-size:12.5px">${T[k]} · ${items.length} ilaç</span></div>
-      ${fut?"":done<items.length?`<button type="button" class="allbtn" data-sall="${k}">Hepsini al</button>`:`<span class="sldone">Tamam</span>`}</div>
+      ${fut?"":done<items.length?`<button type="button" class="allbtn" data-sall="${k}">Hepsini aldım</button>`:`<span class="sldone">Tamam</span>`}</div>
       <div class="slist">${items.map(({x,key})=>{const on=!!t[key];return `<button type="button" class="srow${on?" on":""}" data-supp="${key}" ${fut?"disabled":""} aria-pressed="${on}">
         <span class="spill">${pill(x)}</span><span class="sname"><b>${esc(x.name)}</b><small>${on?`${new Date(t[key]).toLocaleTimeString("tr-TR",{hour:"2-digit",minute:"2-digit"})} alındı`:fut?"henüz değil":suppSub(x)}</small></span>
         <span class="chk"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path pathLength="1" d="M5 12.5l4.5 4.5L19 7.5"/></svg></span></button>`}).join("")}</div></div>`}).join("");
@@ -2718,7 +2844,7 @@ function weekTable(){
   const L=supps(),days=[1,2,3,4,5,6,0];
   if(!L.length)return "";
   return `<div class="card"><div style="margin-bottom:10px"><h2>Haftalık program</h2><span class="muted" style="font-size:13px">Hangi gün ne alıyorsun</span></div>
-    <div style="overflow-x:auto"><table class="wtab"><thead><tr><th></th>${days.map(i=>`<th class="${toD(today()).getDay()===i?"tdy":""}">${DAYN[i]}</th>`).join("")}</tr></thead><tbody>
+    <div style="overflow-x:auto"><table class="wtab"><thead><tr><th></th>${days.map(i=>`<th class="${toD(today()).getDay()===i?"tdy":""}" aria-label="${DAYN[i]}"><span class="dlong">${DAYN[i]}</span><span class="dshort" aria-hidden="true">${DAYN[i][0]}</span></th>`).join("")}</tr></thead><tbody>
     ${L.map(x=>`<tr><td><span class="wtn">${pill(x,22)}<span>${esc(x.name)}${slotsOf(x).length>1?` <small class="muted">×${slotsOf(x).length}</small>`:""}</span></span></td>${days.map(i=>`<td class="${toD(today()).getDay()===i?"tdy":""}">${x.days.includes(i)?`<i style="background:${x.color}"></i>`:""}</td>`).join("")}</tr>`).join("")}
     </tbody></table></div></div>`;
 }
@@ -2731,7 +2857,7 @@ function toggleSupp(id,force){
 }
 function refreshSuppHead(){const r=dayDone(suppDate||today());$("#suppHead").innerHTML=suppHead();
   document.querySelectorAll(".slot").forEach(c=>{const ids=[...c.querySelectorAll("[data-supp]")].map(b=>b.dataset.supp),t=takenOn(suppDate||today()),done=ids.every(i=>t[i]);
-    const h=c.querySelector(".slh"),btn=h.querySelector(".allbtn,.sldone");if(btn)btn.outerHTML=done?`<span class="sldone">Tamam</span>`:`<button type="button" class="allbtn" data-sall="${[...c.classList].find(z=>z.startsWith("s-")).slice(2)}">Hepsini al</button>`});
+    const h=c.querySelector(".slh"),btn=h.querySelector(".allbtn,.sldone");if(btn)btn.outerHTML=done?`<span class="sldone">Tamam</span>`:`<button type="button" class="allbtn" data-sall="${[...c.classList].find(z=>z.startsWith("s-")).slice(2)}">Hepsini aldım</button>`});
   if(r.of&&r.n===r.of&&(suppDate||today())===today()){toast("Bugünün takviyeleri tamam");const sh=$(".shead");if(sh&&sh.animate)sh.animate([{transform:"scale(1)"},{transform:"scale(1.02)"},{transform:"scale(1)"}],{duration:400})}}
 function bindSupp(){
   const v=$("#view"); if(tab!=="takviye")return;
@@ -2863,6 +2989,21 @@ function cycleHtml(vv){
         <circle cx="${nx}" cy="${y(cur)}" r="6" fill="var(--surface)" stroke="var(--head)" stroke-width="3"/>
         <text x="${nx}" y="${T-12}" text-anchor="middle" font-size="9.5" letter-spacing="1" font-weight="700" fill="var(--head)" font-family="Figtree, sans-serif">ŞİMDİ</text>
         ${shots}${band}</svg>`;
+  } else if(cycV==="serit"){
+    /* yedi günlük evre şeridi: her gün bir evre, bugün çerçeveli; güne dokununca o evre açılır */
+    const nd=Math.round((I.tn-I.t0)/864e5),cells=[];
+    for(let i=0;i<nd;i++){const a=I.t0+i*864e5,mid=a+432e5,isT=P.now>=a&&P.now<a+864e5,phi=I.ends.findIndex(e=>(mid-I.t0)/864e5<e),pi=isT?I.cur:phi<0?5:phi;
+      cells.push(`<button type="button" class="scell${isT?" today":""}${a>P.now?" fut":""}${selPhase!=null&&pi===sel&&pi!==I.cur?" sel":""}" data-cph="${pi}" style="--pc:${phCol(pi)}" aria-label="${DAYN[new Date(mid).getDay()]}: ${PHASES[pi].k}"><i></i><b>${DAYN[new Date(mid).getDay()]}</b><span>${PH_SHORT[pi]}</span></button>`)}
+    const dose=doseMg(P.last),fl=one(dose,(P.now-shotTs(P.last))/864e5),rest=Math.max(0,cur-fl),tot=Math.max(.01,cur),a=fl/tot*100,act=dose?Math.round(fl/dose*100):0;
+    const mixH=`<div class="mix"><span class="eyebrow">Bu ${mgT(cur)} mg nereden geliyor?</span>
+        <div class="mixbar" role="img" aria-label="Son iğneden ${mgT(fl)} mg, öncekilerden ${mgT(rest)} mg"><i class="m1" style="width:${a}%"></i><i class="m2" style="width:${100-a}%"></i></div>
+        <div class="mixl"><div><i class="m1"></i><div><span>${fmtShort(P.last.date)} iğnesi</span><b>${mgT(fl)} mg</b><em>${esc(P.last.dose??"?")} mg'ın %${act} kadarı devrede</em></div></div>
+          <div><i class="m2"></i><div><span>Birikim</span><b>${mgT(rest)} mg</b><em>önceki haftalardan kalan</em></div></div></div>
+        ${X.before!=null?`<div class="mixn"><span>Yeni iğne anında beklenen</span><b>~${mgT(X.before)} mg</b></div>`:""}</div>`;
+    body=`<div class="gtop"><div><span class="eyebrow">Döngünün ${Math.min(I.days,diffDays(P.last.date,today())+1)}. günü</span><div class="gstate">${ph.k}${PL?`<small>${mgT(cur)} mg</small>`:`<small class="ptag" data-plus style="cursor:pointer">✦ mg · Plus</small>`}</div></div><div class="gnext"><span>Sonraki iğne</span><b>${X.left==null?"–":X.left>1?X.left+" gün":X.left===1?"Yarın":"Bugün"}</b><em>${P.next?fmtShort(P.next.date)+" "+shotTime(P.next):""}</em></div></div>
+      <div class="strip" role="group" aria-label="Döngünün günleri">${cells.join("")}</div>
+      <details class="how drugd"${PL?"":" open"}><summary>Vücuttaki ilaç</summary>${PL?mixH:plock(mixH.replace(/–/g,"3,1"),"Vücuttaki ilaç düzeyi Plus'ta","Tahmini mg'ı, son iğnenin ve birikimin payını, yeni iğnede beklenen düzeyi gör.")}
+        <p>Hafif her iğneyi ayrı izler ve toplar. Her doz yaklaşık 36 saatte en yüksek noktaya ulaşır, sonra her 5 günde yarıya iner; eski dozlar sıfırlanmadığı için küçük bir birikim oluşur. Rakamlar ortalamaya dayanan bir tahmindir, kan tahlili değildir.</p></details>`;
   } else if(cycV==="gunler"){
     const nd=Math.round((I.tn-I.t0)/864e5),cols=[];
     for(let i=0;i<nd;i++){const a=I.t0+i*864e5,b=a+864e5;let mx=0;for(let k=0;k<=12;k++)mx=Math.max(mx,lv(a+(b-a)*k/12));
@@ -2876,9 +3017,10 @@ function cycleHtml(vv){
   }
   const ymdq=t=>ymd(t), rngP=i=>{const a=fmtShort(ymdq(I.t0+I.starts[i]*864e5)),b=fmtShort(ymdq(I.t0+I.ends[i]*864e5-1));return a===b?a:a+" – "+b};
   const sp=PHASES[sel], isCur=sel===I.cur;
-  const phx=`<div class="phsel" role="tablist" aria-label="Evreler">${PHASES.map((p,i)=>`<button type="button" role="tab" data-cph="${i}" aria-selected="${i===sel}" class="${i===I.cur?"cur":""}"><i style="background:${phCol(i)}"></i><span>${p.k}</span></button>`).join("")}</div>
+  const phx=`${cycV==="serit"?"":`<div class="phsel" role="tablist" aria-label="Evreler">${PHASES.map((p,i)=>`<button type="button" role="tab" data-cph="${i}" aria-selected="${i===sel}" class="${i===I.cur?"cur":""}"><i style="background:${phCol(i)}"></i><span>${p.k}</span></button>`).join("")}</div>`}
     <div class="phd" id="phd"><div class="phdh"><div><span class="eyebrow" style="color:${isCur?"var(--accent)":"var(--muted)"}">${isCur?"Bugün · ":""}Evre ${sel+1}/6</span><h3>${sp.k}</h3></div><span class="phdr">${rngP(sel)}${isCur?"":sel<I.cur?" · tamamlandı":" · sırada"}</span></div>
       ${(()=>{const tx=`<p>${isCur&&I.overdue?"Yeni iğnenin zamanı geldi ve geçti. Seviye düşmeye devam ediyor. İğneni yaptıysan Hafif'e eklemeyi unutma.":sp.txt}</p>`,tp=`<ul class="tips">${sp.tips.map(t=>`<li>${t}</li>`).join("")}</ul>`;
+        if(cycV==="serit"){const more=`<details class="phmore"><summary>Devamı</summary>${PL?tp:isCur?plock(tp,"Evre ipuçları Plus'ta","Bu evrede ne yiyip nasıl hareket edeceğini gör."):""}</details>`;return PL||isCur?tx+more:plock(tx+tp,"Tüm evreler Plus'ta","Döngünün her evresini ve ipuçlarını önceden gör.")}
         return PL?tx+tp:isCur?tx+plock(tp,"Evre ipuçları Plus'ta","Bu evrede ne yiyip nasıl hareket edeceğini gör."):plock(tx+tp,"Tüm evreler Plus'ta","Döngünün her evresini ve ipuçlarını önceden gör.")})()}
       ${isCur?"":`<button type="button" class="linkbtn" data-cph="${I.cur}" style="align-self:flex-start;padding:0">Bugünkü evreye dön (${PHASES[I.cur].k})</button>`}</div>`;
   return `<div class="card cycard cv-${cycV}">${body}${phx}${cycDots()}</div>`;
@@ -3052,12 +3194,11 @@ function shotList(limit){
     <div class="tlnode"><span>${r.n}</span></div>
     <div class="tlc edit" data-edit-shot="${r.id}" role="button" aria-label="İğneyi düzenle">
       <div class="tlh"><b>${fmtD(r.date)}</b><span>${shotTime(r)}</span></div>
-      <div class="tlm"><span class="dose">${r.dose!=null?esc(r.dose)+" mg":"doz ?"}</span>${r.site?`<span class="tag">${esc(r.site)}</span>`:""}${r.from?`<span class="tag">${kg(r.from.kg)} kg</span>`:""}</div>
+      <div class="tlm"><span class="dose">${r.dose!=null?esc(r.dose)+" mg":"doz ?"}</span>${r.site?`<span class="tag">${esc(siteLbl(r.site))}</span>`:""}${r.from?`<span class="tag">${kg(r.from.kg)} kg</span>`:""}</div>
       ${r.note?`<div class="tlnote">${esc(r.note)}</div>`:""}
     </div>
     <div class="tlr">${r.loss!=null?`<span class="dchip ${r.loss<0?"down":r.loss>0?"up":""}">${sgn(r.loss)} kg</span>`:`<span class="dchip">–</span>`}
-      <span class="tlst">${r.current?"sürüyor":"bu aralıkta"}</span>
-      ${limit?"":`<button class="ibtn del" data-del-shot="${r.id}" aria-label="İğneyi sil"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M9 7V4.8c0-.4.4-.8.8-.8h4.4c.4 0 .8.4.8.8V7M6.5 7l.9 12.2c.1.9.8 1.8 1.8 1.8h5.6c1 0 1.7-.9 1.8-1.8L17.5 7"/></svg></button>`}</div>
+      ${r.current?`<span class="tlst">sürüyor</span>`:""}</div>
   </div>`).join("")}</div>`;
 }
 
@@ -3070,15 +3211,16 @@ function vKilo(){
   const row=({x,p})=>{const d=p?x.kg-p.kg:null,dt=toD(x.date);
     return `<div class="wrow"><div class="wdate"><b>${dt.getDate()}</b><span>${dt.toLocaleDateString("tr-TR",{weekday:"short"})}</span></div>
       <div class="wmain edit" data-edit-w="${x.id}" role="button" aria-label="Tartıyı düzenle"><div class="wkg">${kg(x.kg)}<small>kg</small>${x.kg===lo?`<span class="lowtag">en düşük</span>`:""}</div>
-        <div class="wsub">${x.src==="hc"?`<span class="tag">tartıdan</span>`:""}${x.fat!=null?`<span class="fpill">%${String(x.fat).replace(".",",")} yağ</span>`:""}${x.note?`<span>${esc(x.note)}</span>`:""}</div></div>
-      ${d==null?`<span class="dchip">ilk</span>`:`<span class="dchip ${d<0?"down":d>0?"up":""}">${sgn(d)}</span>`}
-      <button class="ibtn del" data-del-w="${x.id}" aria-label="Tartıyı sil"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M9 7V4.8c0-.4.4-.8.8-.8h4.4c.4 0 .8.4.8.8V7M6.5 7l.9 12.2c.1.9.8 1.8 1.8 1.8h5.6c1 0 1.7-.9 1.8-1.8L17.5 7"/></svg></button></div>`};
-  return `<section><button class="btn" data-open="weight">Kilo gir</button>
+        <div class="wsub">${[x.src==="hc"?"tartıdan":"",x.fat!=null?`%${String(x.fat).replace(".",",")} yağ`:"",x.note?esc(x.note):""].filter(Boolean).join(" · ")}</div></div>
+      ${d==null?`<span class="dchip">ilk</span>`:`<span class="dchip ${d<0?"down":d>0?"up":""}">${sgn(d)}</span>`}</div>`};
+  return `<section>
     ${kiloKpi()}
+    ${w.length>1?chartCard():""}
+    ${compCard()}
     ${measCard()}
-    ${groups.map(g=>{const a=g.items[g.items.length-1].x,b=g.items[0].x,ch=b.kg-a.kg;const name=toD(g.k+"-01").toLocaleDateString("tr-TR",{month:"long",year:"numeric"});
-      return `<div class="card mgroup"><div class="mhead"><div><h2>${name}</h2><span class="muted" style="font-size:12.5px">${g.items.length} tartı · düzenlemek için dokun</span></div>${g.items.length>1?`<span class="dchip ${ch<0?"down":ch>0?"up":""}">${sgn(ch)} kg</span>`:""}</div>
-        <div class="wlist">${g.items.map(row).join("")}</div></div>`}).join("")}
+    ${groups.map((g,gi)=>{const a=g.items[g.items.length-1].x,b=g.items[0].x,ch=b.kg-a.kg;const name=toD(g.k+"-01").toLocaleDateString("tr-TR",{month:"long",year:"numeric"});
+      const head=`<div class="mhead"><div><h2>${name}</h2><span class="muted" style="font-size:12.5px">${g.items.length} tartı${gi?"":" · düzenlemek ya da silmek için dokun"}</span></div>${g.items.length>1?`<span class="dchip ${ch<0?"down":ch>0?"up":""}">${sgn(ch)} kg</span>`:""}</div>`;
+      return gi?`<details class="card mgroup"><summary>${head}</summary><div class="wlist">${g.items.map(row).join("")}</div></details>`:`<div class="card mgroup">${head}<div class="wlist">${g.items.map(row).join("")}</div></div>`}).join("")}
   </section>`;
 }
 
@@ -3185,35 +3327,46 @@ function vIgne(){
   const s=sortedS();
   if(!s.length) return `<section><div class="card empty"><h2>Henüz iğne yok</h2><p class="muted" style="margin:0">İğneyi yaptığın gün ekle. Dozu ve bölgeyi yazarsan doz başına verdiğin kiloyu ayrıca görürsün.</p></div><button class="btn shotbtn" data-open="shot">İğne ekle</button></section>`;
   const dt=doseTable();
-  return `<section><div class="cycw" data-v="gunler">${cycleHtml("gunler")}</div>
-    <button class="btn shotbtn" data-open="shot">İğne ekle</button>
+  return `<section><div class="cycw" data-v="serit">${cycleHtml("serit")}</div>
     ${sideCard()}
     ${penCard()}
     <div class="card" style="display:flex;flex-direction:column;gap:12px"><div><h2>Doz özeti</h2><span class="muted" style="font-size:13px">Her dozda geçen sürede verdiğin kilo</span></div>
       ${dt.map(r=>`<div class="dosecard"><span class="dose big">${esc(r.dose)} mg</span><div class="dstats"><div><b>${r.count}</b><span>iğne</span></div><div><b>${r.has?sgn(r.loss):"–"}</b><span>kg toplam</span></div><div><b>${r.has?sgn(r.loss/r.count):"–"}</b><span>iğne başına</span></div></div></div>`).join("")}</div>
-    <div class="card"><div style="margin-bottom:6px"><h2>İğne geçmişi</h2><span class="muted" style="font-size:13px">Her iğne günündeki kilodan bir sonrakine kadar olan değişim · düzenlemek için dokun</span></div>${shotList()}</div></section>`;
+    <div class="card"><div style="margin-bottom:6px"><h2>İğne geçmişi</h2><span class="muted" style="font-size:13px">Sağdaki sayı, o iğneden sonrakine kadar verilen kilo · düzenlemek ya da silmek için dokun</span></div>${shotList()}</div></section>`;
 }
 
 function vAyar(){
   const P=S.profile;
-  return `<section>${plusCard()}<form id="fAyar" class="card form2">
+  const c1=v=>v==null?"":String(v).replace(".",","),AS=activeSites();
+  const row=(lbl,id,val,unit,ph,mode="decimal")=>`<label class="setr" for="${id}"><span>${lbl}</span><span class="sin"><input id="${id}" inputmode="${mode}" value="${val}" placeholder="${ph}" autocomplete="off">${unit?`<em>${unit}</em>`:""}</span></label>`;
+  return `<section>${plusCard()}<form id="fAyar" class="setf">
     <div class="fsec"><span>Tedavi</span></div>
-    <label class="sw" style="padding:2px 0"><span><b>Haftalık iğne kullanıyorum</b><small>kapalıyken iğne bölümleri gizlenir, kayıtların silinmez</small></span><input type="checkbox" id="a-shots" ${SHOTS()?"checked":""}><i></i></label>
-    <div class="two" id="a-shotf" ${SHOTS()?"":"hidden"}><label>İlaç adı<input id="a-drug" value="${esc(P.drug||"")}" placeholder="ör. ilacının adı"></label>
-    <label>İğne aralığı (gün)<input id="a-iv" inputmode="numeric" value="${P.intervalDays??7}"></label></div>
+    <div class="sgroup">
+      <label class="sw setr"><span><b>Haftalık iğne kullanıyorum</b><small>kapalıyken iğne bölümleri gizlenir, kayıtların silinmez</small></span><input type="checkbox" id="a-shots" ${SHOTS()?"checked":""}><i></i></label>
+      <div id="a-shotf" ${SHOTS()?"":"hidden"} class="sgsub">
+        <label class="setr" for="a-drug"><span>İlaç adı</span><span class="sin"><input id="a-drug" value="${esc(P.drug||"")}" placeholder="ekle" autocomplete="off"></span></label>
+        ${row("İğne aralığı","a-iv",P.intervalDays??7,"gün","7","numeric")}
+        <div class="setr sstack"><span>Kullandığım bölgeler<small>Bölge önerisi ve hatırlatmalar yalnızca bunlar arasında döner.</small></span>
+          <div class="fchips" id="a-sites">${SITES.map(x=>`<button type="button" data-psite="${x}" aria-pressed="${AS.includes(x)}">${siteLbl(x)}</button>`).join("")}</div></div>
+      </div>
+    </div>
     <div class="fsec"><span>Vücut ve hedef</span></div>
-    <div class="three"><label>Başlangıç<input id="a-start" inputmode="decimal" value="${P.startWeight??""}" placeholder="kg"></label>
-    <label>Hedef<input id="a-goal" inputmode="decimal" value="${P.goalWeight??""}" placeholder="kg"></label>
-    <label>Boy<input id="a-height" inputmode="numeric" value="${P.heightCm??""}" placeholder="cm"></label></div>
-    <div class="two"><label>Yaş<input id="a-age" inputmode="numeric" value="${P.age??""}" placeholder="yaş"></label>
-    <label>Cinsiyet<select id="a-sex"><option value="">Seç</option><option value="k" ${P.sex==="k"?"selected":""}>Kadın</option><option value="e" ${P.sex==="e"?"selected":""}>Erkek</option></select></label></div>
+    <div class="sgroup">
+      ${row("Başlangıç kilosu","a-start",c1(P.startWeight),"kg","kg")}
+      ${row("Hedef kilo","a-goal",c1(P.goalWeight),"kg","kg")}
+      ${row("Boy","a-height",P.heightCm??"","cm","cm","numeric")}
+      ${row("Yaş","a-age",P.age??"","","yaş","numeric")}
+      <label class="setr" for="a-sex"><span>Cinsiyet</span><span class="sin"><select id="a-sex"><option value="">Seç</option><option value="k" ${P.sex==="k"?"selected":""}>Kadın</option><option value="e" ${P.sex==="e"?"selected":""}>Erkek</option></select></span></label>
+    </div>
     <div class="fsec"><span>Günlük hedefler</span></div>
-    <div class="two"><label>Protein (g)<input id="a-prot" inputmode="numeric" value="${P.proteinGoal??""}" placeholder="${protSuggest()[2]}"></label>
-    <label>Su (ml)<input id="a-water" inputmode="numeric" value="${P.waterGoal??""}" placeholder="2500"></label></div>
-    ${HP()?`<div class="two"><label>Adım<input id="a-step" inputmode="numeric" value="${P.stepGoal??""}" placeholder="7500"></label><label>Health Connect<button type="button" class="btn ghost" id="a-hc" style="padding:11px 8px;font-size:13.5px">${S.hc&&S.hc.on?"Bağlı · yönet":"Bağlan"}</button></label></div>`:""}
+    <div class="sgroup">
+      ${row("Protein","a-prot",P.proteinGoal??"","g",protSuggest()[2],"numeric")}
+      ${row("Su","a-water",P.waterGoal??"","ml","2500","numeric")}
+      ${HP()?`${row("Adım","a-step",P.stepGoal??"","adım","7500","numeric")}<div class="setr"><span>Health Connect</span><button type="button" class="linkbtn" id="a-hc">${S.hc&&S.hc.on?"Bağlı · yönet":"Bağlan"}</button></div>`:""}
+    </div>
     <p class="hint">${protSuggest()[0]?`Genel öneri kilogram başına 1,2–1,5 g protein, yani senin için ${protSuggest()[0]}–${protSuggest()[1]} g. Su için günde 2–3 litre yaygın bir hedef. Kendi hedefini doktorun ya da diyetisyeninle belirlemek en doğrusu.`:"Protein için yaygın hedef kilogram başına 1,2–1,5 g."}</p>
     <div class="fsec"><span>Tercihler</span></div>
-    <label class="sw" style="padding:2px 0"><span><b>Rozet kutlamaları</b><small>yeni bir ara hedefe ulaşınca konfeti</small></span><input type="checkbox" id="a-cel" ${P.noCelebrate?"":"checked"}><i></i></label>
+    <div class="sgroup"><label class="sw setr"><span><b>Rozet kutlamaları</b><small>yeni bir ara hedefe ulaşınca konfeti</small></span><input type="checkbox" id="a-cel" ${P.noCelebrate?"":"checked"}><i></i></label></div>
     <button class="btn" type="submit">Kaydet</button>
   </form>
   ${remCard()}
@@ -3337,7 +3490,7 @@ const atOf=(d,hm)=>{const x=toD(d);const[h,m]=String(hm||"09:00").split(":").map
 function remBuild(){
   const R=rem(),L=[],now=Date.now()+60000,add=(id,at,title,body,type,extra)=>{if(at.getTime()>now)L.push({id,title,body,schedule:{at,allowWhileIdle:true},isExactNotification:false,actionTypeId:type,extra:extra||{}})};
   if(SHOTS()&&(R.shot||R.shotEve)){const P=pkState();const nx=P.next;
-    if(nx){const dose=nx.dose?esc(nx.dose)+" mg · ":"",site=nextSite();
+    if(nx){const dose=nx.dose?esc(nx.dose)+" mg · ":"",site=siteLbl(nextSite());
       if(R.shot)add(1000,new Date(shotTs(nx)),"Bugün iğne günü",`${dose}önerilen bölge: ${site}. Yaptıktan sonra kaydetmeyi unutma.`,"IGNE",{tab:"igne"});
       if(R.shotEve)add(1001,atOf(addDays(nx.date,-1),"20:00"),"Yarın iğne günü",`Saat ${shotTime(nx)} · sıradaki bölgen ${site}. Kalemini ve iğne ucunu hazırla.`,"BILGI",{tab:"igne"})}}
   for(let i=0;i<14;i++){const d=addDays(today(),i);
@@ -3567,25 +3720,46 @@ function openSheet(kind,editId){
   const c1=v=>v==null?"":String(v).replace(".",",");
   const delBtn=ew||es?`<button type="button" class="linkbtn" id="eDel" style="color:var(--bad);align-self:center">Bu kaydı sil</button>`:"";
   const ssite=es?es.site:nextSite();
+  const yest=addDays(today(),-1),wDate=ew?ew.date:today(),sDate=es?es.date:today();
+  const whenChips=(id,d,extra)=>`<div class="fchips" id="${id}" role="radiogroup">${extra||""}<button type="button" role="radio" data-d="${today()}" aria-checked="${d===today()&&!extra}">Bugün</button><button type="button" role="radio" data-d="${yest}" aria-checked="${d===yest}">Dün</button><button type="button" role="radio" data-d="" aria-checked="${d!==today()&&d!==yest}">Tarih seç…</button></div>`;
+  const wv=ew?ew.kg:lw?lw.kg:null;
+  const doses=[...new Set(sortedS().reverse().map(x=>x.dose).filter(Boolean))].slice(0,3).reverse();
+  const SB=activeSites().concat(es&&es.site&&!activeSites().includes(es.site)?[es.site]:[]);
+  const ago=d=>{if(!d)return "hiç kullanılmadı";const n=diffDays(d,today());return n<=0?"bugün":n<7?n+" gün önce":Math.round(n/7)+" hafta önce"};
+  const SPOT={"Karın sol":[49,88],"Karın sağ":[71,88],"Uyluk sol":[48,138],"Uyluk sağ":[72,138],"Kol sol":[25,66],"Kol sağ":[95,66]};
+  const bodySvg=`<svg viewBox="0 0 120 200" class="bmap" role="img" aria-label="Vücut çizimi, seçili bölge işaretli">
+      <circle cx="60" cy="20" r="13" class="bb"/><rect x="37" y="37" width="46" height="72" rx="18" class="bb"/><rect x="18" y="42" width="14" height="62" rx="7" class="bb"/><rect x="88" y="42" width="14" height="62" rx="7" class="bb"/>
+      <rect x="38" y="106" width="20" height="88" rx="10" class="bb"/><rect x="62" y="106" width="20" height="88" rx="10" class="bb"/>
+      ${SB.map(x=>{const p=SPOT[x];return p?`<circle cx="${p[0]}" cy="${p[1]}" r="7.5" class="bs" data-spot="${x}"/>`:""}).join("")}</svg>`;
   const html = kind==="weight" ? `
     <header><h2>${ew?"Tartıyı düzenle":"Kilo gir"}</h2><button class="del" data-close>Kapat</button></header>
     <form id="fW">
-      <label>Kilo (kg)<input id="w-kg" class="bignum" inputmode="decimal" value="${ew?c1(ew.kg):""}" placeholder="${lw?kg(lw.kg):"00,0"}" autocomplete="off" required></label>
-      ${ew?"":`<p class="muted" style="margin:-4px 0 0;font-size:12.5px;line-height:1.45">Tartıdaki sayı değişmese de girişini yap. Trendin ve haftalık hızın bu girişlere göre hesaplanır; aynı sayı da yolun bir parçası.</p>`}
-      <label>Yağ oranı (%)<input id="w-fat" inputmode="decimal" value="${ew?c1(ew.fat):""}" placeholder="${lw&&lw.fat!=null?String(lw.fat).replace(".",","):"ör. 28,4"}" autocomplete="off"></label>
-      <label>Tarih<input id="w-date" type="date" value="${ew?ew.date:today()}" max="${today()}"></label>
-      <label>Not (isteğe bağlı)<input id="w-note" value="${ew?esc(ew.note||""):""}" placeholder="ör. sabah, aç karnına"></label>
+      <div class="kstep"><button type="button" class="kb" data-k="-1" aria-label="0,1 kg azalt">−</button>
+        <label class="kval"><input id="w-kg" class="bignum" inputmode="decimal" value="${wv!=null?c1(wv):""}" placeholder="00,0" autocomplete="off" required aria-label="Kilo (kg)"><small>kg</small></label>
+        <button type="button" class="kb" data-k="1" aria-label="0,1 kg artır">+</button></div>
+      <p class="muted fhint">${ew?"Rakama dokunup yazabilir ya da −/+ ile değiştirebilirsin.":lw?`Son tartı ${kg(lw.kg)} kg · rakama dokunursan klavye açılır`:"Rakama dokunup kilonu yaz"}</p>
+      <div class="flbl">Ne zaman</div>
+      ${whenChips("wWhen",wDate)}
+      <input id="w-date" type="date" value="${wDate}" max="${today()}" ${wDate!==today()&&wDate!==yest?"":"hidden"} aria-label="Tarih">
+      <div class="flbl">Ek bilgi <span>(isteğe bağlı)</span></div>
+      <div class="fchips"><button type="button" class="more" data-more="wFatL" ${ew&&ew.fat!=null?"hidden":""}>+ Yağ oranı</button><button type="button" class="more" data-more="wNoteL" ${ew&&ew.note?"hidden":""}>+ Not</button></div>
+      <label id="wFatL" ${ew&&ew.fat!=null?"":"hidden"}>Yağ oranı (%)<input id="w-fat" inputmode="decimal" value="${ew?c1(ew.fat):""}" placeholder="${lw&&lw.fat!=null?String(lw.fat).replace(".",","):"ör. 28,4"}" autocomplete="off"></label>
+      <label id="wNoteL" ${ew&&ew.note?"":"hidden"}>Not<input id="w-note" value="${ew?esc(ew.note||""):""}" placeholder="ör. sabah, aç karnına"></label>
       <button class="btn" type="submit">Kaydet</button>${delBtn}
+      ${ew?"":`<p class="muted fhint">Tartı değişmese de gir; aynı sayı da yolun bir parçası, trendin bu girişlerle hesaplanır.</p>`}
     </form>` : `
     <header><h2>${es?"İğneyi düzenle":"İğne ekle"}</h2><button class="del" data-close>Kapat</button></header>
     <form id="fS">
-      <div class="two"><label>Doz (mg)<input id="s-dose" inputmode="decimal" value="${es?esc(es.dose??""):ls?.dose??""}" placeholder="ör. 2,5"></label>
-      <label>Tarih<input id="s-date" type="date" value="${es?es.date:today()}"></label></div>
-      <label>Saat<input id="s-time" type="time" value="${es?shotTime(es):nowHM()}"></label>
-      <label>Bölge</label>
-      <div class="sites" id="sites">${SITES.map(x=>`<button type="button" class="site" aria-pressed="${x===ssite}" data-site="${x}">${x}${!es&&x===nextSite()?'<span class="sug">sıradaki</span>':""}</button>`).join("")}</div>
-      ${es?"":`<label>Bugünkü kilo (isteğe bağlı)<input id="s-kg" inputmode="decimal" placeholder="girersen tartı olarak da kaydedilir"></label>`}
-      <label>Not<input id="s-note" value="${es?esc(es.note||""):""}" placeholder="ör. hafif bulantı"></label>
+      <div class="dosebox"><label>Doz<span class="dosein"><input id="s-dose" inputmode="decimal" value="${es?esc(es.dose??""):ls?.dose??""}" placeholder="ör. 2,5"><small>mg</small></span></label>
+        ${doses.length?`<div class="fchips">${doses.map(d=>`<button type="button" data-dose="${esc(d)}">${esc(d)}</button>`).join("")}</div>`:""}</div>
+      <div class="fchips" id="sWhen" role="radiogroup">${es?"":`<button type="button" role="radio" data-now aria-checked="true">Şimdi · ${nowHM()}</button>`}<button type="button" role="radio" data-d="${yest}" aria-checked="false">Dün</button><button type="button" role="radio" data-d="" aria-checked="${!!es}">${es?"Tarih ve saat":"Başka zaman…"}</button></div>
+      <div class="two" id="sDT" ${es?"":"hidden"}><label>Tarih<input id="s-date" type="date" value="${sDate}"></label><label>Saat<input id="s-time" type="time" value="${es?shotTime(es):nowHM()}"></label></div>
+      <div class="flbl">Bölge</div>
+      <div class="sitebox">${bodySvg}<div class="sites" id="sites">${SB.map(x=>`<button type="button" class="site" aria-pressed="${x===ssite}" data-site="${x}"><span>${siteLbl(x)}</span><small>${!es&&x===nextSite()?"önerilen":ago(siteLast(x))}</small></button>`).join("")}
+        <p class="muted" style="margin:0;font-size:11.5px">Aynı bölgeye vuracaksan öncekinden birkaç santim uzağa. Bölgeleri ayarlardan seçebilirsin.</p></div></div>
+      <div class="fchips">${es?"":`<button type="button" class="more" data-more="sKgL">+ Bugünkü kilo</button>`}<button type="button" class="more" data-more="sNoteL" ${es&&es.note?"hidden":""}>+ Not</button></div>
+      ${es?"":`<label id="sKgL" hidden>Bugünkü kilo<input id="s-kg" inputmode="decimal" placeholder="girersen tartı olarak da kaydedilir"></label>`}
+      <label id="sNoteL" ${es&&es.note?"":"hidden"}>Not<input id="s-note" value="${es?esc(es.note||""):""}" placeholder="ör. hafif bulantı"></label>
       <button class="btn shotbtn" type="submit">${es?"Kaydet":"İğneyi kaydet"}</button>${delBtn}
     </form>`;
   $("#sheetRoot").innerHTML=`<div class="scrim" data-close><div class="sheet" role="dialog" aria-modal="true"><div class="grab"></div>${html}</div></div>`;
@@ -3595,8 +3769,20 @@ function openSheet(kind,editId){
   root.querySelector("header [data-close]").addEventListener("click",closeSheet);
   const ed=$("#eDel");if(ed)ed.addEventListener("click",()=>{if(!ed.classList.contains("armed")){ed.classList.add("armed");ed.textContent="Silmek için tekrar dokun";return}
     if(ew)S.weights=S.weights.filter(x=>x.id!==ew.id);else S.shots=S.shots.filter(x=>x.id!==es.id);save();closeSheet();toast("Silindi")});
+  root.querySelectorAll("[data-more]").forEach(b=>b.addEventListener("click",()=>{const t=$("#"+b.dataset.more);t.hidden=false;b.hidden=true;const i=t.querySelector("input");if(i)i.focus()}));
+  const pickWhen=(box,dateIn,onCustom)=>box.addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;box.querySelectorAll("button").forEach(x=>x.setAttribute("aria-checked",x===b));
+    if(b.hasAttribute("data-now")){dateIn.value=today();onCustom(false,true);return}
+    if(b.dataset.d){dateIn.value=b.dataset.d;onCustom(false)}else onCustom(true)});
   if(kind==="weight"){
-    if(!ew)setTimeout(()=>$("#w-kg").focus(),50);
+    if(!lw&&!ew)setTimeout(()=>$("#w-kg").focus(),50);
+    const kin=$("#w-kg");let rep=null;
+    const bump=d=>{const v=num(kin.value)??(lw?lw.kg:70);kin.value=c1(Math.round((v+d*0.1)*10)/10)};
+    root.querySelectorAll(".kb").forEach(b=>{const d=+b.dataset.k;
+      const stop=()=>{clearTimeout(rep);clearInterval(rep);rep=null};
+      b.addEventListener("pointerdown",e=>{e.preventDefault();bump(d);stop();rep=setTimeout(()=>{rep=setInterval(()=>bump(d),70)},420)});
+      ["pointerup","pointerleave","pointercancel"].forEach(ev=>b.addEventListener(ev,stop));
+      b.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();bump(d)}})});
+    pickWhen($("#wWhen"),$("#w-date"),c=>{$("#w-date").hidden=!c;if(c)$("#w-date").focus()});
     $("#fW").addEventListener("submit",e=>{e.preventDefault();
       const v=num($("#w-kg").value); if(v==null||v<20||v>400){toast("Kiloyu kg olarak yaz, ör. 82,4");return}
       const fv=num($("#w-fat").value); if(fv!=null&&(fv<3||fv>70)){toast("Yağ oranını yüzde olarak yaz, ör. 28,4");return}
@@ -3607,7 +3793,12 @@ function openSheet(kind,editId){
     });
   } else {
     let site=ssite;
-    $("#sites").addEventListener("click",e=>{const b=e.target.closest(".site");if(!b)return;site=b.dataset.site;$("#sites").querySelectorAll(".site").forEach(x=>x.setAttribute("aria-pressed",x===b))});
+    const setSite=x=>{site=x;$("#sites").querySelectorAll(".site").forEach(b=>b.setAttribute("aria-pressed",b.dataset.site===x));root.querySelectorAll("[data-spot]").forEach(c=>c.classList.toggle("on",c.dataset.spot===x))};
+    setSite(site);
+    $("#sites").addEventListener("click",e=>{const b=e.target.closest(".site");if(b)setSite(b.dataset.site)});
+    root.querySelectorAll("[data-spot]").forEach(c=>c.addEventListener("click",()=>setSite(c.dataset.spot)));
+    root.querySelectorAll("[data-dose]").forEach(b=>b.addEventListener("click",()=>{$("#s-dose").value=b.dataset.dose}));
+    pickWhen($("#sWhen"),$("#s-date"),(c,now)=>{$("#sDT").hidden=!c;if(now)$("#s-time").value=nowHM();else if(!c)$("#s-time").value=es?shotTime(es):"09:00"});
     $("#fS").addEventListener("submit",e=>{e.preventDefault();
       const date=$("#s-date").value||today(); const dose=num($("#s-dose").value);
       if(es){Object.assign(es,{date,time:$("#s-time").value||"09:00",dose:dose==null?null:dose.toLocaleString("tr-TR"),site,note:$("#s-note").value.trim()||null});save();closeSheet();toast("İğne güncellendi");return}
@@ -3620,7 +3811,9 @@ function openSheet(kind,editId){
   }
 }
 function closeSheet(){$("#sheetRoot").innerHTML="";render()}
-function toast(m){const t=document.createElement("div");t.className="toast";t.textContent=m;document.body.appendChild(t);setTimeout(()=>t.remove(),1800)}
+function toast(m,act){document.querySelectorAll(".toast").forEach(x=>x.remove());const t=document.createElement("div");t.className="toast";t.setAttribute("role","status");t.textContent=m;
+  if(act){const b=document.createElement("button");b.type="button";b.textContent=act[0];b.addEventListener("click",()=>{t.remove();act[1]()});t.appendChild(b)}
+  document.body.appendChild(t);setTimeout(()=>t.remove(),act?5000:1800)}
 
 function bindView(){
   const v=$("#view");
@@ -3646,11 +3839,13 @@ function bindView(){
   bindSupp();
   const f=$("#fAyar");
   if(f)$("#a-shots").addEventListener("change",e=>{$("#a-shotf").hidden=!e.target.checked});
+  v.querySelectorAll("[data-psite]").forEach(b=>b.addEventListener("click",()=>b.setAttribute("aria-pressed",b.getAttribute("aria-pressed")!=="true")));
   bindRem();
   if($("#a-hc"))$("#a-hc").addEventListener("click",()=>{if(S.hc&&S.hc.on){try{HP().openHealthConnectSettings()}catch(_){}}else openHealthSheet()});
   v.querySelectorAll("[data-hc]").forEach(b=>b.addEventListener("click",e=>{e.stopPropagation();openHealthSheet()}));
   if(f)f.addEventListener("submit",e=>{e.preventDefault();
-    S.profile={usesShots:$("#a-shots").checked,onboarded:true,age:(n=>n&&n>=10&&n<=110?Math.round(n):null)(num($("#a-age").value)),sex:$("#a-sex").value||null,celebrated:S.profile.celebrated,noCelebrate:!$("#a-cel").checked,trackyImported:!!S.profile.trackyImported,zeppImported:!!S.profile.zeppImported,drug:$("#a-drug").value.trim()||null,startWeight:num($("#a-start").value),goalWeight:num($("#a-goal").value),heightCm:num($("#a-height").value),proteinGoal:(n=>n&&n>0?Math.round(n):null)(num($("#a-prot").value)),waterGoal:(n=>n&&n>0?Math.round(n):null)(num($("#a-water").value)),startDate:S.profile.startDate||null,stepGoal:$("#a-step")?(n=>n&&n>=500?Math.round(n):null)(num($("#a-step").value)):(S.profile.stepGoal??null),intervalDays:Math.max(1,Math.round(num($("#a-iv").value)||7))};
+    const ps=[...document.querySelectorAll("[data-psite]")].filter(b=>b.getAttribute("aria-pressed")==="true").map(b=>b.dataset.psite);
+    S.profile={...S.profile,sites:ps.length?ps:null,usesShots:$("#a-shots").checked,onboarded:true,age:(n=>n&&n>=10&&n<=110?Math.round(n):null)(num($("#a-age").value)),sex:$("#a-sex").value||null,celebrated:S.profile.celebrated,noCelebrate:!$("#a-cel").checked,trackyImported:!!S.profile.trackyImported,zeppImported:!!S.profile.zeppImported,drug:$("#a-drug").value.trim()||null,startWeight:num($("#a-start").value),goalWeight:num($("#a-goal").value),heightCm:num($("#a-height").value),proteinGoal:(n=>n&&n>0?Math.round(n):null)(num($("#a-prot").value)),waterGoal:(n=>n&&n>0?Math.round(n):null)(num($("#a-water").value)),startDate:S.profile.startDate||null,stepGoal:$("#a-step")?(n=>n&&n>=500?Math.round(n):null)(num($("#a-step").value)):(S.profile.stepGoal??null),intervalDays:Math.max(1,Math.round(num($("#a-iv").value)||7))};
     save();toast("Ayarlar kaydedildi");tab="ozet";render();
   });
 }
@@ -3678,6 +3873,7 @@ $("#view").addEventListener("click",e=>{const cp=e.target.closest("[data-cph]");
   const d=$("#phAll");phAllOpen=!!(d&&d.open);selPhase=+b.dataset.ph;w.innerHTML=phaseInner();
   const ph=w.querySelector(".phase");if(ph&&ph.animate)ph.animate([{opacity:.3,transform:"translateY(4px)"},{opacity:1,transform:"none"}],{duration:220,easing:"ease-out"});
   $("#phAll")?.addEventListener("toggle",ev=>{phAllOpen=ev.target.open});});
+$("#fab").addEventListener("click",openQuick);
 $("#gearBtn").addEventListener("click",()=>{selPhase=null;ANIM=true;tab="ayar";render();window.scrollTo(0,0)});
 document.querySelectorAll(".tab").forEach(t=>t.addEventListener("click",()=>{selPhase=null;ANIM=true;tab=t.dataset.tab;render();window.scrollTo(0,0)}));
 boot();

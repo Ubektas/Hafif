@@ -91,7 +91,12 @@ function beklenen(S, saat) {
   const gap = ds.length ? diff(ds[ds.length - 1], td) : null;
   const ls = shots ? [...S.shots].sort((a, b) => a.date < b.date ? -1 : 1).pop() : null;
   const left = ls ? diff(td, add(ls.date, P.intervalDays || 7)) : null;
-  const site = ls ? SITES[(SITES.indexOf(ls.site) + 1) % 6] : null;
+  // öneri: kullanılan bölgeler (karın + uyluk, geçmişte kol varsa kol da) arasında en uzun süredir kullanılmayan
+  const LBL = { 'Karın sol': 'Karın (sol)', 'Karın sağ': 'Karın (sağ)', 'Uyluk sol': 'Uyluk ön (sol)', 'Uyluk sağ': 'Uyluk ön (sağ)', 'Kol sol': 'Üst kol (sol)', 'Kol sağ': 'Üst kol (sağ)' };
+  const used = new Set(S.shots.map(x => x.site)), act = SITES.filter(x => !x.startsWith('Kol') || used.has(x));
+  const lastOf = x => S.shots.filter(y => y.site === x).map(y => y.date).sort().pop() || null;
+  let best = act[0], bd = lastOf(act[0]); for (const x of act.slice(1)) { const d = lastOf(x); if (bd && (!d || d < bd)) { best = x; bd = d; } }
+  const site = ls ? LBL[best] : null;
   const r = S.daily[td] || { p: 0, w: 0 }, rem = P.proteinGoal - (r.p || 0);
   const protein = saat >= 16 && rem >= 15 && (r.p || 0) < P.proteinGoal * 0.75;
   let st = 0; for (let i = 1; i <= 60; i++) { if (((S.daily[add(td, -i)] || {}).w || 0) >= P.waterGoal) st++; else break; }
