@@ -18,11 +18,15 @@
   - Şu an: her vakit için o saatte tek bildirim; alındıysa hiç gelmiyor; "Ertele" elle 1 saat sonraya kuruyor. Kendiliğinden ikinci hatırlatma yok.
   - Plan: vaktin saatinden X dakika sonra (varsayılan 60, ayarlardan 30/60/120 ya da kapalı) "Sabah takviyelerini aldın mı?" bildirimi. Önceden kurulur; "Hepsini aldım" işaretlenince kendiliğinden iptal edilir (uygulama açık olmasa da çalışır). Günde en fazla 1 ek hatırlatma, gece saatlerinde gönderilmez.
   - Aynı mantık iğne günü için: iğne saatinden 3 saat sonra kaydedilmemişse "İğneni yaptın mı?".
-- **"Hafif ekibine gönder" (paylaşım kartı)**
-  - Paylaşım ekranına "Görseli kaydet / paylaş"ın altına ikinci düğme. Taslak: `magaza/taslak/gonder-akisi.png`.
-  - İzin ekranı: "Instagram'da paylaşabilirsiniz" kutusu (işaretlenmeden düğme açılmaz), görünüm seçimi (Adımla / Baş harflerle / Anonim), isteğe bağlı not, iznin geri alınabileceği bilgisi.
-  - Telefonun e-posta uygulaması alıcı apphafif@gmail.com, konu, izin metni ve ekli kartla açılır; uygulama veriyi kendisi göndermez (Android'de HafifWidget eklentisine EXTRA_EMAIL + ek dosyalı paylaşım fonksiyonu).
+- **Adım paylaşımı (Claude sürümünde yapıldı, 1.9.0 ile Android'e gelecek)**
+  - Adım ekranında "Adımlarını paylaş" kartı → 5 yürüyüş temalı kart: Pist, Rota, Halka, Ayak izi, Hafta. Seçenekler: Hedef, Mesafe ve kalori.
+  - "Görseli kaydet / paylaş" ve "Hafif ekibine gönder" düğmeleri.
+- **"Hafif ekibine gönder" (Claude sürümünde yapıldı; Android için tamamlanacak)**
+  - Hem ilerleme hem adım paylaşımında. İzin kutusu (işaretlenmeden düğme açılmaz), görünüm (Adımla / Baş harflerle / Anonim), görünecek ad, isteğe bağlı not.
+  - Claude/web: 1) görseli kaydet, 2) hazır e-postayı aç (mailto), açılmazsa metni kopyala.
+  - Android (şu an geçici): paylaşım menüsünden e-posta uygulaması seçilir, alıcı metinde yazar. **1.9.0'da:** HafifWidget eklentisine EXTRA_EMAIL + ekli görsel ile doğrudan e-posta açan fonksiyon; alıcı, konu, metin ve görsel hazır gelsin.
   - Gizlilik politikasına bir cümle: kullanıcının kendi başlattığı e-posta gönderimi.
+  - Emülatör testine adım paylaşımı ve ekip gönderimi adımları eklenecek.
 - **Paylaşım ekranı metni (yapıldı, 1.9.0 ile Android'e gelecek):** "iPhone'da paylaşım menüsü açılır…" yerine "Telefonunun paylaşım menüsü açılır; WhatsApp'ı, Instagram'ı ya da galeriye kaydetmeyi seçebilirsin."
 
 ## Sırada (karar bekleyen / sonraki sürümler)
