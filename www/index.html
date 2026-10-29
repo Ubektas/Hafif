@@ -362,7 +362,7 @@ input[type=range].pr::-moz-range-thumb{width:22px;height:22px;border-radius:50%;
 .gm-txt{display:flex;flex-direction:column;align-items:flex-end;justify-content:flex-end;gap:1px;text-align:right}
 .gm-txt span{font-size:11px;color:rgba(255,255,255,.6)}
 .gm-txt b{font:700 28px var(--f-display);letter-spacing:-.03em;color:#fff;line-height:1}.gm-txt b small{font-size:17px;letter-spacing:0;opacity:.8}
-.gm-txt em{font-style:normal;font-size:11px;color:#9FF0D6;margin-top:3px}
+.gm-txt em{font-style:normal;font-size:11px;color:#9FF0D6;margin-top:3px}.gm-txt em.gm-eta{margin-top:0;color:rgba(255,255,255,.6)}
 .gm-bar{position:relative;width:7px;border-radius:8px;background:rgba(255,255,255,.12);overflow:hidden}
 .gm-bar::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;background:rgba(255,255,255,.35)}
 .gm-bar i{position:absolute;left:0;right:0;bottom:0;border-radius:8px;background:linear-gradient(#E3FFF5,#5EE0B5);box-shadow:0 0 12px rgba(159,240,214,.65)}
@@ -609,6 +609,8 @@ label.drow{flex-direction:row;font-size:14px;font-weight:500;margin:0}
 .wkgoal>i{flex:none;width:38px;height:38px;border-radius:12px;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center}
 .wkgoal small{display:block;font:600 11px var(--f-body);color:var(--accent)}.wkgoal b{display:block;font:700 15.5px var(--f-display);color:var(--head);margin:1px 0 2px}.wkgoal span{font-size:12.5px;color:var(--muted)}
 .wkact{display:flex;justify-content:flex-end;margin-top:-4px}.wkact .btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;width:auto;font-size:14px}
+.keta{display:flex;flex-direction:column;gap:1px;border-top:1px solid var(--line);padding-top:10px;margin-top:2px;font-size:12.5px;color:var(--muted)}
+.keta .kel{font-size:12.5px}.keta b{font:700 18px var(--f-display);color:var(--accent);letter-spacing:-.01em}.keta.ok b{font-size:15.5px}
 .slnk{display:inline-flex;align-items:center;gap:5px;margin-top:8px;border:0;background:none;padding:2px 0;font:600 12.5px var(--f-body);color:var(--supp);cursor:pointer}
 .srow.on .chk{background:var(--supp);border-color:var(--supp);transform:scale(1.08)}
 .srow.on .chk svg path{stroke-dashoffset:0}
@@ -2169,7 +2171,7 @@ function heroHtml(X){
         <div style="display:flex;flex-direction:column;gap:6px"><span class="eyebrow">${sinceTxt()} bu yana · ${totalDays} gün</span>
         <div class="mega">${big}<small>kg</small></div>
         <div class="fromto">${kg(start)} → <b>${kg(latest.kg)} kg</b></div></div>
-        ${pct!=null?`<div class="gmeter" role="img" aria-label="Hedefin yüzde ${Math.round(pct)}'${pctEk(pct)} tamam"><div class="gm-txt"><span>Hedefin</span><b>%${Math.round(pct)}<small>'${pctEk(pct)}</small></b>${goal!=null?`<em>hedef ${kg(goal)} kg</em>`:""}</div><div class="gm-bar"><i class="${A("gmgrow")}" style="height:${Math.max(4,pct)}%"></i></div></div>`:""}
+        ${pct!=null?`<div class="gmeter" role="img" aria-label="Hedefin yüzde ${Math.round(pct)}'${pctEk(pct)} tamam"><div class="gm-txt"><span>Hedefin</span><b>%${Math.round(pct)}<small>'${pctEk(pct)}</small></b>${goal!=null?`<em>hedef ${kg(goal)} kg</em>${(e=>e&&e.d?`<em class="gm-eta">${e.days<=120?"~"+toD(e.d).getDate()+" "+e.sh:toD(e.d).toLocaleDateString("tr-TR",{month:"short",year:"numeric"})}</em>`:"")(etaInfo())}`:""}</div><div class="gm-bar"><i class="${A("gmgrow")}" style="height:${Math.max(4,pct)}%"></i></div></div>`:""}
       </div>
       <svg class="spark" viewBox="0 0 320 78" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="gsp" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7FE0C2" stop-opacity=".45"/><stop offset="1" stop-color="#7FE0C2" stop-opacity="0"/></linearGradient></defs>
         <path d="${line}L320 78L0 78Z" fill="url(#gsp)"/><path class="${A("draw")}" pathLength="1" d="${line}" fill="none" stroke="#9FF0D6" stroke-width="2.2" stroke-linejoin="round" vector-effect="non-scaling-stroke"/></svg>
@@ -3444,22 +3446,44 @@ function shotList(limit){
 
 let kRange=(()=>{try{return localStorage.getItem("hf-krange")||"3a"}catch(_){return "3a"}})(),moreG=false;
 /* Kilo sekmesi: sade kilo grafiği; hedef çizgisi, 3 ay / tümü */
+/* G3 · hedef tarihi: son 4 haftadaki tartıların eğimiyle (doğrusal regresyon) tahmini varış; az veri, sabit ya da çok uzaksa tarih verilmez */
+function etaInfo(){
+  const goal=S.profile.goalWeight,W=sortedW();if(goal==null||W.length<2)return null;const L=W[W.length-1];
+  if(L.kg<=goal)return {done:true};
+  const pts=W.filter(x=>x.date>=addDays(L.date,-28));if(pts.length<2||diffDays(pts[0].date,L.date)<14)return {few:true};
+  const t=pts.map(x=>diffDays(pts[0].date,x.date)),n=pts.length,mt=t.reduce((a,b)=>a+b,0)/n,my=pts.reduce((a,x)=>a+x.kg,0)/n;
+  let num=0,den=0;pts.forEach((x,i)=>{num+=(t[i]-mt)*(x.kg-my);den+=(t[i]-mt)**2});const sl=den?num/den:0,wk=sl*7;
+  if(wk>-0.1)return {flat:true,wk};
+  const days=Math.round((L.kg-goal)/-sl);if(days>730)return {far:true,wk};
+  const d=addDays(L.date,days),D=toD(d);
+  return {d,days,wk,txt:days<=120?`~${D.getDate()} ${D.toLocaleDateString("tr-TR",{month:"long"})} ${D.getFullYear()}`:`${D.toLocaleDateString("tr-TR",{month:"long",year:"numeric"})} civarı`,sh:D.toLocaleDateString("tr-TR",{month:"short"})};
+}
+function etaLine(e){if(!e)return "";
+  if(e.done)return `<div class="keta ok"><b>Hedefine ulaştın.</b><span>Şimdi kazancını korumak sırada.</span></div>`;
+  if(e.few)return `<div class="keta"><span>Hedef tarihi için en az 2 haftalık tartı gerekiyor.</span></div>`;
+  if(e.flat)return `<div class="keta"><span>Son 4 haftada kilon yerinde sayıyor; bu çok normal. Hız gelince tahmin burada görünecek.</span></div>`;
+  if(e.far)return `<div class="keta"><span>Son 4 haftada haftada ${sgn(e.wk)} kg. Bu hızla hedefin uzak; tahmin her tartıyla güncellenir.</span></div>`;
+  return `<div class="keta"><span class="kel">Bu hızla hedefe</span><b>${e.txt}</b><span>son 4 haftada haftada ${sgn(e.wk)} kg · her tartıyla güncellenir</span></div>`}
 function kiloSimple(){
   const all=sortedW(); if(!all.length) return "";
   const from=kRange==="3a"?addDays(today(),-91):"0000",w=all.filter(x=>x.date>=from).length>1?all.filter(x=>x.date>=from):all.slice(-2);
   const goal=S.profile.goalWeight,L=w[w.length-1],F=w[0];
   const W=320,H=120,T=10,B=8,ks=w.map(x=>x.kg),lo=Math.min(...ks,goal!=null?goal:Infinity),hi=Math.max(...ks),pad=Math.max(.4,(hi-lo)*.08);
-  const y0=lo-pad,y1=hi+pad,d0=F.date,sp=Math.max(1,diffDays(d0,L.date));
+  const E=etaInfo(),pj=E&&E.d&&E.days<=365?E:null;
+  const y0=lo-pad,y1=hi+pad,d0=F.date,sp=Math.max(1,diffDays(d0,pj?pj.d:L.date));
   const X=x=>diffDays(d0,x.date)/sp*W,Y=v=>T+(H-T-B)*(1-(v-y0)/(y1-y0));
   const line=w.length>1?w.map((x,i)=>(i?"L":"M")+X(x).toFixed(1)+" "+Y(x.kg).toFixed(1)).join(""):`M0 ${Y(L.kg)}L${W} ${Y(L.kg)}`;
   const gy=goal!=null&&goal>=y0?Y(goal):null;
+  const lx=X(L).toFixed(1),ly=Y(L.kg).toFixed(1);
   return `<div class="card ksimple"><div class="ksh"><div><h2>Kilo değişimi</h2><span class="muted" style="font-size:12.5px">${w.length} tartı · ${sgn(L.kg-F.kg)} kg</span></div>
     <div class="kseg" role="radiogroup" aria-label="Aralık"><button type="button" role="radio" data-krange="3a" aria-checked="${kRange==="3a"}">3 ay</button><button type="button" role="radio" data-krange="all" aria-checked="${kRange==="all"}">Tümü</button></div></div>
     <svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" class="kchart" role="img" aria-label="Kilo ${kg(F.kg)} kg'dan ${kg(L.kg)} kg'a">
-      <path d="${line}L${W} ${H}L0 ${H}Z" fill="var(--accent-soft)"/>
+      <path d="${line}L${w.length>1?lx:W} ${H}L0 ${H}Z" fill="var(--accent-soft)"/>
+      ${pj?`<path d="M${lx} ${ly}L${W} ${Y(goal).toFixed(1)}" fill="none" stroke="var(--accent)" stroke-width="2" stroke-dasharray="2 6" stroke-linecap="round" vector-effect="non-scaling-stroke"/>`:""}
       ${gy!=null?`<line x1="0" x2="${W}" y1="${gy}" y2="${gy}" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="4 5" opacity=".6" vector-effect="non-scaling-stroke"/>`:""}
       <path d="${line}" fill="none" stroke="var(--accent)" stroke-width="2.6" stroke-linejoin="round" vector-effect="non-scaling-stroke"/></svg>
-    <div class="kslab"><span>${fmtShort(F.date)} · ${kg(F.kg)}</span>${gy!=null?`<span>hedef ${kg(goal)} ┄</span>`:""}<span>bugün ${kg(L.kg)}</span></div></div>`;
+    ${pj?`<div class="kslab"><span>${fmtShort(F.date)} · ${kg(F.kg)}</span><span>bugün ${kg(L.kg)}</span><span>hedef ${kg(goal)} · ${pj.sh}</span></div>`:`<div class="kslab"><span>${fmtShort(F.date)} · ${kg(F.kg)}</span>${gy!=null?`<span>hedef ${kg(goal)} ┄</span>`:""}<span>bugün ${kg(L.kg)}</span></div>`}
+    ${etaLine(E)}</div>`;
 }
 function vKilo(){
   const w=sortedW().reverse();
