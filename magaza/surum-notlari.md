@@ -7,11 +7,13 @@ Play en fazla 500 karakter kabul eder. Aşağıdaki bloğu olduğu gibi yapışt
 ```
 <tr-TR>
 Yeni tasarım: sade Özet, yeni renkler ve her sekmede + düğmesi.
-• Kilo girişi −/+ ile, iğne girişi vücut çizimiyle; kullandığın bölgeleri ayarlardan seç
-• Kas kütlesi alanı
-• Takviye ya da iğne unutulursa ikinci hatırlatma
-• Adımlarını 5 farklı kartla paylaş, istersen kendi fotoğrafınla
-• Kartını tek dokunuşla Hafif ekibine e-postayla gönder
-• Hatalar düzeltildi: ayarları kaydetmek temayı ve kalem stoğunu sıfırlıyordu
+• Adım geçmişi: 7 gün, 30 gün, 3 ay ve hedefi tuttuğun günler
+• Kilo girişi −/+ ile, iğne girişi vücut çizimiyle
+• Kas kütlesi alanı ve unutulan takviye ya da iğne için ikinci hatırlatma
+• İlk kurulumda kişisel yol haritan
+• Ayarlar kendiliğinden kaydedilir
+• Tarih ve saatler her telefonda Türkçe
+• Adımlarını paylaş, kartını Hafif ekibine e-postayla gönder
+• Hatalar düzeltildi
 </tr-TR>
 ```
