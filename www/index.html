@@ -1988,7 +1988,7 @@ function bindToday(){
 /* ---------- ana kart tasarımları ---------- */
 const HEROS=[["gece","Zümrüt"]];
 let heroV="gece",prevTab="ozet";
-const BUILD="1.9.0 önizleme · Adım 2 · 29 Eki";
+const BUILD="1.9.0 önizleme · Adım 2b · 29 Eki";
 let HERO_CTX=null;
 function heroDots(dark){return "";`<div class="hdots${dark?" dk":""}" role="tablist" aria-label="Kart tasarımı">${HEROS.map(([k,n])=>`<button type="button" data-hero="${k}" aria-selected="${k===heroV}" aria-label="${n}"></button>`).join("")}<span>${HEROS.find(h=>h[0]===heroV)[1]}</span></div>`}
 function heroHtml(X){
@@ -2008,14 +2008,22 @@ function heroHtml(X){
       ${heroDots()}</div>`;
   }
   if(heroV==="gece"){
-    /* sade kahraman kart: verilen kilo, hedefe yüzde, ilerleme çubuğu, başlangıç → şimdi ve haftalık hız */
-    return `<div class="card hero-gece hero-sade">
-      <div class="hs-top"><span class="eyebrow">${sinceTxt()} bu yana · ${totalDays} gün</span><button type="button" class="sharebtn" data-share aria-label="İlerlemeni paylaş"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V3M7.5 7.5L12 3l4.5 4.5"/><path d="M5 12v6.5A2.5 2.5 0 0 0 7.5 21h9a2.5 2.5 0 0 0 2.5-2.5V12"/></svg></button></div>
-      <div class="hs-row"><div class="mega">${big}<small>kg</small></div>
-        ${pct!=null?`<div class="hs-pct" role="img" aria-label="Hedefin yüzde ${Math.round(pct)}'${pctEk(pct)} tamam"><span>hedefin</span><b>%${Math.round(pct)}'${pctEk(pct)}</b></div>`:`<button type="button" class="hs-goal" data-go="ayar">Hedef belirle ›</button>`}</div>
-      ${pct!=null?`<div class="hs-bar"><i style="width:${Math.max(2,pct)}%"></i></div>`:""}
-      <div class="hs-foot"><span>${kg(start)} → <b>${kg(latest.kg)} kg</b></span><span>${perWeek!=null?`haftada <b>${sgn(perWeek)} kg</b>`:""}${left!=null&&perWeek==null?`hedefe <b>${kg(left)} kg</b>`:""}</span></div>
-    </div>`;
+    const pts=w.map(p=>p.kg), lo=Math.min(...pts), hi=Math.max(...pts), d0=w[0].date, sp=Math.max(1,diffDays(d0,w[w.length-1].date));
+    const X2=p=>diffDays(d0,p.date)/sp*320, Y=v=>8+(hi-v)/Math.max(.1,hi-lo)*62;
+    // tek tartı ya da hepsi aynı gün: eğim yokmuş gibi düz çizgi (yoksa dolgu üçgen gibi eğik görünür)
+    const line=diffDays(d0,w[w.length-1].date)<1?(w.length<2||hi===lo?"M0 40L320 40":w.map((p,i)=>(i?"L":"M")+(i/(w.length-1)*320).toFixed(1)+" "+Y(p.kg).toFixed(1)).join("")):w.map((p,i)=>(i?"L":"M")+X2(p).toFixed(1)+" "+Y(p.kg).toFixed(1)).join("");
+    return `<div class="card hero-gece">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px">
+        <div style="display:flex;flex-direction:column;gap:6px"><span class="eyebrow">${sinceTxt()} bu yana · ${totalDays} gün</span>
+        <div class="mega">${big}<small>kg</small></div>
+        <div class="fromto">${kg(start)} → <b>${kg(latest.kg)} kg</b></div></div>
+        ${pct!=null?`<div class="gmeter" role="img" aria-label="Hedefin yüzde ${Math.round(pct)}'${pctEk(pct)} tamam"><div class="gm-txt"><span>Hedefin</span><b>%${Math.round(pct)}<small>'${pctEk(pct)}</small></b>${goal!=null?`<em>hedef ${kg(goal)} kg</em>`:""}</div><div class="gm-bar"><i class="${A("gmgrow")}" style="height:${Math.max(4,pct)}%"></i></div></div>`:""}
+      </div>
+      <svg class="spark" viewBox="0 0 320 78" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="gsp" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7FE0C2" stop-opacity=".45"/><stop offset="1" stop-color="#7FE0C2" stop-opacity="0"/></linearGradient></defs>
+        <path d="${line}L320 78L0 78Z" fill="url(#gsp)"/><path class="${A("draw")}" pathLength="1" d="${line}" fill="none" stroke="#9FF0D6" stroke-width="2.2" stroke-linejoin="round" vector-effect="non-scaling-stroke"/></svg>
+      <div style="display:flex;align-items:center;gap:8px"><div class="chips dk" style="flex:1;min-width:0">${shotChip(s)}${perWeek!=null?`<span>haftada <b>${sgn(perWeek)}</b> kg</span>`:""}${left!=null?`<span>hedefe <b>${kg(left)}</b> kg</span>`:""}</div>
+      <button type="button" class="sharebtn" data-share aria-label="İlerlemeni paylaş"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V3M7.5 7.5L12 3l4.5 4.5"/><path d="M5 12v6.5A2.5 2.5 0 0 0 7.5 21h9a2.5 2.5 0 0 0 2.5-2.5V12"/></svg></button></div>
+      ${heroDots(true)}</div>`;
   }
   if(heroV==="halka"){
     const R=86,C=2*Math.PI*R,f=pct!=null?pct/100:0;
