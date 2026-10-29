@@ -721,6 +721,11 @@ button.mscount i{font-style:normal;font-size:22px;color:var(--muted);margin-left
 .onb input:focus{border-color:var(--accent)}
 .obinfo{margin-top:16px;background:var(--accent-soft);border-radius:16px;padding:14px;font-size:13.5px;color:var(--head)}.obinfo b{font:700 19px var(--f-display)}
 .obok{width:84px;height:84px;border-radius:50%;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center;margin:18px 0 22px}.obok svg{width:44px;height:44px}
+.obmap{background:var(--surface);border-radius:20px;padding:16px;box-shadow:var(--shadow);margin-top:22px;display:flex;flex-direction:column;gap:6px}
+.obft{display:flex;align-items:flex-end;justify-content:space-between;gap:10px}.obft span{display:block;font:600 11px var(--f-body);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}.obft b{font:700 22px var(--f-display);color:var(--head)}.obft b.g{color:var(--accent)}.obft i{font-style:normal;color:var(--muted);font-size:20px;padding-bottom:4px}
+.obmap p{margin:0;font-size:13.5px;line-height:1.5;color:var(--muted)}.obmap p b{color:var(--head)}
+.obwk{background:var(--surface);border-radius:20px;padding:14px 16px;box-shadow:var(--shadow);margin-top:12px;display:flex;flex-direction:column;gap:8px;font-size:14px}.obwk>b{font:700 15.5px var(--f-display);color:var(--head)}
+.obwk div{display:flex;align-items:center;gap:8px;color:var(--fg)}.obwk svg{color:var(--accent);flex:none}
 .obsum{display:flex;flex-direction:column;background:var(--surface);border-radius:20px;padding:4px 16px;box-shadow:var(--shadow);margin-top:22px}
 .obsum div{display:flex;justify-content:space-between;gap:12px;padding:12px 0;border-top:1px solid var(--line);font-size:14.5px}.obsum div:first-child{border:0}.obsum span{color:var(--muted)}
 .btn:disabled{opacity:.4;cursor:default}
@@ -2021,7 +2026,7 @@ function bindToday(){
 /* ---------- ana kart tasarımları ---------- */
 const HEROS=[["gece","Zümrüt"]];
 let heroV="gece",prevTab="ozet";
-const BUILD="1.9.0 önizleme · Adım 7 · 29 Eki";
+const BUILD="1.9.0 önizleme · Adım 8 · 29 Eki";
 let HERO_CTX=null;
 function heroDots(dark){return "";`<div class="hdots${dark?" dk":""}" role="tablist" aria-label="Kart tasarımı">${HEROS.map(([k,n])=>`<button type="button" data-hero="${k}" aria-selected="${k===heroV}" aria-label="${n}"></button>`).join("")}<span>${HEROS.find(h=>h[0]===heroV)[1]}</span></div>`}
 function heroHtml(X){
@@ -3769,12 +3774,11 @@ function obCollect(){
   if(OB.step===3){OB.doseX=v("obDoseX")??OB.doseX;OB.last=v("obLast")??OB.last;OB.time=v("obTime")||OB.time;OB.drug=v("obDrug")??OB.drug}
   if(OB.step===4){OB.kg=v("obKg")??OB.kg;OB.goal=v("obGoal")??OB.goal;OB.h=v("obH")??OB.h;OB.age=v("obAge")??OB.age;OB.prot=v("obProt")??OB.prot;OB.water=v("obWater")??OB.water}
 }
-function obInfo(){
-  const k=num(OB.kg),g=num(OB.goal);
-  let t="";
-  if(k&&g&&k>g){const l=k-g,a=Math.max(1,Math.round(l/1/4.345)),b=Math.max(a,Math.round(l/0.5/4.345));t=`Hedefe <b>${kg(l)} kg</b> var. Haftada 0,5–1 kg ile yaklaşık <b>${a===b?a:a+"–"+b} ay</b>. `}
-  return t+"Yaş ve cinsiyet, günlük kalori ve protein önerini hesaplamak için.";
-}
+function obInfo(){return "Yaş ve cinsiyet doktor raporunda görünür; istersen boş bırakabilirsin."}
+/* kurulum sonu: haftada 0,5–1 kg ile hedefe varış aralığı ("Mart–Nisan 2027") */
+function obEta(k,g){const l=k-g,M=d=>toD(d).toLocaleDateString("tr-TR",{month:"long"}),Y=d=>toD(d).getFullYear();
+  const a=addDays(today(),Math.round(l/1*7)),b=addDays(today(),Math.round(l/0.5*7));
+  return a.slice(0,7)===b.slice(0,7)?`${M(a)} ${Y(a)}`:Y(a)===Y(b)?`${M(a)}–${M(b)} ${Y(b)}`:`${M(a)} ${Y(a)} – ${M(b)} ${Y(b)}`}
 function obProtPh(){const k=num(OB.kg);return k?`ör. ${Math.round(k*1.35/5)*5}`:"ör. 110"}
 function obBody(){
   const st=OB.step, steps=obSteps(), mid=steps.filter(x=>x>1&&x<5), di=mid.indexOf(st);
@@ -3832,6 +3836,17 @@ function obBody(){
   if(g)rows.push(["Hedef",kg(g)+" kg"]);
   if(OB.uses!==false){rows.push(["İğne",`${dose?esc(dose)+" mg":"doz ?"}${OB.day!=null?" · her "+toD(lastDow(OB.day)).toLocaleDateString("tr-TR",{weekday:"long"}):""}`]);
     if(OB.last)rows.push(["Sıradaki iğne",`${fmtD(addDays(OB.last,7))}, ${OB.time}`])}
+  if(k&&g&&k>g){
+    const pr=num(OB.prot)||Math.round(k*1.35/5)*5,wa=num(OB.water)||2500,ok=`<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>`;
+    const wk=["Her gün aynı saatte tartıl",`Günde ${pr} g protein, ${String(Math.round(wa/100)/10).replace(".",",")} L su`];
+    if(OB.uses!==false&&OB.day!=null)wk.push(`İğne günün: ${toD(lastDow(OB.day)).toLocaleDateString("tr-TR",{weekday:"long"})} ${OB.time||""}`.trim());
+    return `<h1 class="obh1" style="margin-top:18px">Yol haritan<br><em>hazır.</em></h1>
+    <div class="obmap"><div class="obft"><div><span>Bugün</span><b>${kg(k)} kg</b></div><i>→</i><div style="text-align:right"><span>Hedef</span><b class="g">${kg(g)} kg</b></div></div>
+      <svg viewBox="0 0 260 64" width="100%" height="64" aria-hidden="true" preserveAspectRatio="none"><path d="M6 8 C70 18 130 40 254 56" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-dasharray="5 6" stroke-linecap="round" vector-effect="non-scaling-stroke"/><circle cx="6" cy="8" r="4.5" fill="var(--accent)"/><circle cx="254" cy="56" r="5.5" fill="var(--accent)"/></svg>
+      <p>Haftada 0,5–1 kg sağlıklı bir hızla <b>${obEta(k,g)}</b> arasında. Her tartıyla bu tahmin güncellenir.</p></div>
+    <div class="obwk"><b>İlk haftan için</b>${wk.map(t=>`<div>${ok}<span>${esc(t)}</span></div>`).join("")}</div>
+    <div class="obgrow"></div>
+    <button type="button" class="btn" data-ob="finish">Hafif'i aç</button>`}
   return `<div class="obok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
     <h1 class="obh1">Her şey<br><em>hazır.</em></h1>
     <p class="obsub">${k?"İlk tartın kaydedilecek. ":""}Hafif'i keşfetmeye başlayabilirsin.</p>
