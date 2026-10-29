@@ -593,6 +593,22 @@ label.drow{flex-direction:row;font-size:14px;font-weight:500;margin:0}
 .phtile i{color:var(--accent)}.phtile b{color:var(--head);font-size:15.5px}.phtile small{font-size:12.5px}
 .phtile .phpv{position:absolute;inset:0;background:center/cover no-repeat}.phtile.has{border-style:solid;border-color:var(--accent)}.phtile.has i,.phtile.has b,.phtile.has small{position:relative;background:rgba(0,0,0,.45);color:#fff;border-radius:8px;padding:1px 8px}.phtile.has i{display:none}
 .phbig{display:grid;grid-template-columns:1fr 1fr;gap:8px}.phbig.one{grid-template-columns:1fr}.phbig img{width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:14px;background:var(--sunk);display:block}.phbig.one img{max-height:60vh;width:auto;max-width:100%;margin:0 auto}
+.wk{display:flex;flex-direction:column;gap:14px;position:relative;overflow:hidden;background:linear-gradient(170deg,color-mix(in oklab,var(--accent) 9%,var(--surface)) 0%,var(--surface) 46%)}
+.wkh{display:flex;justify-content:space-between;align-items:center;margin-bottom:-6px}.wkh .eyebrow{color:var(--accent)}
+.wkx{border:0;background:none;color:var(--muted);font-size:15px;width:32px;height:32px;margin:-6px -8px -6px 0;border-radius:50%;cursor:pointer}.wkx:active{background:var(--sunk)}
+.wkbig{display:flex;align-items:flex-end;gap:14px}.wkbig>div:first-child{display:flex;align-items:baseline;gap:4px;flex:none}
+.wkbig b{font:700 46px/1 var(--f-display);letter-spacing:-.04em;color:var(--head)}.wkbig b.dn{color:var(--accent)}.wkbig b.na{color:var(--muted)}.wkbig small{font:600 17px var(--f-display);color:var(--muted)}
+.wks{display:flex;flex-direction:column;gap:6px;align-items:flex-start;padding-bottom:4px;min-width:0}.wks>span{font-size:12.5px;color:var(--muted)}
+.wkchip{display:inline-flex;align-items:center;gap:5px;background:var(--shot-soft);color:var(--shot);border-radius:99px;padding:3px 9px;font:600 12.5px var(--f-body)}
+.wkgrid{display:grid;grid-template-columns:auto repeat(7,1fr) auto;gap:8px 4px;align-items:center;background:var(--sunk);border-radius:16px;padding:12px 14px}
+.wkgrid em{font:600 11px var(--f-body);font-style:normal;color:var(--muted);text-align:center}
+.wkn{font:600 12.5px var(--f-body);color:var(--fg);padding-right:6px}.wkgrid>b{font:700 12.5px var(--f-body);color:var(--muted);text-align:right;padding-left:6px}
+.wkgrid i{justify-self:center;width:18px;height:18px;border-radius:50%;box-shadow:inset 0 0 0 2px color-mix(in oklab,var(--fg) 14%,transparent)}
+.wkgrid i.s1{box-shadow:inset 0 0 0 2px var(--c);background:color-mix(in oklab,var(--c) 14%,transparent)}.wkgrid i.s2{background:var(--c);box-shadow:none}
+.wkgoal{display:flex;gap:12px;align-items:flex-start;border:1.5px solid color-mix(in oklab,var(--accent) 30%,transparent);border-radius:16px;padding:12px 14px}
+.wkgoal>i{flex:none;width:38px;height:38px;border-radius:12px;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center}
+.wkgoal small{display:block;font:600 11px var(--f-body);color:var(--accent)}.wkgoal b{display:block;font:700 15.5px var(--f-display);color:var(--head);margin:1px 0 2px}.wkgoal span{font-size:12.5px;color:var(--muted)}
+.wkact{display:flex;justify-content:flex-end;margin-top:-4px}.wkact .btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;width:auto;font-size:14px}
 .slnk{display:inline-flex;align-items:center;gap:5px;margin-top:8px;border:0;background:none;padding:2px 0;font:600 12.5px var(--f-body);color:var(--supp);cursor:pointer}
 .srow.on .chk{background:var(--supp);border-color:var(--supp);transform:scale(1.08)}
 .srow.on .chk svg path{stroke-dashoffset:0}
@@ -1483,6 +1499,7 @@ function vOzetMain(){
   return `<section>
     <div id="heroWrap">${heroHtml({w,s,lost,start,latest,goal,pct,ring,perWeek,totalDays})}</div>
     ${todayRings()}
+    ${weekCard()}
     ${coachHtml()}
     ${nextShotRow()}
     ${HP()&&!(S.hc&&S.hc.on)&&!PV()?stepCard():""}
@@ -1528,6 +1545,75 @@ function nextShotRow(){
   return `<button type="button" class="card nsrow${left<=0?" due":""}" data-go="igne"><span class="nsi"><b>${left>0?left:"!"}</b><small>${left>0?"gün":""}</small></span><span class="nst"><b>${left>1?day+" "+shotTime(ls):when}${ls.dose!=null&&ls.dose!==""?` · ${String(ls.dose).replace(".",",")} mg`:""}</b><small>${X?`${PHASES[X.I.cur].k} evresi · `:""}<span style="white-space:nowrap">Öneri: ${siteLbl(nextSite())}</span></small></span><i>›</i></button>`;
 }
 /* Özet: rozetler tek satır */
+/* ---------- G2 · Pazartesi haftalık özet ("Haftan") ----------
+   Pazartesi–Çarşamba Özet'te geçen haftanın kartı: kilo farkı, 7 günlük alışkanlık ızgarası, iğneler ve bu haftanın tek hedefi.
+   Kapatılınca o hafta için bir daha çıkmaz (S.profile.weekSeen). Claude önizlemesinde her gün görünür. */
+const WK_EK={1:"inde",2:"sinde",3:"ünde",4:"ünde",5:"inde",6:"sında",7:"sinde"};
+function weekData(){
+  const td=today(),dw=(toD(td).getDay()+6)%7,mon=addDays(td,-dw-7),days=[...Array(7)].map((_,i)=>addDays(mon,i)),sun=days[6];
+  const W=[...S.weights].sort((a,b)=>a.date<b.date?-1:a.date>b.date?1:(a.t||0)-(b.t||0));
+  const inW=W.filter(x=>x.date>=mon&&x.date<=sun),before=W.filter(x=>x.date<mon).pop(),end=inW[inW.length-1];
+  const base=before||inW[0],dkg=end&&base&&end!==base?end.kg-base.kg:null,first=W[0],tot=end&&first?end.kg-first.kg:null;
+  const rows=[];const any=k=>days.some(d=>(dayRec(d)[k]||0)>0);
+  if(any("p"))rows.push({k:"p",n:"Protein",c:"var(--protein)",st:days.map(d=>{const v=dayRec(d).p||0;return v>=pGoal()?2:v>0?1:0})});
+  if(any("w"))rows.push({k:"w",n:"Su",c:"var(--water)",st:days.map(d=>{const v=dayRec(d).w||0;return v>=wGoal()?2:v>0?1:0})});
+  if((S.hc&&S.hc.on)||PV()){const st=days.map(d=>{const v=stepsOn(d);return v>=stepGoal()?2:v>0?1:0});if(st.some(Boolean))rows.push({k:"st",n:"Adım",c:"var(--step-ring)",st})}
+  if(Array.isArray(S.supps)&&S.supps.length){const st=days.map(d=>{const r=dayDone(d);return !r.of?0:r.n>=r.of?2:r.n?1:0});if(st.some(Boolean))rows.push({k:"sp",n:"Takviye",c:"var(--supp)",st})}
+  rows.forEach(r=>r.met=r.st.filter(x=>x===2).length);
+  const sh=SHOTS()?S.shots.filter(x=>x.date>=mon&&x.date<=sun):[];
+  let goal=null;
+  if(!inW.length&&W.length)goal={t:"Bu hafta en az bir kez tartıl",s:"Haftalık değişimi ancak tartıyla görebiliriz."};
+  else if(rows.length){const r=[...rows].sort((a,b)=>a.met-b.met)[0];
+    const n=Math.max(r.met+1,3);goal=r.met>=6?{t:"Ritmi koru",s:`Geçen hafta en zayıf alanın bile ${r.met}/7. Aynen devam.`}:{t:`${r.n}: 7 günün ${n}'${WK_EK[n]} hedefte`,s:r.met>=2?`Geçen hafta ${r.met}/7. Tek bir gün fazlası yeter.`:`Geçen hafta ${r.met}/7. Küçük başla, ritim gelir.`}}
+  const has=inW.length||rows.length||sh.length;
+  return {mon,sun,days,dkg,tot,rows,sh,goal,has,key:mon};
+}
+const wkRange=(a,b)=>{const A=toD(a),B=toD(b),m=x=>x.toLocaleDateString("tr-TR",{month:"long"});return A.getMonth()===B.getMonth()?`${A.getDate()}–${B.getDate()} ${m(B)}`:`${A.getDate()} ${m(A)} – ${B.getDate()} ${m(B)}`};
+const WK_TGT='<circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r=".8" fill="currentColor"/>';
+function weekCard(){
+  const dw=(toD(today()).getDay()+6)%7;if(!PV()&&dw>2)return "";
+  const D=weekData();if(!D.has||S.profile.weekSeen===D.key)return "";
+  const sg=v=>(v<0?"−":"+")+kg(Math.abs(v));
+  const big=D.dkg!=null?`<b class="${D.dkg<0?"dn":D.dkg>0?"up":""}">${D.dkg?sg(D.dkg):"±0,0"}</b><small>kg</small>`:`<b class="na">—</b>`;
+  const sub=D.dkg!=null?`geçen hafta${D.tot!=null&&D.tot!==D.dkg?` · toplam ${sg(D.tot)} kg`:""}`:"geçen hafta tartı yok";
+  const L=["P","S","Ç","P","C","C","P"];
+  const grid=D.rows.length?`<div class="wkgrid"><span></span>${L.map(x=>`<em>${x}</em>`).join("")}<span></span>
+    ${D.rows.map(r=>`<span class="wkn">${r.n}</span>${r.st.map((v,i)=>`<i class="s${v}" style="--c:${r.c}" aria-label="${L[i]}: ${v===2?"hedef tamam":v?"eksik":"kayıt yok"}"></i>`).join("")}<b>${r.met}/7</b>`).join("")}</div>`:"";
+  const shot=SHOTS()&&D.sh.length?`<span class="wkchip">${penIcon().replace('width="26" height="26"','width="14" height="14"')}${D.sh.length} iğne${D.sh[D.sh.length-1].dose?` · ${esc(D.sh[D.sh.length-1].dose)} mg`:""}</span>`:"";
+  return `<div class="card wk" id="wkCard">
+    <div class="wkh"><div><span class="eyebrow">Haftan · ${wkRange(D.mon,D.sun)}</span></div><button type="button" class="wkx" id="wkX" aria-label="Haftalık özeti kapat">✕</button></div>
+    <div class="wkbig"><div>${big}</div><div class="wks"><span>${sub}</span>${shot}</div></div>
+    ${grid}
+    ${D.goal?`<div class="wkgoal"><i>${UI_I(WK_TGT,22)}</i><div><small>Bu haftanın tek hedefi</small><b>${D.goal.t}</b><span>${D.goal.s}</span></div></div>`:""}
+    <div class="wkact"><button type="button" class="btn ghost" id="wkShare">${UI_I('<path d="M12 15V4M7.5 8.5 12 4l4.5 4.5M5 13v6h14v-6"/>',16)} Paylaş</button></div>
+  </div>`;
+}
+/* paylaşım görseli: 1080×1920 (story) */
+function weekCanvas(){
+  const D=weekData(),cv=document.createElement("canvas");cv.width=1080;cv.height=1920;const c=cv.getContext("2d");
+  let g=c.createLinearGradient(0,0,1080,1920);g.addColorStop(0,"#0E4F45");g.addColorStop(1,"#082A25");c.fillStyle=g;c.fillRect(0,0,1080,1920);
+  g=c.createRadialGradient(880,260,40,880,260,700);g.addColorStop(0,"rgba(159,240,214,.18)");g.addColorStop(1,"rgba(159,240,214,0)");c.fillStyle=g;c.fillRect(0,0,1080,1920);
+  c.fillStyle="#9FF0D6";c.font=`600 40px ${FONT_B}`;c.fillText("HAFTAN",96,220);
+  c.fillStyle="rgba(255,255,255,.7)";c.font=`500 44px ${FONT_B}`;c.fillText(wkRange(D.mon,D.sun),96,290);
+  const sg=v=>(v<0?"−":"+")+kg(Math.abs(v));
+  c.fillStyle="#fff";c.font=`700 260px ${FONT_D}`;const t=D.dkg!=null?(D.dkg?sg(D.dkg):"±0,0"):"—";c.fillText(t,84,560);
+  const tw=c.measureText(t).width;c.font=`500 80px ${FONT_D}`;c.fillStyle="rgba(255,255,255,.75)";c.fillText("kg",100+tw,560);
+  c.font=`500 44px ${FONT_B}`;c.fillStyle="rgba(255,255,255,.7)";c.fillText(D.dkg!=null?(D.tot!=null&&D.tot!==D.dkg?`geçen hafta · toplam ${sg(D.tot)} kg`:"geçen hafta"):"geçen hafta tartı yok",96,640);
+  let y=860;const col={p:"#E9A23B",w:"#4FA9CC",st:"#3DB5C4",sp:"#E07AA0"},L=["P","S","Ç","P","C","C","P"];
+  c.font=`600 34px ${FONT_B}`;c.fillStyle="rgba(255,255,255,.5)";L.forEach((x,i)=>{c.textAlign="center";c.fillText(x,330+i*90,y)});c.textAlign="left";y+=80;
+  for(const r of D.rows){c.fillStyle="#fff";c.font=`600 46px ${FONT_B}`;c.fillText(r.n,96,y+16);
+    r.st.forEach((v,i)=>{const x=330+i*90;c.beginPath();c.arc(x,y,33,0,Math.PI*2);if(v===2){c.fillStyle=col[r.k];c.fill()}else{c.lineWidth=5;c.strokeStyle=v?col[r.k]:"rgba(255,255,255,.22)";c.stroke()}});
+    c.textAlign="right";c.fillStyle="rgba(255,255,255,.8)";c.font=`600 40px ${FONT_B}`;c.fillText(r.met+"/7",990,y+16);c.textAlign="left";y+=124}
+  if(D.goal){y+=70;c.fillStyle="rgba(255,255,255,.08)";c.beginPath();c.roundRect(72,y,936,250,44);c.fill();
+    c.fillStyle="#9FF0D6";c.font=`600 34px ${FONT_B}`;c.fillText("BU HAFTANIN TEK HEDEFİ",120,y+78);
+    c.fillStyle="#fff";c.font=`700 58px ${FONT_D}`;c.fillText(D.goal.t,120,y+168)}
+  c.fillStyle="#9FF0D6";c.font=`700 64px ${FONT_D}`;c.fillText("Hafif",96,1800);c.fillStyle="rgba(255,255,255,.55)";c.font=`500 34px ${FONT_B}`;c.fillText("ile takip ediliyor",270,1798);
+  return cv;
+}
+function bindWeek(){
+  const x=$("#wkX");if(x)x.addEventListener("click",()=>{S.profile.weekSeen=weekData().key;save();const c=$("#wkCard");if(c)c.remove();toast("Haftalık özet kapatıldı",["Geri al",()=>{delete S.profile.weekSeen;save();render()}])});
+  const sh=$("#wkShare");if(sh)sh.addEventListener("click",async()=>{sh.disabled=true;try{const cv=weekCanvas();const blob=await new Promise(r=>cv.toBlob(r,"image/png"));const res=await dlSave(`hafif-haftan-${weekData().mon}.png`,blob);if(res&&res.status==="saved")toast("Görsel hazır")}catch(e){const m=dlMsg(e);if(m)toast(m)}finally{sh.disabled=false}});
+}
 function msStrip(){
   /* son kazanılan rozet renkli solda; altında sıradaki rozete ilerleme */
   const M=milestones(); if(!M) return "";
@@ -3792,7 +3878,7 @@ document.addEventListener("visibilitychange",()=>{if(document.visibilityState===
 
 /* ---------- hatırlatıcılar (yalnızca Android; telefon kendisi zamanlar) ---------- */
 const LN=()=>window.Capacitor&&window.Capacitor.isNativePlatform&&window.Capacitor.isNativePlatform()&&window.Capacitor.Plugins&&window.Capacitor.Plugins.LocalNotifications||null;
-const REM_DEF={shot:true,shotEve:true,shot2:true,supp:true,supp2:60,water:false,prot:false,weigh:true,weighDay:1,weighTime:"07:30",backup:true,pen:true};
+const REM_DEF={shot:true,shotEve:true,shot2:true,supp:true,supp2:60,water:false,prot:false,weigh:true,weighDay:1,weighTime:"07:30",week:true,backup:true,pen:true};
 const rem=()=>Object.assign({},REM_DEF,S.profile.rem||{});
 const remOn=()=>!!(S.profile.rem&&S.profile.rem.on);
 const BELL=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/></svg>`;
@@ -3814,6 +3900,7 @@ function remBuild(){
     if(R.water)["11:00","15:00","19:00"].forEach((hm,j)=>{const w=dayRec(d).w,g=wGoal();if(i===0&&w>=g)return;
       add(3000+i*3+j,atOf(d,hm),"Bir bardak su?",i===0?`Bugün ${ml(w)} ml içtin, hedefe ${ml(g-w)} ml kaldı.`:`Günlük hedefin ${ml(g)} ml. Bir bardak suyla devam et.`,"SU",{tab:"besin"})});
     if(R.prot){const p=dayRec(d).p,g=pGoal();if(!(i===0&&p>=g))add(4000+i,atOf(d,"18:30"),i===0?"Protein hedefine az kaldı":"Protein hedefin",i===0?`${ml(p)} / ${g} g. Akşam yemeğinde ${ml(g-p)} g protein hedefini tamamlar.`:`Günlük protein hedefin ${g} g. Akşam tabağında proteini öne al.`,"PROT",{tab:"besin"})}
+    if(R.week&&toD(d).getDay()===1)add(5300+i,atOf(d,"09:30"),"Haftan hazır","Geçen haftanın özeti ve bu haftanın tek hedefi Özet'te.","HAFTA",{tab:"ozet"});
     if(R.weigh&&toD(d).getDay()===+R.weighDay&&!(i===0&&S.weights.some(x=>x.date===d)))add(5000+i,atOf(d,R.weighTime),PLUS()&&R.photo!==false?"Tartı ve fotoğraf günü":"Haftalık tartı zamanı",PLUS()&&R.photo!==false?"Aç karnına tartıl, ardından haftalık fotoğrafını çek; aynı ışık, aynı açı.":"Sabah, aç karnına ve aynı saatte tartılmak en tutarlı sonucu verir.","TARTI",{tab:"kilo"});
   }
   if(SHOTS()&&R.pen&&S.profile.penLeft!=null&&S.profile.penLeft<=1){const nx=pkState().next,left=S.profile.penLeft;
@@ -3859,7 +3946,7 @@ function remCard(){
   const R=rem(),sw=(k,l,d)=>`<label class="sw"><span><b>${l}</b><small>${d}</small></span><input type="checkbox" data-rem="${k}" ${R[k]?"checked":""}><i></i></label>`;
   return `<div class="card" style="display:flex;flex-direction:column;gap:10px"><div class="remrow"><div><h2>Hatırlatıcılar</h2><span class="muted" style="font-size:12.5px">Saatler birkaç dakika oynayabilir</span></div><button type="button" class="linkbtn" data-rem-off>Tümünü kapat</button></div>
     <div class="sws">${SHOTS()?sw("shot","İğne günü","iğne saatinde, doz ve bölge önerisiyle")+sw("shotEve","Bir gün önce","20:00'de hazırlık hatırlatması")+sw("shot2","Kaydedilmezse tekrar","iğne saatinden 3 saat sonra, iğneyi kaydetmediysen"):""}${sw("supp","Takviyeler","programındaki sabah, akşam ve gece saatlerinde")}
-    <div class="remtime" id="remS2" ${R.supp?"":"hidden"}><span class="muted" style="font-size:12.5px;flex:1">Alınmazsa tekrar hatırlat</span><select data-rem-s2 aria-label="Takviye ikinci hatırlatma">${[[30,"30 dk sonra"],[60,"1 saat sonra"],[120,"2 saat sonra"],[0,"Kapalı"]].map(([v,l])=>`<option value="${v}" ${+R.supp2===v?"selected":""}>${l}</option>`).join("")}</select></div>${sw("water","Su","11:00, 15:00 ve 19:00'da, hedefin dolmadıysa")}${sw("prot","Protein","18:30'da, hedefin dolmadıysa")}${sw("weigh","Haftalık tartı","seçtiğin gün ve saatte")}${SHOTS()?sw("pen","Kalem stoğu","kalemde son doz kalınca"):""}${sw("backup","Yedek hatırlatması","son yedek dosyan 30 günü geçince, pazar 20:00")}</div>
+    <div class="remtime" id="remS2" ${R.supp?"":"hidden"}><span class="muted" style="font-size:12.5px;flex:1">Alınmazsa tekrar hatırlat</span><select data-rem-s2 aria-label="Takviye ikinci hatırlatma">${[[30,"30 dk sonra"],[60,"1 saat sonra"],[120,"2 saat sonra"],[0,"Kapalı"]].map(([v,l])=>`<option value="${v}" ${+R.supp2===v?"selected":""}>${l}</option>`).join("")}</select></div>${sw("water","Su","11:00, 15:00 ve 19:00'da, hedefin dolmadıysa")}${sw("prot","Protein","18:30'da, hedefin dolmadıysa")}${sw("weigh","Haftalık tartı","seçtiğin gün ve saatte")+sw("week","Pazartesi haftalık özet","pazartesi 09:30 · geçen haftan ve bu haftanın tek hedefi")}${SHOTS()?sw("pen","Kalem stoğu","kalemde son doz kalınca"):""}${sw("backup","Yedek hatırlatması","son yedek dosyan 30 günü geçince, pazar 20:00")}</div>
     <div class="remtime" ${R.weigh?"":"hidden"} id="remW"><select data-rem-day aria-label="Tartı günü">${[1,2,3,4,5,6,0].map(i=>`<option value="${i}" ${+R.weighDay===i?"selected":""}>${toD(lastDow(i)).toLocaleDateString("tr-TR",{weekday:"long"})}</option>`).join("")}</select>${timeField("",R.weighTime,{attrs:"data-rem-time",label:"Tartı saati"})}</div></div>`;
 }
 function bindRem(){
@@ -4152,6 +4239,7 @@ function toast(m,act){document.querySelectorAll(".toast").forEach(x=>x.remove())
 
 function bindView(){
   const v=$("#view");
+  bindWeek();
   v.querySelectorAll("[data-strange]").forEach(b=>b.addEventListener("click",()=>{stRange=+b.dataset.strange;try{localStorage.setItem("hf-strange",stRange)}catch(_){}const y=scrollY;render();scrollTo(0,y)}));
   /* adım grafiği: dokun ya da parmağını gezdir; seçim günden güne akar */
   const hch=v.querySelector(".hch");if(hch){const bs=[...hch.querySelectorAll(".hb")];let cur=null;
