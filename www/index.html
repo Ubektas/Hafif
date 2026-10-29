@@ -188,10 +188,10 @@ details.how p{margin:8px 0 0}
 .glass::before{content:"";position:absolute;left:0;right:0;top:-1px;height:3px;background:#CFE3F4;border-radius:3px;z-index:3}
 .glass::after{content:"";position:absolute;top:10px;left:9px;width:7px;height:70%;border-radius:9px;background:linear-gradient(rgba(255,255,255,.75),rgba(255,255,255,0));z-index:3}
 .liquid{position:absolute;left:0;right:0;bottom:0;height:0;background:linear-gradient(var(--water-2),var(--water));transition:height 1s cubic-bezier(.2,.8,.2,1)}
-.wave{position:absolute;left:0;top:-9px;width:200%;height:10px;animation:wave 2.6s linear infinite}
+.wave{position:absolute;left:0;top:-9px;width:200%;height:10px;animation:wave 2.6s linear 3}
 .wave.b{top:-7px;opacity:.55;animation-duration:4.2s;animation-direction:reverse}
 @keyframes wave{to{transform:translateX(-50%)}}
-.bub{position:absolute;bottom:4px;width:5px;height:5px;border-radius:9px;background:rgba(255,255,255,.7);animation:bub 3.4s ease-in infinite;opacity:0}
+.bub{position:absolute;bottom:4px;width:5px;height:5px;border-radius:9px;background:rgba(255,255,255,.7);animation:bub 3.4s ease-in 2;opacity:0}
 @keyframes bub{0%{transform:translateY(0);opacity:0}15%{opacity:.9}100%{transform:translateY(-110px);opacity:0}}
 .ticks{position:absolute;right:6px;top:0;bottom:0;display:flex;flex-direction:column;justify-content:space-around;z-index:2;pointer-events:none}
 .ticks i{display:block;width:10px;height:1.5px;background:rgba(44,143,224,.35)}
