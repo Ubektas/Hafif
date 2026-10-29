@@ -580,6 +580,19 @@ label.drow{flex-direction:row;font-size:14px;font-weight:500;margin:0}
 .dfield .dfv{flex:1;min-width:0;font:16px var(--f-body);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.dfield>svg{flex:none;color:var(--muted)}
 .dfield .dfin{position:absolute;inset:0;width:100%;height:100%;opacity:0;border:0;padding:0;margin:0;cursor:pointer;-webkit-appearance:none;appearance:none}
 .dfield .dfin::-webkit-calendar-picker-indicator{position:absolute;inset:0;width:100%;height:100%;margin:0;padding:0;opacity:0;cursor:pointer}
+.phcard{display:flex;flex-direction:column;gap:12px}
+.phcmp{display:grid;grid-template-columns:1fr 1fr;gap:10px}.phcmp>div{text-align:center;min-width:0}.phcmp b{display:block;margin-top:6px;font-size:14px;color:var(--head)}.phcmp small{color:var(--muted);font-size:12.5px}
+.phimg{display:block;width:100%;aspect-ratio:3/4;border:0;padding:0;border-radius:14px;overflow:hidden;background:var(--sunk);cursor:pointer}.phimg img{width:100%;height:100%;object-fit:cover;display:block}
+.ph-a{background:linear-gradient(160deg,#C9D6D1,#9FB3AC)}.ph-b{background:linear-gradient(160deg,#CFE3DA,#8FC2B0)}
+.phnext{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;aspect-ratio:3/4;border:1.5px dashed var(--line);border-radius:14px;padding:12px;color:var(--muted);font-size:12.5px;line-height:1.4}
+.phdiff{background:var(--accent-soft);color:var(--accent);font-weight:700;font-size:13px;padding:5px 10px;border-radius:99px}
+.phth{display:flex;gap:8px;overflow-x:auto;padding:3px 3px 2px;scrollbar-width:none}.phth::-webkit-scrollbar{display:none}
+.phth button{flex:none;width:58px;border:0;padding:0;background:none;cursor:pointer;display:flex;flex-direction:column;gap:3px;align-items:center;color:var(--muted)}.phth img{width:58px;height:78px;object-fit:cover;border-radius:10px;background:var(--sunk);display:block;outline:2px solid transparent;outline-offset:1px}.phth button.on img{outline-color:var(--accent)}.phth small{font-size:11px}
+.phtiles{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.phtile{position:relative;aspect-ratio:3/4;border:1.5px dashed var(--line);border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;cursor:pointer;overflow:hidden;color:var(--muted);background:var(--sunk)}
+.phtile i{color:var(--accent)}.phtile b{color:var(--head);font-size:15.5px}.phtile small{font-size:12.5px}
+.phtile .phpv{position:absolute;inset:0;background:center/cover no-repeat}.phtile.has{border-style:solid;border-color:var(--accent)}.phtile.has i,.phtile.has b,.phtile.has small{position:relative;background:rgba(0,0,0,.45);color:#fff;border-radius:8px;padding:1px 8px}.phtile.has i{display:none}
+.phbig{display:grid;grid-template-columns:1fr 1fr;gap:8px}.phbig.one{grid-template-columns:1fr}.phbig img{width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:14px;background:var(--sunk);display:block}.phbig.one img{max-height:60vh;width:auto;max-width:100%;margin:0 auto}
 .slnk{display:inline-flex;align-items:center;gap:5px;margin-top:8px;border:0;background:none;padding:2px 0;font:600 12.5px var(--f-body);color:var(--supp);cursor:pointer}
 .srow.on .chk{background:var(--supp);border-color:var(--supp);transform:scale(1.08)}
 .srow.on .chk svg path{stroke-dashoffset:0}
@@ -1177,6 +1190,7 @@ function openPaywall(src){
       <div class="pwf">
         ${SHOTS()?`<div><i style="background:var(--shot-soft);color:var(--shot)">${UI_I(UIC.igne,18)}</i><span>Vücuttaki ilaç düzeyi<br><small>Tahmini mg, birikim ve tüm evrelerin ipuçları</small></span></div>`:""}
         <div><i style="background:var(--accent-soft);color:var(--accent)">${UI_I(UIC.grafik,18)}</i><span>Kilo değişiminin tüm grafikleri<br><small>İğne, haftalık, trend, ilaç düzeyi ve yağ</small></span></div>
+        <div><i style="background:var(--accent-soft);color:var(--accent)">${CAM_I(18)}</i><span>İlerleme fotoğrafları<br><small>Haftada bir fotoğraf; iki tarih yan yana, kilo ve bel farkıyla</small></span></div>
         <div><i style="background:var(--accent-soft);color:var(--accent)">${UI_I(UIC.belge,18)}</i><span>Doktor için PDF rapor<br><small>Kilo, doz, yan etki ve ölçüler tek dosyada</small></span></div>
         <div><i style="background:var(--shot-soft);color:var(--shot)">${UI_I(UIC.nabiz,18)}</i><span>Yan etki analizi<br><small>Hangi gün, hangi belirti yoğunlaşıyor</small></span></div>
         <div><i style="background:var(--water-soft);color:var(--water)">${UI_I(UIC.telefon,18)}</i><span>Ana ekran widget'ları<br><small>10 widget; uygulamayı açmadan su ekle, takviyeni işaretle</small></span></div>
@@ -1553,7 +1567,7 @@ function openWaterSheet(){
 function openQuick(){
   const it=[["w","Kilo","kg","var(--accent)","var(--accent-soft)"]];
   if(SHOTS())it.push(["s","İğne",penIcon().replace('width="26" height="26"','width="18" height="18"'),"var(--shot)","var(--shot-soft)"]);
-  it.push(["p","Protein","P","var(--protein)","var(--protein-soft)"],["su","Su","+","var(--water)","var(--water-soft)"],["m","Ölçü","cm","var(--fat)","var(--fat-soft)"]);
+  it.push(["p","Protein","P","var(--protein)","var(--protein-soft)"],["su","Su","+","var(--water)","var(--water-soft)"],["m","Ölçü","cm","var(--fat)","var(--fat-soft)"],["f","Fotoğraf",CAM_I(18),"var(--accent)","var(--accent-soft)"]);
   if(SHOTS())it.push(["se","Yan etki","!","var(--bad)","color-mix(in oklab,var(--bad) 12%,var(--surface))"]);
   $("#sheetRoot").innerHTML=`<div class="scrim" data-close><div class="sheet" role="dialog" aria-modal="true" aria-label="Ekle"><div class="grab"></div>
     <header><h2>Ne eklemek istersin?</h2><button class="del" data-x>Kapat</button></header>
@@ -1565,6 +1579,7 @@ function openQuick(){
   root.querySelectorAll("[data-q]").forEach(b=>b.addEventListener("click",()=>{const k=b.dataset.q;
     if(k==="w")openSheet("weight");else if(k==="s")openSheet("shot");else if(k==="p")openProteinSheet();else if(k==="m")openMeasSheet();
     else if(k==="su")openWaterSheet();
+    else if(k==="f")openPhotoAdd();
     else if(k==="se"){$("#sheetRoot").innerHTML="";tab="igne";ANIM=true;render();setTimeout(()=>{const e=$("#seCard");if(e)scrollTo({top:e.getBoundingClientRect().top+scrollY-12,behavior:"smooth"})},60)}}));
 }
 function penIcon(){return `<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 4l6 6M17 7l-9 9-3 1 1-3 9-9M6 18l-3 3M11 8l2 2M8 11l2 2"/></svg>`}
@@ -3368,6 +3383,7 @@ function vKilo(){
     ${w.length>1?`<details class="moreg"${moreG?" open":""}><summary class="card"><span class="mgi"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V9M10 19V5M16 19v-7M22 19H2"/></svg></span><span class="mgt"><b>Ayrıntılı grafikler</b><small>İğne aralıkları, haftalık değişim, trend, ilaç ve yağ grafikleri</small></span><span class="mgo"><em class="mgc">Aç</em><em class="mgx">Kapat</em><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg></span></summary>${chartCard()}</details>`:""}
     ${compCard()}
     ${measCard()}
+    ${photoCard()}
     ${groups.length?tipHtml("wsil","Tartıyı düzenlemek için dokun, silmek için sola kaydır."):""}
     ${groups.map((g,gi)=>{const a=g.items[g.items.length-1].x,b=g.items[0].x,ch=b.kg-a.kg;const name=toD(g.k+"-01").toLocaleDateString("tr-TR",{month:"long",year:"numeric"});
       const head=`<div class="mhead"><div><h2>${name}</h2><span class="muted" style="font-size:12.5px">${g.items.length} tartı</span></div>${g.items.length>1?`<span class="dchip ${ch<0?"down":ch>0?"up":""}">${sgn(ch)} kg</span>`:""}</div>`;
@@ -3379,6 +3395,89 @@ function vKilo(){
 const MP=[["bel","Bel"],["kalca","Kalça"],["gogus","Göğüs"],["kol","Kol"],["uyluk","Uyluk"],["boyun","Boyun"]];
 const sortedM=()=>[...(S.meas||[])].sort((a,b)=>a.date<b.date?-1:a.date>b.date?1:0);
 const cm=v=>v==null?"–":(Math.round(v*10)/10).toLocaleString("tr-TR");
+/* ---------- G1 · ilerleme fotoğrafları (Plus) ----------
+   Görseller uygulamanın kendi veritabanında (IndexedDB) durur: galeride görünmez, hiçbir yere gönderilmez.
+   S.photos = [{id,date,on,yan,t}]; on/yan görsel anahtarlarıdır (yan isteğe bağlı). */
+const PDB=(()=>{let dbp=null;const db=()=>dbp||(dbp=new Promise((ok,no)=>{const r=indexedDB.open("hafif-foto",1);r.onupgradeneeded=()=>r.result.createObjectStore("p");r.onsuccess=()=>ok(r.result);r.onerror=()=>no(r.error)}));
+  const tx=async(m,f)=>{const d=await db();return new Promise((ok,no)=>{const t=d.transaction("p",m),q=f(t.objectStore("p"));t.oncomplete=()=>ok(q&&q.result);t.onerror=t.onabort=()=>no(t.error)})};
+  return {put:(k,b)=>tx("readwrite",x=>x.put(b,k)),get:k=>tx("readonly",x=>x.get(k)),del:k=>tx("readwrite",x=>x.delete(k))}})();
+const PURL={};
+const photoURL=async k=>{if(!k)return "";if(PURL[k])return PURL[k];try{const b=await PDB.get(k);return b?(PURL[k]=URL.createObjectURL(b)):""}catch(_){return ""}};
+const shrinkPhoto=f=>new Promise((ok,no)=>{const u=URL.createObjectURL(f),im=new Image();im.onload=()=>{const M=1280,k=Math.min(1,M/Math.max(im.width,im.height)),c=document.createElement("canvas");c.width=Math.round(im.width*k);c.height=Math.round(im.height*k);c.getContext("2d").drawImage(im,0,0,c.width,c.height);URL.revokeObjectURL(u);c.toBlob(b=>b?ok(b):no(new Error("görsel")),"image/jpeg",.82)};im.onerror=()=>{URL.revokeObjectURL(u);no(new Error("görsel"))};im.src=u});
+const photos=()=>[...(S.photos||[])].sort((a,b)=>a.date<b.date?-1:a.date>b.date?1:(a.t||0)-(b.t||0));
+const kgAt=d=>{let r=null;for(const w of [...S.weights].sort((a,b)=>a.date<b.date?-1:1))if(w.date<=d)r=w;return r?r.kg:null};
+const belAt=d=>{let best=null;for(const m of sortedM())if(m.bel!=null){const g=Math.abs(diffDays(m.date,d));if(g<=14&&(!best||g<best.g))best={v:m.bel,g}}return best?best.v:null};
+const CAM_I=sz=>UI_I('<path d="M4 8.5h3l1.8-2.5h6.4L17 8.5h3V19H4z"/><circle cx="12" cy="13.2" r="3.4"/>',sz);
+let phA=null,phB=null,phSide="on";
+function photoCard(){
+  const head=(btn)=>`<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px"><div><h2>Fotoğraflarım</h2><span class="muted" style="font-size:12.5px">Yalnızca bu telefonda · galeride görünmez</span></div>${btn||""}</div>`;
+  if(!PLUS()){const smp=`<div class="phcmp"><div><div class="phimg ph-a"></div><b>25 Ağu</b><small>98,4 kg · bel 108</small></div><div><div class="phimg ph-b"></div><b>23 Eki</b><small>91,2 kg · bel 99</small></div></div>`;
+    return `<div class="card phcard">${head(`<span class="ptag">✦ Plus</span>`)}${plock(smp,"İlerleme fotoğrafları Plus'ta","Haftada bir fotoğraf çek; iki tarihi yan yana koy, kilo ve bel farkını gör.")}</div>`}
+  const L=photos();
+  if(!L.length)return `<div class="card phcard">${head()}<p class="muted" style="margin:0;font-size:14px">Haftada bir, aynı ışıkta ve aynı açıdan bir ön fotoğraf çek. Yan fotoğraf isteğe bağlı. Tartı yerinde saydığında bile aynadaki fark görünür.</p><button type="button" class="drow line" id="phAdd">${CAM_I(18)}<span>Fotoğraf ekle</span><i>›</i></button></div>`;
+  const A=L.find(x=>x.id===phA)||L[0],B=L.length>1?(L.find(x=>x.id===phB&&x.id!==A.id)||L[L.length-1]):null;
+  const both=B&&A.yan&&B.yan,side=both?phSide:"on";
+  const cell=(x,lb)=>{const kgv=kgAt(x.date),bel=belAt(x.date);return `<div><button type="button" class="phimg" data-phopen="${x.id}" aria-label="${lb}: ${fmtD(x.date)}"><img data-pimg="${x[side]}" alt=""></button><b>${fmtD(x.date)}</b><small>${[kgv!=null?kg(kgv)+" kg":"",bel!=null?"bel "+cm(bel):""].filter(Boolean).join(" · ")||"&nbsp;"}</small></div>`};
+  let diff="";if(B){const a=kgAt(A.date),b=kgAt(B.date),ba=belAt(A.date),bb=belAt(B.date),p=[];if(a!=null&&b!=null&&a!==b)p.push(`${b<a?"−":"+"}${kg(Math.abs(b-a))} kg`);if(ba!=null&&bb!=null&&ba!==bb)p.push(`${bb<ba?"−":"+"}${cm(Math.abs(bb-ba))} cm bel`);
+    diff=`<div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap">${p.length?`<span class="phdiff">${p.join(" · ")} · ${diffDays(A.date,B.date)} gün</span>`:`<span class="muted" style="font-size:12.5px">${diffDays(A.date,B.date)} gün arayla</span>`}${both?`<div class="kseg" role="radiogroup" aria-label="Açı"><button type="button" role="radio" data-phside="on" aria-checked="${side==="on"}">Ön</button><button type="button" role="radio" data-phside="yan" aria-checked="${side==="yan"}">Yan</button></div>`:""}</div>`}
+  return `<div class="card phcard">${head(`<button type="button" class="btn ghost" id="phAdd" style="padding:9px 14px;width:auto;flex:none">+ Fotoğraf</button>`)}
+    <div class="phcmp${B?"":" one"}">${cell(A,"Önce")}${B?cell(B,"Sonra"):`<div class="phnext">${CAM_I(22)}<span>Bir hafta sonra ikinci fotoğrafını ekle; fark burada yan yana görünür.</span></div>`}</div>
+    ${diff}
+    ${L.length>1?`<div><span class="flbl" style="display:block;margin-bottom:8px">Tüm fotoğraflar · ${L.length} <span>(dokun: aç, karşılaştırmaya koy)</span></span><div class="phth">${[...L].reverse().map(x=>`<button type="button" data-phopen="${x.id}" class="${x.id===A.id||(B&&x.id===B.id)?"on":""}" aria-label="${fmtD(x.date)}"><img data-pimg="${x.on}" alt=""><small>${toD(x.date).toLocaleDateString("tr-TR",{day:"numeric",month:"short"})}</small></button>`).join("")}</div></div>`:""}
+  </div>`;
+}
+function hydratePhotos(root){(root||document).querySelectorAll("img[data-pimg]").forEach(async im=>{const u=await photoURL(im.dataset.pimg);if(u)im.src=u})}
+function bindPhotos(){
+  const a=$("#phAdd");if(a)a.addEventListener("click",openPhotoAdd);
+  document.querySelectorAll("[data-phopen]").forEach(b=>b.addEventListener("click",()=>openPhotoView(b.dataset.phopen)));
+  document.querySelectorAll("[data-phside]").forEach(b=>b.addEventListener("click",()=>{phSide=b.dataset.phside;const y=scrollY;render();scrollTo(0,y)}));
+  hydratePhotos($("#view"));
+}
+function openPhotoAdd(){
+  if(!PLUS()){openPaywall("foto");return}
+  const yest=addDays(today(),-1);let fOn=null,fYan=null;
+  $("#sheetRoot").innerHTML=`<div class="scrim" data-close><div class="sheet" role="dialog" aria-modal="true" aria-label="Fotoğraf ekle"><div class="grab"></div>
+    <header><h2>Fotoğraf ekle</h2><button class="del" data-x>Kapat</button></header>
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div class="phtiles">
+        <label class="phtile" id="phOnT"><input type="file" accept="image/*" id="phOn" hidden><span class="phpv"></span><i>${CAM_I(26)}</i><b>Ön</b><small>gerekli</small></label>
+        <label class="phtile" id="phYanT"><input type="file" accept="image/*" id="phYan" hidden><span class="phpv"></span><i>${CAM_I(26)}</i><b>Yan</b><small>isteğe bağlı</small></label>
+      </div>
+      <div><span class="flbl" style="display:block;margin-bottom:6px">Tarih</span><div class="fchips" id="phWhen" role="radiogroup"><button type="button" role="radio" data-d="${today()}" aria-checked="true">Bugün</button><button type="button" role="radio" data-d="${yest}" aria-checked="false">Dün</button><button type="button" role="radio" data-d="" aria-checked="false">Tarih seç…</button></div>${dateField("ph-date",today(),{max:today(),box:"phDateBox",hidden:true})}</div>
+      <button type="button" class="btn" id="phSave" disabled>Kaydet</button>
+      <p class="muted fhint">Her hafta aynı ışıkta, aynı açıdan ve benzer kıyafetle çek. Fotoğraflar yalnızca bu telefonda, Hafif'in içinde saklanır.</p>
+    </div></div></div>`;
+  const root=$("#sheetRoot");
+  root.querySelector(".scrim").addEventListener("click",e=>{if(e.target.classList.contains("scrim"))closeSheet()});
+  root.querySelector("[data-x]").addEventListener("click",closeSheet);
+  const pv=(inp,tile,set)=>$(inp).addEventListener("change",e=>{const f=e.target.files&&e.target.files[0];if(!f)return;set(f);const t=$(tile);t.classList.add("has");t.querySelector(".phpv").style.backgroundImage=`url("${URL.createObjectURL(f)}")`;$("#phSave").disabled=!fOn});
+  pv("#phOn","#phOnT",f=>fOn=f);pv("#phYan","#phYanT",f=>fYan=f);
+  $("#phWhen").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;$("#phWhen").querySelectorAll("button").forEach(x=>x.setAttribute("aria-checked",x===b));
+    if(b.dataset.d){$("#ph-date").value=b.dataset.d;dfSync($("#ph-date"));$("#phDateBox").hidden=true}else{$("#phDateBox").hidden=false;dfOpen($("#ph-date"))}});
+  $("#phSave").addEventListener("click",async()=>{if(!fOn)return;const btn=$("#phSave");btn.disabled=true;btn.textContent="Kaydediliyor…";
+    const id=uid(),x={id,date:$("#ph-date").value||today(),on:id+"-on",yan:fYan?id+"-yan":null,t:Date.now()};
+    try{await PDB.put(x.on,await shrinkPhoto(fOn));if(fYan)await PDB.put(x.yan,await shrinkPhoto(fYan));
+      S.photos=[...(S.photos||[]),x];phB=id;save();closeSheet();tab="kilo";render();toast("Fotoğraf kaydedildi")}
+    catch(_){btn.disabled=false;btn.textContent="Kaydet";toast("Fotoğraf kaydedilemedi; başka bir fotoğraf dene")}});
+}
+function openPhotoView(id){
+  const L=photos(),x=L.find(y=>y.id===id);if(!x)return;const kgv=kgAt(x.date),bel=belAt(x.date);
+  $("#sheetRoot").innerHTML=`<div class="scrim" data-close><div class="sheet" role="dialog" aria-modal="true" aria-label="Fotoğraf"><div class="grab"></div>
+    <header><h2>${toD(x.date).toLocaleDateString("tr-TR",{day:"numeric",month:"long",year:"numeric"})}</h2><button class="del" data-x>Kapat</button></header>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div class="phbig${x.yan?"":" one"}"><img data-pimg="${x.on}" alt="Ön">${x.yan?`<img data-pimg="${x.yan}" alt="Yan">`:""}</div>
+      <p class="muted" style="margin:0;text-align:center">${[kgv!=null?kg(kgv)+" kg":"",bel!=null?"bel "+cm(bel)+" cm":""].filter(Boolean).join(" · ")||"Bu tarihte tartı yok"}</p>
+      ${L.length>1?`<div class="two"><button type="button" class="btn ghost" data-phset="A">“Önce” yap</button><button type="button" class="btn ghost" data-phset="B">“Sonra” yap</button></div>`:""}
+      <button type="button" class="drow line" id="phDel" style="color:var(--bad)"><span>Bu fotoğrafı sil</span></button>
+    </div></div></div>`;
+  const root=$("#sheetRoot");hydratePhotos(root);
+  root.querySelector(".scrim").addEventListener("click",e=>{if(e.target.classList.contains("scrim"))closeSheet()});
+  root.querySelector("[data-x]").addEventListener("click",closeSheet);
+  root.querySelectorAll("[data-phset]").forEach(b=>b.addEventListener("click",()=>{if(b.dataset.phset==="A"){phA=id;if(phB===id)phB=null}else{phB=id;if(phA===id)phA=null}closeSheet();render()}));
+  $("#phDel").addEventListener("click",async()=>{const b=$("#phDel");if(!b.classList.contains("armed")){b.classList.add("armed");b.querySelector("span").textContent="Silmek için tekrar dokun";return}
+    for(const k of [x.on,x.yan])if(k){try{await PDB.del(k)}catch(_){}if(PURL[k]){URL.revokeObjectURL(PURL[k]);delete PURL[k]}}
+    S.photos=(S.photos||[]).filter(y=>y.id!==id);if(phA===id)phA=null;if(phB===id)phB=null;save();closeSheet();render();toast("Fotoğraf silindi")});
+}
 function measCard(){
   const m=sortedM();
   if(!m.length) return `<div class="card" style="display:flex;flex-direction:column;gap:10px"><div><h2>Vücut ölçüleri</h2><span class="muted" style="font-size:12.5px">Tartı yerinde saydığında bile santimler düşer. Ayda bir bel, kalça ve kol çevreni ölç.</span></div><button type="button" class="drow line" id="mAdd"><span>Ölçü ekle</span><i>›</i></button></div>`;
@@ -3424,7 +3523,7 @@ function bindSwipe(){
   v.querySelectorAll("[data-swdel]").forEach(b=>b.addEventListener("click",()=>{tipDone("wsil");const id=b.dataset.swdel,x=S.weights.find(y=>y.id===id);if(!x)return;
     S.weights=S.weights.filter(y=>y.id!==id);save();render();toast("Tartı silindi",["Geri al",()=>{S.weights.push(x);save();render()}])}));
 }
-function bindKilo(){bindSwipe();
+function bindKilo(){bindSwipe();bindPhotos();
   const a=$("#mAdd");if(a)a.addEventListener("click",openMeasSheet);
   document.querySelectorAll("[data-mdel]").forEach(b=>b.addEventListener("click",()=>{if(!b.classList.contains("armed")){b.classList.add("armed");b.textContent="Sil?";return}
     S.meas=(S.meas||[]).filter(x=>x.id!==b.dataset.mdel);save();render();toast("Silindi")}));
@@ -3707,7 +3806,7 @@ function remBuild(){
     if(R.water)["11:00","15:00","19:00"].forEach((hm,j)=>{const w=dayRec(d).w,g=wGoal();if(i===0&&w>=g)return;
       add(3000+i*3+j,atOf(d,hm),"Bir bardak su?",i===0?`Bugün ${ml(w)} ml içtin, hedefe ${ml(g-w)} ml kaldı.`:`Günlük hedefin ${ml(g)} ml. Bir bardak suyla devam et.`,"SU",{tab:"besin"})});
     if(R.prot){const p=dayRec(d).p,g=pGoal();if(!(i===0&&p>=g))add(4000+i,atOf(d,"18:30"),i===0?"Protein hedefine az kaldı":"Protein hedefin",i===0?`${ml(p)} / ${g} g. Akşam yemeğinde ${ml(g-p)} g protein hedefini tamamlar.`:`Günlük protein hedefin ${g} g. Akşam tabağında proteini öne al.`,"PROT",{tab:"besin"})}
-    if(R.weigh&&toD(d).getDay()===+R.weighDay&&!(i===0&&S.weights.some(x=>x.date===d)))add(5000+i,atOf(d,R.weighTime),"Haftalık tartı zamanı","Sabah, aç karnına ve aynı saatte tartılmak en tutarlı sonucu verir.","TARTI",{tab:"kilo"});
+    if(R.weigh&&toD(d).getDay()===+R.weighDay&&!(i===0&&S.weights.some(x=>x.date===d)))add(5000+i,atOf(d,R.weighTime),PLUS()&&R.photo!==false?"Tartı ve fotoğraf günü":"Haftalık tartı zamanı",PLUS()&&R.photo!==false?"Aç karnına tartıl, ardından haftalık fotoğrafını çek; aynı ışık, aynı açı.":"Sabah, aç karnına ve aynı saatte tartılmak en tutarlı sonucu verir.","TARTI",{tab:"kilo"});
   }
   if(SHOTS()&&R.pen&&S.profile.penLeft!=null&&S.profile.penLeft<=1){const nx=pkState().next,left=S.profile.penLeft;
     add(7000,atOf(addDays(today(),1),"10:00"),left===0?"Kalemin bitti":"Kaleminde son doz kaldı",left===0?"Sıradaki iğnen için yeni kalem gerekiyor. Eczaneye uğramayı unutma.":"Bir sonraki iğneden sonra kalemin bitecek. Yeni kalemi şimdiden ayarla.","BILGI",{tab:"igne"});
