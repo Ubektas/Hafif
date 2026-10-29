@@ -313,6 +313,22 @@ const step = (ad, sonuc, detay) => { report.adimlar.push({ ad, sonuc, detay }); 
     await shot('ekibe-gonder-eposta');
     step('Hafif ekibine gönder → e-posta seçici açıldı', !/hafif\/.*MainActivity/.test(eposta), eposta.trim());
     await device.shell('input keyevent 4'); await wait(1000);
+
+    // 2.0 · G1: ilerleme fotoğrafı (Plus deneme süresi içinde). Seçici gerçek dokunuşla açılır;
+    // dosya seçimi testte bir tuval görseliyle taklit edilir, kayıt ve geri okuma gerçek veritabanında yapılır.
+    await tap(page, '.tab[data-tab="kilo"]'); await wait(900);
+    await page.evaluate(() => { const c = document.querySelector('.phcard'); if (c) c.scrollIntoView({ block: 'center' }); }); await wait(500);
+    await tap(page, '#phAdd'); await wait(900);
+    await tap(page, '#phOnT'); await wait(2500);
+    const fsec = (await device.shell('dumpsys window | grep mCurrentFocus')).toString();
+    step('Fotoğraf ekle → seçici açıldı (izin istemeden)', !/hafif\/.*MainActivity/.test(fsec) && !/permission/i.test(fsec), fsec.trim());
+    await device.shell('input keyevent 4'); await wait(1200);
+    await page.evaluate(async () => { const c = document.createElement('canvas'); c.width = 600; c.height = 800; const x = c.getContext('2d'); x.fillStyle = '#9FB3AC'; x.fillRect(0, 0, 600, 800); x.fillStyle = '#5E7A72'; x.fillRect(220, 200, 160, 500);
+      const b = await new Promise(r => c.toBlob(r, 'image/jpeg', .9)); const dt = new DataTransfer(); dt.items.add(new File([b], 'on.jpg', { type: 'image/jpeg' }));
+      const i = document.querySelector('#phOn'); i.files = dt.files; i.dispatchEvent(new Event('change', { bubbles: true })); });
+    await wait(500); await tap(page, '#phSave'); await wait(3000); await shot('foto-kaydedildi');
+    const fo = await page.evaluate(async () => { const S = JSON.parse(localStorage.getItem('doz-defteri') || '{}'); const im = [...document.querySelectorAll('.phcard img')].map(i => i.naturalWidth); return { n: (S.photos || []).length, im }; });
+    step('İlerleme fotoğrafı kaydedildi ve kartta göründü', fo.n === 1 && fo.im.some(w => w > 0), JSON.stringify(fo));
   } catch (e) {
     report.hatalar.push('TEST HATASI: ' + (e && e.stack || e));
     try { await shot('hata-ani'); } catch (_) {}

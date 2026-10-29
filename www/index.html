@@ -2695,18 +2695,24 @@ async function exportXlsx(){
 }
 async function exportJson(){
   const st=$("#dataMsg");st.textContent="";
-  try{await dlSave(`hafif-yedek-${today()}.json`,JSON.stringify({app:"Hafif",version:1,exported:new Date().toISOString(),data:S},null,1));S.profile.lastExport=today();save();toast("Yedek hazır");const bl=$("#bkLine");if(bl){bl.outerHTML=bkLine()}}catch(e){st.textContent=dlMsg(e)}
+  try{const out={app:"Hafif",version:1,exported:new Date().toISOString(),data:S};
+    if((S.photos||[]).length&&S.profile.bkFoto!==false){st.textContent="Fotoğraflar hazırlanıyor…";out.photos=await photosOut()}
+    st.textContent="";await dlSave(`hafif-yedek-${today()}.json`,JSON.stringify(out,null,1));S.profile.lastExport=today();save();toast("Yedek hazır");const bl=$("#bkLine");if(bl){bl.outerHTML=bkLine()}}catch(e){st.textContent=dlMsg(e)}
 }
-let pendingRestore=null;
+let pendingRestore=null,pendingPhotos=null;
+/* yedekteki fotoğraflar: anahtar → data URL */
+const blobURL=b=>new Promise((ok,no)=>{const r=new FileReader();r.onload=()=>ok(r.result);r.onerror=no;r.readAsDataURL(b)});
+async function photosOut(){const o={};for(const x of S.photos||[])for(const k of [x.on,x.yan])if(k){try{const b=await PDB.get(k);if(b)o[k]=await blobURL(b)}catch(_){}}return o}
+async function photosIn(ph){if(!ph)return 0;let n=0;for(const [k,u] of Object.entries(ph)){try{await PDB.put(k,await (await fetch(u)).blob());if(PURL[k]){URL.revokeObjectURL(PURL[k]);delete PURL[k]}n++}catch(_){}}return n}
 function onRestoreFile(e){
   const f=e.target.files&&e.target.files[0];if(!f)return;const st=$("#dataMsg");
   const rd=new FileReader();rd.onload=()=>{try{const j=JSON.parse(rd.result);const d=j&&j.data?j.data:j;
       if(!d||!Array.isArray(d.weights)||!Array.isArray(d.shots))throw 0;
-      pendingRestore=d;$("#restoreAsk").hidden=false;$("#restoreInfo").textContent=`${d.weights.length} tartı, ${d.shots.length} iğne${j.exported?`, ${new Date(j.exported).toLocaleDateString("tr-TR")} tarihli yedek`:""}.`;st.textContent=""}
+      pendingRestore=d;pendingPhotos=j.photos||null;$("#restoreAsk").hidden=false;$("#restoreInfo").textContent=`${d.weights.length} tartı, ${d.shots.length} iğne${j.photos?`, ${(d.photos||[]).length} fotoğraf`:""}${j.exported?`, ${new Date(j.exported).toLocaleDateString("tr-TR")} tarihli yedek`:""}.`;st.textContent=""}
     catch(_){st.textContent="Bu dosya bir Hafif yedeği değil. “Yedek dosyası indir” ile alınan .json dosyasını seç."}};
   rd.readAsText(f);e.target.value="";
 }
-function doRestore(){if(!pendingRestore)return;S=Object.assign(JSON.parse(JSON.stringify(DEFAULT)),pendingRestore);pendingRestore=null;save();render();toast("Yedek yüklendi")}
+async function doRestore(){if(!pendingRestore)return;S=Object.assign(JSON.parse(JSON.stringify(DEFAULT)),pendingRestore);pendingRestore=null;const ph=pendingPhotos;pendingPhotos=null;save();await photosIn(ph);render();toast("Yedek yüklendi")}
 function bkLine(){
   const le=S.profile.lastExport,g=le?diffDays(le,today()):null,old=S.weights.length+S.shots.length>0&&(g==null||g>30);
   const txt=g==null?"henüz yedek almadın":g===0?"son yedek bugün":`son yedek ${g} gün önce`;
@@ -2818,6 +2824,7 @@ function dataCard(){
       <button type="button" class="drow" id="exXlsx"><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 10h16M4 15h16M10 4v16"/></svg><span>Excel olarak indir</span><i>›</i></button></div>
     <div class="restore" id="restoreAsk" hidden><b>Yedek yüklensin mi?</b><span class="muted" id="restoreInfo" style="font-size:12.5px"></span><span style="font-size:12.5px">Şu anki kayıtların bu yedekle değiştirilecek.</span>
       <div style="display:flex;gap:8px"><button type="button" class="btn ghost" id="rsNo" style="flex:1">Vazgeç</button><button type="button" class="btn" id="rsYes" style="flex:1;background:var(--bad)">Yedeği yükle</button></div></div>
+    ${(S.photos||[]).length?`<label class="sw" style="padding:0 2px"><span><b>Fotoğrafları yedeğe dahil et</b><small>${S.photos.length} fotoğraf · dosya büyür ama telefon değişince fotoğraflar da gelir</small></span><input type="checkbox" id="bkFoto" ${S.profile.bkFoto!==false?"checked":""}><i></i></label>`:""}
     <p class="muted" id="dataMsg" style="margin:0;font-size:12.5px" role="status"></p>
     <p class="muted" style="margin:0;font-size:12.5px">Yedek dosyasını sakla; telefon değiştirsen bile buradan geri yüklersin.</p>
   </div>`;
@@ -2828,6 +2835,7 @@ function bindData(){
   $("#rsFile").addEventListener("change",onRestoreFile);
   $("#rsNo").addEventListener("click",()=>{pendingRestore=null;$("#restoreAsk").hidden=true});
   $("#rsYes").addEventListener("click",doRestore);
+  const bf=$("#bkFoto");if(bf)bf.addEventListener("change",()=>{S.profile.bkFoto=bf.checked;save()});
 }
 let ANIM=true, GID=0; const A=c=>ANIM?c:"";
 
@@ -4027,7 +4035,7 @@ function obRestore(e){
   const rd=new FileReader(); rd.onload=()=>{try{const j=JSON.parse(rd.result);const d=j&&j.data?j.data:j;
       if(!d||!Array.isArray(d.weights)||!Array.isArray(d.shots))throw 0;
       S=Object.assign(JSON.parse(JSON.stringify(DEFAULT)),d); S.profile=Object.assign({},S.profile,{onboarded:true,disclaimer:S.profile.disclaimer||today()});
-      save(); const o=$("#onb"); if(o)o.remove(); OB=null; tab="ozet"; ANIM=true; render(); toast(`Yedek yüklendi · ${d.weights.length} tartı`)}
+      save(); photosIn(j.photos).then(()=>{if(tab==="kilo")render()}); const o=$("#onb"); if(o)o.remove(); OB=null; tab="ozet"; ANIM=true; render(); toast(`Yedek yüklendi · ${d.weights.length} tartı`)}
     catch(_){st.textContent="Bu dosya bir Hafif yedeği değil. “Yedek dosyası indir” ile alınan .json dosyasını seç."}};
   rd.readAsText(f); e.target.value="";
 }
