@@ -890,7 +890,7 @@ nav.tabs .in{display:grid;grid-template-columns:repeat(5,1fr);width:100%;max-wid
 .tring small{font-size:12px;color:var(--muted);white-space:nowrap}.tring small i{font-style:normal;color:var(--accent);font-weight:700}
 @media (max-width:350px){.tring .tv b{font-size:12px}.tring .tv em{font-size:8.5px}}
 .nsrow,.msstrip{display:flex;align-items:center;gap:12px;width:100%;border:0;text-align:left;font:inherit;color:inherit;cursor:pointer}
-.nsrow>i,.msstrip>i{font-style:normal;color:var(--muted);font-size:20px}
+.nsrow>i,.msstrip>i{font-style:normal;color:var(--muted);font-size:20px}.mse{font:600 10.5px var(--f-body);letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}.msn{display:block;height:5px;border-radius:9px;background:var(--sunk);overflow:hidden;margin:6px 0 3px}.msn i{display:block;height:100%;background:var(--accent);border-radius:9px}.msc{flex:none;font:700 14px var(--f-display);color:var(--muted);display:flex;align-items:center;gap:6px}.msc i{font-style:normal;font-size:20px;font-weight:400}
 .nsi{width:46px;height:46px;border-radius:15px;background:var(--shot-soft);color:var(--shot);display:flex;flex-direction:column;align-items:center;justify-content:center;flex:none;line-height:1}
 .nsi b{font:700 19px var(--f-display)}:root[data-hf="dark"] .nsi{color:var(--seinsfg)}.nsi small{font-size:10px;font-weight:600}.nsrow.due .nsi{background:var(--shot);color:#fff}
 .nst{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}.nst b{font:700 15px var(--f-display);color:var(--head)}.nst small{font-size:12.5px;color:var(--muted)}
@@ -1480,11 +1480,13 @@ function nextShotRow(){
 }
 /* Özet: rozetler tek satır */
 function msStrip(){
+  /* son kazanılan rozet renkli solda; altında sıradaki rozete ilerleme */
   const M=milestones(); if(!M) return "";
   const done=M.L.filter(m=>m.done),next=M.L.find(m=>!m.done),last=done[done.length-1];
+  const name=m=>m.goal?`Hedef kilo · ${kg(m.kg)} kg`:m.id[0]==="p"?`%${m.id.slice(1)} vücut ağırlığı`:`${m.kg} kg'ın altı`;
   const pr=next?Math.max(0,Math.min(1,((last?last.kg:M.start)-M.cur)/((last?last.kg:M.start)-next.kg))):1;
-  const nm=next?(next.goal?`Hedef kilo · ${kg(next.kg)} kg`:next.id[0]==="p"?`Vücudunun %${next.id.slice(1)}'${pctEk(+next.id.slice(1))}`:`${next.kg} kg'ın altı`):"Tüm rozetler senin";
-  return `<button type="button" class="card msstrip" data-go="basari">${next?medal(next,46,pr):""}<span class="nst"><b>Rozetler ${done.length}/${M.L.length}</b><small>${next?`Sıradaki: ${nm} · ${kg(Math.max(0,M.cur-next.kg))} kg kaldı`:nm}</small></span><i>›</i></button>`;
+  const nx=next?`<span class="msn"><i style="width:${Math.round(pr*100)}%"></i></span><small>Sıradaki: ${name(next)} · ${kg(Math.max(0,M.cur-next.kg))} kg kaldı</small>`:`<small>Tüm rozetler senin</small>`;
+  return `<button type="button" class="card msstrip" data-go="basari">${last?medal(last,52):next?medal(next,52,pr):""}<span class="nst">${last?`<span class="mse">Son rozet · ${fmtShort(last.done)}</span><b>${name(last)}</b>`:`<span class="mse">İlk rozetin yolda</span><b>${name(next)}</b>`}${nx}</span><span class="msc">${done.length}/${M.L.length}<i>›</i></span></button>`;
 }
 /* su ekle: miktar seçilir ya da −/+ ile ayarlanır */
 function openWaterSheet(){
@@ -1993,7 +1995,7 @@ function bindToday(){
 /* ---------- ana kart tasarımları ---------- */
 const HEROS=[["gece","Zümrüt"]];
 let heroV="gece",prevTab="ozet";
-const BUILD="1.9.0 önizleme · Adım 2c · 29 Eki";
+const BUILD="1.9.0 önizleme · Adım 2d · 29 Eki";
 let HERO_CTX=null;
 function heroDots(dark){return "";`<div class="hdots${dark?" dk":""}" role="tablist" aria-label="Kart tasarımı">${HEROS.map(([k,n])=>`<button type="button" data-hero="${k}" aria-selected="${k===heroV}" aria-label="${n}"></button>`).join("")}<span>${HEROS.find(h=>h[0]===heroV)[1]}</span></div>`}
 function heroHtml(X){
