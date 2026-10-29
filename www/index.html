@@ -242,7 +242,7 @@ input[type=range].wr::-moz-range-thumb{width:20px;height:20px;border-radius:50%;
 .pov b{font:700 17px var(--f-display);color:var(--head)}.pov span{font-size:13px;color:var(--muted);max-width:260px}
 .plusbtn{display:inline-flex;align-items:center;gap:8px;border:0;border-radius:99px;padding:11px 20px;font:700 14px var(--f-body);color:#fff;background:linear-gradient(160deg,var(--emerald-1),var(--emerald-2));box-shadow:0 10px 22px -12px rgba(11,59,51,.6);cursor:pointer}
 .ptag{display:inline-flex;align-items:center;gap:4px;font:700 10.5px var(--f-body);letter-spacing:.08em;text-transform:uppercase;color:#C9A04A;background:rgba(201,160,74,.14);border-radius:99px;padding:3px 8px;vertical-align:middle}
-.seg button{position:relative}.seg button .lk{position:absolute;top:1px;right:3px;font-size:8px;opacity:.6}
+.seg button{position:relative}.seg button .lk{position:absolute;top:2px;right:3px;opacity:.6;line-height:0}
 #paywall{position:fixed;inset:0;z-index:60;background:var(--bg);overflow-y:auto;display:flex;flex-direction:column;animation:pwin .28s cubic-bezier(.2,.8,.2,1)}
 @keyframes pwin{from{transform:translateY(24px);opacity:0}to{transform:none;opacity:1}}
 #paywall .pwtop{position:relative;background:radial-gradient(120% 90% at 85% 0%,#1F8A70 0%,transparent 60%),linear-gradient(165deg,#0B3B33,#062520);color:#fff;padding:calc(30px + env(safe-area-inset-top,0px)) 24px 26px}
@@ -735,14 +735,14 @@ button.mscount i{font-style:normal;font-size:22px;color:var(--muted);margin-left
 /* adım kartı: okyanus (petrol mavisi zemin, turkuaz vurgu); her iki temada aynı */
 .stcard{--o1:#0F4C6E;--o2:#0A2C42;--oac:#5EEAD4;--osoft:#C3E3EE;--oin:#0C3A55;background:linear-gradient(160deg,var(--o1),var(--o2));color:#fff;padding:20px}
 .stcard .sthead h2{color:#fff}.stcard .pvtag{background:rgba(255,255,255,.14);color:var(--osoft)}.stcard .sthead .muted{color:var(--osoft)}
-.stnum{display:flex;align-items:baseline;justify-content:space-between;gap:10px}.stnum b{font:700 44px var(--f-display);letter-spacing:-.03em;line-height:1}.stnum small{color:var(--osoft);font-size:14px;margin-left:4px}.stnum em{font:600 14px var(--f-body);font-style:normal;color:var(--oac);white-space:nowrap}
+.stnum{display:flex;align-items:baseline;justify-content:space-between;gap:10px}.stnum b{font:700 44px var(--f-display);letter-spacing:-.03em;line-height:1}.stnum small{color:var(--osoft);font-size:14px;margin-left:4px}.stnum em{font:600 14px var(--f-body);font-style:normal;color:var(--oac);white-space:nowrap;display:inline-flex;align-items:center;gap:4px}
 .stpath{position:relative;height:40px}.stpath .trk{position:absolute;left:0;right:30px;top:17px;height:6px;border-radius:99px;background:rgba(255,255,255,.15)}
 .stpath .trk i{position:absolute;left:0;top:0;bottom:0;border-radius:99px;background:var(--oac)}
 .stpath .me{position:absolute;top:5px;transform:translateX(-50%);width:30px;height:30px;border-radius:50%;background:var(--oac);color:var(--o2);display:grid;place-items:center;box-shadow:0 0 0 5px rgba(94,234,212,.25)}.stpath .me svg{width:16px;height:16px}
 .stpath .flag{position:absolute;right:0;top:2px;color:#fff}.stpath .flag svg{width:22px;height:22px}
 .stscale{display:flex;justify-content:space-between;font-size:11.5px;color:var(--osoft);margin-top:-4px}
 .stpills{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.stpills span{background:rgba(255,255,255,.1);border-radius:12px;padding:8px 10px;font-size:11.5px;color:var(--osoft);min-width:0}.stpills b{display:block;font:700 16px var(--f-display);color:#fff;white-space:nowrap}
-.st7h{display:flex;justify-content:space-between;font-size:12.5px;font-weight:600}.stcard .stnum b,.stcard .st7h{color:#fff}.st7h span:last-child{color:var(--oac);font-weight:500}
+.st7h{display:flex;justify-content:space-between;font-size:12.5px;font-weight:600}.stcard .stnum b,.stcard .st7h{color:#fff}.st7h span:last-child{color:var(--oac);font-weight:500;display:inline-flex;align-items:center;gap:4px}
 /* son 7 gün yuvarlakları (kartta koyu, sayfada açık/koyu temaya göre) */
 .stdays{--dac:var(--step);--dfg:#fff;--din:var(--surface);--dtr:var(--step-soft);--dlab:var(--muted);--dring:var(--surface);display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center}
 .stcard .stdays{--dac:var(--oac);--dfg:var(--o2);--din:var(--oin);--dtr:rgba(255,255,255,.16);--dlab:var(--osoft);--dring:var(--o2)}
@@ -776,7 +776,7 @@ button.mscount i{font-style:normal;font-size:22px;color:var(--muted);margin-left
 .stcta b{font:700 15.5px var(--f-display);color:var(--fg)}.stcta small{display:block;font-size:12.5px;color:var(--muted)}
 .hcicon{width:76px;height:76px;border-radius:22px;background:var(--step-soft);color:var(--step);display:grid;place-items:center;margin:6px auto 0}.hcicon svg{width:40px;height:40px}
 .hcperm{display:flex;flex-direction:column;background:var(--sunk);border-radius:16px;padding:2px 14px}
-.hcperm div{display:flex;align-items:center;gap:12px;padding:11px 0;border-top:1px solid var(--line);font-size:14px}.hcperm div:first-child{border:0}.hcperm em{font-style:normal;margin-left:auto;font-size:12px;color:var(--muted)}
+.hcperm div{display:flex;align-items:center;gap:12px;padding:11px 0;border-top:1px solid var(--line);font-size:14px}.hcperm div:first-child{border:0}.hcperm div>span:first-child{display:grid;color:var(--step-ring)}.hcperm em{font-style:normal;margin-left:auto;font-size:12px;color:var(--muted)}
 .obtos{display:flex;gap:12px;align-items:flex-start;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:12px 14px;font-size:13px;line-height:1.45;color:var(--fg);cursor:pointer;margin:14px 0 4px;text-align:left}
 .obtos input{width:22px;height:22px;flex:none;margin:1px 0 0;accent-color:var(--accent)}
 .edit{cursor:pointer}
@@ -1171,11 +1171,11 @@ function openPaywall(src){
   d.innerHTML=`<div class="pwtop"><button type="button" class="pwx" id="pwX" aria-label="Kapat">✕</button><span class="pwk">✦ Hafif Plus</span><h1>Kilo vermenin<br>en hafif yolu.</h1><p>${src==="trialEnd"?"7 günlük ücretsiz Plus dönemin bitti. Vücuttaki ilaç düzeyi, tüm grafikler ve doktor raporu için devam et.":"İlaç düzeyi, tüm grafikler, doktor raporu ve yan etki analizi tek abonelikte."}</p></div>
     <div class="pwb">
       <div class="pwf">
-        ${SHOTS()?`<div><i style="background:var(--shot-soft)">💉</i><span>Vücuttaki ilaç düzeyi<br><small>Tahmini mg, birikim ve tüm evrelerin ipuçları</small></span></div>`:""}
-        <div><i style="background:var(--accent-soft)">📈</i><span>Kilo değişiminin tüm grafikleri<br><small>İğne, haftalık, trend, ilaç düzeyi ve yağ</small></span></div>
-        <div><i style="background:var(--accent-soft)">📄</i><span>Doktor için PDF rapor<br><small>Kilo, doz, yan etki ve ölçüler tek dosyada</small></span></div>
-        <div><i style="background:var(--shot-soft)">🧭</i><span>Yan etki analizi<br><small>Hangi gün, hangi belirti yoğunlaşıyor</small></span></div>
-        <div><i style="background:var(--water-soft)">📱</i><span>Ana ekran widget'ları<br><small>10 widget; uygulamayı açmadan su ekle, takviyeni işaretle</small></span></div>
+        ${SHOTS()?`<div><i style="background:var(--shot-soft);color:var(--shot)">${UI_I(UIC.igne,18)}</i><span>Vücuttaki ilaç düzeyi<br><small>Tahmini mg, birikim ve tüm evrelerin ipuçları</small></span></div>`:""}
+        <div><i style="background:var(--accent-soft);color:var(--accent)">${UI_I(UIC.grafik,18)}</i><span>Kilo değişiminin tüm grafikleri<br><small>İğne, haftalık, trend, ilaç düzeyi ve yağ</small></span></div>
+        <div><i style="background:var(--accent-soft);color:var(--accent)">${UI_I(UIC.belge,18)}</i><span>Doktor için PDF rapor<br><small>Kilo, doz, yan etki ve ölçüler tek dosyada</small></span></div>
+        <div><i style="background:var(--shot-soft);color:var(--shot)">${UI_I(UIC.nabiz,18)}</i><span>Yan etki analizi<br><small>Hangi gün, hangi belirti yoğunlaşıyor</small></span></div>
+        <div><i style="background:var(--water-soft);color:var(--water)">${UI_I(UIC.telefon,18)}</i><span>Ana ekran widget'ları<br><small>10 widget; uygulamayı açmadan su ekle, takviyeni işaretle</small></span></div>
       </div>
       <div id="pwPlans" role="radiogroup" aria-label="Plan" style="display:flex;flex-direction:column;gap:12px">${pwPlansHtml()}</div>
       <button type="button" class="pwcta" id="pwBuy">${c.btn}</button>
@@ -1393,7 +1393,7 @@ function coachHtml(card){
     <div class="coach-top"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${COACH_IC[c.ic]||""}</svg><span>${esc(c.k)}</span>${c.safe?"":`<button type="button" class="coach-x" data-coach-act="x" aria-label="Bugünlük kapat">×</button>`}</div>
     <h3>${esc(c.t)}</h3>${c.b?`<p>${c.b}</p>`:""}
     ${c.l?`<ul>${c.l.map(t=>`<li>${esc(t)}</li>`).join("")}</ul>`:""}
-    ${c.ch&&c.ch.length?`<div class="coach-ch">${c.ch.map(([e,n,g,k])=>`<button type="button" data-coach-act="prot:${k}"><span aria-hidden="true">${e}</span>${esc(n)} <b>+${g} g</b></button>`).join("")}</div>`:""}
+    ${c.ch&&c.ch.length?`<div class="coach-ch">${c.ch.map(([e,n,g,k])=>`<button type="button" data-coach-act="prot:${k}">${icon(k,18)}${esc(n)} <b>+${g} g</b></button>`).join("")}</div>`:""}
     ${c.dots?`<div class="coach-dots">${c.dots.map(([n,ok,t])=>`<span${t?' class="t"':""}><i${ok?' class="ok"':""}></i>${n}</span>`).join("")}</div>`:""}
     ${c.bar!=null?`<div class="coach-bar"><i style="width:${Math.round(c.bar*100)}%"></i></div>`:""}
     ${c.a&&c.a.length?`<div class="coach-a">${c.a.map(([t,a],i)=>`<button type="button" class="${i?"g":""}" data-coach-act="${a}">${esc(t)}</button>`).join("")}</div>`:""}
@@ -1769,6 +1769,9 @@ const ICON={
  genel:'<circle cx="12" cy="12" r="7.5" fill="#F6D9A8" stroke="#E0B670" stroke-width="1"/><text x="12" y="15.2" text-anchor="middle" font-size="8.5" font-weight="700" fill="#8A5A10" font-family="Figtree, sans-serif">P</text>'
 };
 const FCOL={yumurta:"#F2C14E",tavuk:"#D98A3D",et:"#B8463A",ton:"#2C6E9B",yogurt:"#7DB7E0",peynir:"#E3D7B4",sut:"#BFD6E4",shake:"#8A6BD1",bar:"#6E4A2C",psut:"#4F8BE8",psutpro:"#1F5FBF",mercimek:"#E0782F",genel:"#E6B35A"};
+/* arayüz çizgi simgeleri (emoji yerine; her telefonda aynı görünür) */
+const UI_I=(d,sz=18)=>`<svg viewBox="0 0 24 24" width="${sz}" height="${sz}" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${d}</svg>`;
+const UIC={igne:'<path d="M14 4l6 6M17 7l-9 9-3 1 1-3 9-9M6 18l-3 3M11 8l2 2M8 11l2 2"/>',grafik:'<path d="M4 19h16M5 15l5-5 4 3 6-7"/>',belge:'<path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5M10 13h6M10 17h6"/>',nabiz:'<path d="M3 12h4l3-7 4 14 3-7h4"/>',telefon:'<rect x="7" y="3" width="10" height="18" rx="2"/><path d="M11 18h2"/>',adim:'<path d="M8 3.5c1.8 0 2.8 1.9 2.8 4.6S9.8 12.5 8 12.5 5.2 10.8 5.2 8.1 6.2 3.5 8 3.5zM16 9.5c1.8 0 2.8 1.9 2.8 4.6s-1 4.4-2.8 4.4-2.8-1.7-2.8-4.4 1-4.6 2.8-4.6zM6.5 15.5h3M14.5 21h3"/>',tarti:'<rect x="3" y="4" width="18" height="16" rx="4"/><path d="M8 9a4 4 0 0 1 8 0"/>',damla:'<path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z"/>',alev:'<path d="M12 3c.8 3.6 5 5.2 5 10a5 5 0 0 1-10 0c0-2.6 1.4-4 2.2-6.2 1.6 1 2.6 2.6 2.6 4.4"/>',onay:'<circle cx="12" cy="12" r="9"/><path d="M8 12.5l3 3 5-6"/>',kilit:'<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>'};
 const icon=(k,sz=28)=>`<svg width="${sz}" height="${sz}" viewBox="0 0 24 24" aria-hidden="true">${ICON[k]||ICON.genel}</svg>`;
 function protSuggest(){const w=sortedW();const k=w.length?w[w.length-1].kg:null;if(!k)return [null,null,"ör. 110"];const a=Math.round(k*1.2/5)*5,b=Math.round(k*1.5/5)*5;return [a,b,"ör. "+Math.round((a+b)/2/5)*5]}
 const pGoal=()=>S.profile.proteinGoal||Math.round(((protSuggest()[0]||90)+(protSuggest()[1]||110))/2/5)*5;
@@ -2026,7 +2029,7 @@ function bindToday(){
 /* ---------- ana kart tasarımları ---------- */
 const HEROS=[["gece","Zümrüt"]];
 let heroV="gece",prevTab="ozet";
-const BUILD="1.9.0 önizleme · Adım 9 · 29 Eki";
+const BUILD="1.9.0 önizleme · Adım 10 · 29 Eki";
 let HERO_CTX=null;
 function heroDots(dark){return "";`<div class="hdots${dark?" dk":""}" role="tablist" aria-label="Kart tasarımı">${HEROS.map(([k,n])=>`<button type="button" data-hero="${k}" aria-selected="${k===heroV}" aria-label="${n}"></button>`).join("")}<span>${HEROS.find(h=>h[0]===heroV)[1]}</span></div>`}
 function heroHtml(X){
@@ -3219,7 +3222,7 @@ function chartCard(){
   else {body=chart();legend=SHOTS()?`<span>Kilo</span><span class="sd">İğne günü</span>`:`<span>Kilo</span>`}
   return `<div class="card" style="display:flex;flex-direction:column;gap:10px">
     <div><h2>Kilo değişimi</h2><span class="muted" style="font-size:13px">${sub}</span></div>
-    <div class="seg" role="tablist" style="grid-template-columns:repeat(${modes.length},1fr)">${modes.map(([k,l])=>`<button role="tab" aria-selected="${k===chartMode}" data-chart="${k}">${l}${k!=="egri"&&!PLUS()?'<span class="lk">🔒</span>':""}</button>`).join("")}</div>
+    <div class="seg" role="tablist" style="grid-template-columns:repeat(${modes.length},1fr)">${modes.map(([k,l])=>`<button role="tab" aria-selected="${k===chartMode}" data-chart="${k}">${l}${k!=="egri"&&!PLUS()?`<span class="lk">${UI_I(UIC.kilit,10)}</span>`:""}</button>`).join("")}</div>
     ${chartMode!=="egri"&&!PLUS()?plock(body+`<div class="legend">${legend}</div>`,"Bu grafik Hafif Plus'ta",{igne:"Her iki iğne arasında kaç kilo verdiğini gör.",hafta:"Haftadan haftaya değişimini gör.",trend:"Ortalamanı ve 4 haftalık tahminini gör.",ilac:"İlaç düzeyiyle kilonun ilişkisini gör.",yag:"Yağ oranı ve yağ kütlendeki değişimi gör."}[chartMode]):body+`<div class="legend">${legend}</div>`}</div>`;
 }
 function weekly(){
@@ -3551,11 +3554,11 @@ function stepCard(){
   const n=stepsOn(today()),g=stepGoal(),E=stepEst(n),left=Math.max(0,g-n),f=Math.min(1,n/g),sk=stStreak();
   return `<button type="button" class="card stcard" data-go="adim">
     <div class="sthead"><h2>Bugün hareket</h2>${PV()?'<span class="pvtag">Önizleme</span>':'<span class="muted" style="font-size:12.5px">Health Connect</span>'}</div>
-    <div class="stnum"><span><b>${fmtN(n)}</b><small>adım</small></span><em>${left?fmtN(left)+" kaldı":"Hedef tamam 🎉"}</em></div>
+    <div class="stnum"><span><b>${fmtN(n)}</b><small>adım</small></span><em>${left?fmtN(left)+" kaldı":`Hedef tamam ${UI_I(UIC.onay,16)}`}</em></div>
     <div><div class="stpath"><div class="trk"><i style="width:${f*100}%"></i></div><span class="me" style="left:calc((100% - 30px) * ${f.toFixed(3)})">${ST_WALK}</span><span class="flag">${ST_FLAG}</span></div>
       <div class="stscale"><span>0</span><span>Hedef ${fmtN(g)}</span></div></div>
     <div class="stpills"><span><b>${E.km.toLocaleString("tr-TR",{maximumFractionDigits:1})} km</b>mesafe</span><span><b>${fmtN(E.kcal)}</b>kcal</span><span><b>${fmtN(E.min)} dk</b>yürüyüş</span></div>
-    <div class="st7h"><span>Son 7 gün</span><span>${sk>=2?"🔥 "+sk+" gün seri":""}</span></div>
+    <div class="st7h"><span>Son 7 gün</span><span>${sk>=2?`${UI_I(UIC.alev,15)} ${sk} gün seri`:""}</span></div>
     ${stDays()}</button>`;
 }
 /* tek seferlik ipuçları: ✕ ile ya da iş bir kez yapılınca kalıcı kapanır (S.profile.tips, yedekle birlikte taşınır) */
@@ -3608,8 +3611,8 @@ function openHealthSheet(){
       <div class="hcicon">${HEART}</div>
       <h2 style="font-size:24px;line-height:1.15">Adımlarını ve tartını<br><span style="color:var(--step)">bağla</span></h2>
       <p class="muted" style="margin:0;font-size:14.5px">Hafif, telefonundaki <b>Health Connect</b>'ten okur. Samsung Health, Google Fit, Fitbit, akıllı saatin ve akıllı tartın buraya yazar.</p>
-      <div class="hcperm" style="text-align:left"><div><span>👣</span>Adımlar<em>okunur</em></div><div><span>⚖️</span>Kilo<em>okunur</em></div><div><span>💜</span>Vücut yağ oranı<em>okunur</em></div></div>
-      <p class="muted" style="margin:0;font-size:12.5px">🔒 Veriler yalnızca bu telefonda kalır, hiçbir sunucuya gönderilmez. İzni istediğin zaman Health Connect'ten kaldırabilirsin.</p>
+      <div class="hcperm" style="text-align:left"><div><span>${UI_I(UIC.adim,20)}</span>Adımlar<em>okunur</em></div><div><span>${UI_I(UIC.tarti,20)}</span>Kilo<em>okunur</em></div><div><span>${UI_I(UIC.damla,20)}</span>Vücut yağ oranı<em>okunur</em></div></div>
+      <p class="muted" style="margin:0;font-size:12.5px"><span style="display:inline-block;vertical-align:-2px;margin-right:4px">${UI_I(UIC.kilit,14)}</span><span>Veriler yalnızca bu telefonda kalır, hiçbir sunucuya gönderilmez. İzni istediğin zaman Health Connect'ten kaldırabilirsin.</span></p>
       <p class="muted" id="hcMsg" role="status" style="margin:0;font-size:13px;color:var(--bad)"></p>
       <button type="button" class="btn stepbtn" id="hcGo">Health Connect'e bağlan</button>
     </div></div></div>`;
