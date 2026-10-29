@@ -290,7 +290,7 @@ input[type=range].wr::-moz-range-thumb{width:20px;height:20px;border-radius:50%;
 .pli em{font:700 16px var(--f-display);font-style:normal;color:var(--protein-ink)}
 .pli .x{border:0;background:none;color:var(--muted);font-size:20px;line-height:1;padding:6px 2px 6px 8px;cursor:pointer}
 .pempty2{font-size:13px;color:var(--muted);padding:10px 0 2px;border-top:1px solid var(--line)}
-.paddbtn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;border:0;background:var(--protein);color:#fff;border-radius:18px;padding:15px;font:700 16px var(--f-body);cursor:pointer;box-shadow:0 12px 24px -14px var(--protein)}
+.paddbtn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;border:0;background:var(--protein-soft);color:var(--protein-ink);border-radius:18px;padding:13px;font:700 16px var(--f-body);cursor:pointer}
 .paddbtn:active{transform:scale(.98)}
 .psugg{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin:0 -2px;padding:0 2px}.psugg{-webkit-mask-image:linear-gradient(90deg,#000 85%,transparent);mask-image:linear-gradient(90deg,#000 85%,transparent);padding-right:28px}
 .wleg{display:flex;align-items:center;gap:5px;font-size:11.5px;color:var(--muted)}.wleg i{width:9px;height:9px;border-radius:3px;margin-left:6px}.psugg::-webkit-scrollbar{display:none}
@@ -565,6 +565,14 @@ input:focus{background:var(--surface);border-color:var(--accent);outline:none}
 .chk svg path{stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset .35s ease .1s}
 .srow.on{background:none}
 .slist .srow:first-child{border-top:0;padding-top:4px}.slist .srow:last-child{padding-bottom:0}
+.bkl.warn{color:var(--warnfg);font-weight:600}
+.dlist{display:flex;flex-direction:column;border:1px solid var(--line);border-radius:16px;overflow:hidden}
+.drow{display:flex;align-items:center;gap:12px;width:100%;border:0;border-top:1px solid var(--line);background:none;padding:13px 14px;font:500 14.5px var(--f-body);color:var(--fg);cursor:pointer;text-align:left}
+.dlist .drow:first-child{border-top:0}.drow svg{color:var(--accent);flex:none}.drow span{flex:1}.drow i{font-style:normal;color:var(--muted);font-size:20px;line-height:1}
+label.drow{flex-direction:row;font-size:14.5px;font-weight:500;margin:0}
+.drow.line{border:1px solid var(--line);border-radius:14px;color:var(--accent);font-weight:600}
+.drow:active{background:var(--sunk)}
+.btn.waterbtn.soft{background:var(--water-soft);color:var(--water);box-shadow:none;padding:13px}
 .slnk{display:inline-flex;align-items:center;gap:5px;margin-top:8px;border:0;background:none;padding:2px 0;font:600 12.5px var(--f-body);color:var(--supp);cursor:pointer}
 .srow.on .chk{background:var(--supp);border-color:var(--supp);transform:scale(1.08)}
 .srow.on .chk svg path{stroke-dashoffset:0}
@@ -1851,7 +1859,7 @@ function todayCard(){
       </div>
     </div>
     <div class="wamts" role="radiogroup" aria-label="Eklenecek miktar">${WAMTS.map(([v,l])=>`<button type="button" role="radio" data-wsel="${v}" aria-checked="${v===wAmt}"><b>${v}</b><small>${l}</small></button>`).join("")}</div>
-    <button class="btn waterbtn" type="button" id="wAdd"><span style="font-size:22px;line-height:0">+</span> <span id="wAmtLbl">${ml(wAmt)}</span> ml su ekle</button>
+    <button class="btn waterbtn soft" type="button" id="wAdd"><span style="font-size:22px;line-height:0">+</span> <span id="wAmtLbl">${ml(wAmt)}</span> ml su ekle</button>
     <div class="wlog" id="wLog">${wLogHtml()}</div>
     <div class="hr"></div>
     <div><span class="eyebrow">Son 7 gün</span><div class="wk2" id="week" style="margin-top:8px">${weekHtml()}</div></div>
@@ -2008,7 +2016,7 @@ function bindToday(){
 /* ---------- ana kart tasarımları ---------- */
 const HEROS=[["gece","Zümrüt"]];
 let heroV="gece",prevTab="ozet";
-const BUILD="1.9.0 önizleme · Adım 4 · 29 Eki";
+const BUILD="1.9.0 önizleme · Adım 5 · 29 Eki";
 let HERO_CTX=null;
 function heroDots(dark){return "";`<div class="hdots${dark?" dk":""}" role="tablist" aria-label="Kart tasarımı">${HEROS.map(([k,n])=>`<button type="button" data-hero="${k}" aria-selected="${k===heroV}" aria-label="${n}"></button>`).join("")}<span>${HEROS.find(h=>h[0]===heroV)[1]}</span></div>`}
 function heroHtml(X){
@@ -2663,8 +2671,8 @@ function onRestoreFile(e){
 function doRestore(){if(!pendingRestore)return;S=Object.assign(JSON.parse(JSON.stringify(DEFAULT)),pendingRestore);pendingRestore=null;save();render();toast("Yedek yüklendi")}
 function bkLine(){
   const le=S.profile.lastExport,g=le?diffDays(le,today()):null,old=S.weights.length+S.shots.length>0&&(g==null||g>30);
-  const txt=g==null?"Henüz yedek dosyası almadın.":g===0?"Son yedek dosyası: bugün.":`Son yedek dosyası: ${g} gün önce.`;
-  return `<div class="bkline${old?" warn":""}" id="bkLine">${txt}${FSP()?" Android'in otomatik yedeklemesi açıksa verilerin Google hesabına da yedeklenir; yeni telefonda Hafif'i açınca geri gelir.":""}${old?" Ayda bir yedek dosyası almanı öneririz.":""}</div>`;
+  const txt=g==null?"henüz yedek almadın":g===0?"son yedek bugün":`son yedek ${g} gün önce`;
+  return `<span class="bkl${old?" warn":""}" id="bkLine"> · ${txt}</span>`;
 }
 /* ---------- doktor raporu (PDF): sayfalar canvas'a çizilir, JPEG olarak PDF'e konur ---------- */
 function pdfFromJpegs(pages){
@@ -2765,16 +2773,15 @@ async function exportPdf(){
 }
 function dataCard(){
   return `<div class="card" style="display:flex;flex-direction:column;gap:12px">
-    <div><h2>Verilerim</h2><span class="muted" style="font-size:13px">${S.weights.length} tartı${SHOTS()?` · ${S.shots.length} iğne`:""} · ${Object.keys(S.daily||{}).length} gün protein ve su</span></div>
-    ${bkLine()}
+    <div><h2>Verilerim</h2><span class="muted" style="font-size:13px">${S.weights.length} tartı${SHOTS()?` · ${S.shots.length} iğne`:""} · ${Object.keys(S.daily||{}).length} gün protein ve su${bkLine()}</span></div>
     <button type="button" class="btn" id="exPdf" style="background:var(--emerald-2)">Doktor için rapor (PDF)${PLUS()?"":' <span class="ptag" style="margin-left:6px">✦ Plus</span>'}</button>
-    <button type="button" class="btn ghost" id="exXlsx">Excel olarak indir</button>
-    <div style="display:flex;gap:8px"><button type="button" class="btn ghost" id="exJson" style="flex:1">Yedek dosyası indir</button>
-      <label class="btn ghost" style="flex:1;text-align:center;flex-direction:row;display:block;color:var(--fg);font-size:15px">Yedekten yükle<input type="file" id="rsFile" accept=".json,application/json" hidden></label></div>
+    <div class="dlist"><button type="button" class="drow" id="exJson"><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg><span>Yedek dosyası indir</span><i>›</i></button>
+      <label class="drow"><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12a8 8 0 1 0 2.4-5.7M4 4v5h5"/></svg><span>Yedekten geri yükle</span><i>›</i><input type="file" id="rsFile" accept=".json,application/json" hidden></label>
+      <button type="button" class="drow" id="exXlsx"><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 10h16M4 15h16M10 4v16"/></svg><span>Excel olarak indir</span><i>›</i></button></div>
     <div class="restore" id="restoreAsk" hidden><b>Yedek yüklensin mi?</b><span class="muted" id="restoreInfo" style="font-size:13px"></span><span style="font-size:13px">Şu anki kayıtların bu yedekle değiştirilecek.</span>
       <div style="display:flex;gap:8px"><button type="button" class="btn ghost" id="rsNo" style="flex:1">Vazgeç</button><button type="button" class="btn" id="rsYes" style="flex:1;background:var(--bad)">Yedeği yükle</button></div></div>
     <p class="muted" id="dataMsg" style="margin:0;font-size:12.5px" role="status"></p>
-    <p class="muted" style="margin:0;font-size:12.5px">Rapor; kilo grafiğini, doz geçmişini, yan etkileri ve ölçüleri kontrole götürebileceğin tek bir PDF'te toplar. Excel dosyasında tüm kayıtlar ayrı sayfalarda. Yedek dosyasını sakla; telefon değiştirsen bile buradan geri yükleyebilirsin.</p>
+    <p class="muted" style="margin:0;font-size:12.5px">Yedek dosyasını sakla; telefon değiştirsen bile buradan geri yüklersin.</p>
   </div>`;
 }
 function bindData(){
@@ -3350,7 +3357,7 @@ const sortedM=()=>[...(S.meas||[])].sort((a,b)=>a.date<b.date?-1:a.date>b.date?1
 const cm=v=>v==null?"–":(Math.round(v*10)/10).toLocaleString("tr-TR");
 function measCard(){
   const m=sortedM();
-  if(!m.length) return `<div class="card" style="display:flex;flex-direction:column;gap:10px"><div><h2>Vücut ölçüleri</h2><span class="muted" style="font-size:13px">Tartı yerinde saydığında bile santimler düşer. Ayda bir bel, kalça ve kol çevreni ölç.</span></div><button type="button" class="btn ghost" id="mAdd">Ölçü ekle</button></div>`;
+  if(!m.length) return `<div class="card" style="display:flex;flex-direction:column;gap:10px"><div><h2>Vücut ölçüleri</h2><span class="muted" style="font-size:13px">Tartı yerinde saydığında bile santimler düşer. Ayda bir bel, kalça ve kol çevreni ölç.</span></div><button type="button" class="drow line" id="mAdd"><span>Ölçü ekle</span><i>›</i></button></div>`;
   const last=m[m.length-1],first=k=>{const x=m.find(y=>y[k]!=null);return x?x[k]:null},lastOf=k=>{for(let i=m.length-1;i>=0;i--)if(m[i][k]!=null)return m[i][k];return null};
   const parts=MP.filter(([k])=>lastOf(k)!=null);let tot=0,has=false;
   const cells=parts.map(([k,n])=>{const a=first(k),b=lastOf(k),d=a!=null&&b!=null&&m.length>1?b-a:null;if(d!=null){tot+=d;has=true}
