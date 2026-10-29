@@ -900,7 +900,7 @@ nav.tabs .in{display:grid;grid-template-columns:repeat(5,1fr);width:100%;max-wid
 .st4{display:grid;grid-template-columns:1fr 1fr;gap:8px}.st4 div{background:var(--sunk);border-radius:14px;padding:10px 12px;min-width:0}.st4 b{display:block;font:700 18px var(--f-display);color:var(--head);letter-spacing:-.01em}.st4 small{font-size:11.5px;color:var(--muted)}
 .hch{position:relative;height:120px;display:flex;align-items:flex-end;gap:2px;border-bottom:1px solid var(--line);padding-top:26px}.hch.thin{gap:1px}
 .hb{flex:1;height:100%;border:0;background:none;padding:0;display:flex;align-items:flex-end;cursor:pointer;min-width:0}.hb i{display:block;width:100%;border-radius:3px 3px 0 0;background:color-mix(in oklab,var(--step-ring) 35%,var(--surface))}
-.hb.ok i{background:var(--step-ring)}.hb.sel i{outline:2px solid var(--head);outline-offset:1px}
+.hb.ok i{background:var(--step-ring)}.hb.sel i{box-shadow:inset 0 0 0 2px var(--head);background:color-mix(in oklab,var(--head) 30%,var(--step-ring))}.hb:not(.ok).sel i{background:color-mix(in oklab,var(--head) 15%,color-mix(in oklab,var(--step-ring) 35%,var(--surface)))}
 .hgl{position:absolute;left:0;right:0;z-index:1;border-top:1.5px dashed color-mix(in oklab,var(--accent) 70%,transparent);pointer-events:none}.hgl em{position:absolute;left:0;top:-9px;font:600 10px var(--f-body);font-style:normal;color:var(--accent);background:var(--surface);padding:1px 6px 1px 0;border-radius:0 6px 6px 0;line-height:16px}
 .htip{position:absolute;right:0;top:0;background:var(--head);color:var(--bg);border-radius:9px;padding:4px 9px;font:600 11.5px var(--f-body);white-space:nowrap}
 .hax{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-top:-6px}
