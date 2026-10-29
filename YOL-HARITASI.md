@@ -1,6 +1,7 @@
 # Hafif yol haritası
 
-## 1.9.0 için bekleyenler
+## 1.9.0 (29 Ekim'de hazırlandı)
+Aşağıdakilerin hepsi koda girdi. Ek olarak: kas kütlesi alanı ve kartı; takviye için 30/60/120 dk sonra, iğne için 3 saat sonra ikinci hatırlatma (gece gönderilmez, kayıt yapılınca düşer); Android'de "Hafif ekibine gönder" e-postayı alıcı, konu, metin ve hikâye görseliyle doğrudan açar; gizlilik politikası güncellendi (hafif-gizlilik deposunda surum-1.9.0 dalı, yayınla birlikte main'e alınacak); emülatör testine 1.9.0 adımları eklendi; sürüm notları magaza/surum-notlari.md.
 - **Enjeksiyon bölgeleri**
   - Daha net adlar: "Üst kol (sol)", "Uyluk ön (sol)", "Karın (sol)"…
   - Ayarlarda "Hangi bölgeleri kullanıyorsun?" seçimi. Varsayılan: karın ve uyluk; kol isteğe bağlı. Bölge önerisi, koç kartları ve hatırlatıcılar yalnızca seçili bölgeler arasında döner.

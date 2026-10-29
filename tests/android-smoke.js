@@ -234,7 +234,7 @@ const step = (ad, sonuc, detay) => { report.adimlar.push({ ad, sonuc, detay }); 
     await tap(page, '.tab[data-tab="ozet"]'); await wait(700);
     await ekle(page, 'w'); await wait(600); await type(page, '#w-kg', '88,6');
     await tap(page, '#sheetRoot [type="submit"]'); await wait(1200);
-    await tap(page, '.tab[data-tab="ozet"]'); await wait(700);
+    await tap(page, '.tab[data-tab="kilo"]'); await wait(700);
     await page.evaluate(() => { const b = document.querySelector('[data-chart="trend"]'); if (b) b.click(); }); await wait(900);
     const kilit = await page.evaluate(() => !!document.querySelector('.plock [data-plus]'));
     await shot('kilitli-grafik');
@@ -272,6 +272,43 @@ const step = (ad, sonuc, detay) => { report.adimlar.push({ ad, sonuc, detay }); 
     const suSonra = await page.evaluate(() => { const d = JSON.parse(localStorage.getItem('doz-defteri')); return (d.daily[Object.keys(d.daily).sort().pop()] || {}).w || 0; });
     step('Widget bağlantısı (+250 ml su) çalıştı', suSonra - suOnce === 250, suOnce + ' → ' + suSonra);
     await page.evaluate(() => { const b = document.querySelector('[data-chart="egri"]'); if (b) b.click(); }); await wait(500);
+
+    // 1.9.0: + panelinden su (miktar seçilerek) ve kas kütlesi
+    const D2 = () => page.evaluate(() => JSON.parse(localStorage.getItem('doz-defteri') || '{}'));
+    const suA = await page.evaluate(() => { const d = JSON.parse(localStorage.getItem('doz-defteri')); return (d.daily[Object.keys(d.daily).sort().pop()] || {}).w || 0; });
+    await tap(page, '.tab[data-tab="ozet"]'); await wait(600);
+    await ekle(page, 'su'); await wait(600); await tap(page, '[data-wv="500"]'); await shot('su-ekle'); await tap(page, '#fWa [type="submit"]'); await wait(900);
+    const suB = await page.evaluate(() => { const d = JSON.parse(localStorage.getItem('doz-defteri')); return (d.daily[Object.keys(d.daily).sort().pop()] || {}).w || 0; });
+    step('+ paneli → su penceresi → 500 ml eklendi', suB - suA === 500, suA + ' → ' + suB);
+    await ekle(page, 'w'); await wait(600); await type(page, '#w-kg', '88,2'); await tap(page, '[data-more="wMusL"]'); await type(page, '#w-mus', '31,4'); await shot('kas-kutlesi');
+    await tap(page, '#sheetRoot [type="submit"]'); await wait(900);
+    const ks = await D2();
+    step('Kas kütlesi kaydedildi', ks.weights.some(x => x.mus === 31.4), JSON.stringify(ks.weights.slice(-1)));
+
+    // 1.9.0: ikinci hatırlatmalar kuruluyor
+    await device.shell(`pm grant ${PKG} android.permission.POST_NOTIFICATIONS`).catch(() => {});
+    await page.evaluate(() => { const S = JSON.parse(localStorage.getItem('doz-defteri')); S.profile.rem = { on: true }; localStorage.setItem('doz-defteri', JSON.stringify(S)); });
+    await page.reload(); await page.waitForSelector('#view'); await wait(5000);
+    const bek2 = await page.evaluate(async () => { try { return ((await window.Capacitor.Plugins.LocalNotifications.getPending()).notifications || []).map(n => n.id); } catch (e) { return ['HATA ' + e.message]; } });
+    step('Takviye için ikinci hatırlatma kuruldu', bek2.some(i => i >= 2500 && i < 2600), (bek2.includes(1002) ? 'iğne ikinci hatırlatması da var · ' : '') + bek2.slice(0, 30).join(','));
+
+    // 1.9.0: adım paylaşımı, fotoğraf seçici ve Hafif ekibine gönder (e-posta)
+    await page.evaluate(() => { const x = document.querySelector('#pwX'); if (x) x.click(); });
+    await tap(page, '.tab[data-tab="ozet"]'); await wait(700);
+    await tap(page, '.stcard'); await wait(1200);
+    await tap(page, '#stShareBtn'); await wait(2500); await shot('adim-paylas');
+    const kart = await page.evaluate(() => (document.querySelector('#stImg') || {}).src || '');
+    step('Adım paylaşım kartı çizildi', kart.startsWith('data:image') && kart.length > 20000, kart.length + ' bayt');
+    await tap(page, '[data-sttpl="foto"]'); await wait(800); await tap(page, '#stPick'); await wait(2500);
+    const secici = (await device.shell('dumpsys window | grep mCurrentFocus')).toString();
+    await shot('foto-secici');
+    step('Fotoğraf seçici açıldı (izin istemeden)', !/hafif\/.*MainActivity/.test(secici) && !/permission/i.test(secici), secici.trim());
+    await device.shell('input keyevent 4'); await wait(1200);
+    await tap(page, '#stTeam'); await wait(900); await tap(page, '.tsck'); await wait(300); await tap(page, '#tsGo'); await wait(3000);
+    const eposta = (await device.shell('dumpsys window | grep mCurrentFocus')).toString();
+    await shot('ekibe-gonder-eposta');
+    step('Hafif ekibine gönder → e-posta seçici açıldı', !/hafif\/.*MainActivity/.test(eposta), eposta.trim());
+    await device.shell('input keyevent 4'); await wait(1000);
   } catch (e) {
     report.hatalar.push('TEST HATASI: ' + (e && e.stack || e));
     try { await shot('hata-ani'); } catch (_) {}
