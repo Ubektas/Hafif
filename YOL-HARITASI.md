@@ -55,6 +55,8 @@ Her adım tek tek konuşulup karar veriliyor; onaylananlar Claude sürümüne i�
 - **Adım 2 · Özet halkalarında kısaltma yok (yapıldı):** halkanın içinde üstte değer, altta hedef/birim: "74 · /110 g", "1,75 · /2,5 L", "6.240 · adım", "2/4 · alındı". Halkaların gri kutucukları kaldırıldı (kare içinde kare görünümü), dokununca hafif vurgu. Adım halkasının rengi diğerleriyle aynı tona çekildi (açık #1C8EA6, koyu #3DB5C4). 320, 360 ve 390 piksel genişlikte taşma yok.
 - **Kahraman kart eski büyük hâline döndü (karar):** sade kart küçük kalıyordu; eğrili, "Hedefin %39'u" dikey göstergeli, çipli büyük kart geri geldi.
 - **İlk ekran:** kilo kartı ve "Bugün" halkaları tek ekrana sığıyor (360×640 dahil): kart biraz sıkılaştı, eğri 60 px, çipler tek satır (dar ekranda "9 iğne" çipi gizli), halkalardaki "Ayrıntı için halkaya dokun" satırı kalktı (oklar yeterli). Koç kartı kilo kartının üstünden halkaların altına taşındı.
+- **Özet rozet şeridi:** son kazanılan rozet ve sıradakine ilerleme gösteriliyor.
+- **Adım 3 · Adım geçmişi (yapıldı):** Adımlar sayfasının altındaki ikinci "Son 7 gün" kartı (üstteki ile aynıydı) kalktı; yerine "Adım geçmişi" geldi: 7 gün / 30 gün / 3 ay seçimi (son seçim hatırlanır), toplam adım, günlük ortalama, hedefi tutan gün sayısı (19 / 30), en iyi gün ve tarihi; kesikli hedef çizgili çubuk grafik, çubuğa dokununca "25 Eki · 5.310 adım"; son 7 günün listesi, her gün hedefe göre fark (✓ +130 / −1.660). Üstteki 7 gün halkalarına sayı eklenmedi (karar). Health Connect ilk eşitlemede 90 gün istiyor; telefon izin vermezse geçmiş kullandıkça dolar.
 
 ## Sırada (karar bekleyen / sonraki sürümler)
 - Plus koç kartları: haftalık özet ve "gelecek haftanın tek hedefi", duraklama analizi (ölçü ve adım karşılaştırması)

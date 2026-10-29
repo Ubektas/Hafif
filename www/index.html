@@ -895,6 +895,17 @@ nav.tabs .in{display:grid;grid-template-columns:repeat(5,1fr);width:100%;max-wid
 .nsi b{font:700 19px var(--f-display)}:root[data-hf="dark"] .nsi{color:var(--seinsfg)}.nsi small{font-size:10px;font-weight:600}.nsrow.due .nsi{background:var(--shot);color:#fff}
 .nst{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}.nst b{font:700 15px var(--f-display);color:var(--head)}.nst small{font-size:12.5px;color:var(--muted)}
 .msstrip>svg{flex:none}
+/* Adım geçmişi */
+.sthist{display:flex;flex-direction:column;gap:12px}.sts{align-self:stretch}.sts button{flex:1}
+.st4{display:grid;grid-template-columns:1fr 1fr;gap:8px}.st4 div{background:var(--sunk);border-radius:14px;padding:10px 12px;min-width:0}.st4 b{display:block;font:700 18px var(--f-display);color:var(--head);letter-spacing:-.01em}.st4 small{font-size:11.5px;color:var(--muted)}
+.hch{position:relative;height:120px;display:flex;align-items:flex-end;gap:2px;border-bottom:1px solid var(--line);padding-top:26px}.hch.thin{gap:1px}
+.hb{flex:1;height:100%;border:0;background:none;padding:0;display:flex;align-items:flex-end;cursor:pointer;min-width:0}.hb i{display:block;width:100%;border-radius:3px 3px 0 0;background:color-mix(in oklab,var(--step-ring) 35%,var(--surface))}
+.hb.ok i{background:var(--step-ring)}.hb.sel i{outline:2px solid var(--head);outline-offset:1px}
+.hgl{position:absolute;left:0;right:0;z-index:1;border-top:1.5px dashed color-mix(in oklab,var(--accent) 70%,transparent);pointer-events:none}.hgl em{position:absolute;left:0;top:-9px;font:600 10px var(--f-body);font-style:normal;color:var(--accent);background:var(--surface);padding:1px 6px 1px 0;border-radius:0 6px 6px 0;line-height:16px}
+.htip{position:absolute;right:0;top:0;background:var(--head);color:var(--bg);border-radius:9px;padding:4px 9px;font:600 11.5px var(--f-body);white-space:nowrap}
+.hax{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-top:-6px}
+.hrl{display:flex;flex-direction:column}.hrr{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-top:1px solid var(--line);font-size:13.5px}.hrr:first-child{border-top:0}
+.hrr b{font:700 14.5px var(--f-display);color:var(--head)}.hrr em{font-style:normal;font-weight:600;color:var(--muted);font-size:12.5px}.hrr em.ok{color:var(--accent)}
 /* İğneler: ince kalem, tek satırlık geçmiş, doz başına */
 .pens{display:flex;flex-direction:column;gap:8px}.psh{display:flex;justify-content:space-between;align-items:baseline}.psh span{font-size:13px;color:var(--muted)}.psh b{font:700 18px var(--f-display);color:var(--head)}
 .pbars{display:flex;gap:5px}.pbars i{flex:1;height:8px;border-radius:9px;background:var(--shot-soft)}.pbars i.on{background:var(--shot)}
@@ -989,7 +1000,7 @@ const stepGoal=()=>S.profile.stepGoal||7500;
 const PV=()=>!HP()&&!(window.Capacitor&&window.Capacitor.isNativePlatform&&window.Capacitor.isNativePlatform());
 const DEMO_ST=[6420,9180,5310,8240,11050,7630,5840];
 const DEMO_H=[0,0,0,0,0,0,40,520,860,310,240,420,690,380,260,300,410,520,880,180,90,0,0,0];
-const stepsOn=d=>{if(PV()){const i=6-diffDays(d,today());return i>=0&&i<7?DEMO_ST[i]:0}return (S.steps&&S.steps[d])||0};
+const stepsOn=d=>{if(PV()){const a=diffDays(d,today()),i=6-a;if(i>=0&&i<7)return DEMO_ST[i];if(a<0||a>=90)return 0;const x=Math.sin(a*12.9898)*43758.5453;return Math.round((4200+(x-Math.floor(x))*8400)/10)*10}return (S.steps&&S.steps[d])||0};
 const fmtN=n=>Math.round(n).toLocaleString("tr-TR");
 function stepEst(n){const h=S.profile.heightCm||170,w=sortedW(),k=w.length?w[w.length-1].kg:75;return {km:n*h*0.415/100/1000,kcal:n*0.04*k/70,min:n/100}}
 const actionsHtml=()=>SHOTS()?`<div class="actions"><button class="btn" data-open="weight">Kilo gir</button><button class="btn shotbtn" data-open="shot">İğne ekle</button></div>`:`<div class="actions" style="grid-template-columns:1fr"><button class="btn" data-open="weight">Kilo gir</button></div>`;
@@ -1995,7 +2006,7 @@ function bindToday(){
 /* ---------- ana kart tasarımları ---------- */
 const HEROS=[["gece","Zümrüt"]];
 let heroV="gece",prevTab="ozet";
-const BUILD="1.9.0 önizleme · Adım 2d · 29 Eki";
+const BUILD="1.9.0 önizleme · Adım 3 · 29 Eki";
 let HERO_CTX=null;
 function heroDots(dark){return "";`<div class="hdots${dark?" dk":""}" role="tablist" aria-label="Kart tasarımı">${HEROS.map(([k,n])=>`<button type="button" data-hero="${k}" aria-selected="${k===heroV}" aria-label="${n}"></button>`).join("")}<span>${HEROS.find(h=>h[0]===heroV)[1]}</span></div>`}
 function heroHtml(X){
@@ -3526,7 +3537,25 @@ function stepCard(){
     <div class="st7h"><span>Son 7 gün</span><span>${sk>=2?"🔥 "+sk+" gün seri":""}</span></div>
     ${stDays()}</button>`;
 }
-let HOURS=null;
+let HOURS=null,stRange=(()=>{try{return +localStorage.getItem("hf-strange")||30}catch(_){return 30}})();
+/* Adım geçmişi: 7 / 30 / 90 gün; toplam, ortalama, hedef tutulan gün, en iyi gün; çubuğa dokununca o günün sayısı */
+function stHistory(){
+  const g=stepGoal(),D=[...Array(stRange)].map((_,k)=>{const d=addDays(today(),-(stRange-1-k));return {d,n:stepsOn(d)}}),has=D.filter(x=>x.n>0);
+  if(!has.length) return "";
+  const tot=has.reduce((a,x)=>a+x.n,0),avg=tot/has.length,hit=has.filter(x=>x.n>=g).length,best=has.reduce((a,x)=>x.n>a.n?x:a,has[0]);
+  const mx=Math.max(g*1.15,...D.map(x=>x.n)),y=D.length-2>=0?D[D.length-2]:D[0];
+  const lbl=d=>{const a=diffDays(d,today());return a===0?"Bugün":a===1?"Dün":toD(d).toLocaleDateString("tr-TR",{day:"numeric",month:"short"})};
+  const bars=D.map(x=>`<button type="button" class="hb${x.n>=g?" ok":""}${x.d===y.d?" sel":""}" data-hd="${x.d}" data-hn="${x.n}" aria-label="${lbl(x.d)}: ${fmtN(x.n)} adım"><i style="height:${Math.max(2,x.n/mx*100)}%"></i></button>`).join("");
+  const rows=D.slice(-7).reverse().map(x=>{const df=x.n-g,dn=toD(x.d).toLocaleDateString("tr-TR",{weekday:"long"}),a=diffDays(x.d,today());
+    return `<div class="hrr"><span>${a===0?"Bugün":a===1?"Dün · "+dn:dn.charAt(0).toUpperCase()+dn.slice(1)}</span><span><b>${fmtN(x.n)}</b> ${x.n?(df>=0?`<em class="ok">✓ +${fmtN(df)}</em>`:`<em>−${fmtN(-df)}</em>`):""}</span></div>`}).join("");
+  return `<div class="card sthist"><h2>Adım geçmişi</h2>
+    <div class="kseg sts" role="radiogroup" aria-label="Süre">${[[7,"7 gün"],[30,"30 gün"],[90,"3 ay"]].map(([v,t])=>`<button type="button" role="radio" data-strange="${v}" aria-checked="${stRange===v}">${t}</button>`).join("")}</div>
+    <div class="st4"><div><b>${fmtN(tot)}</b><small>toplam adım</small></div><div><b>${fmtN(avg)}</b><small>günlük ortalama</small></div><div><b>${hit} / ${has.length}</b><small>gün hedefi tuttu</small></div><div><b>${fmtN(best.n)}</b><small>en iyi gün · ${toD(best.d).toLocaleDateString("tr-TR",{day:"numeric",month:"short"})}</small></div></div>
+    <div class="hch${stRange>30?" thin":""}"><div class="hgl" style="bottom:${g/mx*100}%"><em>hedef ${fmtN(g)}</em></div>${bars}<span class="htip" id="hTip">${lbl(y.d)} · ${fmtN(y.n)} adım</span></div>
+    <div class="hax"><span>${toD(D[0].d).toLocaleDateString("tr-TR",{day:"numeric",month:"short"})}</span><span>Bugün</span></div>
+    <div class="hrl">${rows}</div>
+    ${has.length<stRange?`<p class="muted" style="margin:0;font-size:12px">${has.length} günlük kayıt var; uygulamayı kullandıkça geçmiş dolar.</p>`:""}</div>`;
+}
 function vAdim(){
   const back=`<button type="button" class="backbtn" data-go="ozet">‹ Özet</button>`;
   if(!PV()&&(!HP()||!(S.hc&&S.hc.on))) return `<section>${back}<div class="card empty"><h2>Adımlar bağlı değil</h2><p class="muted" style="margin:0">Health Connect'e bağlanınca adımların burada görünür.</p><button class="btn stepbtn" data-hc>Bağlan</button></div></section>`;
@@ -3540,7 +3569,7 @@ function vAdim(){
       <div class="sttrio"><div><b>${E.km.toLocaleString("tr-TR",{maximumFractionDigits:1})} km</b><span>mesafe (tahmini)</span></div><div><b>${fmtN(E.kcal)}</b><span>kcal (tahmini)</span></div><div><b>${fmtN(E.min)} dk</b><span>yürüyüş (tahmini)</span></div></div></div>
     <div class="card"><h2 style="margin-bottom:10px">Gün içinde</h2><div class="sthours">${H.map(v=>`<i class="${v>=mx*.6&&v>0?"h":""}" style="height:${Math.max(4,v/mx*100)}%"></i>`).join("")}</div><div class="sthx"><span>00</span><span>06</span><span>12</span><span>18</span><span>24</span></div></div>
     <button type="button" class="card stshare" id="stShareBtn"><span class="mi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg></span><span style="flex:1;min-width:0;text-align:left"><b>Adımlarını paylaş</b><small>Fotoğraflı ya da hazır kart · WhatsApp, Instagram ya da Hafif ekibi</small></span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button>
-    <div class="card" style="display:flex;flex-direction:column;gap:12px"><div class="sthead"><h2>Son 7 gün</h2><span class="muted" style="font-size:12.5px">ort. ${fmtN(avg)}</span></div>${stDays()}</div>
+    ${stHistory()}
     <div class="stsrc"><span class="mi" style="width:30px;height:30px;border-radius:10px;background:var(--step-soft);color:var(--step);display:grid;place-items:center">${HEART.replace('<svg ','<svg width="18" height="18" ')}</span>${PV()?"<span><b>Önizleme · örnek veriler.</b> Gerçek adımların Android uygulamasında Health Connect'ten gelir.</span>":`Health Connect'ten · ${S.hc.last?"son güncelleme "+new Date(S.hc.last).toLocaleTimeString("tr-TR",{hour:"2-digit",minute:"2-digit"}):"güncelleniyor"} · hedefini Ayarlar'dan değiştirebilirsin`}</div>
   </section>`;
 }
@@ -3577,7 +3606,7 @@ async function syncHealth(force){
   hcBusy=true; hcLast=Date.now(); let changed=false;
   const iso=d=>toD(d).toISOString();
   try{
-    const r=await H.queryAggregated({dataType:"steps",startDate:iso(addDays(today(),-29)),endDate:new Date().toISOString(),bucket:"day",aggregation:"sum"});
+    const r=await H.queryAggregated({dataType:"steps",startDate:iso(addDays(today(),-89)),endDate:new Date().toISOString(),bucket:"day",aggregation:"sum"});
     S.steps=S.steps||{}; for(const b of (r&&r.samples)||[]){const d=ymd(new Date(b.startDate).getTime()+36e5*12);const v=Math.round(b.value||0);if(S.steps[d]!==v){S.steps[d]=v;changed=true}}
     for(const d of Object.keys(S.steps))if(d<addDays(today(),-90))delete S.steps[d];
   }catch(_){}
@@ -3955,6 +3984,8 @@ function toast(m,act){document.querySelectorAll(".toast").forEach(x=>x.remove())
 
 function bindView(){
   const v=$("#view");
+  v.querySelectorAll("[data-strange]").forEach(b=>b.addEventListener("click",()=>{stRange=+b.dataset.strange;try{localStorage.setItem("hf-strange",stRange)}catch(_){}const y=scrollY;render();scrollTo(0,y)}));
+  v.querySelectorAll("[data-hd]").forEach(b=>b.addEventListener("click",()=>{v.querySelectorAll(".hb.sel").forEach(x=>x.classList.remove("sel"));b.classList.add("sel");const a=diffDays(b.dataset.hd,today());$("#hTip").textContent=`${a===0?"Bugün":a===1?"Dün":toD(b.dataset.hd).toLocaleDateString("tr-TR",{day:"numeric",month:"short"})} · ${fmtN(+b.dataset.hn)} adım`}));
   v.querySelectorAll("[data-open]").forEach(b=>b.addEventListener("click",()=>openSheet(b.dataset.open)));
   const stb=v.querySelector("#stShareBtn");if(stb)stb.addEventListener("click",openStShare);
   v.querySelectorAll("[data-coach-act]").forEach(b=>b.addEventListener("click",()=>coachAct(b.dataset.coachAct,b.closest("[data-coach]").dataset.coach)));
