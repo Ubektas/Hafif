@@ -2727,7 +2727,8 @@ function rpPages(){
   const H2=t=>{y+=14;T(t,M,y,FD(34),C.em);y+=26};
   const need=h=>{if(y+h>PH-130){foot();page()}};
   const foot=()=>{c.fillStyle=C.ln;c.fillRect(M,PH-118,PW-2*M,2);wrap("Bu rapor, kişinin Hafif uygulamasına kendi girdiği kayıtlardan otomatik oluşturulmuştur. İlaç düzeyi ve evreler genel bir modele dayalı tahminlerdir. Tıbbi değerlendirme yerine geçmez.",M,PH-84,PW-2*M-120,F(17),C.mu,24);T(String(pages.length),PW-M,PH-84,F(17),C.mu,"right")};
-  const P=S.profile,w=[...S.weights].sort((a,b)=>a.date<b.date?-1:a.date>b.date?1:(a.t||0)-(b.t||0)),s=sortedS();
+  /* rapor uygulamayla aynı başlangıcı kullanır: ilk iğne (ya da seçilen başlangıç) tarihinden itibaren */
+  const P=S.profile,w=sortedW(),s=sortedS();
   page();
   // kişi bilgisi
   const info=[P.age?P.age+" yaş":null,P.sex==="k"?"Kadın":P.sex==="e"?"Erkek":null,P.heightCm?P.heightCm+" cm":null,SHOTS()&&P.drug?"İlaç: "+P.drug:null,P.goalWeight?"Hedef: "+kg(P.goalWeight)+" kg":null].filter(Boolean).join("   ·   ");
