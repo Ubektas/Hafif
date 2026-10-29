@@ -1425,22 +1425,48 @@ function msStrip(){
   const nm=next?(next.goal?`Hedef kilo · ${kg(next.kg)} kg`:next.id[0]==="p"?`Vücudunun %${next.id.slice(1)}'${pctEk(+next.id.slice(1))}`:`${next.kg} kg'ın altı`):"Tüm rozetler senin";
   return `<button type="button" class="card msstrip" data-go="basari">${next?medal(next,46,pr):""}<span class="nst"><b>Rozetler ${done.length}/${M.L.length}</b><small>${next?`Sıradaki: ${nm} · ${kg(Math.max(0,M.cur-next.kg))} kg kaldı`:nm}</small></span><i>›</i></button>`;
 }
+/* su ekle: miktar seçilir ya da −/+ ile ayarlanır */
+function openWaterSheet(){
+  const r0=(S.daily||{})[today()]||{w:0};let amt=wAmt;
+  $("#sheetRoot").innerHTML=`<div class="scrim" data-close><div class="sheet" role="dialog" aria-modal="true" aria-label="Su ekle"><div class="grab"></div>
+    <header><h2>Su ekle</h2><button class="del" data-x>Kapat</button></header>
+    <form id="fWa" style="display:flex;flex-direction:column;gap:14px">
+      <div class="kstep wstep"><button type="button" class="kb" data-wk="-1" aria-label="50 ml azalt">−</button>
+        <label class="kval"><input id="wa-ml" class="bignum" inputmode="numeric" value="${amt}" autocomplete="off" aria-label="Miktar (ml)"><small>ml</small></label>
+        <button type="button" class="kb" data-wk="1" aria-label="50 ml artır">+</button></div>
+      <div class="wamts" role="radiogroup" aria-label="Hazır miktarlar">${WAMTS.map(([v,l])=>`<button type="button" role="radio" data-wv="${v}" aria-checked="${v===amt}"><b>${v}</b><small>${l}</small></button>`).join("")}</div>
+      <p class="muted fhint">Bugün ${ml(r0.w||0)} / ${ml(wGoal())} ml</p>
+      <button class="btn waterbtn" type="submit" id="wa-go">${ml(amt)} ml su ekle</button>
+    </form></div></div>`;
+  const root=$("#sheetRoot"),inp=$("#wa-ml"),fit=()=>{inp.style.width=(Math.max(2,inp.value.length)+.4)+"ch";const n=Math.round(num(inp.value)||0);$("#wa-go").textContent=n?`${ml(n)} ml su ekle`:"Su ekle"};
+  const set=v=>{amt=Math.max(0,Math.min(3000,Math.round(v)));inp.value=amt||"";fit();root.querySelectorAll("[data-wv]").forEach(b=>b.setAttribute("aria-checked",+b.dataset.wv===amt))};
+  fit();
+  root.querySelector(".scrim").addEventListener("click",e=>{if(e.target.classList.contains("scrim"))closeSheet()});
+  root.querySelector("[data-x]").addEventListener("click",closeSheet);
+  root.querySelectorAll("[data-wv]").forEach(b=>b.addEventListener("click",()=>set(+b.dataset.wv)));
+  root.querySelectorAll("[data-wk]").forEach(b=>b.addEventListener("click",()=>set((num(inp.value)||0)+50*b.dataset.wk)));
+  inp.addEventListener("input",()=>{amt=Math.round(num(inp.value)||0);fit();root.querySelectorAll("[data-wv]").forEach(b=>b.setAttribute("aria-checked",+b.dataset.wv===amt))});
+  $("#fWa").addEventListener("submit",e=>{e.preventDefault();const a=Math.round(num(inp.value)||0);
+    if(a<10||a>3000){toast("Miktarı ml olarak yaz, ör. 250");return}
+    const r=ensureDay(today());r.w+=a;r.log.push([Date.now(),"w",a]);if(WAMTS.some(([v])=>v===a))setWAmt(a);save();closeSheet();
+    toast(`${ml(a)} ml su eklendi`,["Geri al",()=>{const d=ensureDay(today()),i=d.log.map(x=>x[1]).lastIndexOf("w");if(i>=0){d.w=Math.max(0,d.w-d.log[i][2]);d.log.splice(i,1);save();render()}}])});
+}
 /* + düğmesi: hızlı ekleme paneli */
 function openQuick(){
   const it=[["w","Kilo","kg","var(--accent)","var(--accent-soft)"]];
   if(SHOTS())it.push(["s","İğne",penIcon().replace('width="26" height="26"','width="18" height="18"'),"var(--shot)","var(--shot-soft)"]);
-  it.push(["p","Protein","P","var(--protein)","var(--protein-soft)"],["su","+"+ml(wAmt)+" ml su","+","var(--water)","var(--water-soft)"],["m","Ölçü","cm","var(--fat)","var(--fat-soft)"]);
+  it.push(["p","Protein","P","var(--protein)","var(--protein-soft)"],["su","Su","+","var(--water)","var(--water-soft)"],["m","Ölçü","cm","var(--fat)","var(--fat-soft)"]);
   if(SHOTS())it.push(["se","Yan etki","!","var(--bad)","color-mix(in oklab,var(--bad) 12%,var(--surface))"]);
   $("#sheetRoot").innerHTML=`<div class="scrim" data-close><div class="sheet" role="dialog" aria-modal="true" aria-label="Ekle"><div class="grab"></div>
     <header><h2>Ne eklemek istersin?</h2><button class="del" data-x>Kapat</button></header>
     <div class="qgrid">${it.map(([k,n,ic,c,sf])=>`<button type="button" data-q="${k}" style="--c:${c};--sf:${sf}"><i>${ic}</i><span>${n}</span></button>`).join("")}</div>
-    <p class="muted" style="margin:0;font-size:12.5px;text-align:center">Su hemen eklenir; diğerleri kendi formunu açar.</p></div></div>`;
+    </div></div>`;
   const root=$("#sheetRoot");
   root.querySelector(".scrim").addEventListener("click",e=>{if(e.target.classList.contains("scrim"))closeSheet()});
   root.querySelector("[data-x]").addEventListener("click",closeSheet);
   root.querySelectorAll("[data-q]").forEach(b=>b.addEventListener("click",()=>{const k=b.dataset.q;
     if(k==="w")openSheet("weight");else if(k==="s")openSheet("shot");else if(k==="p")openProteinSheet();else if(k==="m")openMeasSheet();
-    else if(k==="su"){const r=ensureDay(today()),amt=wAmt;r.w+=amt;r.log.push([Date.now(),"w",amt]);save();closeSheet();toast(`${ml(amt)} ml su eklendi`,["Geri al",()=>{const d=ensureDay(today()),i=d.log.map(x=>x[1]).lastIndexOf("w");if(i>=0){d.w=Math.max(0,d.w-d.log[i][2]);d.log.splice(i,1);save();render()}}])}
+    else if(k==="su")openWaterSheet();
     else if(k==="se"){$("#sheetRoot").innerHTML="";tab="igne";ANIM=true;render();setTimeout(()=>{const e=$("#seCard");if(e)scrollTo({top:e.getBoundingClientRect().top+scrollY-12,behavior:"smooth"})},60)}}));
 }
 function penIcon(){return `<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 4l6 6M17 7l-9 9-3 1 1-3 9-9M6 18l-3 3M11 8l2 2M8 11l2 2"/></svg>`}
