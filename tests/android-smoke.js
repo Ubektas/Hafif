@@ -169,7 +169,7 @@ const step = (ad, sonuc, detay) => { report.adimlar.push({ ad, sonuc, detay }); 
     await tap(page, '#gearBtn'); await wait(600);
     await tap(page, '[data-theme-set="dark"]'); await wait(800);
     const koyu = await page.evaluate(() => document.documentElement.dataset.hf);
-    await tap(page, '.tab[data-tab="ozet"]'); await wait(900); await shot('karanlik-ozet');
+    await tap(page, '.tab[data-tab="ozet"]'); await wait(2000); await shot('karanlik-ozet');
     step('Karanlık tema açıldı', koyu === 'dark', koyu);
     await tap(page, '#gearBtn'); await wait(600); await tap(page, '[data-theme-set="sys"]'); await wait(500);
     await tap(page, '.tab[data-tab="ozet"]'); await wait(700);

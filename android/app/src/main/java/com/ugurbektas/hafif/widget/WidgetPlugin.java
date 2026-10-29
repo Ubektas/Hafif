@@ -39,6 +39,11 @@ public class WidgetPlugin extends Plugin {
     @PluginMethod
     public void email(PluginCall call) {
         try {
+            Intent mail = new Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:"));
+            if (mail.resolveActivity(getContext().getPackageManager()) == null) {
+                call.reject("e-posta uygulaması yok");
+                return;
+            }
             String to = call.getString("to", "");
             File f = new File(getContext().getCacheDir(), call.getString("path", ""));
             Intent send = new Intent(Intent.ACTION_SEND);
@@ -52,7 +57,7 @@ public class WidgetPlugin extends Plugin {
                 send.setClipData(ClipData.newRawUri("", uri));
                 send.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             }
-            send.setSelector(new Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:")));
+            send.setSelector(mail);
             Intent chooser = Intent.createChooser(send, "E-posta uygulamanı seç");
             chooser.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             getContext().startActivity(chooser);
