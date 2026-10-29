@@ -49,6 +49,10 @@ Aşağıdakilerin hepsi koda girdi. Ek olarak: kas kütlesi alanı ve kartı; ta
   - "Bu cihazda kayıtlı" yazısı yalnızca Ayarlar'da.
   - Emülatör testi + düğmesine göre güncellendi; koç simülatörü yeni bölge kuralıyla 0 hata.
 
+## 1.9.0 · ekip toplantısı adımları (magaza/taslak/hafif-ekip-toplantisi.html)
+Her adım tek tek konuşulup karar veriliyor; onaylananlar Claude sürümüne işlenip buraya ekleniyor.
+- **Adım 1 · Ayarlar kendiliğinden kaydediyor (yapıldı):** "Kaydet" düğmesi kalktı; her değer kutudan çıkınca kaydediliyor, altta "Hedef kilo kaydedildi ✓". Hatalı değer (ör. hedef 5 kg) kaydedilmiyor, uyarı çıkıp eski değere dönüyor. Ayarlar'da dişli yok, "‹ Geri" önceki sekmeye döndürüyor; başlık altında "Değişiklikler kendiliğinden kaydedilir". "Bu cihazda kayıtlı" yazısı başlıktan tamamen kalktı (Verilerim kartında zaten yazıyor).
+
 ## Sırada (karar bekleyen / sonraki sürümler)
 - Plus koç kartları: haftalık özet ve "gelecek haftanın tek hedefi", duraklama analizi (ölçü ve adım karşılaştırması)
 - Koçtaki kişisel bulantı örüntüsü ücretsiz mi kalsın, Plus'a mı bağlansın (öneri: ücretsiz)

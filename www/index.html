@@ -1222,7 +1222,7 @@ function render(){
   $("#title").textContent={ozet:"Hafif",basari:"Başarıların",adim:"Adımlar",takviye:"Takviyeler",besin:"Protein & Su",kilo:"Kilo",igne:"İğneler",ayar:"Ayarlar"}[tab];
   $("#today").textContent=new Date().toLocaleDateString("tr-TR",{day:"numeric",month:"long",weekday:"long"});
   SCRUB=[];GID=0;
-  $("#sync").hidden=tab!=="ayar";
+  $("#sync").hidden=true;$("#gearBtn").hidden=tab==="ayar";if(tab==="ayar")$("#today").textContent="Değişiklikler kendiliğinden kaydedilir";
   $("#fab").hidden=!["ozet","kilo","igne","besin","takviye"].includes(tab)||needsOnboard()||!!$("#onb");
   $("#view").innerHTML=({ozet:vOzet,basari:vBasari,adim:vAdim,takviye:vTakviye,besin:()=>`<section>${todayCard()}</section>`,kilo:vKilo,igne:vIgne,ayar:vAyar})[tab]();
   if(ANIM){const sec=$("#view").querySelector("section");if(sec){sec.classList.add("enter");[...sec.children].forEach((el,i)=>el.style.setProperty("--i",Math.min(i,8)))}}
@@ -1978,7 +1978,7 @@ function bindToday(){
 
 /* ---------- ana kart tasarımları ---------- */
 const HEROS=[["gece","Zümrüt"]];
-let heroV="gece";
+let heroV="gece",prevTab="ozet";
 let HERO_CTX=null;
 function heroDots(dark){return "";`<div class="hdots${dark?" dk":""}" role="tablist" aria-label="Kart tasarımı">${HEROS.map(([k,n])=>`<button type="button" data-hero="${k}" aria-selected="${k===heroV}" aria-label="${n}"></button>`).join("")}<span>${HEROS.find(h=>h[0]===heroV)[1]}</span></div>`}
 function heroHtml(X){
@@ -3436,7 +3436,7 @@ function vAyar(){
   const P=S.profile;
   const c1=v=>v==null?"":String(v).replace(".",","),AS=activeSites();
   const row=(lbl,id,val,unit,ph,mode="decimal")=>`<label class="setr" for="${id}"><span>${lbl}</span><span class="sin"><input id="${id}" inputmode="${mode}" value="${val}" placeholder="${ph}" autocomplete="off">${unit?`<em>${unit}</em>`:""}</span></label>`;
-  return `<section>${plusCard()}<form id="fAyar" class="setf">
+  return `<section><button type="button" class="backbtn" data-go="${prevTab}">‹ Geri</button>${plusCard()}<form id="fAyar" class="setf">
     <div class="fsec"><span>Tedavi</span></div>
     <div class="sgroup">
       <label class="sw setr"><span><b>Haftalık iğne kullanıyorum</b><small>kapalıyken iğne bölümleri gizlenir, kayıtların silinmez</small></span><input type="checkbox" id="a-shots" ${SHOTS()?"checked":""}><i></i></label>
@@ -3464,7 +3464,6 @@ function vAyar(){
     <p class="hint">${protSuggest()[0]?`Genel öneri kilogram başına 1,2–1,5 g protein, yani senin için ${protSuggest()[0]}–${protSuggest()[1]} g. Su için günde 2–3 litre yaygın bir hedef. Kendi hedefini doktorun ya da diyetisyeninle belirlemek en doğrusu.`:"Protein için yaygın hedef kilogram başına 1,2–1,5 g."}</p>
     <div class="fsec"><span>Tercihler</span></div>
     <div class="sgroup"><label class="sw setr"><span><b>Rozet kutlamaları</b><small>yeni bir ara hedefe ulaşınca konfeti</small></span><input type="checkbox" id="a-cel" ${P.noCelebrate?"":"checked"}><i></i></label></div>
-    <button class="btn" type="submit">Kaydet</button>
   </form>
   ${remCard()}
   ${themeCard()}
@@ -3956,11 +3955,25 @@ function bindView(){
   bindRem();
   if($("#a-hc"))$("#a-hc").addEventListener("click",()=>{if(S.hc&&S.hc.on){try{HP().openHealthConnectSettings()}catch(_){}}else openHealthSheet()});
   v.querySelectorAll("[data-hc]").forEach(b=>b.addEventListener("click",e=>{e.stopPropagation();openHealthSheet()}));
-  if(f)f.addEventListener("submit",e=>{e.preventDefault();
-    const ps=[...document.querySelectorAll("[data-psite]")].filter(b=>b.getAttribute("aria-pressed")==="true").map(b=>b.dataset.psite);
-    S.profile={...S.profile,sites:ps.length?ps:null,usesShots:$("#a-shots").checked,onboarded:true,age:(n=>n&&n>=10&&n<=110?Math.round(n):null)(num($("#a-age").value)),sex:$("#a-sex").value||null,celebrated:S.profile.celebrated,noCelebrate:!$("#a-cel").checked,trackyImported:!!S.profile.trackyImported,zeppImported:!!S.profile.zeppImported,drug:$("#a-drug").value.trim()||null,startWeight:num($("#a-start").value),goalWeight:num($("#a-goal").value),heightCm:num($("#a-height").value),proteinGoal:(n=>n&&n>0?Math.round(n):null)(num($("#a-prot").value)),waterGoal:(n=>n&&n>0?Math.round(n):null)(num($("#a-water").value)),startDate:S.profile.startDate||null,stepGoal:$("#a-step")?(n=>n&&n>=500?Math.round(n):null)(num($("#a-step").value)):(S.profile.stepGoal??null),intervalDays:Math.max(1,Math.round(num($("#a-iv").value)||7))};
-    save();toast("Ayarlar kaydedildi");tab="ozet";render();
-  });
+  /* ayarlar: her değişiklik o an kaydedilir; hatalı değer kaydedilmez, eski hâline döner */
+  if(f){
+    const AY={"a-start":["Başlangıç kilosu",30,300],"a-goal":["Hedef kilo",30,300],"a-height":["Boy",100,250],"a-age":["Yaş",10,110],"a-prot":["Protein hedefi",20,400],"a-water":["Su hedefi",500,6000],"a-iv":["İğne aralığı",1,30],"a-step":["Adım hedefi",500,50000],
+      "a-sex":["Cinsiyet"],"a-drug":["İlaç adı"],"a-shots":["İğne takibi"],"a-cel":["Rozet kutlamaları"],"a-sites":["Kullandığım bölgeler"]};
+    const UNIT={"a-start":"kg","a-goal":"kg","a-height":"cm","a-age":"","a-prot":"g","a-water":"ml","a-iv":"gün","a-step":"adım"};
+    const applyAyar=id=>{
+      const d=AY[id];if(!d)return;
+      if(d[1]!=null){const el=$("#"+id),v=num(el.value);
+        if(el.value.trim()&&(v==null||v<d[1]||v>d[2])){toast(`${d[0]} ${d[1]}–${d[2]}${UNIT[id]?" "+UNIT[id]:""} arasında olmalı`);const P=S.profile,old={"a-start":P.startWeight,"a-goal":P.goalWeight,"a-height":P.heightCm,"a-age":P.age,"a-prot":P.proteinGoal,"a-water":P.waterGoal,"a-iv":P.intervalDays??7,"a-step":P.stepGoal}[id];el.value=old==null?"":String(old).replace(".",",");return}}
+      const ps=[...document.querySelectorAll("[data-psite]")].filter(b=>b.getAttribute("aria-pressed")==="true").map(b=>b.dataset.psite);
+      const shotsBefore=SHOTS();
+      S.profile={...S.profile,sites:ps.length?ps:null,usesShots:$("#a-shots").checked,onboarded:true,age:(n=>n&&n>=10&&n<=110?Math.round(n):null)(num($("#a-age").value)),sex:$("#a-sex").value||null,noCelebrate:!$("#a-cel").checked,drug:$("#a-drug").value.trim()||null,startWeight:num($("#a-start").value),goalWeight:num($("#a-goal").value),heightCm:num($("#a-height").value),proteinGoal:(n=>n&&n>0?Math.round(n):null)(num($("#a-prot").value)),waterGoal:(n=>n&&n>0?Math.round(n):null)(num($("#a-water").value)),stepGoal:$("#a-step")?(n=>n&&n>=500?Math.round(n):null)(num($("#a-step").value)):(S.profile.stepGoal??null),intervalDays:Math.max(1,Math.round(num($("#a-iv").value)||7))};
+      save();toast(`${d[0]} kaydedildi ✓`);
+      if(SHOTS()!==shotsBefore){const y=scrollY;render();scrollTo(0,y)}
+    };
+    f.addEventListener("change",e=>{const id=e.target.id;if(id)applyAyar(id)});
+    f.addEventListener("submit",e=>{e.preventDefault();if(document.activeElement)document.activeElement.blur()});
+    v.querySelectorAll("[data-psite]").forEach(b=>b.addEventListener("click",()=>applyAyar("a-sites")));
+  }
 }
 function setHero(v,dir){heroV=v;try{localStorage.setItem("hf-hero",heroV)}catch(_){}
   const hw=$("#heroWrap");if(!hw||!HERO_CTX)return;hw.innerHTML=heroHtml(HERO_CTX);const cd=hw.firstElementChild;
@@ -3987,7 +4000,7 @@ $("#view").addEventListener("click",e=>{const cp=e.target.closest("[data-cph]");
   const ph=w.querySelector(".phase");if(ph&&ph.animate)ph.animate([{opacity:.3,transform:"translateY(4px)"},{opacity:1,transform:"none"}],{duration:220,easing:"ease-out"});
   $("#phAll")?.addEventListener("toggle",ev=>{phAllOpen=ev.target.open});});
 $("#fab").addEventListener("click",openQuick);
-$("#gearBtn").addEventListener("click",()=>{selPhase=null;ANIM=true;tab="ayar";render();window.scrollTo(0,0)});
+$("#gearBtn").addEventListener("click",()=>{selPhase=null;ANIM=true;if(tab!=="ayar")prevTab=tab;tab="ayar";render();window.scrollTo(0,0)});
 document.querySelectorAll(".tab").forEach(t=>t.addEventListener("click",()=>{selPhase=null;ANIM=true;tab=t.dataset.tab;render();window.scrollTo(0,0)}));
 boot();
 /* Android geri tuşu: önce kutlamayı, sonra açık alt sayfayı kapatır, sonra Özet'e döner, en son uygulamadan çıkar */
