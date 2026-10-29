@@ -42,7 +42,7 @@
   - Kilo gir: −/+ ile 0,1 kg (basılı tutunca hızlanır), Bugün/Dün/Tarih seç, yağ oranı ve not isteğe bağlı açılır.
   - İğne ekle: doz çipleri, Şimdi/Dün/Başka zaman, vücut çizimi üzerinde bölge ve her bölgenin son kullanımı. Bölge adları "Karın (sol)", "Uyluk ön (sol)", "Üst kol (sol)"; ayarlardan "Kullandığım bölgeler" (varsayılan karın + uyluk). Öneri: seçili bölgeler arasında en uzun süredir kullanılmayan. (Enjeksiyon bölgeleri maddesini karşılar.)
   - Kilo listesi: çöp kutusu yok (silme düzenleme penceresinde), yağ oranı düz yazı, geçmiş aylar kapalı.
-  - İğneler: yedi günlük evre şeridi (güne dokununca evre), evre metni "Devamı" ile, "Vücuttaki ilaç" açılır bölümü; geçmişte çöp kutusu ve "bu aralıkta" yok.
+  - İğneler: en üstte iğne kadranı (Özet'ten buraya taşındı; evre, kadranın etrafındaki yaylara dokunarak seçilir), düğmeye benzeyen evre kutuları yok, evre metni "Devamı" ile, "Vücuttaki ilaç" açılır bölümü; geçmişte çöp kutusu ve "bu aralıkta" yok.
   - Protein & Su: hızlı yiyecek satırında solma, haftalık grafikte açıklama. Takviyeler: "Hepsini aldım", dar ekranda tek harfli gün başlıkları, saat kutuları taşmıyor. (Bu üç hata maddesini karşılar.)
   - Ayarlar satır satır gruplar; kilolar virgülle. Hata düzeltmesi: ayarları kaydetmek tema seçimini ve kalem stoğunu sıfırlıyordu, artık korunuyor.
   - "Bu cihazda kayıtlı" yazısı yalnızca Ayarlar'da.
