@@ -576,6 +576,10 @@ label.drow{flex-direction:row;font-size:14px;font-weight:500;margin:0}
 .tip{display:flex;align-items:flex-start;gap:10px;background:color-mix(in oklab,var(--accent) 9%,var(--surface));border:1px solid color-mix(in oklab,var(--accent) 22%,transparent);border-radius:14px;padding:10px 6px 10px 12px;font-size:12.5px;line-height:1.45;color:var(--fg)}
 .tip>svg{flex:none;color:var(--accent);margin-top:1px}.tip>div{flex:1}.tip b{color:var(--accent);margin-right:2px}
 .tipx{flex:none;border:0;background:none;color:var(--muted);font-size:14px;width:30px;height:30px;margin:-5px 0;border-radius:50%;cursor:pointer}.tipx:active{background:var(--sunk)}
+.dfield{position:relative;display:flex;align-items:center;gap:10px;background:var(--sunk);border:1px solid var(--line);border-radius:12px;padding:12px;min-width:0;color:var(--fg);cursor:pointer}
+.dfield .dfv{flex:1;min-width:0;font:16px var(--f-body);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.dfield>svg{flex:none;color:var(--muted)}
+.dfield .dfin{position:absolute;inset:0;width:100%;height:100%;opacity:0;border:0;padding:0;margin:0;cursor:pointer;-webkit-appearance:none;appearance:none}
+.dfield .dfin::-webkit-calendar-picker-indicator{position:absolute;inset:0;width:100%;height:100%;margin:0;padding:0;opacity:0;cursor:pointer}
 .slnk{display:inline-flex;align-items:center;gap:5px;margin-top:8px;border:0;background:none;padding:2px 0;font:600 12.5px var(--f-body);color:var(--supp);cursor:pointer}
 .srow.on .chk{background:var(--supp);border-color:var(--supp);transform:scale(1.08)}
 .srow.on .chk svg path{stroke-dashoffset:0}
@@ -782,7 +786,7 @@ button.mscount i{font-style:normal;font-size:22px;color:var(--muted);margin-left
 .edit{cursor:pointer}
 .bkline{font-size:12.5px;border-radius:12px;padding:10px 12px;background:var(--sunk);color:var(--muted)}.bkline.warn{background:var(--warnbg);color:var(--warnfg)}
 .remrow{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center}
-.remtime{display:flex;gap:8px;margin:-2px 0 6px}.remtime select,.remtime input{padding:9px 10px;font-size:14px}
+.remtime{display:flex;gap:8px;margin:-2px 0 6px}.remtime select,.remtime input{padding:9px 10px;font-size:14px}.remtime .dfield{padding:9px 10px;flex:1}.remtime .dfield .dfv{font-size:14px}
 .remcta{display:flex;align-items:center;gap:14px;padding:14px 16px}
 .remcta .mi{width:48px;height:48px;border-radius:15px;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center;flex:none}.remcta .mi svg{width:26px;height:26px}
 .remcta b{font:700 15.5px var(--f-display)}.remcta small{display:block;font-size:12.5px;color:var(--muted)}
@@ -2029,7 +2033,7 @@ function bindToday(){
 /* ---------- ana kart tasarımları ---------- */
 const HEROS=[["gece","Zümrüt"]];
 let heroV="gece",prevTab="ozet";
-const BUILD="1.9.0 önizleme · Adım 11 · 29 Eki";
+const BUILD="1.9.0 önizleme · Adım 12 · 29 Eki";
 let HERO_CTX=null;
 function heroDots(dark){return "";`<div class="hdots${dark?" dk":""}" role="tablist" aria-label="Kart tasarımı">${HEROS.map(([k,n])=>`<button type="button" data-hero="${k}" aria-selected="${k===heroV}" aria-label="${n}"></button>`).join("")}<span>${HEROS.find(h=>h[0]===heroV)[1]}</span></div>`}
 function heroHtml(X){
@@ -3009,7 +3013,7 @@ function openSuppEdit(){
   $("#sheetRoot").innerHTML=`<div class="scrim"><div class="sheet" role="dialog" aria-modal="true" aria-label="Programı düzenle"><div class="grab"></div>
     <header><h2>Programı düzenle</h2><button class="del" data-x>Kapat</button></header>
     <div style="display:flex;flex-direction:column;gap:12px">
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">${SLOTS_S.map(([k,n])=>`<label>${n}<input type="time" id="st-${k}" value="${T[k]}"></label>`).join("")}</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">${SLOTS_S.map(([k,n])=>`<label>${n}${timeField("st-"+k,T[k])}</label>`).join("")}</div>
       <div id="seList" style="display:flex;flex-direction:column;gap:10px">${L.map(rowH).join("")}</div>
       <button type="button" class="btn ghost" id="seAdd">+ Yeni takviye</button>
       <button type="button" class="btn" id="seSave">Kaydet</button>
@@ -3389,13 +3393,15 @@ function openMeasSheet(){
     <header><h2>Ölçü ekle</h2><button class="del" data-x>Kapat</button></header>
     <form id="fM">
       <div class="two">${MP.map(([k,n])=>`<label>${n} (cm)<input id="m-${k}" inputmode="decimal" placeholder="${lastOf(k)!=null?cm(lastOf(k)):"–"}" autocomplete="off"></label>`).join("")}</div>
-      <label>Tarih<input id="m-date" type="date" value="${today()}" max="${today()}"></label>
+      <div><span class="flbl" style="display:block;margin-bottom:6px">Tarih</span><div class="fchips" id="mWhen" role="radiogroup"><button type="button" role="radio" data-d="${today()}" aria-checked="true">Bugün</button><button type="button" role="radio" data-d="${addDays(today(),-1)}" aria-checked="false">Dün</button><button type="button" role="radio" data-d="" aria-checked="false">Tarih seç…</button></div>${dateField("m-date",today(),{max:today(),box:"mDateBox",hidden:true})}</div>
       <p class="muted" style="margin:0;font-size:12.5px">Mezurayı tenine değecek ama sıkmayacak şekilde tut. Bel: göbek hizası; kalça: en geniş yer; kol ve uyluk: en kalın yer. Boş bıraktıkların kaydedilmez.</p>
       <button class="btn" type="submit">Kaydet</button>
     </form></div></div>`;
   const root=$("#sheetRoot");
   root.querySelector(".scrim").addEventListener("click",e=>{if(e.target.classList.contains("scrim"))closeSheet()});
   root.querySelector("[data-x]").addEventListener("click",closeSheet);
+  $("#mWhen").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;$("#mWhen").querySelectorAll("button").forEach(x=>x.setAttribute("aria-checked",x===b));
+    if(b.dataset.d){$("#m-date").value=b.dataset.d;dfSync($("#m-date"));$("#mDateBox").hidden=true}else{$("#mDateBox").hidden=false;dfOpen($("#m-date"))}});
   $("#fM").addEventListener("submit",e=>{e.preventDefault();const r={id:uid(),date:$("#m-date").value||today()};let n=0;
     for(const [k] of MP){const v=num($("#m-"+k).value);if(v!=null&&v>=10&&v<=250){r[k]=v;n++}}
     if(!n){toast("En az bir ölçü gir");return}S.meas=S.meas||[];S.meas.push(r);save();closeSheet();toast("Ölçüler kaydedildi")});
@@ -3562,6 +3568,15 @@ function stepCard(){
     ${stDays()}</button>`;
 }
 /* tek seferlik ipuçları: ✕ ile ya da iş bir kez yapılınca kalıcı kapanır (S.profile.tips, yedekle birlikte taşınır) */
+/* tarih alanı: görünen yazı her telefonda "29 Ekim 2026, Perşembe"; dokununca telefonun takvimi açılır */
+const dfTxt=(v,sh,t)=>t?(v||"Saat seç"):v?(sh?toD(v).toLocaleDateString("tr-TR",{day:"numeric",month:"short",year:"numeric"}):toD(v).toLocaleDateString("tr-TR",{day:"numeric",month:"long",year:"numeric",weekday:"long"}).replace(/ (\S+)$/,", $1")):"Tarih seç";
+const DF_CAL='<rect x="3.5" y="5" width="17" height="15" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/>',DF_CLK='<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/>';
+const dateField=(id,v,o={})=>{const t=o.type==="time";return `<span class="dfield${o.short?" sh":""}"${o.box?` id="${o.box}"`:""}${o.hidden?" hidden":""}><span class="dfv">${dfTxt(v,o.short,t)}</span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${t?DF_CLK:DF_CAL}</svg><input${id?` id="${id}"`:""} type="${t?"time":"date"}" class="dfin" value="${v||""}"${o.max?` max="${o.max}"`:""}${o.attrs?" "+o.attrs:""} aria-label="${o.label||(t?"Saat":"Tarih")}"></span>`};
+const timeField=(id,v,o={})=>dateField(id,v,Object.assign({type:"time"},o));
+const dfOpen=el=>{try{el.showPicker()}catch(_){el.focus()}};
+const dfSync=el=>{const f=el&&el.closest(".dfield");if(f)f.querySelector(".dfv").textContent=dfTxt(el.value,f.classList.contains("sh"),el.type==="time")};
+document.addEventListener("input",e=>{if(e.target.classList&&e.target.classList.contains("dfin"))dfSync(e.target)},true);
+document.addEventListener("change",e=>{if(e.target.classList&&e.target.classList.contains("dfin"))dfSync(e.target)},true);
 const tipSeen=id=>!!(S.profile.tips&&S.profile.tips[id]);
 const tipDone=id=>{if(tipSeen(id))return;S.profile.tips=Object.assign({},S.profile.tips,{[id]:1});save();document.querySelectorAll(`[data-tip="${id}"]`).forEach(e=>e.remove())};
 const tipHtml=(id,t)=>tipSeen(id)?"":`<div class="tip" data-tip="${id}"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z"/></svg><div><b>İpucu</b> ${t}</div><button type="button" class="tipx" data-tipx="${id}" aria-label="İpucunu kapat">✕</button></div>`;
@@ -3733,7 +3748,7 @@ function remCard(){
   return `<div class="card" style="display:flex;flex-direction:column;gap:10px"><div class="remrow"><div><h2>Hatırlatıcılar</h2><span class="muted" style="font-size:12.5px">Saatler birkaç dakika oynayabilir</span></div><button type="button" class="linkbtn" data-rem-off>Tümünü kapat</button></div>
     <div class="sws">${SHOTS()?sw("shot","İğne günü","iğne saatinde, doz ve bölge önerisiyle")+sw("shotEve","Bir gün önce","20:00'de hazırlık hatırlatması")+sw("shot2","Kaydedilmezse tekrar","iğne saatinden 3 saat sonra, iğneyi kaydetmediysen"):""}${sw("supp","Takviyeler","programındaki sabah, akşam ve gece saatlerinde")}
     <div class="remtime" id="remS2" ${R.supp?"":"hidden"}><span class="muted" style="font-size:12.5px;flex:1">Alınmazsa tekrar hatırlat</span><select data-rem-s2 aria-label="Takviye ikinci hatırlatma">${[[30,"30 dk sonra"],[60,"1 saat sonra"],[120,"2 saat sonra"],[0,"Kapalı"]].map(([v,l])=>`<option value="${v}" ${+R.supp2===v?"selected":""}>${l}</option>`).join("")}</select></div>${sw("water","Su","11:00, 15:00 ve 19:00'da, hedefin dolmadıysa")}${sw("prot","Protein","18:30'da, hedefin dolmadıysa")}${sw("weigh","Haftalık tartı","seçtiğin gün ve saatte")}${SHOTS()?sw("pen","Kalem stoğu","kalemde son doz kalınca"):""}${sw("backup","Yedek hatırlatması","son yedek dosyan 30 günü geçince, pazar 20:00")}</div>
-    <div class="remtime" ${R.weigh?"":"hidden"} id="remW"><select data-rem-day aria-label="Tartı günü">${[1,2,3,4,5,6,0].map(i=>`<option value="${i}" ${+R.weighDay===i?"selected":""}>${toD(lastDow(i)).toLocaleDateString("tr-TR",{weekday:"long"})}</option>`).join("")}</select><input type="time" data-rem-time value="${R.weighTime}" aria-label="Tartı saati"></div></div>`;
+    <div class="remtime" ${R.weigh?"":"hidden"} id="remW"><select data-rem-day aria-label="Tartı günü">${[1,2,3,4,5,6,0].map(i=>`<option value="${i}" ${+R.weighDay===i?"selected":""}>${toD(lastDow(i)).toLocaleDateString("tr-TR",{weekday:"long"})}</option>`).join("")}</select>${timeField("",R.weighTime,{attrs:"data-rem-time",label:"Tartı saati"})}</div></div>`;
 }
 function bindRem(){
   const v=$("#view");
@@ -3815,7 +3830,7 @@ function obBody(){
     <span class="oblbl">Hangi gün yapıyorsun?</span>
     <div class="obchips">${days.map(d=>`<button type="button" data-ob-day="${d}" class="${OB.day===d?"on":""}">${DAYN[d]}</button>`).join("")}</div>
     <span class="oblbl">Son iğneni ne zaman yaptın?</span>
-    <div class="two"><input id="obLast" type="date" max="${today()}" value="${OB.last||""}" aria-label="Son iğne tarihi"><input id="obTime" type="time" value="${OB.time}" aria-label="Saat"></div>
+    <div class="two">${dateField("obLast",OB.last,{max:today(),label:"Son iğne tarihi",short:true})}${timeField("obTime",OB.time)}</div>
     <span class="oblbl">İlacın adı <small>(isteğe bağlı)</small></span>
     <input id="obDrug" value="${esc(OB.drug||"")}" placeholder="ör. ilacının adı" autocomplete="off">
     <div class="obgrow"></div><p class="obhint">Tedavine yeni başlıyorsan son iğne tarihini boş bırak.</p>
@@ -3941,7 +3956,7 @@ function openSheet(kind,editId){
       ${(()=>{const t=tipCount("kgyaz",3),h=ew?(t?"Rakama dokunup yazabilir ya da −/+ ile değiştirebilirsin.":""):lw?`Son tartı ${kg(lw.kg)} kg${t?" · rakama dokunursan klavye açılır":""}`:(t?"Rakama dokunup kilonu yaz":"");return h?`<p class="muted fhint">${h}</p>`:""})()}
       <div class="flbl">Ne zaman</div>
       ${whenChips("wWhen",wDate)}
-      <input id="w-date" type="date" value="${wDate}" max="${today()}" ${wDate!==today()&&wDate!==yest?"":"hidden"} aria-label="Tarih">
+      ${dateField("w-date",wDate,{max:today(),box:"wDateBox",hidden:wDate===today()||wDate===yest})}
       <div class="flbl">Ek bilgi <span>(isteğe bağlı)</span></div>
       <div class="fchips"><button type="button" class="more" data-more="wFatL" ${ew&&ew.fat!=null?"hidden":""}>+ Yağ oranı</button><button type="button" class="more" data-more="wMusL" ${ew&&ew.mus!=null?"hidden":""}>+ Kas kütlesi</button><button type="button" class="more" data-more="wNoteL" ${ew&&ew.note?"hidden":""}>+ Not</button></div>
       <label id="wFatL" ${ew&&ew.fat!=null?"":"hidden"}>Yağ oranı (%)<input id="w-fat" inputmode="decimal" value="${ew?c1(ew.fat):""}" placeholder="${lw&&lw.fat!=null?String(lw.fat).replace(".",","):"ör. 28,4"}" autocomplete="off"></label>
@@ -3955,7 +3970,7 @@ function openSheet(kind,editId){
       <div class="dosebox"><label>Doz<span class="dosein"><input id="s-dose" inputmode="decimal" value="${es?esc(es.dose??""):ls?.dose??""}" placeholder="ör. 2,5"><small>mg</small></span></label>
         <div class="fchips" id="sDoses">${doses.map(d=>`<button type="button" data-dose="${esc(d)}" aria-pressed="${String(lastDose)===d}">${esc(d)}</button>`).join("")}</div></div>
       <div class="fchips" id="sWhen" role="radiogroup">${es?"":`<button type="button" role="radio" data-now aria-checked="true">Şimdi · ${nowHM()}</button><button type="button" role="radio" data-morning aria-checked="false">Bu sabah · 09:00</button>`}<button type="button" role="radio" data-d="" aria-checked="${!!es}">${es?"Tarih ve saat":"Başka zaman…"}</button></div>
-      <div class="two" id="sDT" ${es?"":"hidden"}><label>Tarih<input id="s-date" type="date" value="${sDate}"></label><label>Saat<input id="s-time" type="time" value="${es?shotTime(es):nowHM()}"></label></div>
+      <div class="two" id="sDT" ${es?"":"hidden"}><label>Tarih${dateField("s-date",sDate,{max:today(),short:true})}</label><label>Saat${timeField("s-time",es?shotTime(es):nowHM())}</label></div>
       <div class="flbl">Bölge</div>
       <div class="sitebox">${bodySvg}<div class="sites" id="sites">${SB.map(x=>`<button type="button" class="site" aria-pressed="${x===ssite}" data-site="${x}"><span>${siteLbl(x)}</span><small>${!es&&x===nextSite()?"önerilen":ago(siteLast(x))}</small></button>`).join("")}
         <p class="muted" style="margin:0;font-size:11px">Çizimdeki 1, 2, 3: en son kullandığın bölgeler. Aynı bölgeye vuracaksan öncekinden birkaç santim uzağa; bölgeleri ayarlardan seçebilirsin.</p></div></div>
@@ -3976,9 +3991,9 @@ function openSheet(kind,editId){
   const fit=el=>{if(el)el.style.width=(Math.max(2,(el.value||el.placeholder||"").length)+.4)+"ch"};
   ["#w-kg","#s-dose"].forEach(q=>{const el=$(q);if(el){fit(el);el.addEventListener("input",()=>fit(el))}});
   const pickWhen=(box,dateIn,onCustom)=>box.addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;box.querySelectorAll("button").forEach(x=>x.setAttribute("aria-checked",x===b));
-    if(b.hasAttribute("data-now")){dateIn.value=today();onCustom(false,true);return}
-    if(b.hasAttribute("data-morning")){dateIn.value=today();onCustom(false,false,"09:00");return}
-    if(b.dataset.d){dateIn.value=b.dataset.d;onCustom(false)}else onCustom(true)});
+    if(b.hasAttribute("data-now")){dateIn.value=today();dfSync(dateIn);onCustom(false,true);return}
+    if(b.hasAttribute("data-morning")){dateIn.value=today();dfSync(dateIn);onCustom(false,false,"09:00");return}
+    if(b.dataset.d){dateIn.value=b.dataset.d;dfSync(dateIn);onCustom(false)}else onCustom(true)});
   if(kind==="weight"){
     if(!lw&&!ew)setTimeout(()=>$("#w-kg").focus(),50);
     const kin=$("#w-kg");let rep=null;
@@ -3988,7 +4003,7 @@ function openSheet(kind,editId){
       b.addEventListener("pointerdown",e=>{e.preventDefault();bump(d);stop();rep=setTimeout(()=>{rep=setInterval(()=>bump(d),70)},420)});
       ["pointerup","pointerleave","pointercancel"].forEach(ev=>b.addEventListener(ev,stop));
       b.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();bump(d)}})});
-    pickWhen($("#wWhen"),$("#w-date"),c=>{$("#w-date").hidden=!c;if(c)$("#w-date").focus()});
+    pickWhen($("#wWhen"),$("#w-date"),c=>{$("#wDateBox").hidden=!c;if(c)dfOpen($("#w-date"))});
     $("#fW").addEventListener("submit",e=>{e.preventDefault();
       const v=num($("#w-kg").value); if(v==null||v<20||v>400){toast("Kiloyu kg olarak yaz, ör. 82,4");return}
       const fv=num($("#w-fat").value); if(fv!=null&&(fv<3||fv>70)){toast("Yağ oranını yüzde olarak yaz, ör. 28,4");return}
@@ -4006,7 +4021,7 @@ function openSheet(kind,editId){
     root.querySelectorAll("[data-spot]").forEach(c=>c.addEventListener("click",()=>setSite(c.dataset.spot)));
     const markDose=()=>{const v=$("#s-dose").value.trim();root.querySelectorAll("[data-dose]").forEach(x=>x.setAttribute("aria-pressed",x.dataset.dose===v))};
     root.querySelectorAll("[data-dose]").forEach(b=>b.addEventListener("click",()=>{$("#s-dose").value=b.dataset.dose;fit($("#s-dose"));markDose()}));$("#s-dose").addEventListener("input",markDose);
-    pickWhen($("#sWhen"),$("#s-date"),(c,now,hm)=>{$("#sDT").hidden=!c;if(now)$("#s-time").value=nowHM();else if(hm)$("#s-time").value=hm});
+    pickWhen($("#sWhen"),$("#s-date"),(c,now,hm)=>{$("#sDT").hidden=!c;if(now)$("#s-time").value=nowHM();else if(hm)$("#s-time").value=hm;dfSync($("#s-time"))});
     $("#fS").addEventListener("submit",e=>{e.preventDefault();
       const date=$("#s-date").value||today(); const dose=num($("#s-dose").value);
       if(es){Object.assign(es,{date,time:$("#s-time").value||"09:00",dose:dose==null?null:dose.toLocaleString("tr-TR"),site,note:$("#s-note").value.trim()||null});save();closeSheet();toast("İğne güncellendi");return}
