@@ -54,6 +54,7 @@ Her adım tek tek konuşulup karar veriliyor; onaylananlar Claude sürümüne i�
 - **Adım 1 · Ayarlar kendiliğinden kaydediyor (yapıldı):** "Kaydet" düğmesi kalktı; her değer kutudan çıkınca kaydediliyor, altta "Hedef kilo kaydedildi ✓". Hatalı değer (ör. hedef 5 kg) kaydedilmiyor, uyarı çıkıp eski değere dönüyor. Ayarlar'da dişli yok, "‹ Geri" önceki sekmeye döndürüyor; başlık altında "Değişiklikler kendiliğinden kaydedilir". "Bu cihazda kayıtlı" yazısı başlıktan tamamen kalktı (Verilerim kartında zaten yazıyor).
 - **Adım 2 · Özet halkalarında kısaltma yok (yapıldı):** halkanın içinde üstte değer, altta hedef/birim: "74 · /110 g", "1,75 · /2,5 L", "6.240 · adım", "2/4 · alındı". Halkaların gri kutucukları kaldırıldı (kare içinde kare görünümü), dokununca hafif vurgu. Adım halkasının rengi diğerleriyle aynı tona çekildi (açık #1C8EA6, koyu #3DB5C4). 320, 360 ve 390 piksel genişlikte taşma yok.
 - **Kahraman kart eski büyük hâline döndü (karar):** sade kart küçük kalıyordu; eğrili, "Hedefin %39'u" dikey göstergeli, çipli büyük kart geri geldi.
+- **İlk ekran:** kilo kartı ve "Bugün" halkaları tek ekrana sığıyor (360×640 dahil): kart biraz sıkılaştı, eğri 60 px, çipler tek satır (dar ekranda "9 iğne" çipi gizli), halkalardaki "Ayrıntı için halkaya dokun" satırı kalktı (oklar yeterli). Koç kartı kilo kartının üstünden halkaların altına taşındı.
 
 ## Sırada (karar bekleyen / sonraki sürümler)
 - Plus koç kartları: haftalık özet ve "gelecek haftanın tek hedefi", duraklama analizi (ölçü ve adım karşılaştırması)

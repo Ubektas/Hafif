@@ -347,6 +347,9 @@ input[type=range].pr::-moz-range-thumb{width:22px;height:22px;border-radius:50%;
 .track .end.s{top:-2px}.track .end.g{top:-2px}
 .hero-gece{background:radial-gradient(120% 90% at 100% 0%,#1F8A70 0%,transparent 55%),linear-gradient(160deg,#0B3B33 0%,#082924 100%);color:#fff;padding:22px;display:flex;flex-direction:column;gap:12px;overflow:hidden;box-shadow:0 18px 40px -18px rgba(8,41,36,.7)}
 .hero-gece .eyebrow{color:rgba(255,255,255,.65)}
+#heroWrap .hero-gece{padding:18px 20px;gap:10px}#heroWrap .spark{height:60px}#heroWrap .gmeter{height:92px}
+#heroWrap .chips.dk{flex-wrap:nowrap;overflow:hidden;gap:5px}#heroWrap .chips.dk span{white-space:nowrap;font-size:12px;padding:4px 9px}
+@media (max-width:380px){#heroWrap .chips.dk span:first-child{display:none}#heroWrap .mega{font-size:56px}#heroWrap .eyebrow{font-size:10px;letter-spacing:.06em;white-space:nowrap}}
 .hero-sade{gap:10px;padding:20px}.hs-top{display:flex;justify-content:space-between;align-items:center;gap:10px}.hs-top .sharebtn{width:36px;height:36px}
 .hs-row{display:flex;justify-content:space-between;align-items:flex-end;gap:12px}.hs-row .mega{font-size:58px;line-height:.95}
 .hs-pct{text-align:right;display:flex;flex-direction:column;line-height:1.1}.hs-pct span{font-size:12px;color:rgba(255,255,255,.65)}.hs-pct b{font:700 24px var(--f-display);color:#fff}
@@ -875,7 +878,7 @@ nav.tabs .in{display:grid;grid-template-columns:repeat(5,1fr);width:100%;max-wid
 .qgrid i{width:40px;height:40px;border-radius:13px;background:var(--c);color:#fff;display:grid;place-items:center;font:700 15px var(--f-display);font-style:normal}
 /* Özet: bugün halkaları, sıradaki iğne, rozet şeridi */
 .trings{display:flex;flex-direction:column;gap:12px}.trh{display:flex;justify-content:space-between;align-items:baseline;gap:10px}.trh .muted{font-size:12.5px}
-.trrow{display:grid;gap:6px}.trhint{font-size:11.5px;color:var(--muted);margin-top:-8px}
+.trrow{display:grid;gap:6px}.trings{gap:10px}.trhint{font-size:11.5px;color:var(--muted);margin-top:-8px}
 .tring{border:0;background:none;border-radius:16px;padding:4px 0;display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;font:inherit;color:inherit;min-width:0;transition:transform .12s,background .2s;-webkit-tap-highlight-color:transparent}
 .tring:active{transform:scale(.95);background:var(--sunk)}
 .tring:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
@@ -1427,9 +1430,11 @@ function vOzetMain(){
   const ring=pct!=null?(()=>{const r=36,c=2*Math.PI*r;return `<div class="ring" role="img" aria-label="Hedefin yüzde ${Math.round(pct)}'${pctEk(pct)} tamam"><svg width="86" height="86" viewBox="0 0 86 86"><circle cx="43" cy="43" r="${r}" fill="none" stroke="var(--line)" stroke-width="7"/><circle cx="43" cy="43" r="${r}" fill="none" stroke="var(--accent)" stroke-width="7" stroke-linecap="round" stroke-dasharray="${c*pct/100} ${c}" transform="rotate(-90 43 43)"/></svg><div class="lbl"><b>%${Math.round(pct)}</b>hedef</div></div>`})():`<button class="goalset" data-go="ayar">Hedef<br>belirle</button>`;
   const totalDays=first?diffDays(first.date,today()):0;
   /* Özet yalnızca "bugün"ü anlatır; grafik ve vücut kompozisyonu Kilo'da, döngü ve iğne geçmişi İğneler'de */
-  return `<section>${coachHtml()}
+  /* ilk ekranda kilo kartı ve bugünün halkaları birlikte görünsün; koç kartı onların altında */
+  return `<section>
     <div id="heroWrap">${heroHtml({w,s,lost,start,latest,goal,pct,ring,perWeek,totalDays})}</div>
     ${todayRings()}
+    ${coachHtml()}
     ${nextShotRow()}
     ${HP()&&!(S.hc&&S.hc.on)&&!PV()?stepCard():""}
     ${penWarn()}${remCta()}
@@ -1462,7 +1467,7 @@ function todayRings(){
   if(PV()||(HP()&&S.hc&&S.hc.on)){const n=stepsOn(today()),g=stepGoal();items.push(ring(n/g,"var(--step-ring)","var(--step-soft)",fmtN(n),"adım","Adım","adim",`Adım ${fmtN(n)} / ${fmtN(g)}`))}
   if(L.length)items.push(ring(tn/L.length,"var(--supp)","var(--supp-soft)",tn+"/"+L.length,"alındı","Takviye","takviye",`Takviye ${tn} / ${L.length} alındı`));
   const left=Math.max(0,pg-(r.p||0)),sub=left?`${Math.round(left)} g protein kaldı`:"Protein hedefi tamam";
-  return `<div class="card trings"><div class="trh"><h2>Bugün</h2><span class="muted">${sub}</span></div><span class="trhint">Ayrıntı için halkaya dokun</span><div class="trrow" style="grid-template-columns:repeat(${items.length},1fr)">${items.join("")}</div></div>`;
+  return `<div class="card trings"><div class="trh"><h2>Bugün</h2><span class="muted">${sub}</span></div><div class="trrow" style="grid-template-columns:repeat(${items.length},1fr)">${items.join("")}</div></div>`;
 }
 /* Özet: sıradaki iğne tek satır */
 function nextShotRow(){
@@ -1988,7 +1993,7 @@ function bindToday(){
 /* ---------- ana kart tasarımları ---------- */
 const HEROS=[["gece","Zümrüt"]];
 let heroV="gece",prevTab="ozet";
-const BUILD="1.9.0 önizleme · Adım 2b · 29 Eki";
+const BUILD="1.9.0 önizleme · Adım 2c · 29 Eki";
 let HERO_CTX=null;
 function heroDots(dark){return "";`<div class="hdots${dark?" dk":""}" role="tablist" aria-label="Kart tasarımı">${HEROS.map(([k,n])=>`<button type="button" data-hero="${k}" aria-selected="${k===heroV}" aria-label="${n}"></button>`).join("")}<span>${HEROS.find(h=>h[0]===heroV)[1]}</span></div>`}
 function heroHtml(X){
