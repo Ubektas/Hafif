@@ -1913,7 +1913,9 @@ function makeGlass(cv,frac){
   const inBot=BOT-BASE, inTop=TOP+3, ryAt=y=>RYT*(half(y)-WALL)/(OTH-WALL);
   const yOf=f=>inBot-Math.min(.92,Math.max(0,f))*(inBot-inTop-6);
   const N=36,h=new Float32Array(N),v=new Float32Array(N);
-  let level=Math.min(1,frac),target=level,pour=null,parts=[],micro=[],t0=performance.now(),raf=0,tail=null,foam=0;
+  let level=Math.min(1,frac),target=level,pour=null,parts=[],micro=[],t0=performance.now(),raf=0,tail=null,foam=0,act=t0;
+  /* su durulunca çizim durur (boşta pil ve işlemci harcamaz); su eklenince ya da düzey değişince yeniden başlar */
+  const wake=()=>{act=performance.now();if(!raf)raf=requestAnimationFrame(draw)};
   const cling=[...Array(9)].map(()=>({s:Math.random()<.5?-1:1,f:Math.random(),r:.5+Math.random()*.9}));
   function springs(){for(let i=0;i<N;i++){v[i]+=-0.022*h[i]-0.05*v[i];h[i]+=v[i]}
     for(let p=0;p<4;p++){for(let i=1;i<N;i++){const d=.18*(h[i]-h[i-1]);v[i-1]+=d;v[i]-=d}}}
@@ -1933,7 +1935,8 @@ function makeGlass(cv,frac){
       if(k>=1){level=pour.to;tail=0;const cb=pour.done;pour=null;cb&&cb()}}
     else if(Math.abs(level-target)>.0005)level+=(target-level)*.08;
     if(!pour)foam*=.965;
-    h[(Math.floor(t*.9)%N)]+=Math.sin(t*1.7)*.008;
+    const busy=!!(pour||tail!=null||parts.length||micro.length||Math.abs(level-target)>.0005||foam>.02);if(busy)act=now;
+    if(now-act<5000)h[(Math.floor(t*.9)%N)]+=Math.sin(t*1.7)*.008;
     springs();
     c.clearRect(0,0,W,H);
     const y0=yOf(level), has=level>.003;
@@ -1979,15 +1982,16 @@ function makeGlass(cv,frac){
       if(sy<ey){const wob=Math.sin(t*22)*.35;g=c.createLinearGradient(px-3,0,px+3,0);g.addColorStop(0,"rgba(140,195,205,.35)");g.addColorStop(.4,"rgba(255,255,255,.9)");g.addColorStop(.55,"rgba(200,232,238,.7)");g.addColorStop(1,"rgba(110,170,182,.45)");
         c.beginPath();c.moveTo(px-3,sy);c.quadraticCurveTo(px-2.2+wob,(sy+ey)/2,px-1.8,ey);c.lineTo(px+1.8,ey);c.quadraticCurveTo(px+2.2+wob,(sy+ey)/2,px+3,sy);c.closePath();c.fillStyle=g;c.fill()}}
     parts=parts.filter(p=>p.life>0);for(const p of parts){p.vy+=.18;p.x+=p.vx;p.y+=p.vy;p.life-=.05;if(p.y>y0+2)p.life=0;c.beginPath();c.arc(p.x,p.y,1,0,Math.PI*2);c.fillStyle=`rgba(220,240,244,${Math.max(0,p.life)})`;c.fill()}
-    if(!cv.isConnected){cancelAnimationFrame(raf);return}
+    if(!cv.isConnected){cancelAnimationFrame(raf);raf=0;return}
+    if(!busy&&now-act>7000){raf=0;return}
     raf=requestAnimationFrame(draw);
   }
   raf=requestAnimationFrame(draw);
   return {pour(amt,toFrac,done){
-      if(reduce){level=target=Math.min(1,toFrac);done&&done();return}
+      if(reduce){level=target=Math.min(1,toFrac);wake();done&&done();return}
       if(pour){const cb=pour.done;level=pour.to;pour=null;cb&&cb()}
-      pour={st:performance.now(),dur:650+amt*2.2,from:level,to:Math.min(1,toFrac),x:CX-8+Math.random()*10,force:.6+amt/600,done};target=pour.to;tail=null},
-    set(f){target=Math.min(1,f)}};
+      pour={st:performance.now(),dur:650+amt*2.2,from:level,to:Math.min(1,toFrac),x:CX-8+Math.random()*10,force:.6+amt/600,done};target=pour.to;tail=null;wake()},
+    set(f){target=Math.min(1,f);wake()}};
 }
 function addProtein(g,food){
   if(!(g>0&&g<=300)){toast("Protein miktarını gram olarak yaz");return}

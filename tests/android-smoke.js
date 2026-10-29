@@ -105,6 +105,10 @@ const step = (ad, sonuc, detay) => { report.adimlar.push({ ad, sonuc, detay }); 
       }
       report.fps[t] = await fps();
     }
+    // Protein & Su: su bardağı durulunca çizim durmalı (boşta akıcılık)
+    await page.evaluate(() => document.querySelector('.tab[data-tab="besin"]').click()); await wait(9000);
+    report.fps.besin_bosta = await fps();
+    await page.evaluate(() => document.querySelector('.tab[data-tab="ozet"]').click()); await wait(1200);
     step('Tüm sekmeler açıldı', report.hatalar.length === 0, report.hatalar.join(' | '));
 
     // Kilo girişi
