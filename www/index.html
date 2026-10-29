@@ -555,19 +555,21 @@ input:focus{background:var(--surface);border-color:var(--accent);outline:none}
 .allbtn{border:0;border-radius:99px;background:var(--supp-soft);color:var(--supp);font:700 12.5px var(--f-body);padding:8px 12px;cursor:pointer}
 .sldone{font:700 12.5px var(--f-body);color:var(--supp);display:flex;align-items:center;gap:4px}
 .sldone::before{content:"✓"}
-.slist{display:flex;flex-direction:column;gap:8px}
-.srow{display:grid;grid-template-columns:44px 1fr 32px;gap:12px;align-items:center;border:1px solid var(--line);background:var(--surface);border-radius:16px;padding:8px 12px 8px 8px;cursor:pointer;text-align:left;font:inherit;color:inherit;transition:background .25s,border-color .25s,transform .12s}
+.slist{display:flex;flex-direction:column;gap:0}
+.srow{display:grid;grid-template-columns:36px 1fr 32px;gap:12px;align-items:center;border:0;border-top:1px solid var(--line);background:none;border-radius:0;padding:10px 0;cursor:pointer;text-align:left;font:inherit;color:inherit;transition:background .25s,border-color .25s,transform .12s}
 .srow:active{transform:scale(.985)}
 .srow:disabled{cursor:default;opacity:.6}
-.spill{width:44px;height:44px;border-radius:13px;background:var(--sunk);display:grid;place-items:center;transition:transform .3s}
+.spill{width:36px;height:36px;border-radius:12px;background:none;display:grid;place-items:center;transition:transform .3s}
 .sname{display:flex;flex-direction:column;min-width:0}.sname b{font-size:15px;font-weight:700}.sname small{font-size:12px;color:var(--muted)}
 .chk{width:30px;height:30px;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center;transition:background .25s,border-color .25s,transform .3s cubic-bezier(.3,1.6,.5,1)}
 .chk svg path{stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset .35s ease .1s}
-.srow.on{background:linear-gradient(90deg,var(--supp-soft),var(--surface));border-color:color-mix(in oklab,var(--supp) 22%,transparent)}
+.srow.on{background:none}
+.slist .srow:first-child{border-top:0;padding-top:4px}.slist .srow:last-child{padding-bottom:0}
+.slnk{display:inline-flex;align-items:center;gap:5px;margin-top:8px;border:0;background:none;padding:2px 0;font:600 12.5px var(--f-body);color:var(--supp);cursor:pointer}
 .srow.on .chk{background:var(--supp);border-color:var(--supp);transform:scale(1.08)}
 .srow.on .chk svg path{stroke-dashoffset:0}
-.srow.on .sname b{color:var(--head)}
-.srow.on .spill{transform:rotate(-8deg) scale(.95)}
+.srow.on .sname b{color:var(--muted);font-weight:600}.srow.on .spill{opacity:.55}
+.srow.on .spill{transform:rotate(-8deg) scale(.9)}
 .wtab{border-collapse:collapse;width:100%;font-size:12.5px}
 .wtab th{font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);font-weight:600;padding:0 2px 8px;text-align:center}
 .wtab th.tdy{color:var(--accent)}
@@ -2006,7 +2008,7 @@ function bindToday(){
 /* ---------- ana kart tasarımları ---------- */
 const HEROS=[["gece","Zümrüt"]];
 let heroV="gece",prevTab="ozet";
-const BUILD="1.9.0 önizleme · Adım 3 · 29 Eki";
+const BUILD="1.9.0 önizleme · Adım 4 · 29 Eki";
 let HERO_CTX=null;
 function heroDots(dark){return "";`<div class="hdots${dark?" dk":""}" role="tablist" aria-label="Kart tasarımı">${HEROS.map(([k,n])=>`<button type="button" data-hero="${k}" aria-selected="${k===heroV}" aria-label="${n}"></button>`).join("")}<span>${HEROS.find(h=>h[0]===heroV)[1]}</span></div>`}
 function heroHtml(X){
@@ -2926,21 +2928,21 @@ function suppHead(){
   return `<div class="card shead">
     <div class="shtop"><div style="min-width:0"><span class="eyebrow" style="color:var(--accent)">${isT?"Bugün":fut?"İleri tarih":"Geçmiş gün"}</span>
       <h2 style="font-size:24px;text-transform:capitalize">${dt.toLocaleDateString("tr-TR",{weekday:"long"})}</h2>
-      <span class="muted" style="font-size:13px">${dt.toLocaleDateString("tr-TR",{day:"numeric",month:"long"})}${st?` · <b style="color:var(--head)">${st} gün</b> seri`:""}</span></div>
+      <span class="muted" style="font-size:13px">${dt.toLocaleDateString("tr-TR",{day:"numeric",month:"long"})}${st?` · <b style="color:var(--head)">${st} gün</b> seri`:""}</span>
+      <button type="button" class="slnk" id="suppEdit"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4L19 9l-4-4L4 16v4z"/></svg>Programı düzenle</button></div>
       <div class="sring"><svg width="84" height="84" viewBox="0 0 84 84"><circle cx="42" cy="42" r="${R}" fill="none" stroke="var(--sunk)" stroke-width="8"/><circle id="sRing" cx="42" cy="42" r="${R}" fill="none" stroke="url(#srg)" stroke-width="8" stroke-linecap="round" stroke-dasharray="${C*(r.of?r.n/r.of:0)} ${C}" transform="rotate(-90 42 42)" style="transition:stroke-dasharray .7s cubic-bezier(.2,.8,.2,1)"/><defs><linearGradient id="srg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#E7A3BE"/><stop offset="1" style="stop-color:var(--supp)"/></linearGradient></defs></svg><div><b id="sCount">${r.n}/${r.of}</b><span>alındı</span></div></div></div>
     <div class="week2">${wk}</div></div>`;
 }
 function vTakviye(){
   supps(); const d=suppDate||today(),L=dosesFor(d),t=takenOn(d),fut=d>today(),T=sTimes();
   const slots=SLOTS_S.map(([k,n])=>{const items=L.filter(q=>q.k===k);if(!items.length)return "";const done=items.filter(q=>t[q.key]).length;
-    return `<div class="card slot s-${k}"><div class="slh"><span class="sli">${SLOT_ICON[k]}</span><div style="flex:1;min-width:0"><h2>${n}</h2><span class="muted" style="font-size:12.5px">${T[k]} · ${items.length} ilaç</span></div>
+    return `<div class="card slot s-${k}"><div class="slh"><span class="sli">${SLOT_ICON[k]}</span><div style="flex:1;min-width:0"><h2>${n}</h2><span class="muted" style="font-size:12.5px">${T[k]} · ${items.length} takviye</span></div>
       ${fut?"":done<items.length?`<button type="button" class="allbtn" data-sall="${k}">Hepsini aldım</button>`:`<span class="sldone">Tamam</span>`}</div>
       <div class="slist">${items.map(({x,key})=>{const on=!!t[key];return `<button type="button" class="srow${on?" on":""}" data-supp="${key}" ${fut?"disabled":""} aria-pressed="${on}">
         <span class="spill">${pill(x)}</span><span class="sname"><b>${esc(x.name)}</b><small>${on?`${new Date(t[key]).toLocaleTimeString("tr-TR",{hour:"2-digit",minute:"2-digit"})} alındı`:fut?"henüz değil":suppSub(x)}</small></span>
         <span class="chk"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path pathLength="1" d="M5 12.5l4.5 4.5L19 7.5"/></svg></span></button>`}).join("")}</div></div>`}).join("");
   return `<section><div id="suppHead">${suppHead()}</div>
-    ${L.length?slots:`<div class="card empty"><h2>Bu gün takviye yok</h2><p class="muted" style="margin:0">Programında bu gün için ilaç bulunmuyor.</p></div>`}
-    <button type="button" class="btn ghost" id="suppEdit">Programı düzenle</button>
+    ${L.length?slots:`<div class="card empty"><h2>Bu gün takviye yok</h2><p class="muted" style="margin:0">Programında bu gün için takviye yok.</p></div>`}
     ${weekTable()}
   </section>`;
 }
