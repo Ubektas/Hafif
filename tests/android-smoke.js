@@ -25,7 +25,7 @@ const step = (ad, sonuc, detay) => { report.adimlar.push({ ad, sonuc, detay }); 
   };
   const tap = async (page, sel) => { await page.waitForSelector(sel, { state: 'attached', timeout: 20000 }); await page.evaluate(s => document.querySelector(s).click(), sel); };
   // + düğmesi → hızlı ekleme panelinden kilo (w) ya da iğne (s)
-  const ekle = async (page, k) => { await tap(page, '#fab'); await new Promise(r => setTimeout(r, 500)); await tap(page, `[data-q="${k}"]`); };
+  const ekle = async (page, k) => { await new Promise(r => setTimeout(r, 900)); await tap(page, '#fab'); await new Promise(r => setTimeout(r, 500)); await tap(page, `[data-q="${k}"]`); };
   const type = (page, sel, v) => page.evaluate(([s, v]) => { const e = document.querySelector(s); e.value = v; e.dispatchEvent(new Event('input', { bubbles: true })); }, [sel, v]);
   try {
     // Emülatörde başka uygulamaların "yanıt vermiyor" pencereleri testi kapatmasın

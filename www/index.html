@@ -34,7 +34,7 @@
 *{box-sizing:border-box}
 html{background:var(--bg)}
 body{font-variant-numeric:tabular-nums;background-color:var(--bg);background-image:radial-gradient(140% 460px at 85% -140px,var(--glow) 0%,var(--bg) 72%);background-repeat:no-repeat;color:var(--fg);font:15px/1.45 var(--f-body);-webkit-text-size-adjust:100%}
-.wrap{max-width:560px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:16px calc(96px + env(safe-area-inset-bottom,0px))}
+.wrap{max-width:560px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:16px calc(164px + env(safe-area-inset-bottom,0px))}
 h1,h2,h3{font-family:var(--f-display);margin:0;text-wrap:balance}
 h1{font-size:26px;font-weight:700;letter-spacing:-.01em}
 h2{font-size:18px;font-weight:700;color:var(--head)}
@@ -881,7 +881,9 @@ nav.tabs .in{display:grid;grid-template-columns:repeat(5,1fr);width:100%;max-wid
 .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(84px + env(safe-area-inset-bottom,0px));background:var(--fg);color:var(--bg);padding:10px 16px;border-radius:12px;font-size:14px;z-index:30;display:flex;align-items:center;gap:14px;max-width:calc(100vw - 32px);white-space:nowrap}
 .toast button{border:0;background:none;color:var(--mint);font:700 14px var(--f-body);padding:0;cursor:pointer}
 /* + düğmesi ve hızlı ekleme */
-.fab{position:fixed;right:max(16px,calc(50vw - 264px));bottom:calc(78px + env(safe-area-inset-bottom,0px));width:56px;height:56px;border-radius:19px;border:0;background:var(--head);color:var(--bg);display:grid;place-items:center;box-shadow:0 10px 24px -6px rgba(11,59,51,.5);z-index:15;cursor:pointer}
+.fab{position:fixed;right:max(16px,calc(50vw - 264px));bottom:calc(78px + env(safe-area-inset-bottom,0px));width:56px;height:56px;border-radius:19px;border:0;background:var(--head);color:var(--bg);display:grid;place-items:center;box-shadow:0 10px 24px -6px rgba(11,59,51,.5);z-index:15;cursor:pointer;transition:transform .28s cubic-bezier(.2,.8,.2,1),opacity .2s}
+.fab.away{transform:translateY(28px) scale(.6);opacity:0;pointer-events:none}
+@media (prefers-reduced-motion:reduce){.fab{transition:opacity .15s}.fab.away{transform:none}}
 .fab:active{transform:scale(.94)}.fab:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
 .qgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
 .qgrid button{border:0;border-radius:18px;background:var(--sf);color:var(--c);padding:14px 6px;display:flex;flex-direction:column;align-items:center;gap:8px;font:600 13px var(--f-body);cursor:pointer}
@@ -2016,7 +2018,7 @@ function bindToday(){
 /* ---------- ana kart tasarımları ---------- */
 const HEROS=[["gece","Zümrüt"]];
 let heroV="gece",prevTab="ozet";
-const BUILD="1.9.0 önizleme · Adım 5 · 29 Eki";
+const BUILD="1.9.0 önizleme · Adım 6 · 29 Eki";
 let HERO_CTX=null;
 function heroDots(dark){return "";`<div class="hdots${dark?" dk":""}" role="tablist" aria-label="Kart tasarımı">${HEROS.map(([k,n])=>`<button type="button" data-hero="${k}" aria-selected="${k===heroV}" aria-label="${n}"></button>`).join("")}<span>${HEROS.find(h=>h[0]===heroV)[1]}</span></div>`}
 function heroHtml(X){
@@ -4074,6 +4076,10 @@ $("#view").addEventListener("click",e=>{const cp=e.target.closest("[data-cph]");
   const ph=w.querySelector(".phase");if(ph&&ph.animate)ph.animate([{opacity:.3,transform:"translateY(4px)"},{opacity:1,transform:"none"}],{duration:220,easing:"ease-out"});
   $("#phAll")?.addEventListener("toggle",ev=>{phAllOpen=ev.target.open});});
 $("#fab").addEventListener("click",openQuick);
+/* + düğmesi: aşağı kaydırırken çekilir, yukarı kaydırınca ya da kaydırma durunca geri gelir */
+(()=>{const f=$("#fab");let y0=scrollY,tm=0;
+  addEventListener("scroll",()=>{const y=scrollY,dy=y-y0;if(Math.abs(dy)<6)return;y0=y;
+    f.classList.toggle("away",dy>0&&y>80);clearTimeout(tm);tm=setTimeout(()=>f.classList.remove("away"),700)},{passive:true})})();
 $("#gearBtn").addEventListener("click",()=>{selPhase=null;ANIM=true;if(tab!=="ayar")prevTab=tab;tab="ayar";render();window.scrollTo(0,0)});
 document.querySelectorAll(".tab").forEach(t=>t.addEventListener("click",()=>{selPhase=null;ANIM=true;tab=t.dataset.tab;render();window.scrollTo(0,0)}));
 boot();
