@@ -1507,7 +1507,7 @@ function nextShotRow(){
   const nd=addDays(ls.date,S.profile.intervalDays||7),left=diffDays(today(),nd),X=cycData();
   const when=left>1?`${left} gün sonra`:left===1?"Yarın":left===0?"Bugün":`${-left} gün gecikti`;
   const day=toD(nd).toLocaleDateString("tr-TR",{weekday:"long"});
-  return `<button type="button" class="card nsrow${left<=0?" due":""}" data-go="igne"><span class="nsi"><b>${left>0?left:"!"}</b><small>${left>0?"gün":""}</small></span><span class="nst"><b>Sıradaki iğne: ${left>1?day+" "+shotTime(ls):when}</b><small>${X?`Bugün ${PHASES[X.I.cur].k} evresi · `:""}önerilen bölge: ${siteLbl(nextSite())}</small></span><i>›</i></button>`;
+  return `<button type="button" class="card nsrow${left<=0?" due":""}" data-go="igne"><span class="nsi"><b>${left>0?left:"!"}</b><small>${left>0?"gün":""}</small></span><span class="nst"><b>${left>1?day+" "+shotTime(ls):when}${ls.dose!=null&&ls.dose!==""?` · ${String(ls.dose).replace(".",",")} mg`:""}</b><small>${X?`${PHASES[X.I.cur].k} evresi · `:""}<span style="white-space:nowrap">Öneri: ${siteLbl(nextSite())}</span></small></span><i>›</i></button>`;
 }
 /* Özet: rozetler tek satır */
 function msStrip(){
@@ -2026,7 +2026,7 @@ function bindToday(){
 /* ---------- ana kart tasarımları ---------- */
 const HEROS=[["gece","Zümrüt"]];
 let heroV="gece",prevTab="ozet";
-const BUILD="1.9.0 önizleme · Adım 8 · 29 Eki";
+const BUILD="1.9.0 önizleme · Adım 9 · 29 Eki";
 let HERO_CTX=null;
 function heroDots(dark){return "";`<div class="hdots${dark?" dk":""}" role="tablist" aria-label="Kart tasarımı">${HEROS.map(([k,n])=>`<button type="button" data-hero="${k}" aria-selected="${k===heroV}" aria-label="${n}"></button>`).join("")}<span>${HEROS.find(h=>h[0]===heroV)[1]}</span></div>`}
 function heroHtml(X){
