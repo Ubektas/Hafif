@@ -1979,6 +1979,7 @@ function bindToday(){
 /* ---------- ana kart tasarımları ---------- */
 const HEROS=[["gece","Zümrüt"]];
 let heroV="gece",prevTab="ozet";
+const BUILD="1.9.0 önizleme · Adım 1 · 29 Eki";
 let HERO_CTX=null;
 function heroDots(dark){return "";`<div class="hdots${dark?" dk":""}" role="tablist" aria-label="Kart tasarımı">${HEROS.map(([k,n])=>`<button type="button" data-hero="${k}" aria-selected="${k===heroV}" aria-label="${n}"></button>`).join("")}<span>${HEROS.find(h=>h[0]===heroV)[1]}</span></div>`}
 function heroHtml(X){
@@ -3468,6 +3469,7 @@ function vAyar(){
   ${remCard()}
   ${themeCard()}
   ${dataCard()}
+  <p class="muted" style="font-size:12px;margin:0;text-align:center">Sürüm ${BUILD}</p>
   <p class="muted" style="font-size:12.5px;margin:0">Hafif kişisel bir takip aracıdır; tıbbi bir cihaz değildir, teşhis koymaz ve tıbbi tavsiye vermez. İlaç, doz ve hedeflerin için her zaman doktoruna danış. Tahmini ilaç düzeyi ve döngü evreleri genel bir modele dayanır.</p>
   <p class="muted" style="font-size:13px;margin:0">${mode==="db"?"Kayıtların Claude hesabında, yalnızca senin görebileceğin bir alanda tutuluyor. iPhone'da ve bilgisayarda aynı veriyi görürsün.":"Kayıtlar şu an sadece bu cihazda. Claude uygulamasında giriş yapmış olarak açarsan hesabına taşınır."}</p></section>`;
 }
