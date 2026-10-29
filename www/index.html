@@ -10,7 +10,7 @@
   --bg:#F1F5F3; --glow:#DDEFE7; --surface:#FFFFFF; --surface-2:#FFFFFF; --sunk:#EDF3F0; --fg:#0B2420; --muted:#5F726C; --line:#E0E8E4;
   --accent:#0E7C66; --accent-soft:#E1F3EC; --accent-ink:#FFFFFF; --fat:#7A63B8; --fat-soft:#EEEAF8; --shot:#27407A; --shot-soft:#E6EBF5; --protein-ink:#8A5A10; --mint:#9FF0D6;
   --emerald-1:#126B58; --emerald-2:#0B3B33; --head:#0B3B33; --chipbg:rgba(255,255,255,.75); --warnbg:#FFF4E5; --warnfg:#8A5A10;
-  --supp:#B8577A; --supp-soft:#F7E8EE; --cs1:#D3E6DE; --cs2:#9CCDBB; --cst:#0B3B33; --cl:#7FD3B8; --cb1:#F4EFFF; --cb2:#E6DCFB; --good:#12855D; --bad:#D04545; --water:#2E8BC0; --water-2:#7CC0E8; --water-soft:#E4F1F8; --protein:#C27A12; --protein-soft:#FBF0DC;
+  --supp:#B8577A; --supp-soft:#F7E8EE; --step-ring:#1C8EA6; --cs1:#D3E6DE; --cs2:#9CCDBB; --cst:#0B3B33; --cl:#7FD3B8; --cb1:#F4EFFF; --cb2:#E6DCFB; --good:#12855D; --bad:#D04545; --water:#2E8BC0; --water-2:#7CC0E8; --water-soft:#E4F1F8; --protein:#C27A12; --protein-soft:#FBF0DC;
   --shadow:0 1px 2px rgba(11,36,32,.04),0 14px 34px -18px rgba(11,59,51,.22);
   --f-display:"Outfit", ui-rounded, system-ui, sans-serif;
   --f-body:"Figtree", system-ui, -apple-system, sans-serif;
@@ -21,7 +21,7 @@
   --bg:#08171A; --glow:#0E2D27; --surface:#10221F; --surface-2:#132824; --sunk:#0B1C19; --fg:#E4F1EC; --muted:#8FA8A1; --line:#1D3631;
   --accent:#43C9A0; --accent-soft:#103A30; --accent-ink:#04201A; --fat:#A493DD; --fat-soft:#241F38; --shot:#5571C2; --shot-soft:#172038; --protein-ink:#F0C27A; --mint:#9FF0D6;
   --emerald-1:#167A64; --emerald-2:#0C4A3F; --head:#CFEDE3; --chipbg:rgba(255,255,255,.06); --warnbg:#3A2A10; --warnfg:#F3C77B;
-  --supp:#E28BAE; --supp-soft:#3A1C28; --cs1:#24443C; --cs2:#2F5A4F; --cst:#E4F1EC; --cl:#3F9C80; --cb1:#2A2340; --cb2:#231D36; --good:#3FC48F; --bad:#F06B6B; --water:#4FA6D6; --water-2:#7CC0E8; --water-soft:#10293A; --protein:#D9952F; --protein-soft:#33260F;
+  --supp:#E28BAE; --supp-soft:#3A1C28; --step-ring:#3DB5C4; --cs1:#24443C; --cs2:#2F5A4F; --cst:#E4F1EC; --cl:#3F9C80; --cb1:#2A2340; --cb2:#231D36; --good:#3FC48F; --bad:#F06B6B; --water:#4FA6D6; --water-2:#7CC0E8; --water-soft:#10293A; --protein:#D9952F; --protein-soft:#33260F;
   --shadow:0 1px 2px rgba(0,0,0,.3),0 14px 34px -18px rgba(0,0,0,.6);
   color-scheme:dark; --seinsfg:#B9C6F2; --step:#5EEAD4; --step-2:#2DD4BF; --step-soft:#0E3340;
 }
@@ -875,10 +875,17 @@ nav.tabs .in{display:grid;grid-template-columns:repeat(5,1fr);width:100%;max-wid
 .qgrid i{width:40px;height:40px;border-radius:13px;background:var(--c);color:#fff;display:grid;place-items:center;font:700 15px var(--f-display);font-style:normal}
 /* Özet: bugün halkaları, sıradaki iğne, rozet şeridi */
 .trings{display:flex;flex-direction:column;gap:12px}.trh{display:flex;justify-content:space-between;align-items:baseline;gap:10px}.trh .muted{font-size:12.5px}
-.trrow{display:grid;gap:8px}.trhint{font-size:11.5px;color:var(--muted);margin-top:-8px}
-.tring{border:0;background:var(--sunk);border-radius:16px;padding:10px 4px 8px;display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;font:inherit;color:inherit;transition:transform .12s,background .2s}.tring:active{transform:scale(.96)}.tring:focus-visible{outline:2px solid var(--accent);outline-offset:2px}.tring small i{font-style:normal;color:var(--accent);font-weight:700}
-.tring .tr{position:relative;width:60px;height:60px;display:grid;place-items:center}.tring svg{position:absolute;inset:0}
-.tring b{font:700 13px var(--f-display);color:var(--head);position:relative}.tring small{font-size:11.5px;color:var(--muted)}
+.trrow{display:grid;gap:6px}.trhint{font-size:11.5px;color:var(--muted);margin-top:-8px}
+.tring{border:0;background:none;border-radius:16px;padding:4px 0;display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;font:inherit;color:inherit;min-width:0;transition:transform .12s,background .2s;-webkit-tap-highlight-color:transparent}
+.tring:active{transform:scale(.95);background:var(--sunk)}
+.tring:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.tring .tr{position:relative;width:100%;max-width:68px;aspect-ratio:1;display:grid;place-items:center}
+.tring svg{position:absolute;inset:0;width:100%;height:100%}
+.tring .tv{position:relative;display:flex;flex-direction:column;align-items:center;line-height:1.05}
+.tring .tv b{font:700 14px var(--f-display);color:var(--head);letter-spacing:-.02em;white-space:nowrap}
+.tring .tv em{font-style:normal;font-size:9.5px;color:var(--muted);white-space:nowrap;margin-top:1px}
+.tring small{font-size:12px;color:var(--muted);white-space:nowrap}.tring small i{font-style:normal;color:var(--accent);font-weight:700}
+@media (max-width:350px){.tring .tv b{font-size:12px}.tring .tv em{font-size:8.5px}}
 .nsrow,.msstrip{display:flex;align-items:center;gap:12px;width:100%;border:0;text-align:left;font:inherit;color:inherit;cursor:pointer}
 .nsrow>i,.msstrip>i{font-style:normal;color:var(--muted);font-size:20px}
 .nsi{width:46px;height:46px;border-radius:15px;background:var(--shot-soft);color:var(--shot);display:flex;flex-direction:column;align-items:center;justify-content:center;flex:none;line-height:1}
@@ -1447,11 +1454,13 @@ function compCard(){
 /* Özet: bugünün halkaları (protein, su, takviye) */
 function todayRings(){
   const r=(S.daily||{})[today()]||{p:0,w:0},L=dosesFor(today()),t=takenOn(today()),tn=L.filter(q=>t[q.key]).length;
-  const R=24,C=2*Math.PI*R,ring=(f,col,soft,val,lbl,go,aria)=>`<button type="button" class="tring" data-go="${go}" aria-label="${aria}"><span class="tr"><svg width="60" height="60" viewBox="0 0 60 60" aria-hidden="true"><circle cx="30" cy="30" r="${R}" fill="none" stroke="${soft}" stroke-width="7"/>${f>0?`<circle cx="30" cy="30" r="${R}" fill="none" stroke="${col}" stroke-width="7" stroke-linecap="round" stroke-dasharray="${C*Math.min(1,f)} ${C}" transform="rotate(-90 30 30)"/>`:""}</svg><b>${val}</b></span><small>${lbl} <i aria-hidden="true">›</i></small></button>`;
-  const pg=pGoal(),wg=wGoal(),items=[ring((r.p||0)/pg,"var(--protein)","var(--protein-soft)",Math.round(r.p||0)+"g","Protein","besin",`Protein ${Math.round(r.p||0)} / ${pg} g`),
-    ring((r.w||0)/wg,"var(--water)","var(--water-soft)",((r.w||0)/1000).toLocaleString("tr-TR",{maximumFractionDigits:2})+"L","Su","besin",`Su ${r.w||0} / ${wg} ml`)];
-  if(PV()||(HP()&&S.hc&&S.hc.on)){const n=stepsOn(today()),g=stepGoal();items.push(ring(n/g,"var(--step)","var(--step-soft)",n>=1000?(n/1000).toLocaleString("tr-TR",{maximumFractionDigits:1})+"b":String(n),"Adım","adim",`Adım ${fmtN(n)} / ${fmtN(g)}`))}
-  if(L.length)items.push(ring(tn/L.length,"var(--supp)","var(--supp-soft)",tn+"/"+L.length,"Takviye","takviye",`Takviye ${tn} / ${L.length} alındı`));
+  /* halkanın içinde değer ve altında hedef/birim; kısaltma yok */
+  const R=27,C=2*Math.PI*R,ring=(f,col,soft,val,sub,lbl,go,aria)=>`<button type="button" class="tring" data-go="${go}" aria-label="${aria}"><span class="tr"><svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="${R}" fill="none" stroke="${soft}" stroke-width="6"/>${f>0?`<circle cx="32" cy="32" r="${R}" fill="none" stroke="${col}" stroke-width="6" stroke-linecap="round" stroke-dasharray="${C*Math.min(1,f)} ${C}" transform="rotate(-90 32 32)"/>`:""}</svg><span class="tv"><b>${val}</b><em>${sub}</em></span></span><small>${lbl} <i aria-hidden="true">›</i></small></button>`;
+  const L1=v=>(v/1000).toLocaleString("tr-TR",{maximumFractionDigits:2});
+  const pg=pGoal(),wg=wGoal(),items=[ring((r.p||0)/pg,"var(--protein)","var(--protein-soft)",Math.round(r.p||0),`/${pg} g`,"Protein","besin",`Protein ${Math.round(r.p||0)} / ${pg} g`),
+    ring((r.w||0)/wg,"var(--water)","var(--water-soft)",L1(r.w||0),`/${L1(wg)} L`,"Su","besin",`Su ${L1(r.w||0)} / ${L1(wg)} litre`)];
+  if(PV()||(HP()&&S.hc&&S.hc.on)){const n=stepsOn(today()),g=stepGoal();items.push(ring(n/g,"var(--step-ring)","var(--step-soft)",fmtN(n),"adım","Adım","adim",`Adım ${fmtN(n)} / ${fmtN(g)}`))}
+  if(L.length)items.push(ring(tn/L.length,"var(--supp)","var(--supp-soft)",tn+"/"+L.length,"alındı","Takviye","takviye",`Takviye ${tn} / ${L.length} alındı`));
   const left=Math.max(0,pg-(r.p||0)),sub=left?`${Math.round(left)} g protein kaldı`:"Protein hedefi tamam";
   return `<div class="card trings"><div class="trh"><h2>Bugün</h2><span class="muted">${sub}</span></div><span class="trhint">Ayrıntı için halkaya dokun</span><div class="trrow" style="grid-template-columns:repeat(${items.length},1fr)">${items.join("")}</div></div>`;
 }
@@ -1979,7 +1988,7 @@ function bindToday(){
 /* ---------- ana kart tasarımları ---------- */
 const HEROS=[["gece","Zümrüt"]];
 let heroV="gece",prevTab="ozet";
-const BUILD="1.9.0 önizleme · Adım 1 · 29 Eki";
+const BUILD="1.9.0 önizleme · Adım 2 · 29 Eki";
 let HERO_CTX=null;
 function heroDots(dark){return "";`<div class="hdots${dark?" dk":""}" role="tablist" aria-label="Kart tasarımı">${HEROS.map(([k,n])=>`<button type="button" data-hero="${k}" aria-selected="${k===heroV}" aria-label="${n}"></button>`).join("")}<span>${HEROS.find(h=>h[0]===heroV)[1]}</span></div>`}
 function heroHtml(X){
