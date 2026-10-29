@@ -898,7 +898,7 @@ nav.tabs .in{display:grid;grid-template-columns:repeat(5,1fr);width:100%;max-wid
 /* Adım geçmişi */
 .sthist{display:flex;flex-direction:column;gap:12px}.sts{align-self:stretch}.sts button{flex:1}
 .st4{display:grid;grid-template-columns:1fr 1fr;gap:8px}.st4 div{background:var(--sunk);border-radius:14px;padding:10px 12px;min-width:0}.st4 b{display:block;font:700 18px var(--f-display);color:var(--head);letter-spacing:-.01em}.st4 small{font-size:11.5px;color:var(--muted)}
-.hch{position:relative;height:120px;display:flex;align-items:flex-end;gap:2px;border-bottom:1px solid var(--line);padding-top:26px}.hch.thin{gap:1px}
+.hch{position:relative;height:120px;touch-action:pan-y;user-select:none;-webkit-user-select:none;display:flex;align-items:flex-end;gap:2px;border-bottom:1px solid var(--line);padding-top:26px}.hch.thin{gap:1px}
 .hb{flex:1;height:100%;border:0;background:none;padding:0;display:flex;align-items:flex-end;cursor:pointer;min-width:0}.hb i{display:block;width:100%;border-radius:3px 3px 0 0;background:color-mix(in oklab,var(--step-ring) 35%,var(--surface))}
 .hb.ok i{background:var(--step-ring)}.hb.sel i{box-shadow:inset 0 0 0 2px var(--head);background:color-mix(in oklab,var(--head) 30%,var(--step-ring))}.hb:not(.ok).sel i{background:color-mix(in oklab,var(--head) 15%,color-mix(in oklab,var(--step-ring) 35%,var(--surface)))}
 .hgl{position:absolute;left:0;right:0;z-index:1;border-top:1.5px dashed color-mix(in oklab,var(--accent) 70%,transparent);pointer-events:none}.hgl em{position:absolute;left:0;top:-9px;font:600 10px var(--f-body);font-style:normal;color:var(--accent);background:var(--surface);padding:1px 6px 1px 0;border-radius:0 6px 6px 0;line-height:16px}
@@ -3985,7 +3985,15 @@ function toast(m,act){document.querySelectorAll(".toast").forEach(x=>x.remove())
 function bindView(){
   const v=$("#view");
   v.querySelectorAll("[data-strange]").forEach(b=>b.addEventListener("click",()=>{stRange=+b.dataset.strange;try{localStorage.setItem("hf-strange",stRange)}catch(_){}const y=scrollY;render();scrollTo(0,y)}));
-  v.querySelectorAll("[data-hd]").forEach(b=>b.addEventListener("click",()=>{v.querySelectorAll(".hb.sel").forEach(x=>x.classList.remove("sel"));b.classList.add("sel");const a=diffDays(b.dataset.hd,today());$("#hTip").textContent=`${a===0?"Bugün":a===1?"Dün":toD(b.dataset.hd).toLocaleDateString("tr-TR",{day:"numeric",month:"short"})} · ${fmtN(+b.dataset.hn)} adım`}));
+  /* adım grafiği: dokun ya da parmağını gezdir; seçim günden güne akar */
+  const hch=v.querySelector(".hch");if(hch){const bs=[...hch.querySelectorAll(".hb")];let cur=null;
+    const pick=x=>{const r=hch.getBoundingClientRect(),i=Math.max(0,Math.min(bs.length-1,Math.floor((x-r.left)/r.width*bs.length))),b=bs[i];if(b===cur)return;
+      if(cur)cur.classList.remove("sel");else hch.querySelectorAll(".hb.sel").forEach(o=>o.classList.remove("sel"));cur=b;b.classList.add("sel");
+      const a=diffDays(b.dataset.hd,today());$("#hTip").textContent=`${a===0?"Bugün":a===1?"Dün":toD(b.dataset.hd).toLocaleDateString("tr-TR",{day:"numeric",month:"short"})} · ${fmtN(+b.dataset.hn)} adım`};
+    hch.addEventListener("pointerdown",e=>{pick(e.clientX);if(e.pointerType!=="mouse")try{hch.setPointerCapture(e.pointerId)}catch(_){}});
+    hch.addEventListener("pointermove",e=>{if(e.pointerType==="mouse"||e.buttons)pick(e.clientX)});
+    hch.addEventListener("keydown",e=>{const i=bs.indexOf(document.activeElement);if(i<0)return;const j=e.key==="ArrowLeft"?i-1:e.key==="ArrowRight"?i+1:-1;if(j>=0&&j<bs.length){e.preventDefault();bs[j].focus();bs[j].click()}});
+    bs.forEach(b=>b.addEventListener("click",()=>{const r=b.getBoundingClientRect();pick(r.left+r.width/2)}))}
   v.querySelectorAll("[data-open]").forEach(b=>b.addEventListener("click",()=>openSheet(b.dataset.open)));
   const stb=v.querySelector("#stShareBtn");if(stb)stb.addEventListener("click",openStShare);
   v.querySelectorAll("[data-coach-act]").forEach(b=>b.addEventListener("click",()=>coachAct(b.dataset.coachAct,b.closest("[data-coach]").dataset.coach)));
