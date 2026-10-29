@@ -573,6 +573,9 @@ label.drow{flex-direction:row;font-size:14.5px;font-weight:500;margin:0}
 .drow.line{border:1px solid var(--line);border-radius:14px;color:var(--accent);font-weight:600}
 .drow:active{background:var(--sunk)}
 .btn.waterbtn.soft{background:var(--water-soft);color:var(--water);box-shadow:none;padding:13px}
+.tip{display:flex;align-items:flex-start;gap:10px;background:color-mix(in oklab,var(--accent) 9%,var(--surface));border:1px solid color-mix(in oklab,var(--accent) 22%,transparent);border-radius:14px;padding:10px 6px 10px 12px;font-size:13px;line-height:1.45;color:var(--fg)}
+.tip>svg{flex:none;color:var(--accent);margin-top:1px}.tip>div{flex:1}.tip b{color:var(--accent);margin-right:2px}
+.tipx{flex:none;border:0;background:none;color:var(--muted);font-size:14px;width:30px;height:30px;margin:-5px 0;border-radius:50%;cursor:pointer}.tipx:active{background:var(--sunk)}
 .slnk{display:inline-flex;align-items:center;gap:5px;margin-top:8px;border:0;background:none;padding:2px 0;font:600 12.5px var(--f-body);color:var(--supp);cursor:pointer}
 .srow.on .chk{background:var(--supp);border-color:var(--supp);transform:scale(1.08)}
 .srow.on .chk svg path{stroke-dashoffset:0}
@@ -2018,7 +2021,7 @@ function bindToday(){
 /* ---------- ana kart tasarımları ---------- */
 const HEROS=[["gece","Zümrüt"]];
 let heroV="gece",prevTab="ozet";
-const BUILD="1.9.0 önizleme · Adım 6 · 29 Eki";
+const BUILD="1.9.0 önizleme · Adım 7 · 29 Eki";
 let HERO_CTX=null;
 function heroDots(dark){return "";`<div class="hdots${dark?" dk":""}" role="tablist" aria-label="Kart tasarımı">${HEROS.map(([k,n])=>`<button type="button" data-hero="${k}" aria-selected="${k===heroV}" aria-label="${n}"></button>`).join("")}<span>${HEROS.find(h=>h[0]===heroV)[1]}</span></div>`}
 function heroHtml(X){
@@ -3347,8 +3350,9 @@ function vKilo(){
     ${w.length>1?`<details class="moreg"${moreG?" open":""}><summary class="card"><span class="mgi"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V9M10 19V5M16 19v-7M22 19H2"/></svg></span><span class="mgt"><b>Ayrıntılı grafikler</b><small>İğne aralıkları, haftalık değişim, trend, ilaç ve yağ grafikleri</small></span><span class="mgo"><em class="mgc">Aç</em><em class="mgx">Kapat</em><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg></span></summary>${chartCard()}</details>`:""}
     ${compCard()}
     ${measCard()}
+    ${groups.length?tipHtml("wsil","Tartıyı düzenlemek için dokun, silmek için sola kaydır."):""}
     ${groups.map((g,gi)=>{const a=g.items[g.items.length-1].x,b=g.items[0].x,ch=b.kg-a.kg;const name=toD(g.k+"-01").toLocaleDateString("tr-TR",{month:"long",year:"numeric"});
-      const head=`<div class="mhead"><div><h2>${name}</h2><span class="muted" style="font-size:12.5px">${g.items.length} tartı${gi?"":" · düzenlemek için dokun, silmek için sola kaydır"}</span></div>${g.items.length>1?`<span class="dchip ${ch<0?"down":ch>0?"up":""}">${sgn(ch)} kg</span>`:""}</div>`;
+      const head=`<div class="mhead"><div><h2>${name}</h2><span class="muted" style="font-size:12.5px">${g.items.length} tartı</span></div>${g.items.length>1?`<span class="dchip ${ch<0?"down":ch>0?"up":""}">${sgn(ch)} kg</span>`:""}</div>`;
       return gi?`<details class="card mgroup"><summary>${head}</summary><div class="wlist">${g.items.map(row).join("")}</div></details>`:`<div class="card mgroup">${head}<div class="wlist">${g.items.map(row).join("")}</div></div>`}).join("")}
   </section>`;
 }
@@ -3397,7 +3401,7 @@ function bindSwipe(){
     r.addEventListener("touchend",e=>{if(x0==null)return;const dx=e.changedTouches[0].clientX-x0;x0=null;if(!moved)return;
       if(dx<-40){v.querySelectorAll(".swr.open").forEach(o=>o!==r&&o.classList.remove("open"));r.classList.add("open")}else if(dx>30)r.classList.remove("open")});
     r.addEventListener("click",e=>{if(r.classList.contains("open")&&!e.target.closest(".swdel")){e.stopPropagation();e.preventDefault();r.classList.remove("open")}},true)});
-  v.querySelectorAll("[data-swdel]").forEach(b=>b.addEventListener("click",()=>{const id=b.dataset.swdel,x=S.weights.find(y=>y.id===id);if(!x)return;
+  v.querySelectorAll("[data-swdel]").forEach(b=>b.addEventListener("click",()=>{tipDone("wsil");const id=b.dataset.swdel,x=S.weights.find(y=>y.id===id);if(!x)return;
     S.weights=S.weights.filter(y=>y.id!==id);save();render();toast("Tartı silindi",["Geri al",()=>{S.weights.push(x);save();render()}])}));
 }
 function bindKilo(){bindSwipe();
@@ -3429,8 +3433,9 @@ function sideCard(){
   return `<div class="card" id="seCard" style="display:flex;flex-direction:column;gap:12px">
     <div><h2>Yan etkiler</h2><span class="muted" style="font-size:13px">${n==null?"":n===0?"İğne günü":`İğneden sonraki ${n}. gün`}${ph?" · "+ph+" evresi":""}</span></div>
       <div class="sedays">${[0,1,2].map(i=>{const dd=addDays(today(),-i);return `<button type="button" data-sed="${dd}" aria-pressed="${dd===d}">${i===0?"Bugün":i===1?"Dün":toD(dd).toLocaleDateString("tr-TR",{weekday:"long"})}</button>`}).join("")}</div>
+    ${tipHtml("se","Bir belirtiye dokundukça şiddeti artar: yok → hafif → orta → şiddetli.")}
     <div class="segrid">${SE.map(([k,t])=>{const lv=r[k]||0;return `<button type="button" data-se="${k}" data-lv="${lv}" aria-label="${t}: ${SE_LV[lv]}"><b>${t}</b><span class="sv"><i><u></u><u></u><u></u></i>${SE_LV[lv]}</span></button>`}).join("")}</div>
-    <span class="muted" style="font-size:12.5px">Dokundukça artar: yok → hafif → orta → şiddetli. Şiddetli ya da geçmeyen yan etkilerde doktoruna danış.</span>
+    <span class="muted" style="font-size:12px">Şiddetli ya da geçmeyen yan etkide doktoruna danış.</span>
     ${any?(()=>{const h=`<div><span class="eyebrow">İğneden sonraki günlere göre</span><div class="sepat" style="margin-top:10px">${st.avg.map((v,i)=>`<div><i class="${v===mx?"hi":""}" style="height:${Math.max(6,v/mx*100)}%"></i><span>${i===0?"İğne":i+". g"}</span></div>`).join("")}</div></div><div class="seins" style="margin-top:12px">${ins}</div>`;return `<div class="hr"></div>`+(PLUS()?h:plock(h,"Yan etki analizi Plus'ta","Belirtilerinin iğneden sonraki hangi günlerde yoğunlaştığını gör."))})():st.days?`<span class="muted" style="font-size:12.5px">Birkaç gün daha kaydedince yan etkilerinin hangi günlerde yoğunlaştığını burada göreceksin.</span>`:""}
   </div>`;
 }
@@ -3458,7 +3463,7 @@ function penWarn(){
 }
 function bindIgne(){bindSe();bindPen()}
 function bindSe(){
-  document.querySelectorAll("[data-se]").forEach(b=>b.addEventListener("click",()=>{const d=seDay||today();S.sides=S.sides||{};const r=Object.assign({},S.sides[d]||{});const k=b.dataset.se;r[k]=((r[k]||0)+1)%4;
+  document.querySelectorAll("[data-se]").forEach(b=>b.addEventListener("click",()=>{tipDone("se");const d=seDay||today();S.sides=S.sides||{};const r=Object.assign({},S.sides[d]||{});const k=b.dataset.se;r[k]=((r[k]||0)+1)%4;
     if(!r[k])delete r[k];if(Object.keys(r).length)S.sides[d]=r;else delete S.sides[d];holdUntil=Date.now()+800;save();const y=window.scrollY;$("#seCard").outerHTML=sideCard();bindSe();window.scrollTo(0,y)}));
   document.querySelectorAll("[data-sed]").forEach(b=>b.addEventListener("click",()=>{seDay=b.dataset.sed===today()?null:b.dataset.sed;const y=window.scrollY;$("#seCard").outerHTML=sideCard();bindSe();window.scrollTo(0,y)}));
 }
@@ -3548,6 +3553,13 @@ function stepCard(){
     <div class="st7h"><span>Son 7 gün</span><span>${sk>=2?"🔥 "+sk+" gün seri":""}</span></div>
     ${stDays()}</button>`;
 }
+/* tek seferlik ipuçları: ✕ ile ya da iş bir kez yapılınca kalıcı kapanır (S.profile.tips, yedekle birlikte taşınır) */
+const tipSeen=id=>!!(S.profile.tips&&S.profile.tips[id]);
+const tipDone=id=>{if(tipSeen(id))return;S.profile.tips=Object.assign({},S.profile.tips,{[id]:1});save();document.querySelectorAll(`[data-tip="${id}"]`).forEach(e=>e.remove())};
+const tipHtml=(id,t)=>tipSeen(id)?"":`<div class="tip" data-tip="${id}"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z"/></svg><div><b>İpucu</b> ${t}</div><button type="button" class="tipx" data-tipx="${id}" aria-label="İpucunu kapat">✕</button></div>`;
+/* sayaçlı ipucu: ilk n açılışta göster */
+const tipCount=(id,n)=>{const t=S.profile.tips||{},c=+t["c_"+id]||0;if(c>=n)return false;S.profile.tips=Object.assign({},t,{["c_"+id]:c+1});save();return true};
+document.addEventListener("click",e=>{const x=e.target.closest("[data-tipx]");if(x){e.stopPropagation();tipDone(x.dataset.tipx)}},true);
 let HOURS=null,stRange=(()=>{try{return +localStorage.getItem("hf-strange")||30}catch(_){return 30}})();
 /* Adım geçmişi: 7 / 30 / 90 gün; toplam, ortalama, hedef tutulan gün, en iyi gün; çubuğa dokununca o günün sayısı */
 function stHistory(){
@@ -3908,7 +3920,7 @@ function openSheet(kind,editId){
       <div class="kstep"><button type="button" class="kb" data-k="-1" aria-label="0,1 kg azalt">−</button>
         <label class="kval"><input id="w-kg" class="bignum" inputmode="decimal" value="${wv!=null?c1(wv):""}" placeholder="00,0" autocomplete="off" required aria-label="Kilo (kg)"><small>kg</small></label>
         <button type="button" class="kb" data-k="1" aria-label="0,1 kg artır">+</button></div>
-      <p class="muted fhint">${ew?"Rakama dokunup yazabilir ya da −/+ ile değiştirebilirsin.":lw?`Son tartı ${kg(lw.kg)} kg · rakama dokunursan klavye açılır`:"Rakama dokunup kilonu yaz"}</p>
+      ${(()=>{const t=tipCount("kgyaz",3),h=ew?(t?"Rakama dokunup yazabilir ya da −/+ ile değiştirebilirsin.":""):lw?`Son tartı ${kg(lw.kg)} kg${t?" · rakama dokunursan klavye açılır":""}`:(t?"Rakama dokunup kilonu yaz":"");return h?`<p class="muted fhint">${h}</p>`:""})()}
       <div class="flbl">Ne zaman</div>
       ${whenChips("wWhen",wDate)}
       <input id="w-date" type="date" value="${wDate}" max="${today()}" ${wDate!==today()&&wDate!==yest?"":"hidden"} aria-label="Tarih">
