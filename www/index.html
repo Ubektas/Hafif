@@ -1752,9 +1752,8 @@ const FOODS=[
  {k:"peynir",n:"Beyaz peynir",d:"50 g",g:7},
  {k:"sut",n:"Süt",d:"1 bardak",g:7},
  {k:"shake",n:"Protein shake",d:"1 ölçek",g:25},
- {k:"bar",n:"Protein bar",d:"10–21 g",pick:[10,21]},
- {k:"psut",n:"Pınar Protein Süt",d:"1 şişe",g:26},
- {k:"psutpro",n:"Pınar Protein Pro Süt",d:"1 şişe",g:52},
+ {k:"bar",n:"Protein bar",d:"10–21 g",pick:[10,21],u:"bar",q:"Paketteki protein miktarını seç"},
+ {k:"psut",n:"Protein süt",d:"15–52 g",pick:[15,52],u:"şişe",q:"Şişedeki protein miktarını seç"},
  {k:"mercimek",n:"Mercimek",d:"1 kase",g:12}
 ];
 const ICON={
@@ -1782,7 +1781,10 @@ const pGoal=()=>S.profile.proteinGoal||Math.round(((protSuggest()[0]||90)+(protS
 const wGoal=()=>S.profile.waterGoal||2500;
 function dayRec(d){S.daily=S.daily||{};return S.daily[d]||{p:0,w:0,log:[]}}
 function ensureDay(d){S.daily=S.daily||{};if(!S.daily[d])S.daily[d]={p:0,w:0,log:[]};return S.daily[d]}
-let barG=(()=>{try{return +localStorage.getItem("hf-barg")||15}catch(e){return 15}})();
+/* seçmeli yiyecekler (protein bar, protein süt): son seçilen gram hatırlanır */
+const PICK_DEF={bar:15,psut:26},pickKey=k=>k==="bar"?"hf-barg":"hf-pick-"+k;
+const pickG=k=>{const f=FOODS.find(x=>x.k===k);let v=PICK_DEF[k]||(f&&f.pick?f.pick[0]:0);try{v=+localStorage.getItem(pickKey(k))||v}catch(e){}return f&&f.pick?Math.min(f.pick[1],Math.max(f.pick[0],v)):v};
+const fG=f=>f.pick?pickG(f.k):f.g;
 let wAmt=(()=>{try{return +localStorage.getItem("hf-wamt")||250}catch(e){return 250}})();
 const ml=n=>Math.round(n).toLocaleString("tr-TR");
 const SLOTS=(()=>{const a=[[0,0]];for(let i=0;i<6;i++){const t=i/6*Math.PI*2-Math.PI/2;a.push([Math.cos(t)*22,Math.sin(t)*22])}for(let i=0;i<6;i++){const t=(i+.5)/6*Math.PI*2-Math.PI/2;a.push([Math.cos(t)*34,Math.sin(t)*34])}return a})();
@@ -1799,12 +1801,12 @@ function pListHtml(){
   const rows=Object.entries(G).sort((a,b)=>b[1][b[1].length-1][0]-a[1][a[1].length-1][0]);
   const hm=ts=>new Date(ts).toLocaleTimeString("tr-TR",{hour:"2-digit",minute:"2-digit"});
   const html=rows.slice(0,pAll?99:4).map(([k,xs])=>{const f=FOODS.find(y=>y.k===k),last=xs[xs.length-1],g=xs.reduce((a,x)=>a+x[2],0),n=xs.length;
-    const det=!f?(n>1?n+" giriş":"elle girildi"):f.pick?(n>1?n+" bar":xs[0][2]+" g bar"):n>1?(f.d==="1 adet"?n+" adet":n+" × "+f.d):f.d;
+    const det=!f?(n>1?n+" giriş":"elle girildi"):f.pick?n+" "+(f.u||"adet"):n>1?(f.d==="1 adet"?n+" adet":n+" × "+f.d):f.d;
     return `<div class="pli"><span class="ic">${icon(k==="_"?"genel":k,28)}</span><div class="tx"><b>${f?f.n:"Diğer"}</b><small>${det} · ${n>1?"son ":""}${hm(last[0])}</small></div><em>+${ml(g)} g</em><button type="button" class="x" data-pdel="${last[0]}" aria-label="${n>1?"Birini sil":"Sil"}">${n>1?"−":"×"}</button></div>`}).join("");
   return html+(rows.length>4?`<button type="button" class="linkbtn" id="pMore" style="align-self:center;margin-top:6px">${pAll?"Daha az göster":`+${rows.length-4} yiyecek daha`}</button>`:"");
 }
 function pSugg(){
-  const c={};for(let i=0;i<14;i++){for(const x of dayRec(addDays(today(),-i)).log)if(x[1]==="p"&&x[3]&&x[3]!=="bar")c[x[3]]=(c[x[3]]||0)+1}
+  const c={};for(let i=0;i<14;i++){for(const x of dayRec(addDays(today(),-i)).log)if(x[1]==="p"&&x[3]&&!(FOODS.find(f=>f.k===x[3])||{pick:1}).pick)c[x[3]]=(c[x[3]]||0)+1}
   const ks=Object.keys(c).sort((a,b)=>c[b]-c[a]);for(const k of ["shake","ton","et","sut","yumurta","tavuk"])if(!ks.includes(k))ks.push(k);
   return ks.slice(0,4).map(k=>FOODS.find(f=>f.k===k)).filter(Boolean);
 }
@@ -1814,12 +1816,7 @@ function openProteinSheet(){
     <header><h2>Protein ekle</h2><button class="del" data-x>Kapat</button></header>
     <div style="display:flex;flex-direction:column;gap:14px">
       <div class="fgrid">${FOODS.map(f=>`<button type="button" data-sfood="${f.k}">${icon(f.k,34)}<b>${f.n}</b><span>${f.pick?f.d:f.g+" g"}</span></button>`).join("")}</div>
-      <div class="pick" id="barPick" hidden>
-        <div class="pickrow">${icon("bar",34)}<div style="min-width:0;flex:1"><b style="font-size:14px">Protein bar</b><div class="muted" style="font-size:12.5px">Paketteki protein miktarını seç</div></div><div class="pickv"><b id="barG">${barG}</b> g</div></div>
-        <input type="range" class="pr" id="barRange" min="10" max="21" step="1" value="${barG}" style="--p:${(barG-10)/11*100}%" aria-label="Protein bar gramı">
-        <div class="pickscale"><span>10 g</span><span>21 g</span></div>
-        <button type="button" class="btn" id="barAdd" style="background:var(--protein)">+ <span id="barG2">${barG}</span> g ekle</button>
-      </div>
+      <div class="pick" id="barPick" hidden></div>
       <form id="pForm" class="inl"><input id="p-in" inputmode="numeric" placeholder="Başka bir şey: gram yaz" autocomplete="off"><button type="submit">Ekle</button></form>
     </div></div></div>`;
   const root=$("#sheetRoot");
@@ -1827,10 +1824,16 @@ function openProteinSheet(){
   root.querySelector("[data-x]").addEventListener("click",closeSheet);
   const done=(g,k)=>{closeSheet();addProtein(g,k);toast(`+${g} g protein eklendi`)};
   root.querySelectorAll("[data-sfood]").forEach(b=>b.addEventListener("click",()=>{const f=FOODS.find(x=>x.k===b.dataset.sfood);
-    if(f.pick){const pk=$("#barPick");pk.hidden=!pk.hidden;return}done(f.g,f.k)}));
-  const setBar=v=>{barG=v;try{localStorage.setItem("hf-barg",v)}catch(e){}$("#barG").textContent=v;$("#barG2").textContent=v;const r=$("#barRange");r.value=v;r.style.setProperty("--p",(v-10)/11*100+"%")};
-  $("#barRange").addEventListener("input",e=>setBar(+e.target.value));
-  $("#barAdd").addEventListener("click",()=>done(barG,"bar"));
+    if(f.pick){openPick(f);return}done(f.g,f.k)}));
+  let pf=null;
+  const openPick=f=>{const pk=$("#barPick");if(pf===f&&!pk.hidden){pk.hidden=true;return}pf=f;const [a,b]=f.pick,v=pickG(f.k);
+    pk.innerHTML=`<div class="pickrow">${icon(f.k,34)}<div style="min-width:0;flex:1"><b style="font-size:14px">${f.n}</b><div class="muted" style="font-size:12.5px">${f.q}</div></div><div class="pickv"><b id="barG">${v}</b> g</div></div>
+      <input type="range" class="pr" id="barRange" min="${a}" max="${b}" step="1" value="${v}" style="--p:${(v-a)/(b-a)*100}%" aria-label="${f.n} gramı">
+      <div class="pickscale"><span>${a} g</span><span>${b} g</span></div>
+      <button type="button" class="btn" id="barAdd" style="background:var(--protein)">+ <span id="barG2">${v}</span> g ekle</button>`;
+    pk.hidden=false;
+    $("#barRange").addEventListener("input",e=>{const x=+e.target.value;try{localStorage.setItem(pickKey(f.k),x)}catch(_){}$("#barG").textContent=x;$("#barG2").textContent=x;e.target.style.setProperty("--p",(x-a)/(b-a)*100+"%")});
+    $("#barAdd").addEventListener("click",()=>done(+$("#barRange").value,f.k))};
   $("#pForm").addEventListener("submit",e=>{e.preventDefault();const v=num($("#p-in").value),g=v==null?0:Math.round(v);if(!(g>0&&g<=300)){toast("Protein miktarını gram olarak yaz");return}done(g)});
 }
 function plateHtml(popTs){
@@ -2026,7 +2029,7 @@ function setWAmt(v){
 }
 function bindToday(){
   const c=$("#todayCard"); if(!c)return;
-  c.querySelectorAll("[data-food]").forEach(b=>b.addEventListener("click",()=>{const f=FOODS.find(x=>x.k===b.dataset.food);addProtein(f.g,f.k);if(b.animate)b.animate([{transform:"scale(.92)"},{transform:"none"}],{duration:260})}));
+  c.querySelectorAll("[data-food]").forEach(b=>b.addEventListener("click",()=>{const f=FOODS.find(x=>x.k===b.dataset.food);addProtein(fG(f),f.k);if(b.animate)b.animate([{transform:"scale(.92)"},{transform:"none"}],{duration:260})}));
   $("#pOpen").addEventListener("click",openProteinSheet); bindPDel();
   c.querySelectorAll("[data-wsel]").forEach(b=>b.addEventListener("click",()=>setWAmt(+b.dataset.wsel)));
   $("#wAdd").addEventListener("click",addWater);
