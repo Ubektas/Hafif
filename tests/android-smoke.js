@@ -295,7 +295,7 @@ const step = (ad, sonuc, detay) => { report.adimlar.push({ ad, sonuc, detay }); 
     // 1.9.0: adım paylaşımı, fotoğraf seçici ve Hafif ekibine gönder (e-posta)
     await page.evaluate(() => { const x = document.querySelector('#pwX'); if (x) x.click(); });
     await tap(page, '.tab[data-tab="ozet"]'); await wait(700);
-    await tap(page, '.stcard'); await wait(1200);
+    await tap(page, '.tring[data-go="adim"]'); await wait(1200);
     await tap(page, '#stShareBtn'); await wait(2500); await shot('adim-paylas');
     const kart = await page.evaluate(() => (document.querySelector('#stImg') || {}).src || '');
     step('Adım paylaşım kartı çizildi', kart.startsWith('data:image') && kart.length > 20000, kart.length + ' bayt');
