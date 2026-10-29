@@ -1185,7 +1185,7 @@ function render(){
   $("#today").textContent=new Date().toLocaleDateString("tr-TR",{day:"numeric",month:"long",weekday:"long"});
   SCRUB=[];GID=0;
   $("#sync").hidden=tab!=="ayar";
-  $("#fab").hidden=!["ozet","kilo","igne","besin","takviye"].includes(tab)||!S.profile.onboarded;
+  $("#fab").hidden=!["ozet","kilo","igne","besin","takviye"].includes(tab)||needsOnboard()||!!$("#onb");
   $("#view").innerHTML=({ozet:vOzet,basari:vBasari,adim:vAdim,takviye:vTakviye,besin:()=>`<section>${todayCard()}</section>`,kilo:vKilo,igne:vIgne,ayar:vAyar})[tab]();
   if(ANIM){const sec=$("#view").querySelector("section");if(sec){sec.classList.add("enter");[...sec.children].forEach((el,i)=>el.style.setProperty("--i",Math.min(i,8)))}}
   ANIM=false;
