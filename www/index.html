@@ -87,6 +87,8 @@ header.top{display:flex;align-items:flex-end;justify-content:space-between;gap:1
 .coach-ch{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
 .coach-ch button{display:flex;align-items:center;gap:6px;border:1.5px solid var(--cs);background:transparent;color:var(--fg);border-radius:12px;padding:7px 10px;font:600 12.5px var(--f-body);cursor:pointer}
 .coach-ch b{color:var(--c)}
+.coach-chk{display:flex;flex-direction:column;gap:7px;margin-top:12px}.coach-chk span{display:flex;align-items:center;gap:9px;font-size:13.5px;color:var(--muted)}.coach-chk span.ok{color:var(--fg)}
+.coach-chk i{width:18px;height:18px;border-radius:50%;border:1.5px solid var(--line);display:grid;place-items:center;flex:none;box-sizing:border-box;font-style:normal}.coach-chk span.ok i{background:var(--c);border-color:var(--c);color:#fff}.coach-chk i svg{width:10px;height:10px}
 .coach-dots{display:flex;gap:5px;margin-top:12px}.coach-dots span{flex:1;text-align:center;font-size:11px;color:var(--muted)}
 .coach-dots i{display:block;height:22px;border-radius:8px;background:var(--sunk);margin-bottom:4px}.coach-dots i.ok{background:var(--c)}.coach-dots .t i{box-shadow:inset 0 0 0 2px var(--c)}
 .coach-bar{height:8px;border-radius:6px;background:var(--sunk);margin-top:12px;overflow:hidden}.coach-bar i{display:block;height:100%;background:var(--c);border-radius:6px}
@@ -1363,7 +1365,7 @@ function vOzet(){
 }
 /* ---------- Hafif Koç: kayıtlara bakıp o an için tek bir kart seçer. Her şey cihazda hesaplanır.
    Kural: emin değilse susar (asgari veri eşikleri), suçlamaz, günde en fazla 2 kart; güvenlik kartı hep önce gelir. ---------- */
-const COACH_CD={hizli:7,donus:2};
+const COACH_CD={hizli:7,donus:2,plato:3};
 const sevDay=d=>{const r=seOn(d);return SE.filter(([k])=>(r[k]||0)>=3).map(([k,n])=>n)};
 function lastActivity(){
   let m=null;const up=d=>{if(d&&(!m||d>m))m=d};
@@ -1420,6 +1422,19 @@ function coachCards(){
       b:`Yaptıktan sonra kaydetmeyi unutma; döngün ve hatırlatıcıların buna göre ayarlanır.${penTxt}`,a:[["İğneyi kaydet","open:shot"]]});
     else if(left<0&&left>=-3)out.push({id:"gecikti",c:"shot",ic:"kalem",k:"İğne",t:`İğnen ${-left} gün gecikmiş görünüyor.`,
       b:`Yaptıysan kaydetmeyi unutmuş olabilirsin. Yapmadıysan ne yapacağını doktoruna ya da eczacına sor.`,a:[["İğneyi kaydet","open:shot"]]})}
+  // 4b) G7 · duraklama: son 3 tartı günü (6 gün içinde) aynı kiloda (±0,2 kg). Hedefe ulaşmış kişide gösterilmez
+  const PL=plateauInfo();
+  if(PL&&!hizli&&bmiOk){const wg7=wGoal(),D7=[...Array(7)].map((_,i)=>addDays(td,i-6));
+    const pn=D7.filter(d=>(dayRec(d).p||0)>=pGoal()).length,wa=D7.reduce((a,d)=>a+(dayRec(d).w||0),0)/7;
+    const lm=sortedM().filter(m=>m.bel!=null||m.kalca!=null).pop(),mOk=lm&&diffDays(lm.date,td)<=30;
+    const exN=D7.filter(d=>S.ex&&S.ex[d]).length,lsS=SHOTS()?sortedS().pop():null,shOk=lsS&&diffDays(lsS.date,td)<=(P.intervalDays||7)+1;
+    const chk=[[pn>=5,`Protein ${pn}/7 gün hedefte`],[wa>=wg7*.9,`Su ortalaman ${(wa/1000).toFixed(1).replace(".",",")} L`],
+      [mOk,mOk?`Son ölçü ${diffDays(lm.date,td)} gün önce`:"Bu ay ölçü almadın"],[exN>=exGoal(),`Direnç egzersizi ${exN}/${exGoal()} gün`]];
+    if(SHOTS()&&lsS)chk.push([shOk,shOk?"İğnelerin zamanında":"İğnen gecikmiş görünüyor"]);
+    out.push({id:"plato",c:"accent",ic:"grafik",k:"Duraklama",t:`Tartı ${PL.days} gündür ${kg(PL.kg)} kg civarında.`,
+      b:`Normal; kilo verirken vücut ara ara su tutar, sonra tartı birden düşer.${PL.ev?" "+PL.ev:""}`,chk,
+      a:mOk?[["Eğrime bak","go:kilo"]]:[["Ölçü ekle","meas"],["Eğrime bak","go:kilo"]],
+      n:PL.span>=14?"İki haftadan uzun sürdü; doktorunla konuşmak iyi olur.":""})}
   // 5) bulantı: bugün kaydedildiyse, kişisel örüntüyle
   if(SHOTS()&&S.shots.length&&(seOn(td).bulanti||0)>=1&&!sev){const n=shotDayOf(td),ph=phaseOfDay(n),NP=nauseaPattern();
     const early=["Emilim","Yükseliş","Zirve"].includes(ph);
@@ -1466,6 +1481,20 @@ function coachPick(){
 const COACH_IC={uyari:'<path d="M12 3l9.5 17h-19z"/><path d="M12 10v4M12 17h.01"/>',yaprak:'<path d="M20 4C11 4 5 9 5 17v3"/><path d="M20 4c0 9-5 14-13 14"/><path d="M9 14l5-5"/>',
   kalem:'<path d="M18 3l3 3M16 5l3 3-9 9H7v-3z"/>',nabiz:'<path d="M3 12h4l2-5 4 10 2-5h6"/>',grafik:'<path d="M4 19h16"/><path d="M5 15l4-4 3 2 6-6"/>',
   rozet:'<circle cx="12" cy="9" r="6"/><path d="M8.5 13.8 7 21l5-2.6L17 21l-1.5-7.2"/>',damla:'<path d="M12 3.5s6 6.4 6 10.5a6 6 0 0 1-12 0c0-4.1 6-10.5 6-10.5z"/>',yumurta:'<path d="M12 3.5c3.5 0 6 4.5 6 9.5a6 6 0 0 1-12 0c0-5 2.5-9.5 6-9.5z"/>'};
+/* G7: son tartı günleri aynı kiloda mı? Her günün son tartısı alınır; en az 3 gün, ±0,2 kg, ilk ile son arası en fazla 6 gün (seri geriye doğru uzar) */
+function plateauInfo(){
+  const td=today(),P=S.profile,byDay=new Map();for(const x of sortedW())byDay.set(x.date,x);
+  const D=[...byDay.values()],L=D[D.length-1];if(D.length<4||!L||diffDays(L.date,td)>1)return null;
+  if(P.goalWeight!=null&&L.kg<=P.goalWeight+0.3)return null;
+  const in3=D.slice(-3);if(diffDays(in3[0].date,L.date)>6)return null;
+  const ok=a=>Math.max(...a.map(x=>x.kg))-Math.min(...a.map(x=>x.kg))<=0.2;if(!ok(in3))return null;
+  let k=D.length-3;while(k>0&&ok(D.slice(k-1))&&diffDays(D[k-1].date,D[k].date)<=6)k--;
+  const run=D.slice(k),first=run[0],span=diffDays(first.date,L.date);
+  let ev="";const b1=belAt(L.date),b0=belAt(addDays(L.date,-21));
+  if(b1!=null&&b0!=null&&b0-b1>=0.5)ev=`Bu arada belin ${cm(b0-b1)} cm incelmiş; yağ kaybı sürüyor.`;
+  else{const prev=D.filter(x=>x.date<first.date&&diffDays(x.date,first.date)<=35)[0];if(prev&&prev.kg-L.kg>=0.8)ev=`Bundan önceki ${diffDays(prev.date,first.date)} günde ${kg(prev.kg-L.kg)} kg vermiştin; duraklama bunun bir parçası.`}
+  return {n:run.length,kg:L.kg,span,days:span+1,ev};
+}
 function coachHtml(card){
   const c=card||coachPick();if(!c)return "";
   const L=S.coach&&S.coach.last||{};if(L[c.id]!==today()){S.coach=S.coach||{};S.coach.last=Object.assign({},L,{[c.id]:today()})}
@@ -1474,6 +1503,7 @@ function coachHtml(card){
     <h3>${esc(c.t)}</h3>${c.b?`<p>${c.b}</p>`:""}
     ${c.l?`<ul>${c.l.map(t=>`<li>${esc(t)}</li>`).join("")}</ul>`:""}
     ${c.ch&&c.ch.length?`<div class="coach-ch">${c.ch.map(([e,n,g,k])=>`<button type="button" data-coach-act="prot:${k}">${icon(k,18)}${esc(n)} <b>+${g} g</b></button>`).join("")}</div>`:""}
+    ${c.chk?`<div class="coach-chk">${c.chk.map(([ok,t])=>`<span class="${ok?"ok":""}"><i>${ok?DZ_CHK:""}</i>${esc(t)}</span>`).join("")}</div>`:""}
     ${c.dots?`<div class="coach-dots">${c.dots.map(([n,ok,t])=>`<span${t?' class="t"':""}><i${ok?' class="ok"':""}></i>${n}</span>`).join("")}</div>`:""}
     ${c.bar!=null?`<div class="coach-bar"><i style="width:${Math.round(c.bar*100)}%"></i></div>`:""}
     ${c.a&&c.a.length?`<div class="coach-a">${c.a.map(([t,a],i)=>`<button type="button" class="${i?"g":""}" data-coach-act="${a}">${esc(t)}</button>`).join("")}</div>`:""}
@@ -1486,6 +1516,7 @@ function coachAct(a,id){
   const td=today();
   if(a==="x"){const C=S.coach=S.coach||{};if(C.d!==td){C.d=td;C.x=[]}if(!C.x.includes(id))C.x.push(id);save();ANIM=true;render();return}
   const [k,v]=a.split(":");
+  if(a==="meas"){openMeasSheet();return}
   if(k==="open")openSheet(v);
   else if(k==="edit")openSheet("weight",v);
   else if(k==="go"){selPhase=null;ANIM=true;tab=v;render();window.scrollTo(0,0)}
