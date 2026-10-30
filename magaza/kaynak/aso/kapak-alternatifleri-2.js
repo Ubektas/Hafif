@@ -93,9 +93,35 @@ h1{margin:50px 0 0;font:700 104px/1.0 Outfit;letter-spacing:-.04em}h1 em{font-st
 <div class="trust"><span class="k" style="background:#F6F2EA;border-radius:28px;display:grid;place-items:center">${ill('kilit', 64)}</span><div>Hesap yok, reklam yok. <b>Her şey yalnızca senin telefonunda.</b></div></div>
 </div></body></html>`;
 
+/* ———— G · D'nin içeriği, F'nin koyu premium dili ———— */
+const G = `<!doctype html><html><head><meta charset="utf-8">${FONTS}<style>${base}
+.s{background:radial-gradient(60% 26% at 100% 22%,#1F8A70 0%,transparent 70%),radial-gradient(55% 25% at 0% 78%,#12524A 0%,transparent 72%),linear-gradient(180deg,#0A332D 0%,#061D1A 100%);color:#fff}
+.top{position:absolute;left:84px;right:84px;top:100px}
+h1{margin:50px 0 0;font:700 100px/1.02 Outfit;letter-spacing:-.04em}h1 em{font-style:normal;color:#9FF0D6}
+.sub{margin-top:24px;font:500 34px/1.4 Figtree;color:rgba(255,255,255,.7)}
+.meal{position:absolute;left:84px;right:84px;top:590px;height:440px;border-radius:52px;background:linear-gradient(160deg,#FBF7F0 0%,#F1EADF 100%);color:#0B2420;box-shadow:0 60px 110px -50px rgba(0,0,0,.75);padding:44px 48px;display:flex;gap:26px;align-items:center;overflow:hidden}
+.meal:after{content:"";position:absolute;right:-120px;top:-120px;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,#FBE6C4 0%,transparent 70%)}
+.meal .tx{flex:1;position:relative;z-index:1}.meal .k{display:inline-flex;align-items:center;gap:10px;font:700 22px Figtree;letter-spacing:.12em;text-transform:uppercase;color:#B06D10}
+.meal .k:before{content:"";width:10px;height:10px;border-radius:50%;background:#C27A12}
+.meal h2{margin:14px 0 18px;font:700 54px/1.06 Outfit;letter-spacing:-.025em}
+.meal .ch{display:flex;flex-wrap:wrap;gap:10px}.meal .ch span{background:#fff;color:#8A5A10;border:1px solid #EBDDC4;border-radius:99px;padding:10px 20px;font:600 23px Figtree}
+.meal .pl{position:relative;width:300px;height:300px;flex:none;z-index:1}.meal .pl .b{position:absolute;right:-26px;bottom:-26px;width:160px;height:160px}
+.grid{position:absolute;left:66px;right:66px;top:1100px;display:grid;grid-template-columns:repeat(5,1fr);gap:50px 8px}
+.it{display:flex;flex-direction:column;align-items:center;gap:16px;font:600 25px Figtree;color:rgba(255,255,255,.88);text-align:center}
+.it span.c{width:156px;height:156px;border-radius:44px;background:#F6F2EA;display:grid;place-items:center;box-shadow:0 30px 50px -30px rgba(0,0,0,.7),0 0 0 1px rgba(255,255,255,.06)}
+.trust{position:absolute;left:84px;right:84px;bottom:96px;display:flex;align-items:center;gap:22px;padding-top:36px;border-top:1px solid rgba(255,255,255,.12)}
+.trust .k{width:84px;height:84px;flex:none;background:#F6F2EA;border-radius:26px;display:grid;place-items:center}.trust div{font:500 30px/1.35 Figtree;color:rgba(255,255,255,.75)}.trust div b{color:#9FF0D6;font-weight:600}
+</style></head><body><div class="s">
+<div class="top">${logo('#9FF0D6', '#fff')}<h1>Kilo verirken<br><em>ihtiyacın olan her şey.</em></h1><div class="sub">Tartından tabağına, iğne gününden doktor kontrolüne kadar.</div></div>
+<div class="meal"><div class="tx"><div class="k">Ne yesem? · Akşam</div><h2>Tavuk şiş ve bulgur pilavı</h2><div class="ch"><span>Mercimek çorbası</span><span>Izgara köfte</span><span>Menemen</span></div></div>
+<div class="pl">${ill('tabak', 290)}<span class="b">${IL.corba}</span></div></div>
+<div class="grid">${items.map(([k, n]) => `<div class="it"><span class="c">${ill(k, 100)}</span>${n}</div>`).join('')}</div>
+<div class="trust"><span class="k">${ill('kilit', 58)}</span><div>Hesap yok, reklam yok. <b>Her şey yalnızca senin telefonunda.</b></div></div>
+</div></body></html>`;
+
 (async () => {
   const b = await chromium.launch(); const p = await b.newPage({ viewport: { width: 1080, height: 1920 } });
-  for (const [ad, html] of [['D-mozaik', D], ['E-bir-gun', E], ['F-sozler', F]]) {
+  for (const [ad, html] of [['D-mozaik', D], ['E-bir-gun', E], ['F-sozler', F], ['G-mozaik-premium', G]]) {
     const f = path.join(OUT, `_${ad}.html`); fs.writeFileSync(f, html);
     await p.goto('file://' + f); await p.evaluate(() => document.fonts.ready); await p.waitForTimeout(400);
     await p.screenshot({ path: path.join(OUT, ad + '.png') }); fs.unlinkSync(f);
