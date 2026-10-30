@@ -300,6 +300,8 @@ const step = (ad, sonuc, detay) => { report.adimlar.push({ ad, sonuc, detay }); 
     await ekle(page, 'su'); await wait(600); await tap(page, '[data-wv="500"]'); await shot('su-ekle'); await tap(page, '#fWa [type="submit"]'); await wait(900);
     const suB = await page.evaluate(() => { const d = JSON.parse(localStorage.getItem('doz-defteri')); return (d.daily[Object.keys(d.daily).sort().pop()] || {}).w || 0; });
     step('+ paneli → su penceresi → 500 ml eklendi', suB - suA === 500, suA + ' → ' + suB);
+    // yeni en düşük tartı Play değerlendirme penceresini açar; burada değil, en sondaki ayrı adımda denenir
+    await page.evaluate(() => { const S = window.__hafifKoc && window.__hafifKoc.get(); if (S) S.profile.reviewN = 3; });
     await ekle(page, 'w'); await wait(600); await type(page, '#w-kg', '88,2'); await tap(page, '[data-more="wMusL"]'); await type(page, '#w-mus', '31,4'); await shot('kas-kutlesi');
     await tap(page, '#sheetRoot [type="submit"]'); await wait(900);
     const ks = await D2();
@@ -345,11 +347,19 @@ const step = (ad, sonuc, detay) => { report.adimlar.push({ ad, sonuc, detay }); 
     await wait(500); await tap(page, '#phSave'); await wait(3000); await shot('foto-kaydedildi');
     const fo = await page.evaluate(async () => { const S = JSON.parse(localStorage.getItem('doz-defteri') || '{}'); const im = [...document.querySelectorAll('.phcard img')].map(i => i.naturalWidth); return { n: (S.photos || []).length, im }; });
     step('İlerleme fotoğrafı kaydedildi ve kartta göründü', fo.n === 1 && fo.im.some(w => w > 0), JSON.stringify(fo));
+
+    // 2.0: Play değerlendirme penceresi (küçültülmüş kodda eklenti sınıfları duruyor mu, uygulama çökmüyor mu)
+    await device.shell('logcat -b crash -c').catch(() => {});
+    const rv = await Promise.race([page.evaluate(async () => { try { await window.Capacitor.Plugins.InAppReview.requestReview(); return 'çağrı tamam'; } catch (e) { return 'ret: ' + e.message; } }), wait(8000).then(() => 'zaman aşımı')]).catch(e => 'sayfa: ' + e.message);
+    await wait(3000); await shot('degerlendirme');
+    const pid = (await device.shell(`pidof ${PKG}`)).toString().trim();
+    step('Değerlendirme penceresi çağrısı uygulamayı çökertmedi', !!pid && !report.cokme, rv + ' · pid ' + (pid || 'YOK'));
   } catch (e) {
     report.hatalar.push('TEST HATASI: ' + (e && e.stack || e));
     try { await shot('hata-ani'); } catch (_) {}
   }
-  report.sonuc = report.adimlar.every(a => a.sonuc) && !report.hatalar.length ? 'BAŞARILI' : 'SORUN VAR';
+  try { const c = (await device.shell('logcat -d -b crash')).toString(); if (c.trim()) report.cokme = c.slice(-3000); } catch (_) {}
+  report.sonuc = report.adimlar.every(a => a.sonuc) && !report.hatalar.length && !report.cokme ? 'BAŞARILI' : 'SORUN VAR';
   fs.writeFileSync(`${OUT}/rapor.json`, JSON.stringify(report, null, 2));
   console.log(JSON.stringify(report, null, 2));
   await device.close();
