@@ -611,6 +611,14 @@ label.drow{flex-direction:row;font-size:14px;font-weight:500;margin:0}
 .wkact{display:flex;justify-content:flex-end;margin-top:-4px}.wkact .btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;width:auto;font-size:14px}
 .keta{display:flex;flex-direction:column;gap:1px;border-top:1px solid var(--line);padding-top:10px;margin-top:2px;font-size:12.5px;color:var(--muted)}
 .keta .kel{font-size:12.5px}.keta b{font:700 18px var(--f-display);color:var(--accent);letter-spacing:-.01em}.keta.ok b{font-size:15.5px}
+.apbox{display:flex;flex-direction:column;gap:8px;background:var(--sunk);border-radius:16px;padding:12px 14px}
+.aph{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font:600 13px var(--f-body);color:var(--fg)}.aph b{font:700 15.5px var(--f-display);color:var(--protein-ink)}
+.apbar{display:grid;grid-template-columns:repeat(5,1fr);gap:5px}
+.apbar button{height:30px;border:0;border-radius:9px;background:color-mix(in oklab,var(--protein) 14%,var(--surface));cursor:pointer;padding:0;transition:background .15s}
+.apbar button.on{background:var(--protein)}.apbar button:active{transform:scale(.96)}
+.apsc{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-top:-2px}
+.apbox .fchips button{background:var(--surface)}
+.sepat.ap i{background:color-mix(in oklab,var(--protein) 35%,var(--surface))}.sepat.ap i.hi{background:var(--protein)}
 .slnk{display:inline-flex;align-items:center;gap:5px;margin-top:8px;border:0;background:none;padding:2px 0;font:600 12.5px var(--f-body);color:var(--supp);cursor:pointer}
 .srow.on .chk{background:var(--supp);border-color:var(--supp);transform:scale(1.08)}
 .srow.on .chk svg path{stroke-dashoffset:0}
@@ -1285,7 +1293,8 @@ function plusCard(){
 const darkMQ=window.matchMedia?matchMedia("(prefers-color-scheme: dark)"):null;
 function applyTheme(){const t=(S.profile&&S.profile.theme)||"sys",d=t==="dark"||(t==="sys"&&darkMQ&&darkMQ.matches);
   document.documentElement.dataset.hf=d?"dark":"light";const m=document.querySelector('meta[name="theme-color"]');if(m)m.content=d?"#08171A":"#F1F5F3";
-  try{const SB=window.Capacitor&&window.Capacitor.Plugins&&window.Capacitor.Plugins.SystemBars;if(SB){SB.setStyle({style:d?"DARK":"LIGHT"}).catch(()=>{})}}catch(_){}}
+  /* Android: durum ve gezinme çubuğu simgeleri temaya uysun (koyu temada açık renk simgeler) */
+  if(applyTheme.d!==d){applyTheme.d=d;try{const P=window.Capacitor&&window.Capacitor.Plugins,W=P&&P.HafifWidget;if(W&&W.bars)W.bars({dark:d}).catch(()=>{});else if(P&&P.SystemBars)P.SystemBars.setStyle({style:d?"DARK":"LIGHT"}).catch(()=>{})}catch(_){}}}
 if(darkMQ&&darkMQ.addEventListener)darkMQ.addEventListener("change",()=>{applyTheme();if(typeof GLASS!=="undefined")render()});
 function themeCard(){const t=S.profile.theme||"sys";
   return `<div class="card" style="display:flex;flex-direction:column;gap:10px"><div><h2>Görünüm</h2><span class="muted" style="font-size:12.5px">Koyu tema gece gözünü yormaz.</span></div>
@@ -3653,6 +3662,16 @@ const SE=[["bulanti","Bulantı"],["kabiz","Kabızlık"],["ishal","İshal"],["ref
 const SE_LV=["Yok","Hafif","Orta","Şiddetli"];
 let seDay=null;
 function seOn(d){return (S.sides&&S.sides[d])||{}}
+/* G4 · iştah ve yemek düşüncesi: S.app[gün]={i:1–5 iştah, f:0 neredeyse hiç · 1 arada bir · 2 sık sık} */
+const AP_LV=["","Hiç yok","Az","Normal","Fazla","Çok fazla"],FN_LV=["Neredeyse hiç","Arada bir","Sık sık"];
+function apOn(d){return (S.app&&S.app[d])||{}}
+function apStats(){
+  const iv=Math.min(S.profile.intervalDays||7,7),by=Array(iv).fill(0),cnt=Array(iv).fill(0),cyc=new Set();let days=0,fs=0,fn=0;
+  for(const [d,r] of Object.entries(S.app||{})){const n=shotDayOf(d);if(r.f===2&&diffDays(d,today())<14)fs++;if(r.f!=null&&diffDays(d,today())<14)fn++;
+    if(n==null||!r.i)continue;const k=Math.min(n,iv-1);by[k]+=r.i;cnt[k]++;days++;cyc.add(sortedS().filter(x=>x.date<=d).length)}
+  const avg=by.map((v,i)=>cnt[i]?v/cnt[i]:null),ok=days>=5&&cyc.size>=2&&avg.filter(v=>v!=null).length>=3;
+  return {avg,cnt,days,ok,fs,fn};
+}
 function shotDayOf(d){const s=sortedS().filter(x=>x.date<=d);if(!s.length)return null;const last=s[s.length-1];return diffDays(last.date,d)}
 function phaseOfDay(n){if(n==null)return null;const iv=S.profile.intervalDays||7,f=Math.min(1,iv/7),e=[0.75*f,1.5*f,3.25*f,5*f,Math.max(5*f+0.25,iv-1),iv];const i=e.findIndex(x=>n+0.4<x);return PHASES[i<0?5:i].k}
 function seStats(){
@@ -3665,16 +3684,29 @@ function seStats(){
 function sideCard(){
   if(!SHOTS()||!S.shots.length) return "";
   const d=seDay||today(),r=seOn(d),n=shotDayOf(d),ph=phaseOfDay(n);
-  const st=seStats(),mx=Math.max(...st.avg),any=st.days>=3&&mx>0;
+  const st=seStats(),mx=Math.max(...st.avg),any=st.days>=3&&mx>0,a=apOn(d),A=apStats();
   let ins="";if(any){const top=st.avg.indexOf(mx);const tk=Object.entries(st.tot).sort((a,b)=>b[1]-a[1])[0];
     ins=`Yan etkilerin en çok <b>${top===0?"iğne günü":"iğneden "+top+" gün sonra"}</b> (${phaseOfDay(top)} evresi) oluyor.${tk?` En sık: <b>${SE.find(x=>x[0]===tk[0])[1].toLocaleLowerCase("tr-TR")}</b> (${tk[1]} gün).`:""}`}
   return `<div class="card" id="seCard" style="display:flex;flex-direction:column;gap:12px">
-    <div><h2>Yan etkiler</h2><span class="muted" style="font-size:12.5px">${n==null?"":n===0?"İğne günü":`İğneden sonraki ${n}. gün`}${ph?" · "+ph+" evresi":""}</span></div>
+    <div><h2>Bugün nasılsın?</h2><span class="muted" style="font-size:12.5px">${n==null?"":n===0?"İğne günü":`İğneden sonraki ${n}. gün`}${ph?" · "+ph+" evresi":""}</span></div>
       <div class="sedays">${[0,1,2].map(i=>{const dd=addDays(today(),-i);return `<button type="button" data-sed="${dd}" aria-pressed="${dd===d}">${i===0?"Bugün":i===1?"Dün":toD(dd).toLocaleDateString("tr-TR",{weekday:"long"})}</button>`}).join("")}</div>
+    <div class="apbox">
+      <div class="aph"><span>İştahın</span><b>${a.i?AP_LV[a.i]:"—"}</b></div>
+      <div class="apbar" role="radiogroup" aria-label="İştah, 1 hiç yok, 5 çok fazla">${[1,2,3,4,5].map(v=>`<button type="button" role="radio" data-app="${v}" aria-checked="${a.i===v}" aria-label="${AP_LV[v]}" class="${a.i&&v<=a.i?"on":""}"></button>`).join("")}</div>
+      <div class="apsc"><span>hiç yok</span><span>çok fazla</span></div>
+      <div class="aph" style="margin-top:6px"><span>Yemek aklına ne sıklıkla geldi?</span></div>
+      <div class="fchips" role="radiogroup">${FN_LV.map((t,v)=>`<button type="button" role="radio" data-fn="${v}" aria-checked="${a.f===v}">${t}</button>`).join("")}</div>
+    </div>
+    <div class="aph" style="margin:2px 0 -4px"><span>Yan etkiler</span></div>
     ${tipHtml("se","Bir belirtiye dokundukça şiddeti artar: yok → hafif → orta → şiddetli.")}
     <div class="segrid">${SE.map(([k,t])=>{const lv=r[k]||0;return `<button type="button" data-se="${k}" data-lv="${lv}" aria-label="${t}: ${SE_LV[lv]}"><b>${t}</b><span class="sv"><i><u></u><u></u><u></u></i>${SE_LV[lv]}</span></button>`}).join("")}</div>
     <span class="muted" style="font-size:12.5px">Şiddetli ya da geçmeyen yan etkide doktoruna danış.</span>
-    ${any?(()=>{const h=`<div><span class="eyebrow">İğneden sonraki günlere göre</span><div class="sepat" style="margin-top:10px">${st.avg.map((v,i)=>`<div><i class="${v===mx?"hi":""}" style="height:${Math.max(6,v/mx*100)}%"></i><span>${i===0?"İğne":i+". g"}</span></div>`).join("")}</div></div><div class="seins" style="margin-top:12px">${ins}</div>`;return `<div class="hr"></div>`+(PLUS()?h:plock(h,"Yan etki analizi Plus'ta","Belirtilerinin iğneden sonraki hangi günlerde yoğunlaştığını gör."))})():st.days?`<span class="muted" style="font-size:12.5px">Birkaç gün daha kaydedince yan etkilerinin hangi günlerde yoğunlaştığını burada göreceksin.</span>`:""}
+    ${(()=>{const parts=[];
+      if(any)parts.push(`<div><span class="eyebrow">Yan etkiler · iğneden sonraki günlere göre</span><div class="sepat" style="margin-top:10px">${st.avg.map((v,i)=>`<div><i class="${v===mx?"hi":""}" style="height:${Math.max(6,v/mx*100)}%"></i><span>${i===0?"İğne":i+". g"}</span></div>`).join("")}</div></div><div class="seins" style="margin-top:12px">${ins}</div>`);
+      if(A.ok){const v=A.avg.map(x=>x==null?0:x),lo=A.avg.reduce((b,x,i)=>x!=null&&(b<0||x<A.avg[b])?i:b,-1),hi=A.avg.reduce((b,x,i)=>x!=null&&(b<0||x>A.avg[b])?i:b,-1),dl=i=>i===0?"iğne günü":`iğneden sonraki ${i}. gün`;
+        parts.push(`<div><span class="eyebrow">İştah · iğneden sonraki günlere göre</span><div class="sepat ap" style="margin-top:10px">${v.map((x,i)=>`<div><i class="${i===hi?"hi":""}" style="height:${x?Math.max(8,x/5*100):4}%"></i><span>${i===0?"İğne":i+". g"}</span></div>`).join("")}</div></div><div class="seins" style="margin-top:12px">İştahın en düşük <b>${dl(lo)}</b>, en yüksek <b>${dl(hi)}</b>.${hi!==lo?` ${hi===0?"İğne günü":hi+". gün"} için protein ağırlıklı bir plan yap.`:""}${A.fn>=5?` Son 2 haftada yemeği sık düşündüğün gün: <b>${A.fs}</b>.`:""}</div>`)}
+      if(!parts.length)return st.days||Object.keys(S.app||{}).length?`<span class="muted" style="font-size:12.5px">Birkaç gün daha kaydedince iştahının ve yan etkilerinin iğneden sonraki hangi günlerde değiştiğini burada göreceksin.</span>`:"";
+      const h=parts.join(`<div class="hr"></div>`);return `<div class="hr"></div>`+(PLUS()?h:plock(h,"İştah ve yan etki analizi Plus'ta","İştahının ve belirtilerinin iğneden sonraki hangi günlerde değiştiğini gör."))})()}
   </div>`;
 }
 /* ---------- kalem stoğu ---------- */
@@ -3703,6 +3735,9 @@ function bindIgne(){bindSe();bindPen()}
 function bindSe(){
   document.querySelectorAll("[data-se]").forEach(b=>b.addEventListener("click",()=>{tipDone("se");const d=seDay||today();S.sides=S.sides||{};const r=Object.assign({},S.sides[d]||{});const k=b.dataset.se;r[k]=((r[k]||0)+1)%4;
     if(!r[k])delete r[k];if(Object.keys(r).length)S.sides[d]=r;else delete S.sides[d];holdUntil=Date.now()+800;save();const y=window.scrollY;$("#seCard").outerHTML=sideCard();bindSe();window.scrollTo(0,y)}));
+  const apSet=(k,v)=>{const d=seDay||today();S.app=S.app||{};const r=Object.assign({},S.app[d]||{});if(r[k]===v)delete r[k];else r[k]=v;if(Object.keys(r).length)S.app[d]=r;else delete S.app[d];holdUntil=Date.now()+800;save();const y=window.scrollY;$("#seCard").outerHTML=sideCard();bindSe();window.scrollTo(0,y)};
+  document.querySelectorAll("[data-app]").forEach(b=>b.addEventListener("click",()=>apSet("i",+b.dataset.app)));
+  document.querySelectorAll("[data-fn]").forEach(b=>b.addEventListener("click",()=>apSet("f",+b.dataset.fn)));
   document.querySelectorAll("[data-sed]").forEach(b=>b.addEventListener("click",()=>{seDay=b.dataset.sed===today()?null:b.dataset.sed;const y=window.scrollY;$("#seCard").outerHTML=sideCard();bindSe();window.scrollTo(0,y)}));
 }
 function bindPen(){

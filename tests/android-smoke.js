@@ -158,6 +158,10 @@ const step = (ad, sonuc, detay) => { report.adimlar.push({ ad, sonuc, detay }); 
     const D = () => page.evaluate(() => JSON.parse(localStorage.getItem('doz-defteri') || '{}'));
     await tap(page, '.tab[data-tab="igne"]'); await wait(700);
     await tap(page, '[data-se="bulanti"]'); await wait(300); await tap(page, '[data-se="bulanti"]'); await wait(500);
+    // 2.0 · G4: iştah ve yemek düşüncesi
+    await tap(page, '[data-app="2"]'); await wait(400); await tap(page, '[data-fn="0"]'); await wait(500);
+    const ap = await page.evaluate(() => { const S = JSON.parse(localStorage.getItem('doz-defteri') || '{}'); return Object.values(S.app || {})[0] || null; });
+    step('İştah ve yemek düşüncesi kaydedildi', !!ap && ap.i === 2 && ap.f === 0, JSON.stringify(ap));
     await tap(page, '#penStart'); await wait(700);
     await shot('yan-etki-kalem');
     await ekle(page, 's'); await wait(600); await type(page, '#s-dose', '5'); await tap(page, '#sheetRoot [type="submit"]'); await wait(1000);
@@ -174,6 +178,8 @@ const step = (ad, sonuc, detay) => { report.adimlar.push({ ad, sonuc, detay }); 
     await tap(page, '[data-theme-set="dark"]'); await wait(800);
     const koyu = await page.evaluate(() => document.documentElement.dataset.hf);
     await tap(page, '.tab[data-tab="ozet"]'); await wait(2000); await shot('karanlik-ozet');
+    // koyu temada durum çubuğu simgeleri açık renk olmalı (rapora yazılır; ekran görüntüsünden de bakılır)
+    report.durum_cubugu_koyu = (await device.shell('dumpsys window | grep -iE "appearance|LIGHT_STATUS" | head -8')).toString().trim().slice(0, 900);
     step('Karanlık tema açıldı', koyu === 'dark', koyu);
     await tap(page, '#gearBtn'); await wait(600); await tap(page, '[data-theme-set="sys"]'); await wait(500);
     await tap(page, '.tab[data-tab="ozet"]'); await wait(700);
