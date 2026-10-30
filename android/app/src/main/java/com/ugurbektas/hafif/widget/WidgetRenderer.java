@@ -205,8 +205,8 @@ final class WidgetRenderer {
         }
         headL("SIRADAKİ İĞNE", 16, AC);
         float rx = W - 16 - 132;
-        text(day + (d.nextTs() > 0 ? " · " + hm(d.nextTs()) : ""), 16, 74, 26, db, FG, rx - 26);
-        text(site.isEmpty() ? "" : "Önerilen bölge: " + site.toLowerCase(WidgetData.TR), 16, 94, 11.5f, fm, MU, rx - 26);
+        text(day, 16, 72, 28, db, FG, W - 32);
+        text((d.nextTs() > 0 ? hm(d.nextTs()) : "") + (site.isEmpty() ? "" : " · önerilen bölge: " + site.toLowerCase(WidgetData.TR)), 16, 92, 11.5f, fm, MU, W - 32);
         String dose = n == null ? "" : n.optString("dose", "");
         if (n != null && n.has("pen") && !n.isNull("pen") && n.optInt("pen") <= 1) {
             rrect(rx, 14, 132, 46, 14, SOFT);
@@ -302,10 +302,18 @@ final class WidgetRenderer {
             textC("+", cx, cy + 7, 22, fb, BTNF);
             return;
         }
-        head("📉", "KİLO", AC);
-        float tw = text(WidgetData.n1(k.optDouble("cur")), 16, H - 60, 30, db, FG, W - 60);
-        text(" kg", 16 + tw, H - 60, 13, fm, MU, 40);
-        text(sub, 16, H - 42, 11.5f, fm, MU, W - 32);
+        if (wide) {
+            headL("KİLO", 16, AC);
+            float tw = text(WidgetData.n1(k.optDouble("cur")), 16, 70, 30, db, FG, 140);
+            text(" kg", 16 + tw, 70, 13, fm, MU, 40);
+            text(sub, 16, 90, 11.5f, fm, MU, 170);
+            spark(k.optJSONArray("pts"), null, 200, 16, W - 216, H - 82, AC, false);
+        } else {
+            head("📉", "KİLO", AC);
+            float tw = text(WidgetData.n1(k.optDouble("cur")), 16, H - 80, 28, db, FG, W - 60);
+            text(" kg", 16 + tw, H - 80, 13, fm, MU, 40);
+            text(sub, 16, H - 62, 11.5f, fm, MU, W - 32);
+        }
         buttons(r, new String[][]{{"+ Kilo gir", "weight"}}, new int[]{BTN}, new int[]{BTNF});
     }
 
@@ -375,8 +383,8 @@ final class WidgetRenderer {
         if (!wide) {
             textC("💧", 28, 36, 24, fm, FG);
             glass(W - 16 - 26, 14, 26, 38, f);
-            text(big, 16, H - 66, 26, db, FG, W - 32);
-            text(sub, 16, H - 50, 11.5f, fm, MU, W - 32);
+            text(big, 16, H - 80, 26, db, FG, W - 32);
+            text(sub, 16, H - 62, 11.5f, fm, MU, W - 32);
             buttons(r, new String[][]{{"+1 bardak", "water/250"}}, new int[]{BTN}, new int[]{BTNF});
             return;
         }
@@ -519,7 +527,7 @@ final class WidgetRenderer {
         int gold = night ? 0xFFE8B062 : 0xFFB06D10;
         String act = "meal/" + m.optString("id");
         if (!wide) {
-            head(m.optString("e", "🍲"), "NE YESEM? · " + lbl, gold);
+            head(m.optString("e", "🍲"), "NE YESEM?", gold);
             wrap(m.optString("s"), 16, 72, W - 32, 19, db, FG, 2);
             text("+" + m.optInt("g") + " g protein", 16, H - 56, 11.5f, fb, gold, W - 32);
             buttons(r, new String[][]{{"+ Ekle", act}}, new int[]{BTN}, new int[]{BTNF});
@@ -528,9 +536,9 @@ final class WidgetRenderer {
         float pd = H - 28, px = 16, py = 14;
         p.setShader(null);
         p.setStyle(Paint.Style.FILL);
-        p.setColor(night ? 0xFFF3EEE5 : 0xFFEFE8DC);
+        p.setColor(night ? 0xFF1E3B35 : 0xFFEFE8DC);
         c.drawCircle(px + pd / 2, py + pd / 2, pd / 2, p);
-        p.setColor(WHITE);
+        p.setColor(night ? 0xFF2A4A43 : WHITE);
         c.drawCircle(px + pd / 2, py + pd / 2, pd / 2 - 7, p);
         textC(m.optString("e", "🍲"), px + pd * 0.42f, py + pd * 0.52f, pd * 0.34f, fm, FG);
         textC(m.optString("e2", "🥗"), px + pd * 0.66f, py + pd * 0.74f, pd * 0.26f, fm, FG);
