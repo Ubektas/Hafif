@@ -119,9 +119,59 @@ h1{margin:50px 0 0;font:700 100px/1.02 Outfit;letter-spacing:-.04em}h1 em{font-s
 <div class="trust"><span class="k">${ill('kilit', 58)}</span><div>Hesap yok, reklam yok. <b>Her şey yalnızca senin telefonunda.</b></div></div>
 </div></body></html>`;
 
+/* ———— H · koyu premium, cam yüzeyler, tutarlı çizgi ikonlar (48'lik ızgara, 2,4 çizgi, nane + yumuşak dolgu) ———— */
+const M = '#9FF0D6', GD = '#E9C46A', SF = 'rgba(159,240,214,.16)', GF = 'rgba(233,196,106,.22)';
+const L = d => `<svg viewBox="0 0 48 48" fill="none" stroke="${M}" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">${d}</svg>`;
+const LI = {
+  kilo: L(`<rect x="8" y="8" width="32" height="32" rx="9" fill="${SF}"/><path d="M16.5 23a7.5 7.5 0 0 1 15 0"/><path d="M24 23l3.6-4.4"/><circle cx="24" cy="23" r="1.2" fill="${M}"/><path d="M18 33h12"/>`),
+  igne: L(`<g transform="rotate(-45 24 24)"><rect x="10" y="19" width="24" height="10" rx="5" fill="${SF}"/><rect x="15" y="21.5" width="9" height="5" rx="1.5" fill="${M}" stroke="none" opacity=".55"/><path d="M34 21h4v6h-4"/><path d="M10 24H5"/></g>`),
+  su: L(`<path d="M14 10h20l-2.6 27.2a3 3 0 0 1-3 2.8h-8.8a3 3 0 0 1-3-2.8z"/><path d="M15.3 23.5c2.8-1.6 5.6 1.6 8.7 0s5.9-1.6 8.7 0L31.4 37a3 3 0 0 1-3 2.8h-8.8a3 3 0 0 1-3-2.8z" fill="${SF}" stroke="none"/><path d="M15.3 23.5c2.8-1.6 5.6 1.6 8.7 0s5.9-1.6 8.7 0"/>`),
+  takviye: L(`<g transform="rotate(-40 20 22)"><rect x="7" y="17" width="26" height="10" rx="5" fill="${SF}"/><path d="M20 17v10"/></g><circle cx="33" cy="33" r="6.5" fill="${SF}"/><path d="M28.5 33h9"/>`),
+  adim: L(`<path d="M17 8.5c3 0 4.6 3 4.6 7.2S19.8 22 17.2 22s-4.8-2.6-4.8-6.6S14 8.5 17 8.5z" fill="${SF}"/><path d="M13.6 26.5h7l-.7 4.6a3.6 3.6 0 0 1-7-.4z"/><path d="M31 14.5c3 0 4.6 3 4.6 7.2S33.8 28 31.2 28s-4.8-2.6-4.8-6.6 1.6-6.9 4.6-6.9z" fill="${SF}"/><path d="M27.6 32.5h7l-.7 4.6a3.6 3.6 0 0 1-7-.4z"/>`),
+  kas: L(`<path d="M17 24h14"/><rect x="10" y="15" width="7" height="18" rx="3" fill="${SF}"/><rect x="31" y="15" width="7" height="18" rx="3" fill="${SF}"/><path d="M6 20v8M42 20v8"/>`),
+  foto: L(`<rect x="6" y="13" width="24" height="26" rx="4" transform="rotate(-6 18 26)" fill="${SF}"/><rect x="18" y="9" width="24" height="26" rx="4" transform="rotate(6 30 22)"/><circle cx="29" cy="17" r="2.6"/><path d="M21 30l5.5-6 4.5 4.5 3-3 5 5"/>`),
+  plan: L(`<rect x="7" y="10" width="34" height="30" rx="7" fill="${SF}"/><path d="M7 19h34M16 6v7M32 6v7"/><path d="M15 33h5v-4h5v-4h5v-3"/><path d="M28 22h3v3"/>`),
+  koc: L(`<path d="M9 13a5 5 0 0 1 5-5h20a5 5 0 0 1 5 5v14a5 5 0 0 1-5 5H21l-8 7v-7h0a4 4 0 0 1-4-4z" fill="${SF}"/><path d="M24 13.5l1.7 4.3 4.3 1.7-4.3 1.7L24 25.5l-1.7-4.3-4.3-1.7 4.3-1.7z" fill="${M}" stroke="none"/>`),
+  rapor: L(`<path d="M13 6h15l9 9v24a3 3 0 0 1-3 3H13a3 3 0 0 1-3-3V9a3 3 0 0 1 3-3z" fill="${SF}"/><path d="M28 6v9h9"/><path d="M16 33l5-6 4 3 6-8"/>`),
+  kilit: L(`<rect x="10" y="21" width="28" height="19" rx="6" fill="${SF}"/><path d="M16 21v-5a8 8 0 0 1 16 0v5"/><path d="M24 29v4"/>`)
+};
+const ITEMS = [['kilo','Kilo'],['igne','İğne günü'],['su','Su'],['takviye','Takviyeler'],['adim','Adımlar'],['kas','Kas koruma'],['foto','Fotoğraflar'],['plan','Doz planı'],['koc','Koç'],['rapor','Doktor raporu']];
+/* tabak: aynı çizgi dilinde, yemeğe sıcak altın dokunuş */
+const TABAK = `<svg viewBox="0 0 200 200" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="100" cy="100" r="86" stroke="${M}" stroke-width="2.4" fill="rgba(159,240,214,.06)"/><circle cx="100" cy="100" r="66" stroke="${M}" stroke-width="2" stroke-dasharray="2 7" opacity=".55"/>
+  <path d="M52 70l100 42" stroke="${M}" stroke-width="2.4"/>${[[72,78],[94,87],[116,96]].map(([x,y])=>`<rect x="${x-11}" y="${y-11}" width="22" height="22" rx="7" transform="rotate(23 ${x} ${y})" fill="${GF}" stroke="${GD}" stroke-width="2.4"/>`).join('')}
+  ${[[70,118],[80,126],[68,132],[86,138],[78,142],[92,128],[62,126]].map(([x,y])=>`<circle cx="${x}" cy="${y}" r="5" fill="${GF}" stroke="${GD}" stroke-width="2"/>`).join('')}
+  <path d="M116 132c8-14 26-14 32 0-8 10-24 10-32 0z" fill="${SF}" stroke="${M}" stroke-width="2.4"/><path d="M120 132h24" stroke="${M}" stroke-width="1.8"/></svg>`;
+const KASE = `<svg viewBox="0 0 120 120" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M18 56h84c0 24-18 40-42 40S18 80 18 56z" fill="rgba(6,29,26,.9)" stroke="${M}" stroke-width="2.4"/><ellipse cx="60" cy="56" rx="42" ry="10" fill="${GF}" stroke="${GD}" stroke-width="2.4"/><path d="M50 54c4-3 12-3 16 0" stroke="${M}" stroke-width="2.2"/><path d="M48 40c-3-5 3-8 0-13M62 38c-3-5 3-8 0-13M76 40c-3-5 3-8 0-13" stroke="${M}" stroke-width="2" opacity=".6"/></svg>`;
+const Hh = `<!doctype html><html><head><meta charset="utf-8">${FONTS}<style>${base}
+.s{background:radial-gradient(60% 26% at 100% 22%,#1F8A70 0%,transparent 70%),radial-gradient(55% 25% at 0% 78%,#12524A 0%,transparent 72%),linear-gradient(180deg,#0A332D 0%,#061D1A 100%);color:#fff}
+.top{position:absolute;left:84px;right:84px;top:100px}
+h1{margin:50px 0 0;font:700 100px/1.02 Outfit;letter-spacing:-.04em}h1 em{font-style:normal;color:#9FF0D6}
+.sub{margin-top:24px;font:500 34px/1.4 Figtree;color:rgba(255,255,255,.7)}
+.glass{background:linear-gradient(155deg,rgba(159,240,214,.13) 0%,rgba(159,240,214,.035) 60%,rgba(159,240,214,.07) 100%);border:1px solid rgba(159,240,214,.2);box-shadow:0 40px 80px -40px rgba(0,0,0,.7),inset 0 1px 0 rgba(255,255,255,.08)}
+.meal{position:absolute;left:84px;right:84px;top:590px;height:440px;border-radius:52px;padding:44px 48px;display:flex;gap:20px;align-items:center;overflow:hidden}
+.meal:after{content:"";position:absolute;right:-90px;top:-90px;width:380px;height:380px;border-radius:50%;background:radial-gradient(circle,rgba(233,196,106,.16) 0%,transparent 70%)}
+.meal .tx{flex:1;position:relative;z-index:1}.meal .k{display:inline-flex;align-items:center;gap:10px;font:700 22px Figtree;letter-spacing:.14em;text-transform:uppercase;color:${GD}}
+.meal .k:before{content:"";width:9px;height:9px;border-radius:50%;background:${GD}}
+.meal h2{margin:16px 0 20px;font:700 54px/1.06 Outfit;letter-spacing:-.025em;color:#fff}
+.meal .ch{display:flex;flex-wrap:wrap;gap:10px}.meal .ch span{background:rgba(255,255,255,.06);color:rgba(255,255,255,.85);border:1px solid rgba(159,240,214,.18);border-radius:99px;padding:10px 20px;font:600 23px Figtree}
+.meal .pl{position:relative;width:300px;height:300px;flex:none;z-index:1}.meal .pl>svg{width:300px;height:300px}.meal .pl .b{position:absolute;right:-24px;bottom:-30px;width:150px;height:150px}
+.grid{position:absolute;left:66px;right:66px;top:1100px;display:grid;grid-template-columns:repeat(5,1fr);gap:50px 8px}
+.it{display:flex;flex-direction:column;align-items:center;gap:16px;font:600 25px Figtree;color:rgba(255,255,255,.88);text-align:center}
+.it span.c{width:156px;height:156px;border-radius:44px;display:grid;place-items:center}.it span.c svg{width:84px;height:84px}
+.trust{position:absolute;left:84px;right:84px;bottom:96px;display:flex;align-items:center;gap:22px;padding-top:36px;border-top:1px solid rgba(159,240,214,.14)}
+.trust .k{width:84px;height:84px;flex:none;border-radius:26px;display:grid;place-items:center}.trust .k svg{width:50px;height:50px}.trust div{font:500 30px/1.35 Figtree;color:rgba(255,255,255,.75)}.trust div b{color:#9FF0D6;font-weight:600}
+</style></head><body><div class="s">
+<div class="top">${logo('#9FF0D6', '#fff')}<h1>Kilo verirken<br><em>ihtiyacın olan her şey.</em></h1><div class="sub">Tartından tabağına, iğne gününden doktor kontrolüne kadar.</div></div>
+<div class="meal glass"><div class="tx"><div class="k">Ne yesem? · Akşam</div><h2>Tavuk şiş ve bulgur pilavı</h2><div class="ch"><span>Mercimek çorbası</span><span>Izgara köfte</span><span>Menemen</span></div></div>
+<div class="pl">${TABAK}<span class="b">${KASE}</span></div></div>
+<div class="grid">${ITEMS.map(([k, n]) => `<div class="it"><span class="c glass">${LI[k]}</span>${n}</div>`).join('')}</div>
+<div class="trust"><span class="k glass">${LI.kilit}</span><div>Hesap yok, reklam yok. <b>Her şey yalnızca senin telefonunda.</b></div></div>
+</div></body></html>`;
+
 (async () => {
   const b = await chromium.launch(); const p = await b.newPage({ viewport: { width: 1080, height: 1920 } });
-  for (const [ad, html] of [['D-mozaik', D], ['E-bir-gun', E], ['F-sozler', F], ['G-mozaik-premium', G]]) {
+  for (const [ad, html] of [['D-mozaik', D], ['E-bir-gun', E], ['F-sozler', F], ['G-mozaik-premium', G], ['H-kapak', Hh]]) {
     const f = path.join(OUT, `_${ad}.html`); fs.writeFileSync(f, html);
     await p.goto('file://' + f); await p.evaluate(() => document.fonts.ready); await p.waitForTimeout(400);
     await p.screenshot({ path: path.join(OUT, ad + '.png') }); fs.unlinkSync(f);
