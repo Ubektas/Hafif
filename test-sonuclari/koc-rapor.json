@@ -1,15 +1,16 @@
 {
   "kullanici": 300,
   "degerlendirme": 900,
-  "kartli": 759,
+  "kartli": 760,
   "turler": {
-    "protein": 204,
+    "protein": 202,
     "bulanti": 36,
     "gecikti": 78,
     "guvenlik": 27,
     "hizli": 87,
     "esik": 27,
     "tarti": 30,
+    "koruma": 3,
     "donus": 186,
     "bugun": 27,
     "su": 6,

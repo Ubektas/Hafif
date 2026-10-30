@@ -412,6 +412,56 @@
       "tip": "hizli"
     }
   ],
+  "koruma": [
+    {
+      "id": "koruma",
+      "c": "warn",
+      "ic": "grafik",
+      "k": "Koruma",
+      "t": "Son tartıların aralığın 8,3 kg altında.",
+      "b": "Hedefinden fazla veriyorsun. İştahın çok azsa ya da halsizsen doktoruna söyle; dozu birlikte değerlendirirsiniz.",
+      "a": [
+        [
+          "Doktor notu yaz",
+          "go:kilo"
+        ]
+      ],
+      "saat": 9,
+      "tip": "hizli"
+    },
+    {
+      "id": "koruma",
+      "c": "warn",
+      "ic": "grafik",
+      "k": "Koruma",
+      "t": "Son tartıların aralığın 15,1 kg altında.",
+      "b": "Hedefinden fazla veriyorsun. İştahın çok azsa ya da halsizsen doktoruna söyle; dozu birlikte değerlendirirsiniz.",
+      "a": [
+        [
+          "Doktor notu yaz",
+          "go:kilo"
+        ]
+      ],
+      "saat": 9,
+      "tip": "hizli"
+    },
+    {
+      "id": "koruma",
+      "c": "warn",
+      "ic": "grafik",
+      "k": "Koruma",
+      "t": "Son tartıların aralığın 0,3 kg altında.",
+      "b": "Hedefinden fazla veriyorsun. İştahın çok azsa ya da halsizsen doktoruna söyle; dozu birlikte değerlendirirsiniz.",
+      "a": [
+        [
+          "Doktor notu yaz",
+          "go:kilo"
+        ]
+      ],
+      "saat": 9,
+      "tip": "normal"
+    }
+  ],
   "esik": [
     {
       "id": "esik",
@@ -748,6 +798,24 @@
       "n": "",
       "saat": 9,
       "tip": "geri"
+    }
+  ],
+  "koruma1": [
+    {
+      "id": "koruma1",
+      "c": "accent",
+      "ic": "rozet",
+      "k": "Koruma dönemi",
+      "t": "Hedefine ulaştın. Şimdi koruma dönemi.",
+      "b": "Asıl zor kısım kiloyu tutmak. Aralığın <b>91,5–94,5 kg</b>; içinde kaldıkça her şey yolunda. Protein ve direnç egzersizi burada da en büyük yardımcın.",
+      "a": [
+        [
+          "Koruma kartı",
+          "go:kilo"
+        ]
+      ],
+      "saat": 9,
+      "tip": "hizli"
     }
   ]
 }
