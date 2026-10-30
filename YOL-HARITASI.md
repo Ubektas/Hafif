@@ -87,6 +87,8 @@ Her adım tek tek konuşulup karar veriliyor; onaylananlar Claude sürümüne i�
 - **2.0 yayın hazırlığı:** gizlilik sayfası (iştah, egzersiz, doz planı, koruma notu, kas kütlesi) yayında; sürüm notları magaza/surum-notlari.md (488 karakter); emülatör testine doz planı ve + panelinden egzersiz adımları eklendi.
 - **ASO (2.0):** magaza/ekran yeni arayüzle yeniden üretildi (+ paneli 17, doz planı 18 eklendi). 8 tanıtım görseli toplantı sırasıyla: Özet · iğne kadranı · + ile kayıt · koç · kilo ve hedef tarihi · doz planı (Takviyeler yerine) · doktor raporu · gizlilik. Kısa açıklama "Kilo, haftalık iğne, protein ve su takibi. Hesap yok, veri telefonunda." Tam açıklama 2.0 özellikleri ve arama kelimeleriyle (3904 karakter). Doktor raporuna koruma notu eklenmedi (kullanıcı kararı).
 
+- **2.0.0 derlendi (30 Ekim):** surum-2.0 dalından (37a8080), sürüm kodu 16. .aab 5,6 MB (1.9.0: 8,2), APK 4,4 MB (1.9.0: 8,5); R8 + shrinkResources sonrası widget/bildirim/yazı tipi kaynakları duruyor, pakette kişisel veri yok. Emülatör testi 46/46 (küçültülmüş debug), değerlendirme penceresi çağrısı çökmüyor. Önceki iki koşuda Adım paylaşımında görülen bağlantı kopması tekrarlanmadı (emülatör kaynaklı görünüyor). Henüz yapılmayan: surum-2.0 → main birleştirmesi (Play'e çıkınca).
+
 ## Sırada (karar bekleyen / sonraki sürümler)
 - Plus koç kartları: haftalık özet ve "gelecek haftanın tek hedefi", duraklama analizi (ölçü ve adım karşılaştırması)
 - Koçtaki kişisel bulantı örüntüsü ücretsiz mi kalsın, Plus'a mı bağlansın (öneri: ücretsiz)
