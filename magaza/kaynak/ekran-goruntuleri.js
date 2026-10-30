@@ -28,7 +28,7 @@ function ornekVeri() {
     { id: 'b12', name: 'B12', slot: 'sabah', days: [1, 4], shape: 'tab', color: '#F1B3C3' },
     { id: 'mgn', name: 'Magnezyum (gece)', slot: 'gece', days: [0, 1, 2, 3, 4, 5, 6], shape: 'caps', color: '#7A52D6' }];
   return {
-    profile: { onboarded: true, usesShots: true, disclaimer: gun(0), age: 42, sex: 'k', penSize: 4, penLeft: 2, drug: null, startWeight: 98.4, goalWeight: 80, heightCm: 172, intervalDays: 7, proteinGoal: 110, waterGoal: 2500, noCelebrate: true },
+    profile: { onboarded: true, usesShots: true, disclaimer: gun(0), age: 42, sex: 'k', penSize: 4, penLeft: 2, drug: null, dplan: { steps: [{ d: '2,5', w: 4 }, { d: '5', w: 4 }, { d: '7,5', w: 4 }, { d: '10', w: 0 }], rem: true }, tips: { se: 1 }, startWeight: 98.4, goalWeight: 80, heightCm: 172, intervalDays: 7, proteinGoal: 110, waterGoal: 2500, noCelebrate: true },
     weights, shots, daily, sides, meas, supps, suppTimes: { sabah: '08:00', aksam: '19:00', gece: '22:30' },
     suppLog: { [BUGUN]: { mg: t + 8.1 * 36e5, d3: t + 8.15 * 36e5 } },
     hc: { on: true, last: t + 14.3 * 36e5, wFrom: BUGUN },
@@ -68,21 +68,22 @@ function ornekVeri() {
   const shot = async ad => { await p.waitForTimeout(1600); await p.screenshot({ path: `${OUT}/${String(++n).padStart(2, '0')}-${ad}.png` }); };
   const tab = async t => { await p.click(`.tab[data-tab="${t}"]`); await p.evaluate(() => scrollTo(0, 0)); };
   const kaydir = async sel => p.evaluate(s => { const e = document.querySelector(s); if (e) scrollTo(0, e.getBoundingClientRect().top + scrollY - 12); }, sel);
+  const sekme = async t => { await tab(t); await p.waitForTimeout(500); };
   await shot('ozet');
-  await kaydir('#cycWrap'); await shot('dongu');
-  await kaydir('.mscard'); await shot('basarilar');
-  await p.click('[data-go="basari"]'); await p.evaluate(() => scrollTo(0, 0)); await shot('rozetler');
-  await tab('kilo'); await shot('kilo');
-  await tab('igne'); await shot('igneler');
-  await tab('besin'); await shot('protein-su');
-  await tab('takviye'); await shot('takviyeler');
-  await tab('ozet'); await kaydir('.stcard'); await shot('adim-kart');
-  await p.click('.stcard'); await p.waitForTimeout(800); await p.evaluate(() => scrollTo(0, 0)); await shot('adimlar');
-  await tab('igne'); await kaydir('#seCard'); await shot('yan-etkiler');
-  await kaydir('.pencard'); await shot('kalem');
-  await tab('kilo'); await kaydir('.mgrid'); await p.evaluate(() => scrollBy(0, -150)); await shot('olculer');
-  await p.click('#gearBtn'); await p.waitForTimeout(400); await p.click('[data-theme-set="dark"]'); await tab('ozet'); await shot('karanlik-ozet');
-  await tab('igne'); await kaydir('#seCard'); await shot('karanlik-yan-etkiler');
+  await sekme('igne'); await shot('dongu');
+  await sekme('ozet'); await kaydir('.mscard'); await shot('basarilar');
+  await p.click('[data-go="basari"]').catch(() => {}); await p.evaluate(() => scrollTo(0, 0)); await shot('rozetler');
+  await sekme('kilo'); await shot('kilo');
+  await sekme('igne'); await kaydir('#dzCard'); await shot('igneler');
+  await sekme('besin'); await shot('protein-su');
+  await sekme('takviye'); await shot('takviyeler');
+  await sekme('ozet'); await kaydir('.tring[data-go="adim"]'); await p.evaluate(() => scrollBy(0, -260)); await shot('adim-kart');
+  await p.click('.tring[data-go="adim"]').catch(() => {}); await p.waitForTimeout(800); await p.evaluate(() => scrollTo(0, 0)); await shot('adimlar');
+  await sekme('igne'); await kaydir('#seCard'); await shot('yan-etkiler');
+  await kaydir('.pencard'); await p.evaluate(() => scrollBy(0, -200)); await shot('kalem');
+  await sekme('kilo'); await kaydir('.mgrid'); await p.evaluate(() => scrollBy(0, -150)); await shot('olculer');
+  await p.click('#gearBtn'); await p.waitForTimeout(400); await p.click('[data-theme-set="dark"]'); await sekme('ozet'); await shot('karanlik-ozet');
+  await sekme('igne'); await kaydir('#seCard'); await shot('karanlik-yan-etkiler');
   // Doktor raporu: örnek verilerle PDF, sayfaları PNG olarak
   await p.click('[data-theme-set="sys"]').catch(() => {}); await p.click('#gearBtn'); await p.waitForTimeout(500); await p.click('[data-theme-set="light"]'); await p.waitForTimeout(300);
   await p.click('#exPdf'); await p.waitForFunction(() => window.__pdf, null, { timeout: 20000 });
@@ -92,6 +93,9 @@ function ornekVeri() {
   // Koç: bugün hafif bulantı kaydı → kişisel örüntü kartı (açık tema)
   await p.evaluate(gun => { const S = window.__hafifKoc.get(); S.coach = {}; S.sides[gun] = { bulanti: 1 }; }, BUGUN);
   await p.evaluate(() => document.querySelector('#sheetRoot') && (document.querySelector('#sheetRoot').innerHTML = ''));
-  await tab('kilo'); await tab('ozet'); await shot('koc');
+  await tab('kilo'); await tab('ozet'); await kaydir('.card.coach'); await p.evaluate(() => scrollBy(0, -140)); await shot('koc');
+  // 2.0: + paneli ve doz planı
+  await p.evaluate(() => scrollTo(0, 0)); await p.click('#fab'); await p.waitForTimeout(500); await shot('arti');
+  await p.evaluate(() => document.querySelector('#sheetRoot').innerHTML = ''); await sekme('igne'); await kaydir('#dzCard'); await p.evaluate(() => scrollBy(0, -16)); await shot('doz-plani');
   await b.close();
 })();
