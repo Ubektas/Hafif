@@ -209,9 +209,9 @@ const J = kapakE({ bg: 'radial-gradient(70% 30% at 100% 15%,#BFEBDB 0%,transpare
 /* ———— K · F'nin cümleleri, E'nin düzeni, emoji ikonlar ———— */
 const SOZ = [['📉','Tartı','Tartın yerinde sayınca nedenini anlatır.','#E1F3EC'],['🍲','Ne yesem?','Akşam ne yiyeceğini Türk mutfağından önerir.','#FBF0DC'],['💉','İğne','İğne gününü ve doz artışını unutturmaz.','#E6EBF5'],['💧','Her gün','Suyunu, adımını, takviyeni tek yerde takip eder.','#E4F1F8'],['🏋️','İlerleme','Kaslarını ve ilerlemeni egzersiz ve fotoğrafla izlersin.','#F7E8EE'],['📋','Doktor','Doktoruna tek bir rapor götürürsün.','#EDF3F0']];
 const Kk = `<!doctype html><html><head><meta charset="utf-8">${FONTS}<style>${base}
-.s{background:radial-gradient(70% 18% at 100% 8%,#3FB592 0%,transparent 70%),linear-gradient(180deg,#167A64 0%,#0F6553 33%,#F4F1EA 33%,#F4F1EA 100%);color:#0B2420}
+.s{background:linear-gradient(180deg,#0B3B33 0%,#0B3B33 33%,#F4F1EA 33%,#F4F1EA 100%);color:#0B2420}
 .top{position:absolute;left:84px;right:84px;top:100px;color:#fff}
-h1{margin:50px 0 0;font:700 104px/1.0 Outfit;letter-spacing:-.04em}h1 em{font-style:normal;color:#B8F7E2}
+h1{margin:50px 0 0;font:700 104px/1.0 Outfit;letter-spacing:-.04em}h1 em{font-style:normal;color:#9FF0D6}
 .tl{position:absolute;left:84px;right:84px;top:520px;background:#fff;border-radius:56px;padding:30px 44px;box-shadow:0 50px 90px -50px rgba(11,59,51,.5)}
 .r{display:flex;align-items:center;gap:30px;padding:28px 0}.r+.r{border-top:1px solid #EEF2EF}
 .r .c{width:136px;height:136px;border-radius:40px;display:grid;place-items:center;flex:none;font-size:70px;font-family:"Noto Color Emoji";line-height:1}
@@ -219,7 +219,7 @@ h1{margin:50px 0 0;font:700 104px/1.0 Outfit;letter-spacing:-.04em}h1 em{font-st
 .trust{position:absolute;left:84px;right:84px;bottom:90px;display:flex;justify-content:space-between;font:600 28px Figtree;color:#0B3B33}
 .trust span:before{content:"✓ ";color:#0E7C66}
 </style></head><body><div class="s">
-<div class="top">${logo('#B8F7E2', '#fff')}<h1>Hafif seninle<br><em>neler yapar?</em></h1></div>
+<div class="top">${logo('#9FF0D6', '#fff')}<h1>Hafif seninle<br><em>neler yapar?</em></h1></div>
 <div class="tl">${SOZ.map(([e, t, d, bg]) => `<div class="r"><span class="c" style="background:${bg}">${e}</span><div><small>${t}</small><b>${d}</b></div></div>`).join('')}</div>
 <div class="trust"><span>Hesap yok</span><span>Reklam yok</span><span>Veri telefonunda</span></div>
 </div></body></html>`;
