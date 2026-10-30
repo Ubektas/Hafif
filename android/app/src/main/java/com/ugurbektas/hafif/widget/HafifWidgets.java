@@ -23,7 +23,7 @@ public final class HafifWidgets {
     private HafifWidgets() {}
 
     /** Tür numarası ve varsayılan boyutu (dp). */
-    static final int[][] DEF = {{0, 0}, {170, 170}, {170, 80}, {170, 170}, {170, 80}, {170, 170}, {170, 170}, {170, 170}, {170, 170}, {170, 170}, {170, 170}, {170, 170}};
+    static final int[][] DEF = {{0, 0}, {170, 170}, {170, 80}, {170, 170}, {170, 80}, {170, 170}, {170, 170}, {170, 170}, {170, 170}, {170, 170}, {170, 170}, {360, 170}};
     static final Class<?>[] KINDS = {null, Dongu.class, Siradaki.class, Bugun.class, Kilo.class, Grafik.class, Hedef.class, Su.class, Protein.class, Adim.class, Takviye.class, NeYesem.class};
 
     public static void updateAll(Context ctx) {
