@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="tr"><head><meta charset="utf-8">
+<link rel="stylesheet" href="../../../www/fonts/fonts.css">
+<!-- 2.0 tanıtım videosu, 1920×1080. Yeni mağaza görsellerinin dili: koyu zümrüt panel, krem zemin, beyaz kartlar, Noto emoji. window.render(t) kare çizer. -->
+<style>
+html,body{margin:0;width:1920px;height:1080px;overflow:hidden;background:#F4F1EA}
+*{box-sizing:border-box}
+.sc{position:absolute;inset:0;opacity:0;font-family:Figtree,sans-serif;color:#0B2420;background:#F4F1EA}
+.e{font-family:"Noto Color Emoji";font-style:normal;line-height:1}
+.pan{position:absolute;left:0;top:0;bottom:0;width:820px;background:radial-gradient(70% 50% at 0% 100%,#12524A 0%,transparent 70%),#0B3B33;color:#fff;padding:0 90px;display:flex;flex-direction:column;justify-content:center}
+.lg{display:flex;align-items:center;gap:12px;font:700 36px Outfit}.lg svg{width:42px;height:42px}
+h1{margin:40px 0 0;font:700 92px/1.03 Outfit;letter-spacing:-.04em}h1 em{font-style:normal;color:#9FF0D6}
+.sub{margin-top:26px;font:500 32px/1.4 Figtree;color:rgba(255,255,255,.72)}
+.vis{position:absolute;left:820px;right:0;top:0;bottom:0}
+.card{background:#fff;border-radius:40px;box-shadow:0 36px 70px -44px rgba(11,59,51,.5)}
+/* giriş/kapanış */
+.full{background:radial-gradient(60% 60% at 80% 10%,#1F8A70 0%,transparent 70%),radial-gradient(50% 50% at 10% 100%,#12524A 0%,transparent 70%),#0B3B33;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.full .wm{display:flex;align-items:center;gap:22px;font:700 150px/1 Outfit;letter-spacing:-.03em}.full .wm svg{width:140px;height:140px}
+.full h2{margin:34px 0 0;font:700 70px/1.1 Outfit;letter-spacing:-.03em}.full h2 em{font-style:normal;color:#9FF0D6}
+.chips{display:flex;gap:18px;margin-top:54px}.chips span{width:110px;height:110px;border-radius:32px;background:#F4F1EA;display:grid;place-items:center;font-size:58px;box-shadow:0 26px 50px -26px rgba(0,0,0,.6)}
+.tr{display:flex;gap:16px;margin-top:50px}.tr span{border:1px solid rgba(159,240,214,.35);border-radius:99px;padding:14px 28px;font:600 30px Figtree;color:rgba(255,255,255,.9)}
+.gp{margin-top:46px;display:inline-flex;align-items:center;gap:14px;background:#9FF0D6;color:#0B3B33;border-radius:99px;padding:20px 40px;font:700 36px Figtree}
+/* 1 liste */
+.rows{position:absolute;left:110px;right:110px;top:110px;bottom:110px;display:flex;flex-direction:column;justify-content:space-between}
+.r{display:flex;align-items:center;gap:26px;padding:16px 26px}.r .ic{width:96px;height:96px;border-radius:28px;display:grid;place-items:center;font-size:52px}
+.r small{display:block;font:700 18px Figtree;letter-spacing:.12em;text-transform:uppercase;color:#0E7C66}.r b{display:block;margin-top:4px;font:700 32px/1.15 Outfit}
+/* 2 tabak */
+.plate{position:absolute;left:90px;top:110px;width:440px;height:440px;border-radius:50%;background:#fff;box-shadow:0 50px 90px -40px rgba(11,59,51,.55),inset 0 0 0 24px #F3EEE5}
+.plate i{position:absolute}
+.sug{position:absolute;left:90px;right:80px;top:640px;display:flex;flex-direction:column;gap:16px}
+.sg{display:flex;align-items:center;gap:22px;padding:18px 26px}.sg .e{font-size:48px;width:80px;height:80px;border-radius:24px;background:#FBF0DC;display:grid;place-items:center}.sg b{font:700 32px Outfit}.sg small{display:block;font:500 22px Figtree;color:#5F726C}
+.sg .p{margin-left:auto;font:700 28px Figtree;color:#B06D10}
+.side{position:absolute;right:80px;top:120px;width:380px;display:flex;flex-direction:column;gap:18px}
+.side .card{padding:24px 26px;font:600 26px/1.3 Figtree}.side .card .e{font-size:44px;display:block;margin-bottom:10px}
+/* 3 iğne */
+.nx{position:absolute;left:110px;right:110px;top:120px;padding:34px 40px;background:#0B3B33;color:#fff;border-radius:40px;display:flex;align-items:center;gap:28px}
+.nx .e{font-size:72px;width:120px;height:120px;border-radius:34px;background:rgba(159,240,214,.14);display:grid;place-items:center}
+.nx small{display:block;font:700 20px Figtree;letter-spacing:.12em;text-transform:uppercase;color:#9FF0D6}.nx b{display:block;font:700 46px Outfit;margin-top:6px}.nx span{font:500 26px Figtree;color:rgba(255,255,255,.72)}
+.pl{position:absolute;left:110px;width:480px;top:380px;padding:36px 40px}.pl h3{margin:0 0 14px;font:700 36px Outfit}
+.st{display:flex;align-items:center;gap:24px;padding:16px 0}.st i{width:50px;height:50px;border-radius:50%;border:4px solid #E0E8E4;display:grid;place-items:center;font:700 26px Figtree;font-style:normal;color:#fff;background:#fff}
+.st.ok i{background:#27407A;border-color:#27407A}.st.now i{border-color:#27407A;box-shadow:0 0 0 9px #E6EBF5}.st b{display:block;font:700 34px Outfit}.st small{font:500 22px Figtree;color:#5F726C}.st.nxs b{color:#9AA8A3}
+.wn{position:absolute;right:90px;top:400px;width:380px;padding:30px;display:flex;flex-direction:column;gap:12px;border:2px solid #E6EBF5}.wn .e{font-size:62px}.wn b{font:700 32px/1.2 Outfit}.wn span{font:500 24px Figtree;color:#5F726C}
+.zone{position:absolute;right:90px;top:760px;width:380px;padding:24px 30px;display:flex;gap:16px;align-items:center;font:600 26px Figtree}.zone .e{font-size:44px}
+/* 4 koç */
+.chat{position:absolute;left:110px;right:110px;top:110px;bottom:110px;display:flex;flex-direction:column;justify-content:center;gap:30px}
+.m{display:flex;gap:18px;align-items:flex-end}.m .av{width:76px;height:76px;border-radius:50%;background:#0B3B33;display:grid;place-items:center;font-size:40px;flex:none}
+.bb{background:#fff;border-radius:36px 36px 36px 10px;padding:26px 32px;font:600 32px/1.3 Figtree;max-width:820px;box-shadow:0 30px 60px -40px rgba(11,59,51,.5)}.bb small{display:block;margin-top:8px;font:500 21px Figtree;color:#5F726C}
+.m.me{align-self:flex-end}.m.me .bb{background:#0B3B33;color:#fff;border-radius:36px 36px 10px 36px}
+/* 5 kilo */
+.cv{position:absolute;left:110px;top:130px}
+.eta{position:absolute;left:330px;top:560px;background:#0B3B33;color:#fff;border-radius:99px;padding:18px 32px;font:600 30px Figtree;display:flex;gap:14px;align-items:center}.eta b{color:#9FF0D6;font:700 34px Outfit}
+.wk{position:absolute;left:110px;right:110px;top:680px;padding:30px 40px}.wk small{font:700 20px Figtree;letter-spacing:.12em;text-transform:uppercase;color:#0E7C66}.wk h3{margin:6px 0 14px;font:700 36px Outfit}
+.row{display:grid;grid-template-columns:130px repeat(7,1fr);align-items:center;gap:8px;margin:6px 0;font:600 24px Figtree}.row i{width:36px;height:36px;border-radius:50%;justify-self:center;border:4px solid currentColor}
+/* 6 her gün */
+.tri{position:absolute;left:110px;right:110px;top:120px;display:grid;grid-template-columns:repeat(3,1fr);gap:24px}.tri .card{padding:30px 20px;text-align:center}.tri .e{font-size:92px;display:block;margin-bottom:14px}.tri b{display:block;font:700 36px Outfit}.tri span{display:block;margin-top:6px;font:500 22px/1.3 Figtree;color:#5F726C}
+.home{position:absolute;left:110px;right:110px;top:520px;height:440px;border-radius:44px;background:linear-gradient(160deg,#CFE8DE,#B7D9CC);padding:30px;display:grid;grid-template-columns:repeat(4,1fr);gap:22px}
+.w{border-radius:32px;background:rgba(255,255,255,.9);padding:24px;display:flex;flex-direction:column;justify-content:space-between}.w .e{font-size:56px}.w b{font:700 28px/1.15 Outfit}.w small{display:block;font:500 19px Figtree;color:#5F726C;margin-top:4px}.w.dk{background:#0B3B33;color:#fff}.w.dk small{color:rgba(255,255,255,.65)}
+/* 7 ilerleme */
+.pol{position:absolute;top:120px;width:330px;padding:18px 18px 60px;background:#fff;border-radius:12px;box-shadow:0 36px 60px -34px rgba(11,59,51,.5)}.pol svg{display:block;width:100%;border-radius:6px}.pol b{position:absolute;left:0;right:0;bottom:16px;text-align:center;font:600 24px Figtree;color:#4E6B63}
+.ex{position:absolute;left:110px;right:110px;top:720px;padding:30px 36px}.ex h3{margin:0 0 18px;font:700 34px Outfit}
+.days{display:grid;grid-template-columns:repeat(7,1fr);gap:12px}.days span{height:84px;border-radius:24px;background:#EDF3F0;display:grid;place-items:center;font:600 22px Figtree;color:#5F726C}.days span.on{background:#E6EBF5;font-size:42px}
+</style></head><body>
+<script>
+const LEAF=c=>`<svg viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="1.8" stroke-linecap="round"><path d="M20 4C11 4 5 9 5 17v3"/><path d="M20 4c0 9-5 14-13 14"/></svg>`;
+const pan=(h,sub)=>`<div class="pan"><div class="lg" data-t=".1" data-k="up">${LEAF('#9FF0D6')}Hafif</div><h1 data-t=".25" data-k="up">${h}</h1>${sub?`<div class="sub" data-t=".45" data-k="up">${sub}</div>`:''}</div>`;
+const sil=(c)=>`<svg viewBox="0 0 200 260"><rect width="200" height="260" fill="${c[0]}"/><circle cx="100" cy="86" r="34" fill="${c[1]}"/><path d="M46 260c0-70 30-108 54-108s54 38 54 108z" fill="${c[1]}"/></svg>`;
+const curve=(()=>{const W=860,H=400,pts=[...Array(26)].map((_,i)=>{const x=i/25;return [x*W,50+(1-Math.exp(-x*2.2))*230+Math.sin(i*1.7)*9]});const k=17,d=a=>a.map((p,i)=>`${i?'L':'M'}${p[0].toFixed(1)} ${p[1].toFixed(1)}`).join('');const pk=pts[k];
+ return `<svg width="${W}" height="${H}"><defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0E7C66" stop-opacity=".25"/><stop offset="1" stop-color="#0E7C66" stop-opacity="0"/></linearGradient></defs>
+ <path data-t=".9" data-k="fade" d="${d(pts.slice(0,k+1))}L${pk[0]} ${H}L0 ${H}Z" fill="url(#g)"/><path data-draw=".3" data-dur="1.4" pathLength="1" d="${d(pts.slice(0,k+1))}" fill="none" stroke="#0E7C66" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+ <path data-t="1.6" data-k="fade" d="${d(pts.slice(k))}" fill="none" stroke="#0E7C66" stroke-width="6" stroke-dasharray="4 16" stroke-linecap="round"/><circle data-t="1.6" data-k="fade" cx="${pk[0]}" cy="${pk[1]}" r="20" fill="#fff" stroke="#0E7C66" stroke-width="8"/></svg>`})();
+const S=[
+ {d:3.4,cls:'full',h:`<div class="wm" data-t=".1" data-k="pop">${LEAF('#9FF0D6')}Hafif</div><h2 data-t=".7" data-k="up">Kilo verirken<br><em>ihtiyacın olan her şey.</em></h2>
+   <div class="chips">${['💉','🍲','💧','💊','👟','📋'].map((e,i)=>`<span class="e" data-t="${1.3+i*.12}" data-k="pop">${e}</span>`).join('')}</div>`},
+ {d:4.6,h:pan('Hafif seninle<br><em>neler yapar?</em>')+`<div class="vis"><div class="rows">${[['📉','Tartı','Tartın yerinde sayınca nedenini anlatır.','#E1F3EC'],['🍲','Ne yesem?','Akşam ne yiyeceğini Türk mutfağından önerir.','#FBF0DC'],['💉','İğne','İğne gününü ve doz artışını unutturmaz.','#E6EBF5'],['💧','Her gün','Suyunu, adımını, takviyeni tek yerde takip eder.','#E4F1F8'],['🏋️','İlerleme','Kaslarını ve ilerlemeni egzersiz ve fotoğrafla izlersin.','#F7E8EE'],['📋','Doktor','Doktoruna tek bir rapor götürürsün.','#EDF3F0']].map(([e,t,s,bg],i)=>`<div class="r card" data-t="${.4+i*.32}" data-k="left"><span class="ic e" style="background:${bg}">${e}</span><div><small>${t}</small><b>${s}</b></div></div>`).join('')}</div></div>`},
+ {d:4.6,h:pan('Akşam ne yesem?<br><em>Hafif söylesin.</em>','Kalan proteinine ve iştahına göre, Türk mutfağından.')+`<div class="vis"><div class="plate" data-t=".2" data-k="pop"><i class="e" data-t=".7" data-k="drop" style="left:70px;top:90px;font-size:150px">🍗</i><i class="e" data-t=".95" data-k="drop" style="left:215px;top:180px;font-size:130px">🥗</i><i class="e" data-t="1.2" data-k="drop" style="left:90px;top:235px;font-size:122px">🍚</i></div>
+   <div class="side"><div class="card" data-t="1.4" data-k="left"><span class="e">🌙</span>Akşam için öneriler</div><div class="card" data-t="1.6" data-k="left"><span class="e">🤢</span>İştahın azsa hafif seçenekler</div><div class="card" data-t="1.8" data-k="left"><span class="e">👆</span>Dokun, proteinin eklensin</div></div>
+   <div class="sug">${[['🍗','Tavuk şiş ve bulgur','Akşam için'],['🍲','Mercimek çorbası ve yoğurt','Hafif bir seçenek']].map(([e,n,s],i)=>`<div class="sg card" data-t="${2+i*.25}" data-k="up"><span class="e">${e}</span><div><b>${n}</b><small>${s}</small></div><span class="p">+ ekle</span></div>`).join('')}</div></div>`},
+ {d:4.6,h:pan('İğne günü ve<br><em>doz artışı, hep aklında.</em>','Sıradaki iğnen, önerilen bölge ve doktorunun planı.')+`<div class="vis"><div class="nx" data-t=".3" data-k="up"><span class="e">💉</span><div><small>Sıradaki iğne</small><b>Pazar sabahı</b><span>Önerilen bölge: karın, sol</span></div></div>
+   <div class="pl card" data-t=".6" data-k="up"><h3>Doz planım <span class="e">🗓️</span></h3>${[['ok','1. basamak','Tamamlandı'],['ok','2. basamak','Tamamlandı'],['now','3. basamak','Şu an'],['nxs','4. basamak','Sıradaki']].map(([c,b,s],i)=>`<div class="st ${c}" data-t="${1+i*.3}" data-k="left"><i>${c==='ok'?'✓':''}</i><div><b>${b}</b><small>${s}</small></div></div>`).join('')}</div>
+   <div class="wn card" data-t="2.5" data-k="pop"><span class="e">🛒</span><b>Gelecek hafta doz artıyor</b><span>Yeni kalemini bu hafta al.</span></div>
+   <div class="zone card" data-t="2.9" data-k="up"><span class="e">🔔</span>Bir gün önceden hatırlatma</div></div>`},
+ {d:5.2,h:pan('Seni tanıyan<br><em>bir koç.</em>','Kayıtlarına bakar, doğru anda tek bir öneri verir.')+`<div class="vis"><div class="chat">
+   <div class="m" data-t=".4" data-k="up"><span class="av e">🌿</span><div class="bb">Tartı üç gündür yerinde ama belin incelmiş. Yağ kaybı sürüyor. 💪<small>Duraklama</small></div></div>
+   <div class="m me" data-t="1.5" data-k="up"><div class="bb">Bulantı yine başladı…</div></div>
+   <div class="m" data-t="2.4" data-k="up"><span class="av e">🌿</span><div class="bb">Senin döngünde en çok iğneden sonraki 2. gün oluyor, yarın hafifler. Bugün küçük ve sık ye. 🍵<small>Son iğnelerine göre</small></div></div>
+   <div class="m" data-t="3.4" data-k="up"><span class="av e">🌿</span><div class="bb">Bu hafta proteinde bir gün daha yeter. 🥚</div></div></div></div>`},
+ {d:4.6,h:pan('Yolun nereye<br><em>gidiyor, gör.</em>','Kilo eğrin ve bu hızla hedefe varacağın zaman. Her pazartesi haftan.')+`<div class="vis"><div class="cv">${curve}</div><div class="eta" data-t="1.9" data-k="pop"><span class="e">📍</span>Bu hızla hedefe <b>Mart</b></div>
+   <div class="wk card" data-t="2.3" data-k="up"><small>Her pazartesi</small><h3>Haftan, tek bakışta <span class="e">🎯</span></h3>${[['Protein','#C27A12',[1,1,0,1,1,0,1]],['Su','#2E8BC0',[1,1,1,0,1,1,1]]].map(([n,c,a],j)=>`<div class="row" style="color:${c}"><span style="color:#0B2420">${n}</span>${a.map((v,i)=>`<i data-fill="${2.6+j*.2+i*.08}" data-on="${v}"></i>`).join('')}</div>`).join('')}</div></div>`},
+ {d:4.4,h:pan('Küçük alışkanlıklar,<br><em>tek dokunuş.</em>','Su, adım, takviye ve ana ekran widget\'ları.')+`<div class="vis"><div class="tri">${[['💧','Su','Tek dokunuşla ekle'],['👟','Adım','Kendiliğinden gelir'],['💊','Takviye','Sabah, akşam, gece']].map(([e,b,s],i)=>`<div class="card" data-t="${.3+i*.2}" data-k="pop"><span class="e">${e}</span><b>${b}</b><span>${s}</span></div>`).join('')}</div>
+   <div class="home" data-t="1.2" data-k="up">${[['💉','İğneye 4 gün','Bölge hazır',1],['💧','Su','+ Bardak',0],['💊','Akşam takviyesi','Hepsini aldım',0],['🔔','Hatırlatmalar','İğne, su, tartı',0]].map(([e,b,s,dk],i)=>`<div class="w${dk?' dk':''}" data-t="${1.6+i*.2}" data-k="pop"><span class="e">${e}</span><div><b>${b}</b><small>${s}</small></div></div>`).join('')}</div></div>`},
+ {d:4.4,h:pan('Tartının göremediğini<br><em>sen gör.</em>','Haftalık fotoğraf ve kas koruma. Fotoğraflar galeride görünmez.')+`<div class="vis"><div class="pol" data-t=".3" data-k="drop" style="left:150px;transform:rotate(-5deg)">${sil(['#DCEFE7','#9FC9B8'])}<b>1. hafta</b></div><div class="pol" data-t=".7" data-k="drop" style="left:560px;transform:rotate(4deg)">${sil(['#CDE9DE','#0E7C66'])}<b>8. hafta</b></div>
+   <div class="ex card" data-t="1.4" data-k="up"><h3>Kas koruma <span class="e">🏋️</span></h3><div class="days">${['Pzt','Sal','Çar','Per','Cum','Cmt','Paz'].map((d,i)=>[0,2,4].includes(i)?`<span class="on e" data-t="${1.9+i*.15}" data-k="pop">💪</span>`:`<span>${d}</span>`).join('')}</div></div></div>`},
+ {d:4.6,cls:'full',h:`<div class="wm" data-t=".1" data-k="pop" style="font-size:110px">${LEAF('#9FF0D6').replace('<svg','<svg style="width:100px;height:100px"')}Hafif</div><h2 data-t=".5" data-k="up">Doktoruna hazır git.<br><em>Verilerin sende kalsın.</em></h2>
+   <div class="tr">${['📋 PDF rapor','🙅 Hesap yok','🚫 Reklam yok','📴 İnternetsiz'].map((x,i)=>`<span data-t="${1+i*.15}" data-k="up"><i class="e">${x.slice(0,2)}</i>${x.slice(2)}</span>`).join('')}</div>
+   <div class="gp" data-t="2" data-k="pop">Google Play'de · 7 gün Plus ücretsiz</div>`}
+];
+let acc=0;S.forEach(s=>{s.s=acc;acc+=s.d});window.SURE=acc;
+document.body.innerHTML=S.map((s,i)=>`<div class="sc ${s.cls||''}" id="s${i}">${s.h}</div>`).join('');
+const cl=x=>Math.max(0,Math.min(1,x)),eo=x=>1-Math.pow(1-x,3),bk=x=>{const c=1.7;return 1+(c+1)*Math.pow(x-1,3)+c*Math.pow(x-1,2)};
+window.render=function(t){
+ S.forEach((s,i)=>{const el=document.getElementById('s'+i),lt=t-s.s,F=.45;
+  const op=i===0?cl((s.d-lt)/F):i===S.length-1?cl(lt/F):cl(lt/F)*cl((s.d-lt)/F);
+  el.style.opacity=(lt<-.01||lt>s.d+.01)?0:op;if(el.style.opacity==0)return;
+  el.querySelectorAll('[data-t]').forEach(n=>{const p=cl((lt-+n.dataset.t)/.6),k=n.dataset.k,base=n.dataset.base??(n.dataset.base=n.style.transform||'');
+   n.style.opacity=k==='drop'||k==='pop'?Math.min(1,p*2):p;
+   n.style.transform=(k==='up'?`translateY(${(1-eo(p))*40}px)`:k==='left'?`translateX(${(1-eo(p))*70}px)`:k==='pop'?`scale(${.6+.4*bk(p)})`:k==='drop'?`translateY(${(1-bk(p))*-90}px)`:'')+' '+base});
+  el.querySelectorAll('[data-draw]').forEach(n=>{const p=eo(cl((lt-+n.dataset.draw)/+n.dataset.dur));n.style.strokeDasharray='1';n.style.strokeDashoffset=1-p});
+  el.querySelectorAll('[data-fill]').forEach(n=>{const on=lt>=+n.dataset.fill&&n.dataset.on==='1';n.style.background=on?'currentColor':'transparent'});
+ });
+};
+render(0);
+</script></body></html>
