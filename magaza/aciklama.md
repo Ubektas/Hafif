@@ -6,7 +6,7 @@ Hafif: Kilo ve İğne Takibi
 ## Kısa açıklama (en fazla 80 karakter)
 Kilo, haftalık iğne, protein ve su takibi. Hesap yok, veri telefonunda.
 
-## Tam açıklama (en fazla 4000 karakter · 2.0, 3904 karakter)
+## Tam açıklama (en fazla 4000 karakter · 2.0, 4076 karakter)
 Hafif, kilo verme yolculuğunu sade ve motive edici bir şekilde takip etmen için tasarlandı. Kilo takibi, haftalık iğne takibi, protein ve su, takviyeler, vücut ölçüleri ve adımların tek bir yerde; ilerlemeni anlaşılır grafiklerle görürsün. Hesap yok, veriler yalnızca telefonunda.
 
 HEPSİ TEK EKRANDA
@@ -27,6 +27,10 @@ KİLO, HEDEF TARİHİ VE VÜCUT ÖLÇÜLERİ
 
 KAS KORUMA
 • Haftalık direnç egzersizi hedefi; yaptığın günleri ve süreyi tek dokunuşla işaretle
+
+NE YESEM?
+• Akşam ne yiyeceğini Hafif söylesin: kalan proteinine, saate ve iştahına göre Türk mutfağından öğün önerileri
+• Önerilere dokun, proteinin tek seferde eklensin
 
 HAFTALIK İĞNE TAKİBİ (isteğe bağlı)
 • Her iğneyi tarih, saat, doz ve bölgeyle kaydet; sıradaki bölge önerisini al
