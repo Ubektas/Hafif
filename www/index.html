@@ -624,6 +624,32 @@ label.drow{flex-direction:row;font-size:14px;font-weight:500;margin:0}
 .exdays{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
 .exdays button{border:0;border-radius:12px;background:var(--sunk);color:var(--muted);font:600 12.5px var(--f-body);padding:11px 0;cursor:pointer}
 .exdays button.on{background:var(--shot);color:#fff}.exdays button.td{box-shadow:inset 0 0 0 2px var(--shot)}.exdays button.on.td{box-shadow:inset 0 0 0 2px var(--shot),0 0 0 2px var(--surface) inset}.exdays button:disabled{opacity:.45;cursor:default}
+.dz{display:flex;flex-direction:column;gap:12px}
+.dzh{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.dzl{display:flex;flex-direction:column}
+.dzr{display:grid;grid-template-columns:22px 1fr auto;gap:10px;align-items:center;position:relative;padding:8px 0}
+.dzr:not(:last-child):before{content:"";position:absolute;left:10px;top:30px;bottom:-8px;width:2px;background:var(--line)}
+.dzr.done:not(:last-child):before{background:var(--shot)}
+.dzr i{display:grid;place-items:center;width:22px;height:22px;border-radius:50%;border:2px solid var(--line);background:var(--surface);z-index:1;box-sizing:border-box;font-style:normal;font-size:0}
+.dzr.done i{background:var(--shot);border-color:var(--shot);color:#fff}
+.dzr.now i{border-color:var(--shot);box-shadow:0 0 0 4px var(--shot-soft)}
+.dzr.now i:after{content:"";width:8px;height:8px;border-radius:50%;background:var(--shot)}
+.dzr b{font:700 16px var(--f-display);letter-spacing:-.01em}
+.dzr .s{font-size:12.5px;color:var(--muted)}
+.dzr.nx b{color:var(--muted)}
+.dzr em{font:600 12px var(--f-body);font-style:normal;color:var(--muted);text-align:right}
+.dzr.now em{color:var(--shot)}
+.dzbar{display:flex;gap:3px;margin-top:5px}.dzbar u{height:5px;width:22px;border-radius:3px;background:var(--sunk)}.dzbar u.on{background:var(--shot)}
+.dzw{display:flex;gap:10px;align-items:flex-start;background:var(--shot-soft);border-radius:14px;padding:11px 12px;font-size:13px;line-height:1.4}
+.dzw b{display:block;font-size:13.5px}.dzup{color:var(--shot);margin-top:1px;flex:none}
+.dzn{font-size:11.5px;color:var(--muted)}
+.dze{display:flex;flex-direction:column;gap:10px;margin:6px 0 4px}
+.dze .r{display:grid;grid-template-columns:1fr 124px auto;gap:8px;align-items:center;background:var(--sunk);border-radius:14px;padding:10px}
+.dze .r .stepper{background:var(--surface)}
+.dze .r .d{display:flex;flex-direction:column;gap:2px;min-width:0}.dze .r .d span{font-size:12px;color:var(--muted)}.dze .r .d span.src{color:var(--shot);font-weight:600}
+.dze select{font:700 17px var(--f-display);color:var(--fg);background:none;border:0;padding:0;width:auto;max-width:100%}
+.dzx{width:30px;height:30px;border:0;border-radius:50%;background:none;color:var(--muted);font-size:20px;cursor:pointer}
+.dze .add{border:1.5px dashed var(--line);background:none;border-radius:14px;padding:12px;font:600 13px var(--f-body);color:var(--muted);cursor:pointer}
 .exbtn{background:var(--shot-soft);color:var(--shot);box-shadow:none;display:flex;align-items:center;justify-content:center;gap:8px}
 .exdone{display:flex;align-items:center;gap:8px;flex-wrap:wrap;background:var(--shot-soft);color:var(--shot);border-radius:14px;padding:10px 12px;font:600 14px var(--f-body)}.exdone>span{flex:1;min-width:110px}
 .exmin{display:flex;align-items:center;gap:4px}.exmin button{border:0;border-radius:99px;background:var(--surface);color:var(--fg);font:600 12.5px var(--f-body);padding:5px 9px;cursor:pointer}.exmin button[aria-pressed="true"]{background:var(--shot);color:#fff}.exmin small{font-size:11px;color:var(--shot)}
@@ -1588,7 +1614,7 @@ function nextShotRow(){
   const nd=addDays(ls.date,S.profile.intervalDays||7),left=diffDays(today(),nd),X=cycData();
   const when=left>1?`${left} gün sonra`:left===1?"Yarın":left===0?"Bugün":`${-left} gün gecikti`;
   const day=toD(nd).toLocaleDateString("tr-TR",{weekday:"long"});
-  return `<button type="button" class="card nsrow${left<=0?" due":""}" data-go="igne"><span class="nsi"><b>${left>0?left:"!"}</b><small>${left>0?"gün":""}</small></span><span class="nst"><b>${left>1?day+" "+shotTime(ls):when}${ls.dose!=null&&ls.dose!==""?` · ${String(ls.dose).replace(".",",")} mg`:""}</b><small>${X?`${PHASES[X.I.cur].k} evresi · `:""}<span style="white-space:nowrap">Öneri: ${siteLbl(nextSite())}</span></small></span><i>›</i></button>`;
+  return `<button type="button" class="card nsrow${left<=0?" due":""}" data-go="igne"><span class="nsi"><b>${left>0?left:"!"}</b><small>${left>0?"gün":""}</small></span><span class="nst"><b>${left>1?day+" "+shotTime(ls):when}${(()=>{const P=planState(),d=P&&P.nextDose||ls.dose;return d!=null&&d!==""?` · ${dzMg(d)} mg${P&&P.up?" ↑":""}`:""})()}</b><small>${X?`${PHASES[X.I.cur].k} evresi · `:""}<span style="white-space:nowrap">Öneri: ${siteLbl(nextSite())}</span></small></span><i>›</i></button>`;
 }
 /* Özet: rozetler tek satır */
 /* ---------- G2 · Pazartesi haftalık özet ("Haftan") ----------
@@ -1736,7 +1762,7 @@ const dm=t=>new Date(t).toLocaleDateString("tr-TR",{day:"2-digit",month:"2-digit
 function pkState(){
   const now=Date.now(); const all=sortedS(); const past=all.filter(x=>shotTs(x)<=now);
   const last=past[past.length-1]; let next=null;
-  if(last){const n={date:addDays(last.date,S.profile.intervalDays||7),time:shotTime(last),dose:last.dose};if(shotTs(n)>now)next=n}
+  if(last){const n={date:addDays(last.date,S.profile.intervalDays||7),time:shotTime(last),dose:planNextDose()||last.dose};if(shotTs(n)>now)next=n}
   const upcoming=all.find(x=>shotTs(x)>now); if(upcoming)next=upcoming;
   return {now,past,last,next,fut:next?past.concat([next]):past};
 }
@@ -3770,7 +3796,7 @@ function penWarn(){
   const P=S.profile;if(!SHOTS()||P.penLeft==null||P.penLeft>1)return "";
   return `<button type="button" class="card stcta" data-go="igne" style="box-shadow:inset 0 0 0 1.5px var(--shot)"><span class="mi" style="background:var(--shot-soft);color:var(--shot)">${P.penLeft}</span><span style="flex:1;min-width:0"><b>${P.penLeft===0?"Kalemin bitti":"Kaleminde son doz kaldı"}</b><small>Eczaneye uğramayı unutma; yeni kalemi açınca İğneler'den işaretle</small></span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="var(--muted)" stroke-width="2" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg></button>`;
 }
-function bindIgne(){bindSe();bindPen()}
+function bindIgne(){bindSe();bindPen();bindPlan()}
 function bindSe(){
   document.querySelectorAll("[data-se]").forEach(b=>b.addEventListener("click",()=>{tipDone("se");const d=seDay||today();S.sides=S.sides||{};const r=Object.assign({},S.sides[d]||{});const k=b.dataset.se;r[k]=((r[k]||0)+1)%4;
     if(!r[k])delete r[k];if(Object.keys(r).length)S.sides[d]=r;else delete S.sides[d];holdUntil=Date.now()+800;save();const y=window.scrollY;$("#seCard").outerHTML=sideCard();bindSe();window.scrollTo(0,y)}));
@@ -3784,11 +3810,91 @@ function bindPen(){
   const pn=$("#penNew");if(pn)pn.addEventListener("click",()=>{S.profile.penLeft=S.profile.penSize||4;save();render();toast("Yeni kalem: "+S.profile.penLeft+" doz")});
   document.querySelectorAll("[data-pen]").forEach(b=>b.addEventListener("click",()=>{const P=S.profile;P.penLeft=Math.max(0,Math.min(P.penSize||4,P.penLeft+ +b.dataset.pen));save();render()}));
 }
+/* G6 · Doktorunun doz planı (Plus). S.profile.dplan={steps:[{d:"2,5",w:4},…],rem:true}; w=0 süresiz (son basamak).
+   Hafif doz önermez: hangi basamakta olduğunu son iğnelerin dozundan sayar, sıradaki iğnenin dozunu plana göre hazırlar. */
+const dzMg=v=>String(v??"").replace(".",",");
+const dzD=d=>toD(d).toLocaleDateString("tr-TR",{day:"numeric",month:"short"});
+function planState(){
+  const pl=S.profile.dplan;if(!PLUS()||!SHOTS()||!pl||!pl.steps||!pl.steps.length)return null;
+  const st=pl.steps,eq=(a,b)=>num(a)!=null&&num(a)===num(b),now=Date.now(),iv=S.profile.intervalDays||7;
+  const past=sortedS().filter(x=>x.dose!=null&&x.dose!==""&&shotTs(x)<=now),last=past[past.length-1];
+  let cur=-1,cnt=0,since=null;
+  if(last){cur=st.findIndex(x=>eq(x.d,last.dose));if(cur>=0)for(let i=past.length-1;i>=0&&eq(past[i].dose,last.dose);i--){cnt++;since=past[i].date}}
+  const nextDate=last?addDays(last.date,iv):null,c=st[cur];
+  const up=!!(c&&c.w>0&&cnt>=c.w&&st[cur+1]),nextDose=cur<0?null:up?st[cur+1].d:c.d;
+  const incDate=c&&c.w>0&&st[cur+1]?(up?nextDate:addDays(nextDate,(c.w-cnt)*iv)):null;
+  const rows=st.map((x,i)=>{const mine=past.filter(y=>eq(y.dose,x.d));return {d:x.d,w:x.w,i,
+    st:cur<0?"nx":i<cur?"done":i===cur?"now":"nx",first:mine[0]&&mine[0].date,lastD:mine.length?mine[mine.length-1].date:null,n:mine.length}});
+  if(cur>=0){let t=incDate;for(let i=cur+1;i<rows.length;i++){rows[i].start=t;t=t&&rows[i].w>0?addDays(t,rows[i].w*iv):null}
+    rows[cur].first=since;rows[cur].end=c.w>0?addDays(since,c.w*iv-1):null}
+  return {st,cur,cnt,up,nextDose,nextDate,incDate,rows,last,soon:!!(incDate&&diffDays(today(),incDate)<=8)};
+}
+const planNextDose=()=>{const P=planState();return P&&P.nextDose};
+const DZ_CHK=`<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>`;
+function planCard(){
+  if(!SHOTS())return "";
+  const head=btn=>`<div class="dzh"><div><h2>Doz planım</h2><span class="muted" style="font-size:12.5px">Doktorunun yazdığı plan</span></div>${btn||""}</div>`;
+  const note=`<span class="dzn">Hafif doz önermez; yalnızca senin girdiğin planı izler. Değişiklik için doktoruna danış.</span>`;
+  if(!PLUS()){const smp=`<div class="dzl"><div class="dzr done"><i>${DZ_CHK}</i><div><b>2,5 mg</b><div class="s">25 Ağu – 21 Eyl</div></div><em>tamam</em></div><div class="dzr now"><i></i><div><b>5 mg</b><div class="s">22 Eyl – 19 Eki</div></div><em>2. hafta / 4</em></div><div class="dzr nx"><i>&nbsp;</i><div><b>7,5 mg</b><div class="s">20 Eki'den</div></div><em>sıradaki</em></div></div>`;
+    return `<div class="card dz">${head(`<span class="ptag">✦ Plus</span>`)}${plock(smp,"Doz planın Plus'ta","Doktorunun planını bir kez gir; artış haftasını ve yeni kalemi Hafif hatırlatsın.")}</div>`}
+  const P=planState();
+  if(!P)return `<div class="card dz">${head()}<p class="muted" style="margin:0;font-size:14px">Doz genelde birkaç haftada bir artırılır. Doktorunun planını bir kez gir; Hafif artış haftasını hatırlatır, iğne eklerken dozu hazır getirir.</p><button type="button" class="btn shotbtn" id="dzOpen">Doktorunun planını gir</button></div>`;
+  const R=P.rows.map(r=>{let sub="",em="";
+    if(r.st==="done"){sub=r.first?`${dzD(r.first)} – ${dzD(r.lastD)} · ${r.n} iğne`:"";em="tamam"}
+    else if(r.st==="now"){sub=r.end?`${dzD(r.first)} – ${dzD(r.end)}`:`${dzFrom(r.first)} beri`;em=r.w>0?(P.cnt>=r.w?"tamamlandı":`${P.cnt}. hafta / ${r.w}`):"devam"}
+    else{sub=r.start?`${dzFrom(r.start)} itibaren`:r.w>0?`${r.w} hafta`:"süresiz";em=r.i===P.cur+1?"sıradaki":""}
+    const bar=r.st==="now"&&r.w>0&&r.w<=12?`<div class="dzbar">${Array.from({length:r.w},(_,k)=>`<u class="${k<P.cnt?"on":""}"></u>`).join("")}</div>`:"";
+    return `<div class="dzr ${r.st}"><i>${r.st==="done"?DZ_CHK:"&nbsp;"}</i><div><b>${dzMg(r.d)} mg</b><div class="s">${sub}</div>${bar}</div><em>${em}</em></div>`}).join("");
+  let warn="";
+  if(P.cur<0&&P.last)warn=`<div class="dzw"><span><b>Son iğnen (${dzMg(P.last.dose)} mg) planda yok</b>Planı düzenle ya da iğneyi doğru dozla kaydet.</span></div>`;
+  else if(P.soon){const nd=P.st[P.cur+1].d,lf=diffDays(today(),P.incDate),day=lf<=0?"Bugün":lf===1?"Yarın":toD(P.incDate).toLocaleDateString("tr-TR",{weekday:"long"}),pen=S.profile.penLeft;
+    warn=`<div class="dzw"><span class="dzup">${UP_I}</span><span><b>${P.up?`${day} ${dzMg(nd)} mg'a geçiyorsun`:`Gelecek hafta ${dzMg(nd)} mg'a geçiyorsun`}</b>${pen>0?`Kalemindeki ${pen} doz ${dzMg(P.st[P.cur].d)} mg; yeni doz için yeni kalem gerekiyor. `:"Yeni doz için yeni kalem gerekiyor. "}Eczaneye bu hafta uğra.</span></div>`}
+  return `<div class="card dz" id="dzCard">${head(`<button type="button" class="slnk" id="dzOpen" style="color:var(--shot);margin-top:2px">Düzenle</button>`)}<div class="dzl">${R}</div>${warn}${note}</div>`;
+}
+const UP_I=`<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>`;
+/* "17 Kasım'dan" — ayın tam adı ve ayrılma eki */
+const dzFrom=d=>{const x=toD(d);return `${x.getDate()} ${["Ocak'tan","Şubat'tan","Mart'tan","Nisan'dan","Mayıs'tan","Haziran'dan","Temmuz'dan","Ağustos'tan","Eylül'den","Ekim'den","Kasım'dan","Aralık'tan"][x.getMonth()]}`};
+function bindPlan(){const b=$("#dzOpen");if(b)b.addEventListener("click",openPlanSheet)}
+function openPlanSheet(){
+  const pl=S.profile.dplan,eq=(a,b)=>num(a)===num(b);let src={};
+  let steps=pl&&pl.steps?pl.steps.map(x=>({...x})):[];
+  if(!steps.length){const past=sortedS().filter(x=>x.dose!=null&&x.dose!==""&&shotTs(x)<=Date.now());
+    past.forEach(x=>{const k=steps.findIndex(y=>eq(y.d,x.dose));if(k<0){steps.push({d:String(x.dose).replace(".",","),w:1});src[steps.length-1]=x.date}else if(k===steps.length-1)steps[k].w++});
+    steps.forEach((x,i)=>{if(i===steps.length-1)x.w=Math.max(x.w,4)});
+    if(!steps.length)steps=[{d:"2,5",w:4}];
+    const li=DOSES.findIndex(x=>eq(x,steps[steps.length-1].d));if(li>=0&&DOSES[li+1])steps.push({d:DOSES[li+1],w:0})}
+  let remOn=pl?pl.rem!==false:true;
+  const draw=()=>{const L=steps.length;
+    $("#sheetRoot").innerHTML=`<div class="scrim" data-close><div class="sheet" role="dialog" aria-modal="true" aria-label="Doz planım"><div class="grab"></div>
+    <header><h2>Doz planım</h2><button class="del" data-x>Kapat</button></header>
+    <p class="muted" style="margin:0 0 4px;font-size:13px">Doktorunun yazdığı basamakları sırayla gir. ${Object.keys(src).length?"Geçmiş iğnelerinden bulduklarımızı doldurduk; kontrol et.":"Her basamak kaç hafta sürecek, onu seç."}</p>
+    <div class="dze">${steps.map((x,i)=>`<div class="r"><div class="d"><select data-dzd="${i}" aria-label="${i+1}. basamak dozu">${[...new Set(DOSES.concat(DOSES.some(y=>eq(y,x.d))?[]:[x.d]))].map(v=>`<option value="${esc(v)}" ${eq(v,x.d)?"selected":""}>${esc(dzMg(v))} mg</option>`).join("")}</select><span class="${src[i]?"src":""}">${src[i]?`iğne geçmişinden · ${dzD(src[i])}`:i===L-1&&!x.w?"son basamak · süresiz":`${i+1}. basamak`}</span></div>
+      <div class="stepper" role="group" aria-label="${i+1}. basamak süresi"><button type="button" data-dzw="${i}" data-v="-1" aria-label="Bir hafta azalt">−</button><div><b>${x.w||"∞"}</b><span>${x.w?"hf":""}</span></div><button type="button" data-dzw="${i}" data-v="1" aria-label="Bir hafta artır">+</button></div>
+      ${L>1?`<button type="button" class="dzx" data-dzx="${i}" aria-label="${i+1}. basamağı sil">×</button>`:""}</div>`).join("")}
+      <button type="button" class="add" id="dzAdd">+ Basamak ekle</button></div>
+    <label class="sw setr" style="padding:6px 0"><span><b>Artış haftasını hatırlat</b><small>Bir hafta önce yeni kalem için, iğne günü yeni dozla</small></span><input type="checkbox" id="dzRem" ${remOn?"checked":""}><i></i></label>
+    <button type="button" class="btn shotbtn" id="dzSave" style="width:100%;margin-top:6px">Planı kaydet</button>
+    ${pl?`<button type="button" class="slnk" id="dzDel" style="align-self:center;color:var(--muted)">Planı sil</button>`:""}</div></div>`;
+    const root=$("#sheetRoot");
+    root.querySelector(".scrim").addEventListener("click",e=>{if(e.target.classList.contains("scrim"))closeSheet()});
+    root.querySelector("[data-x]").addEventListener("click",closeSheet);
+    root.querySelectorAll("[data-dzd]").forEach(el=>el.addEventListener("change",()=>{steps[+el.dataset.dzd].d=el.value;delete src[+el.dataset.dzd];draw()}));
+    root.querySelectorAll("[data-dzw]").forEach(el=>el.addEventListener("click",()=>{const i=+el.dataset.dzw,last=i===steps.length-1,x=steps[i];
+      let w=(x.w||0)+ +el.dataset.v;if(w>16)w=16;if(w<=0)w=last?0:1;if(x.w===0&&+el.dataset.v<0)w=0;x.w=w;draw()}));
+    root.querySelectorAll("[data-dzx]").forEach(el=>el.addEventListener("click",()=>{const i=+el.dataset.dzx;steps.splice(i,1);const ns={};Object.keys(src).forEach(k=>{if(+k<i)ns[k]=src[k];else if(+k>i)ns[k-1]=src[k]});src=ns;draw()}));
+    $("#dzAdd").addEventListener("click",()=>{const l=steps[steps.length-1];if(l&&!l.w)l.w=4;const li=l?DOSES.findIndex(x=>eq(x,l.d)):-1;steps.push({d:DOSES[Math.min(DOSES.length-1,li+1)]||DOSES[0],w:0});draw()});
+    $("#dzRem").addEventListener("change",e=>{remOn=e.target.checked});
+    $("#dzSave").addEventListener("click",()=>{steps.forEach((x,i)=>{if(i<steps.length-1&&!x.w)x.w=4});S.profile.dplan={steps:steps.map(x=>({d:x.d,w:x.w})),rem:remOn};save();closeSheet();toast("Doz planın kaydedildi")});
+    const dl=$("#dzDel");if(dl)dl.addEventListener("click",()=>{const old=S.profile.dplan;delete S.profile.dplan;save();closeSheet();toast("Doz planı silindi",["Geri al",()=>{S.profile.dplan=old;save();render()}])});
+  };
+  draw();
+}
 function vIgne(){
   const s=sortedS();
   if(!s.length) return `<section><div class="card empty"><h2>Henüz iğne yok</h2><p class="muted" style="margin:0">İğneyi yaptığın gün ekle. Dozu ve bölgeyi yazarsan doz başına verdiğin kiloyu ayrıca görürsün.</p></div><button class="btn shotbtn" data-open="shot">İğne ekle</button></section>`;
   const dt=doseTable();
   return `<section><div class="cycw" data-v="kadran">${cycleHtml("kadran")}</div>
+    ${planCard()}
     ${sideCard()}
     ${penCard()}
     <div class="card"><details class="dosed"><summary><span><h2>İğne geçmişi</h2><span class="muted" style="font-size:12.5px">sağdaki sayı: o iğneden sonrakine kadar verilen kilo</span></span><em>Doz başına ›</em></summary>
@@ -3986,7 +4092,9 @@ function remBuild(){
   const R=rem(),L=[],now=Date.now()+60000,add=(id,at,title,body,type,extra)=>{if(at.getTime()>now)L.push({id,title,body,schedule:{at,allowWhileIdle:true},isExactNotification:false,actionTypeId:type,extra:extra||{}})};
   if(SHOTS()&&(R.shot||R.shotEve)){const P=pkState();const nx=P.next;
     if(nx){const dose=nx.dose?esc(nx.dose)+" mg · ":"",site=siteLbl(nextSite());
-      if(R.shot)add(1000,new Date(shotTs(nx)),"Bugün iğne günü",`${dose}önerilen bölge: ${site}. Yaptıktan sonra kaydetmeyi unutma.`,"IGNE",{tab:"igne"});
+      const DP=planState(),dzRem=DP&&S.profile.dplan.rem!==false;
+      if(dzRem&&DP.incDate){const nd=dzMg(DP.st[DP.cur+1].d);add(1003,atOf(addDays(DP.incDate,-7),"12:00"),`Gelecek hafta ${nd} mg'a geçiyorsun`,"Doktorunun planına göre. Yeni doz için yeni kalem gerekecek; eczaneye bu hafta uğra.","BILGI",{tab:"igne"})}
+      if(R.shot)add(1000,new Date(shotTs(nx)),dzRem&&DP.up?`Bugün ${dzMg(DP.nextDose)} mg'a geçiyorsun`:"Bugün iğne günü",`${dose}önerilen bölge: ${site}. Yaptıktan sonra kaydetmeyi unutma.`,"IGNE",{tab:"igne"});
       if(R.shotEve)add(1001,atOf(addDays(nx.date,-1),"20:00"),"Yarın iğne günü",`Saat ${shotTime(nx)} · sıradaki bölgen ${site}. Kalemini ve iğne ucunu hazırla.`,"BILGI",{tab:"igne"});
       /* ikinci hatırlatma: iğne saatinden 3 saat sonra; kaydedilince sıradaki iğne değiştiği için kendiliğinden düşer. Gece gönderilmez */
       const a2=new Date(shotTs(nx)+3*36e5);if(R.shot2&&a2.getHours()>=8&&a2.getHours()<22)add(1002,a2,"İğneni yaptın mı?",`Yaptıysan kaydet; döngün ve bölge önerin güncel kalsın.${site?" Önerilen bölge: "+site+".":""}`,"IGNE",{tab:"igne"})}}
@@ -4236,7 +4344,8 @@ function openSheet(kind,editId){
   const yest=addDays(today(),-1),wDate=ew?ew.date:today(),sDate=es?es.date:today();
   const whenChips=(id,d,extra)=>`<div class="fchips" id="${id}" role="radiogroup">${extra||""}<button type="button" role="radio" data-d="${today()}" aria-checked="${d===today()&&!extra}">Bugün</button><button type="button" role="radio" data-d="${yest}" aria-checked="${d===yest}">Dün</button><button type="button" role="radio" data-d="" aria-checked="${d!==today()&&d!==yest}">Tarih seç…</button></div>`;
   const wv=ew?ew.kg:lw?lw.kg:null;
-  const lastDose=(es&&es.dose)||(ls&&ls.dose)||null,di=lastDose?DOSES.indexOf(String(lastDose)):-1,c0=di<0?0:Math.max(0,Math.min(DOSES.length-3,di-1));
+  const dzP=!es&&SHOTS()?planState():null,dzN=dzP&&dzP.nextDose;
+  const lastDose=(es&&es.dose)||dzN||(ls&&ls.dose)||null,di=lastDose?DOSES.indexOf(String(lastDose)):-1,c0=di<0?0:Math.max(0,Math.min(DOSES.length-3,di-1));
   const doses=di<0&&lastDose?[String(lastDose),...DOSES.filter(x=>x!==String(lastDose)).slice(0,2)]:DOSES.slice(c0,c0+3);
   const SB=activeSites().concat(es&&es.site&&!activeSites().includes(es.site)?[es.site]:[]);
   const ago=d=>{if(!d)return "hiç kullanılmadı";const n=diffDays(d,today());return n<=0?"bugün":n<7?n+" gün önce":Math.round(n/7)+" hafta önce"};
@@ -4265,8 +4374,9 @@ function openSheet(kind,editId){
     </form>` : `
     <header><h2>${es?"İğneyi düzenle":"İğne ekle"}</h2><button class="del" data-close>Kapat</button></header>
     <form id="fS">
-      <div class="dosebox"><label>Doz<span class="dosein"><input id="s-dose" inputmode="decimal" value="${es?esc(es.dose??""):ls?.dose??""}" placeholder="ör. 2,5"><small>mg</small></span></label>
-        <div class="fchips" id="sDoses">${doses.map(d=>`<button type="button" data-dose="${esc(d)}" aria-pressed="${String(lastDose)===d}">${esc(d)}</button>`).join("")}</div></div>
+      <div class="dosebox"><label>Doz<span class="dosein"><input id="s-dose" inputmode="decimal" value="${es?esc(es.dose??""):esc(dzN||ls?.dose||"")}" placeholder="ör. 2,5"><small>mg</small></span></label>
+        <div class="fchips" id="sDoses">${doses.map(d=>`<button type="button" data-dose="${esc(d)}" aria-pressed="${String(lastDose)===d}">${esc(d)}</button>`).join("")}</div>
+        ${dzP&&dzP.up?`<div class="dzw" style="margin-top:8px"><span class="dzup">${UP_I}</span><span><b>Plana göre bu iğne ${dzMg(dzN)} mg</b>${dzMg(dzP.st[dzP.cur].d)} mg basamağı ${dzP.cnt} iğneyle tamamlandı. Farklı yaptıysan dozu değiştir.</span></div>`:""}</div>
       <div class="fchips" id="sWhen" role="radiogroup">${es?"":`<button type="button" role="radio" data-now aria-checked="true">Şimdi · ${nowHM()}</button><button type="button" role="radio" data-morning aria-checked="false">Bu sabah · 09:00</button>`}<button type="button" role="radio" data-d="" aria-checked="${!!es}">${es?"Tarih ve saat":"Başka zaman…"}</button></div>
       <div class="two" id="sDT" ${es?"":"hidden"}><label>Tarih${dateField("s-date",sDate,{max:today(),short:true})}</label><label>Saat${timeField("s-time",es?shotTime(es):nowHM())}</label></div>
       <div class="flbl">Bölge</div>
