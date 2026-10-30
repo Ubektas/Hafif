@@ -1,0 +1,350 @@
+<title>Hafif Ekip Toplantısı 2</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;700&family=Figtree:wght@400;500;600;700&display=swap">
+<style>
+/* Düzen: dar okuma sütunu + her kişi için üç sütunlu değerlendirme, altında öneri görselleri (telefon maketleri). Hafif'in kendi renkleri. */
+:root{
+  --bg:#EEF4F1; --surface:#FFFFFF; --sunk:#E3ECE8; --fg:#0B2420; --muted:#55685F; --line:#D5E2DC;
+  --brand:#0B3B33; --mint:#9FF0D6; --accent:#0E7C66; --warm:#B06D10; --warm-soft:#FBF0DC; --bad:#B23B3B; --bad-soft:#F8E6E4; --good:#12855D; --good-soft:#DFF2E9;
+  --f-d:"Outfit",system-ui,sans-serif; --f-b:"Figtree",system-ui,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#071A17;--surface:#0F2622;--sunk:#0B1F1C;--fg:#E4F1EC;--muted:#93ABA3;--line:#1E3A34;--brand:#0B3B33;--mint:#9FF0D6;--accent:#5FD3B0;--warm:#E8B062;--warm-soft:#2A2213;--bad:#F08A80;--bad-soft:#2C1715;--good:#6FD8A8;--good-soft:#10291F;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#071A17;--surface:#0F2622;--sunk:#0B1F1C;--fg:#E4F1EC;--muted:#93ABA3;--line:#1E3A34;--brand:#0B3B33;--mint:#9FF0D6;--accent:#5FD3B0;--warm:#E8B062;--warm-soft:#2A2213;--bad:#F08A80;--bad-soft:#2C1715;--good:#6FD8A8;--good-soft:#10291F;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font:16px/1.6 var(--f-b);padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:1080px;margin:0 auto;padding-block:0 80px}
+h1,h2,h3{font-family:var(--f-d);letter-spacing:-.02em;text-wrap:balance;margin:0}
+.hero{margin:24px -16px 0;background:var(--brand);color:#fff;border-radius:28px;padding:48px clamp(20px,5vw,56px);display:grid;gap:18px}
+.hero .k{font:600 13px var(--f-b);letter-spacing:.14em;text-transform:uppercase;color:var(--mint)}
+.hero h1{font-size:clamp(36px,6vw,64px);line-height:1.02}.hero h1 em{font-style:normal;color:var(--mint)}
+.hero p{margin:0;max-width:62ch;color:rgba(255,255,255,.78);font-size:17px}
+.ppl{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.ppl a{display:flex;align-items:center;gap:8px;text-decoration:none;color:#fff;background:rgba(255,255,255,.08);border:1px solid rgba(159,240,214,.25);border-radius:99px;padding:6px 14px 6px 6px;font:600 14px var(--f-b)}
+.mono{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;font:700 13px var(--f-d);color:#0B3B33;background:var(--mint);flex:none}
+section{margin-top:56px}
+.sec-h{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;border-bottom:1px solid var(--line);padding-bottom:12px;margin-bottom:22px}
+.sec-h h2{font-size:30px}.sec-h span{color:var(--muted);font-size:14px}
+.lead{max-width:68ch;color:var(--muted);margin:0 0 18px}
+.scope{display:flex;flex-wrap:wrap;gap:8px}
+.scope span{background:var(--surface);border:1px solid var(--line);border-radius:99px;padding:6px 14px;font-size:14px}
+.scope span b{color:var(--accent);font-weight:600}
+.dec{display:grid;gap:12px}
+.d{display:grid;grid-template-columns:40px 1fr;gap:14px;background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:18px 20px}
+.d .n{font:700 22px var(--f-d);color:var(--accent)}.d b{display:block;font:700 18px/1.3 var(--f-d)}.d p{margin:4px 0 0;color:var(--muted);font-size:15px}
+.who{display:grid;gap:22px;background:var(--surface);border:1px solid var(--line);border-radius:24px;padding:clamp(18px,3vw,32px)}
+.who + .who{margin-top:22px}
+.wh{display:flex;align-items:center;gap:14px}.wh .mono{width:44px;height:44px;font-size:18px}
+.wh h3{font-size:26px}.wh small{display:block;color:var(--muted);font-size:14px}
+.quote{margin:0;font:500 20px/1.45 var(--f-d);letter-spacing:-.01em;max-width:60ch;padding-left:16px;border-left:3px solid var(--mint)}
+.cols{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+@media (max-width:820px){.cols{grid-template-columns:1fr}}
+.col{border-radius:16px;padding:16px 18px;background:var(--sunk);min-width:0}
+.col h4{margin:0 0 8px;font:700 12px var(--f-b);letter-spacing:.12em;text-transform:uppercase}
+.col.p h4{color:var(--good)}.col.m h4{color:var(--bad)}.col.o h4{color:var(--warm)}
+.col ul{margin:0;padding-left:18px;display:grid;gap:6px;font-size:15px}
+.viz{display:grid;gap:14px}
+.viz-h{font:700 12px var(--f-b);letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+.pair{display:flex;flex-wrap:wrap;gap:22px;align-items:flex-start}
+.fig{display:grid;gap:8px;justify-items:center;min-width:0}
+.fig figcaption{font:600 13px var(--f-b);color:var(--muted);text-align:center;max-width:300px}
+.tag{display:inline-block;font:700 11px var(--f-b);letter-spacing:.1em;text-transform:uppercase;border-radius:99px;padding:3px 10px}
+.tag.old{background:var(--bad-soft);color:var(--bad)}.tag.new{background:var(--good-soft);color:var(--good)}
+.note{font-size:14px;color:var(--muted);max-width:62ch;margin:0}
+/* telefon maketi: uygulamanın kendi açık görünümü, temadan bağımsız */
+.ph{width:270px;max-width:100%;border-radius:34px;background:#0B2420;padding:8px;box-shadow:0 30px 60px -36px rgba(0,0,0,.6)}
+.ph .sc{border-radius:27px;overflow:hidden;background:#F1F5F3;color:#0B2420;height:540px;position:relative;font-family:var(--f-b)}
+.ph img{display:block;width:100%}
+.e{font-family:"Noto Color Emoji","Apple Color Emoji","Segoe UI Emoji",sans-serif;font-style:normal;line-height:1}
+.ms{padding:16px 14px;display:grid;gap:10px}
+.mh{font:700 22px var(--f-d);display:flex;align-items:center;gap:6px}.mh small{display:block;font:500 11px var(--f-b);color:#5F726C}
+.mc{background:#fff;border-radius:16px;padding:12px;box-shadow:0 8px 20px -16px rgba(11,59,51,.5)}
+.mk{font:700 9.5px var(--f-b);letter-spacing:.12em;text-transform:uppercase;color:#0E7C66}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.tile{border-radius:14px;padding:10px 4px;text-align:center;font:600 11px var(--f-b);display:grid;gap:5px;justify-items:center}
+.tile .e{font-size:26px}
+.sheet{position:absolute;left:0;right:0;bottom:0;background:#fff;border-radius:22px 22px 0 0;padding:14px 14px 18px;box-shadow:0 -10px 30px -10px rgba(0,0,0,.25)}
+.grab{width:36px;height:4px;border-radius:2px;background:#D5E2DC;margin:0 auto 10px}
+.dim{position:absolute;inset:0;background:rgba(11,36,32,.35)}
+.row{display:flex;align-items:center;gap:10px;padding:8px 0;border-top:1px solid #EEF2EF;font-size:12px}.row:first-child{border-top:0}
+.row .e{font-size:22px;width:38px;height:38px;border-radius:12px;display:grid;place-items:center;flex:none}
+.row b{display:block;font:700 13px var(--f-d)}.row small{color:#5F726C;font-size:10.5px}
+.btn{display:block;text-align:center;background:#0B3B33;color:#fff;border-radius:12px;padding:10px;font:700 13px var(--f-b)}
+.story{width:250px;max-width:100%;aspect-ratio:9/16;border-radius:22px;overflow:hidden;position:relative;background:#0B3B33;color:#fff;font-family:var(--f-b);box-shadow:0 30px 60px -36px rgba(0,0,0,.6)}
+.toc{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:12px}
+.toc div{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px 18px;min-width:0}
+.toc h4{margin:0 0 6px;font:700 16px var(--f-d)}.toc ul{margin:0;padding-left:18px;font-size:14px;display:grid;gap:4px}
+.toc .when{font:700 11px var(--f-b);letter-spacing:.12em;text-transform:uppercase;color:var(--accent);display:block;margin-bottom:4px}
+.deb{display:grid;gap:12px}
+.db{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:18px 20px;display:grid;gap:8px}
+.db b{font:700 18px var(--f-d)}.db p{margin:0;font-size:15px;color:var(--muted)}.db .res{color:var(--fg);font-weight:600}
+.idea{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:12px}
+.idea div{background:var(--sunk);border-radius:16px;padding:16px 18px;min-width:0}
+.idea b{display:block;font:700 17px var(--f-d)}.idea p{margin:6px 0 0;font-size:14.5px}.idea .v{display:block;margin-top:8px;font-size:13px;color:var(--muted)}
+footer{margin-top:56px;color:var(--muted);font-size:13px;border-top:1px solid var(--line);padding-top:16px}
+a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+</style>
+
+<div class="wrap">
+<header class="hero">
+  <span class="k">Hafif · ekip toplantısı 2 · 30 Ekim 2026</span>
+  <h1>2.0 masada.<br><em>Altı göz, tek uygulama.</em></h1>
+  <p>Toplantı uygulamanın son hâli üzerinden yapıldı: 2.0 dalı, yeni mağaza görselleri ve 40 saniyelik tanıtım videosu. Her katılımcı artıları, eksikleri ve önerilerini söyledi; değiştirilmesi önerilen her şey için bir öneri görseli hazırlandı.</p>
+  <nav class="ppl" aria-label="Katılımcılar">
+    <a href="#grafiker"><span class="mono">G</span>Grafiker</a>
+    <a href="#reklamci"><span class="mono">R</span>Reklamcı</a>
+    <a href="#marka"><span class="mono">B</span>Brand Manager</a>
+    <a href="#pr"><span class="mono">H</span>Halkla İlişkiler</a>
+    <a href="#dev"><span class="mono">D</span>Developer</a>
+    <a href="#stajyer"><span class="mono">S</span>Stajyer</a>
+  </nav>
+</header>
+
+<section>
+  <div class="sec-h"><h2>Masadakiler</h2><span>2.0 dalının içeriği</span></div>
+  <div class="scope">
+    <span><b>Plus</b> İlerleme fotoğrafları</span><span>Pazartesi haftalık özeti</span><span>Hedef tarihi</span><span>İştah kaydı</span><span>Kas koruma</span><span><b>Plus</b> Doz planı</span><span>Duraklama kartı</span><span>Koruma dönemi</span><span>Ne yesem? (Türk mutfağı)</span><span>Yorum isteme anları</span><span>Paket 8,2 → 5,6 MB</span><span>8 yeni mağaza görseli</span><span>Yeni tanıtım videosu</span>
+  </div>
+</section>
+
+<section>
+  <div class="sec-h"><h2>Toplantının kararları</h2><span>herkesin üzerinde anlaştığı beş şey</span></div>
+  <div class="dec">
+    <div class="d"><span class="n">1</span><div><b>Yeni özellikler görünmüyor; 2.0.1'de görünür yapılacak.</b><p>Ne yesem? Protein sekmesinde kaydırınca çıkıyor, Fotoğraflar Kilo'nun en altında. Güncellemeden sonra bir kez "2.0'da yeni" sayfası, Ne yesem? de protein kartının hemen altına.</p></div></div>
+    <div class="d"><span class="n">2</span><div><b>Tek slogan: "Kilo verirken ihtiyacın olan her şey."</b><p>Yanında hep aynı üç güven sözü: hesap yok, reklam yok, veri telefonunda. "Sade defter" ve "sakin yardımcı" slogan olarak emekliye ayrılır; "sakin" markanın sesi olarak kalır.</p></div></div>
+    <div class="d"><span class="n">3</span><div><b>İki katmanlı simge dili.</b><p>Gezinme ve düğmeler çizgi ikon kalır. İçerik katmanı (yemek önerileri, koç, boş ekranlar, + paneli) emojiye geçer; böylece uygulama mağaza görselleriyle aynı dili konuşur.</p></div></div>
+    <div class="d"><span class="n">4</span><div><b>Üretimden önce üç zorunlu iş.</b><p>Play'de görünen ev adresi ve "ugurbektas" geliştirici adı, veri güvenliği formu ("Hafif ekibine gönder" yüzünden), 2.0'ın Ne yesem? dahil yeniden derlenmesi.</p></div></div>
+    <div class="d"><span class="n">5</span><div><b>Ramazan modu Şubat 2027'den önce hazır olmalı.</b><p>Stajyerin fikri; masada en çok destek alan yeni özellik. Oruçta ilaç kullanımı için ilk ekranda "doktoruna danış" notu şart.</p></div></div>
+  </div>
+</section>
+
+<section id="grafiker">
+  <div class="who">
+    <div class="wh"><span class="mono">G</span><div><h3>Grafiker</h3><small>görsel dil, simgeler, ekran hiyerarşisi</small></div></div>
+    <p class="quote">"Mağaza artık sıcak ve emojili, uygulama ise ince çizgili ve serin. Kullanıcı indirdiğinde başka bir şirketin ürününü açmış gibi olmamalı."</p>
+    <div class="cols">
+      <div class="col p"><h4>Artılar</h4><ul><li>Renk sistemi oturdu: zümrüt, nane, protein turuncusu, su mavisi her yerde aynı anlamda.</li><li>Outfit ve Figtree ikilisi başlıkta karakterli, gövdede okunaklı.</li><li>Koyu tema gerçekten tasarlanmış; durum çubuğu da artık doğru.</li><li>Yeni mağaza seti premium ve tutarlı.</li></ul></div>
+      <div class="col m"><h4>Eksikler</h4><ul><li>Uygulamadaki çizgi ikonlar ile mağazadaki emojiler iki ayrı dil.</li><li>Özet ekranında beş kart üst üste: kahraman, halkalar, sıradaki iğne, koç, haftalık özet. Göz nereye bakacağını seçemiyor.</li><li>Widget önizlemeleri ve bildirim görselleri eski tasarımdan kalma.</li><li>Uygulama simgesindeki yaprak küçük boyutta çok ince.</li></ul></div>
+      <div class="col o"><h4>Öneriler</h4><ul><li>İçerik katmanında emoji: + paneli, Ne yesem?, koç avatarı, boş ekranlar.</li><li>Özet'te haftalık özet ve koç aynı anda çıkmasın; pazartesi koç beklesin.</li><li>Simge yaprağının çizgisi bir kademe kalınlaşsın.</li><li>Widget görselleri yeni renklerle yeniden çizilsin.</li></ul></div>
+    </div>
+    <div class="viz">
+      <span class="viz-h">Öneri görseli · + paneli</span>
+      <div class="pair">
+        <figure class="fig"><div class="ph"><div class="sc"><img src="img/arti.jpg" alt="Şu anki + paneli: çizgi ve harf ikonlar"></div></div><figcaption><span class="tag old">Şimdi</span><br>Harf ve çizgi ikonlar: "kg", "P", "+", "cm"</figcaption></figure>
+        <figure class="fig"><div class="ph"><div class="sc">
+          <div class="ms"><div class="mh">Hafif<small>30 Ekim Perşembe</small></div><div class="mc" style="height:150px;background:#0B3B33"></div><div class="mc" style="height:90px"></div></div>
+          <div class="dim"></div>
+          <div class="sheet"><div class="grab"></div><div style="font:700 15px var(--f-d);margin-bottom:10px">Ne eklemek istersin?</div>
+            <div class="grid3">
+              <div class="tile" style="background:#E1F3EC"><span class="e">📉</span>Kilo</div><div class="tile" style="background:#E6EBF5"><span class="e">💉</span>İğne</div><div class="tile" style="background:#FBF0DC"><span class="e">🍳</span>Protein</div>
+              <div class="tile" style="background:#E4F1F8"><span class="e">💧</span>Su</div><div class="tile" style="background:#EEEAF8"><span class="e">📏</span>Ölçü</div><div class="tile" style="background:#E1F3EC"><span class="e">📸</span>Fotoğraf</div>
+              <div class="tile" style="background:#E6EBF5"><span class="e">🏋️</span>Egzersiz</div><div class="tile" style="background:#F8E6E4"><span class="e">🤢</span>Yan etki</div><div class="tile" style="background:#F7E8EE"><span class="e">💊</span>Takviye</div>
+            </div></div>
+        </div></div><figcaption><span class="tag new">Öneri</span><br>Mağazadaki emojilerle aynı dil; sekme çubuğu çizgi ikon kalır</figcaption></figure>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="reklamci">
+  <div class="who">
+    <div class="wh"><span class="mono">R</span><div><h3>Reklamcı</h3><small>kanca, kreatif, kanal</small></div></div>
+    <p class="quote">"Elimizde rakiplerin hiçbirinde olmayan bir kanca var: 'Akşam ne yesem?' Bunu ilk üç saniyeye koymazsak harcamış oluruz."</p>
+    <div class="cols">
+      <div class="col p"><h4>Artılar</h4><ul><li>Ne yesem? ve Türk mutfağı, yerli ve kolay anlatılan bir fark.</li><li>Gizlilik vaadi reklamda güven kuruyor; "hesap yok" çok net.</li><li>Yeni video 2.0'ı gerçekten anlatıyor, ses kapalıyken de anlaşılıyor.</li><li>7 günlük Plus denemesi düşük risk teklifi.</li></ul></div>
+      <div class="col m"><h4>Eksikler</h4><ul><li>Videonun ilk 3 saniyesi yalnızca logo; sosyal medyada bu sürede kaydırılır.</li><li>"7 gün ücretsiz" yalnızca videonun son karesinde.</li><li>Mağaza görsellerinde hangi özelliğin Plus olduğu ancak iki yerde yazıyor.</li><li>İlaç adı ve önce/sonra yasağı kreatif alanı daraltıyor; buna göre plan yok.</li></ul></div>
+      <div class="col o"><h4>Öneriler</h4><ul><li>Instagram için 3 dikey kısa video (6–10 sn), her biri tek özellik, açılış bir soru.</li><li>Play mağaza deneyi: mevcut kapak ile tabaklı kapak, 2 hafta.</li><li>8. görsele küçük bir satır: "Temel takip ücretsiz · Plus 7 gün ücretsiz".</li><li>Reklam metinlerinde hep soru ve cevap: sorun kullanıcının cümlesi olsun.</li></ul></div>
+    </div>
+    <div class="viz">
+      <span class="viz-h">Öneri görseli · Instagram hikâyesi / Reels açılış karesi</span>
+      <div class="pair">
+        <figure class="fig"><div class="story">
+          <div style="position:absolute;inset:0;background:radial-gradient(70% 40% at 90% 10%,#1F8A70 0%,transparent 70%)"></div>
+          <div style="position:absolute;left:18px;right:18px;top:24px;font:700 23px/1.05 var(--f-d);letter-spacing:-.03em">Akşam oldu,<br><span style="color:#9FF0D6">36 gram protein eksik.</span></div>
+          <div style="position:absolute;left:18px;right:18px;top:104px;font:500 13px var(--f-b);color:rgba(255,255,255,.75)">Ne yesem?</div>
+          <div style="position:absolute;left:50%;top:140px;width:140px;height:140px;margin-left:-70px;border-radius:50%;background:#fff;box-shadow:inset 0 0 0 9px #F3EEE5">
+            <i class="e" style="position:absolute;left:26px;top:30px;font-size:52px">🍗</i><i class="e" style="position:absolute;left:76px;top:62px;font-size:44px">🥗</i><i class="e" style="position:absolute;left:32px;top:82px;font-size:42px">🍚</i></div>
+          <div style="position:absolute;left:14px;right:14px;top:296px;display:grid;gap:6px">
+            <div style="background:#fff;color:#0B2420;border-radius:12px;padding:8px 10px;font:700 12px var(--f-d)">Tavuk şiş ve bulgur</div>
+            <div style="background:rgba(255,255,255,.12);border-radius:12px;padding:8px 10px;font:600 12px var(--f-b)">Mercimek çorbası ve yoğurt</div></div>
+          <div style="position:absolute;left:14px;right:14px;bottom:16px;background:#9FF0D6;color:#0B3B33;border-radius:99px;padding:9px;text-align:center;font:700 12px var(--f-b)">Hafif · Google Play'de</div>
+        </div><figcaption>İlk karede sorun, ikinci saniyede çözüm. Logo sona kalır.</figcaption></figure>
+        <div style="flex:1;min-width:min(100%,260px);display:grid;gap:10px;align-content:start">
+          <p class="note"><b>Üç kısa video önerisi</b> (her biri 6–10 saniye, aynı şablon):</p>
+          <p class="note">1. "Akşam oldu, protein eksik." → Ne yesem?<br>2. "Pazar iğne günü, kalem bitiyor mu?" → doz planı ve kalem uyarısı<br>3. "Tartı üç gündür aynı." → duraklama kartı: "belin incelmiş"</p>
+          <p class="note">Mağaza videosunun açılışı da aynı mantıkla değişmeli: logo yerine ilk karede "Kilo verirken ihtiyacın olan her şey" ve emojiler birlikte.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="marka">
+  <div class="who">
+    <div class="wh"><span class="mono">B</span><div><h3>Brand Manager</h3><small>konum, ses, tutarlılık</small></div></div>
+    <p class="quote">"Marka sesi uygulamanın içinde çok iyi; koç hiç suçlamıyor. Ama dışarıda üç farklı slogan ve bir kişinin adı dolaşıyor."</p>
+    <div class="cols">
+      <div class="col p"><h4>Artılar</h4><ul><li>"Hafif" kısa, Türkçe ve vaadin kendisi.</li><li>Sakin, suçlamayan ton her yerde: "kaldığın yerden devam", "panik yok".</li><li>Gizlilik gerçek bir farklılaşma, kanıtı da var (hesap yok, sunucu yok).</li><li>Doktor raporu "konuşmayı kolaylaştırır" diye anlatılıyor, tıbbi iddia yok.</li></ul></div>
+      <div class="col m"><h4>Eksikler</h4><ul><li>Üç slogan: eski videoda "sade defter", mağazada "ihtiyacın olan her şey", videoda "sakin bir yardımcı".</li><li>Play'de geliştirici "ugurbektas", altında ev adresi; marka değil kişi görünüyor.</li><li>Bazı bildirim metinleri teknik ("Önerilen bölge: …"); marka sesinden uzak.</li><li>Yazılı bir marka kılavuzu yok; her yeni görselde yeniden karar veriliyor.</li></ul></div>
+      <div class="col o"><h4>Öneriler</h4><ul><li>Tek slogan, tek konum cümlesi, üç güven sözü (karar 2).</li><li>Play Console'da geliştirici adı "Hafif" olsun.</li><li>Bildirimler koçun sesiyle yeniden yazılsın.</li><li>Tek sayfalık marka kartı: logo, renkler, yazı, ses.</li></ul></div>
+    </div>
+    <div class="viz">
+      <span class="viz-h">Öneri görseli · tek sayfalık marka kartı</span>
+      <div class="pair">
+        <figure class="fig" style="flex:1;min-width:min(100%,300px);max-width:620px;justify-items:stretch">
+          <div style="background:#0B3B33;color:#fff;border-radius:24px;padding:24px;display:grid;gap:16px">
+            <div style="display:flex;align-items:center;gap:10px;font:700 30px var(--f-d)"><svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="#9FF0D6" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M20 4C11 4 5 9 5 17v3"/><path d="M20 4c0 9-5 14-13 14"/></svg>Hafif</div>
+            <div style="font:700 24px/1.15 var(--f-d)">Kilo verirken<br><span style="color:#9FF0D6">ihtiyacın olan her şey.</span></div>
+            <div style="font:500 13px var(--f-b);color:rgba(255,255,255,.7)">Konum: Kilo verirken iğneni, tartını, proteinini ve suyunu, hesap açmadan ve verini telefondan çıkarmadan takip eden sakin bir yardımcı.</div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap"><span style="border:1px solid rgba(159,240,214,.35);border-radius:99px;padding:4px 10px;font:600 12px var(--f-b)">Hesap yok</span><span style="border:1px solid rgba(159,240,214,.35);border-radius:99px;padding:4px 10px;font:600 12px var(--f-b)">Reklam yok</span><span style="border:1px solid rgba(159,240,214,.35);border-radius:99px;padding:4px 10px;font:600 12px var(--f-b)">Veri telefonunda</span></div>
+            <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:6px">
+              <div style="height:44px;border-radius:10px;background:#0B3B33;box-shadow:inset 0 0 0 1px rgba(255,255,255,.3)"></div><div style="height:44px;border-radius:10px;background:#9FF0D6"></div><div style="height:44px;border-radius:10px;background:#0E7C66"></div><div style="height:44px;border-radius:10px;background:#C27A12"></div><div style="height:44px;border-radius:10px;background:#F4F1EA"></div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;font-size:12.5px">
+              <div style="background:rgba(255,255,255,.06);border-radius:12px;padding:10px"><b style="color:#9FF0D6">Böyle konuşur</b><br>"Panik yok, günlük oynama."<br>"Kaldığın yerden devam."<br>"Doktorunla konuşmak iyi olur."</div>
+              <div style="background:rgba(255,255,255,.06);border-radius:12px;padding:10px"><b style="color:#F5B5A8">Böyle konuşmaz</b><br>"Hızlı kilo ver!"<br>"Garanti sonuç."<br>"Doktor onaylı."</div>
+            </div>
+          </div>
+          <figcaption>Her yeni görsel, metin ve reklam bu karta bakılarak yapılır.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="pr">
+  <div class="who">
+    <div class="wh"><span class="mono">H</span><div><h3>Halkla İlişkiler</h3><small>güven, hikâye, basın, kriz</small></div></div>
+    <p class="quote">"Bir gazeteci bizi bulmak isterse Play sayfasından başka gidecek yeri yok. Orada da bir ev adresi görüyor."</p>
+    <div class="cols">
+      <div class="col p"><h4>Artılar</h4><ul><li>Kurucu hikâyesi gerçek: kendi tedavisini takip etmek için yaptı.</li><li>"Hafif ekibine gönder" kullanıcı hikâyesi toplamak için hazır bir kanal.</li><li>Veri gizliliği basında güvenle anlatılabilecek bir konu.</li><li>Koç yan etki sorularında doğru çizgide duruyor: "doktoruna danış".</li></ul></div>
+      <div class="col m"><h4>Eksikler</h4><ul><li>Web sitesi ve basın kiti yok.</li><li>Ev adresinin görünmesi kişisel güvenlik ve itibar riski.</li><li>Kriz dili konuşuldu ama yazılı bir yanıt seti yok.</li><li>İlk kullanıcı hikâyeleri için izin metni hazır değil.</li></ul></div>
+      <div class="col o"><h4>Öneriler</h4><ul><li>Tek sayfalık site: Play bağlantısı, gizlilik, iletişim, basın kiti.</li><li>Yorumlara 6 hazır yanıt; her yoruma 48 saat içinde, adla.</li><li>Hikâye paylaşanlara tek cümlelik izin metni ve anonim seçenek.</li><li>Lansmanda 5–10 diyetisyene Plus kodu; veri yine kullanıcıda kalır.</li></ul></div>
+    </div>
+    <div class="viz">
+      <span class="viz-h">Öneri görseli · basın kiti tek sayfası</span>
+      <div class="pair">
+        <figure class="fig" style="flex:1;min-width:min(100%,300px);max-width:620px;justify-items:stretch">
+          <div style="background:#fff;color:#0B2420;border-radius:20px;padding:22px;border:1px solid #D5E2DC;display:grid;gap:12px">
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap"><b style="font:700 22px var(--f-d)">Hafif · Basın kiti</b><span style="font:600 12px var(--f-b);color:#0E7C66">apphafif@gmail.com</span></div>
+            <p style="margin:0;font-size:14px">Hafif, kilo verirken iğneyi, tartıyı, proteini ve suyu hesap açmadan takip eden bir Android uygulaması. Bütün veriler kullanıcının telefonunda kalır; reklam ve takip yoktur. Uygulamayı, kendi tedavisini takip etmek isteyen bir kullanıcı geliştirdi.</p>
+            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;max-width:300px">
+              <div style="aspect-ratio:9/16;border-radius:8px;background:#0B3B33"></div><div style="aspect-ratio:9/16;border-radius:8px;background:#FBF0DC"></div><div style="aspect-ratio:9/16;border-radius:8px;background:#E6EBF5"></div><div style="aspect-ratio:9/16;border-radius:8px;background:#E1F3EC"></div>
+            </div>
+            <div style="display:flex;flex-wrap:wrap;gap:6px;font:600 12px var(--f-b)"><span style="background:#EEF4F1;border-radius:99px;padding:5px 10px">Logo paketi</span><span style="background:#EEF4F1;border-radius:99px;padding:5px 10px">5 ekran görüntüsü</span><span style="background:#EEF4F1;border-radius:99px;padding:5px 10px">Kurucu fotoğrafı</span><span style="background:#EEF4F1;border-radius:99px;padding:5px 10px">Tanıtım videosu</span></div>
+            <p style="margin:0;font-size:12px;color:#55685F">Hafif tıbbi cihaz değildir, doz önermez. Sağlıkla ilgili sorular için doktorunuza danışın.</p>
+          </div>
+          <figcaption>Web sitesinde tek bağlantı: gazeteci her şeyi bir yerde bulur.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="dev">
+  <div class="who">
+    <div class="wh"><span class="mono">D</span><div><h3>Developer</h3><small>kalite, test, teknik borç</small></div></div>
+    <p class="quote">"Özellik yaptık ama kullanıcı onları bulamıyor. 2.0'ın en büyük riski kod değil, keşfedilmemek."</p>
+    <div class="cols">
+      <div class="col p"><h4>Artılar</h4><ul><li>R8 ile paket 8,2'den 5,6 MB'a indi; Play'in DEX uyarısı çözüldü.</li><li>Emülatör testi 46 adım, koç simülatörü 300 sahte kullanıcı, ikisi de temiz.</li><li>Veriler yerel; yedek dosyası, fotoğraflar dahil.</li><li>Koyu temada durum çubuğu düzeldi.</li></ul></div>
+      <div class="col m"><h4>Eksikler</h4><ul><li>2.0.0 derlemesinde Ne yesem? yok; dal da henüz ana dala birleşmedi.</li><li>Ne yesem? ilk ekranda görünmüyor; Fotoğraflar Kilo'nun en altında.</li><li>Çökme raporu yok; tek kaynak Play Console'daki Android vitals.</li><li>Yazı boyutu sabit; büyük yazı kullananlar için erişilebilirlik eksik.</li><li>Uygulama tek bir 520 KB dosya; her özellikte büyüyor.</li></ul></div>
+      <div class="col o"><h4>Öneriler</h4><ul><li>2.0.1: yeniden derleme, "2.0'da yeni" sayfası, Ne yesem? yukarı.</li><li>Yazı boyutu ayarı, en fazla %115.</li><li>Her pazartesi Android vitals'a beş dakika bakış.</li><li>Dosyayı modüllere bölme 2.1'den sonra.</li></ul></div>
+    </div>
+    <div class="viz">
+      <span class="viz-h">Öneri görseli · keşfedilebilirlik</span>
+      <div class="pair">
+        <figure class="fig"><div class="ph"><div class="sc"><img src="img/protein.jpg" alt="Şu anki Protein ve Su sekmesi: Ne yesem? ilk ekranda görünmüyor"></div></div><figcaption><span class="tag old">Şimdi</span><br>İlk ekranda Ne yesem? yok; bulmak için kaydırmak gerekiyor</figcaption></figure>
+        <figure class="fig"><div class="ph"><div class="sc">
+          <div class="ms"><div class="mh">Protein &amp; Su</div>
+            <div class="mc"><div class="mk" style="color:#C27A12">Protein</div><div style="font:700 30px var(--f-d)">74 <small style="font:500 13px var(--f-b);color:#5F726C">/ 110 g</small></div>
+              <div style="display:grid;grid-template-columns:repeat(12,1fr);gap:3px;margin-top:6px"><i style="height:10px;border-radius:3px;background:#D98A3D"></i><i style="height:10px;border-radius:3px;background:#D98A3D"></i><i style="height:10px;border-radius:3px;background:#D98A3D"></i><i style="height:10px;border-radius:3px;background:#D98A3D"></i><i style="height:10px;border-radius:3px;background:#D98A3D"></i><i style="height:10px;border-radius:3px;background:#D98A3D"></i><i style="height:10px;border-radius:3px;background:#D98A3D"></i><i style="height:10px;border-radius:3px;background:#D98A3D"></i><i style="height:10px;border-radius:3px;background:#EDF3F0"></i><i style="height:10px;border-radius:3px;background:#EDF3F0"></i><i style="height:10px;border-radius:3px;background:#EDF3F0"></i><i style="height:10px;border-radius:3px;background:#EDF3F0"></i></div></div>
+            <div class="mc" style="border:1.5px solid #F2D7A6"><div class="mk" style="color:#B06D10">Ne yesem? · Akşam</div>
+              <div class="row"><span class="e" style="background:#FBF0DC">🍗</span><div><b>Tavuk şiş ve bulgur</b><small>+38 g</small></div></div>
+              <div class="row"><span class="e" style="background:#FBF0DC">🍲</span><div><b>Mercimek çorbası, yoğurt</b><small>+24 g</small></div></div></div>
+            <div class="mc" style="font-size:12px;color:#5F726C">Bugün eklediklerin ›</div>
+          </div></div></div><figcaption><span class="tag new">Öneri</span><br>Ne yesem? protein kartının hemen altında; liste katlanır</figcaption></figure>
+        <figure class="fig"><div class="ph"><div class="sc">
+          <div class="ms"><div class="mh">Hafif</div><div class="mc" style="height:120px;background:#0B3B33"></div></div>
+          <div class="dim"></div>
+          <div class="sheet" style="top:70px"><div class="grab"></div>
+            <div style="font:700 20px var(--f-d)">2.0'da yeni</div><div style="font-size:11px;color:#5F726C;margin-bottom:6px">Bir kez gösterilir · Ayarlar'dan tekrar açılır</div>
+            <div class="row"><span class="e" style="background:#FBF0DC">🍲</span><div><b>Ne yesem?</b><small>Akşam için Türk mutfağından öneriler</small></div></div>
+            <div class="row"><span class="e" style="background:#E6EBF5">🗓️</span><div><b>Doz planım</b><small>Artış haftasını ve yeni kalemi hatırlatır</small></div></div>
+            <div class="row"><span class="e" style="background:#E1F3EC">📸</span><div><b>Fotoğraflarım</b><small>Haftalık ilerleme, galeride görünmez</small></div></div>
+            <div class="row"><span class="e" style="background:#E6EBF5">🏋️</span><div><b>Kas koruma</b><small>Haftalık direnç egzersizi</small></div></div>
+            <div class="row"><span class="e" style="background:#DFF2E9">🎯</span><div><b>Koruma dönemi</b><small>Hedefe ulaşınca da yanında</small></div></div>
+            <div class="btn" style="margin-top:8px">Başlayalım</div></div>
+        </div></div><figcaption><span class="tag new">Öneri</span><br>Güncellemeden sonraki ilk açılışta tek sayfa</figcaption></figure>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="stajyer">
+  <div class="who">
+    <div class="wh"><span class="mono">S</span><div><h3>Stajyer</h3><small>parlak fikirler</small></div></div>
+    <p class="quote">"Türkiye'de kilo veren herkesin yılında bir ay her şey değişiyor: Ramazan. O ay hiçbir uygulama ne yapacağını bilmiyor."</p>
+    <div class="cols">
+      <div class="col p"><h4>Sevdikleri</h4><ul><li>Ne yesem? uygulamanın en "bizden" özelliği.</li><li>Koruma dönemi: hedefe ulaşınca uygulamanın bitmemesi.</li><li>Pazartesi özetinin tek bir hedef vermesi.</li></ul></div>
+      <div class="col m"><h4>Takıldıkları</h4><ul><li>Haftalık özet güzel ama paylaşılınca rakamlar çok kişisel.</li><li>Ne yesem? önerileri tek tek; haftalık alışveriş ile bağlantısı yok.</li><li>Sosyal bir yön yok; yalnız takip zor.</li></ul></div>
+      <div class="col o"><h4>Fikirler</h4><ul><li>Ramazan modu.</li><li>Rakamsız paylaşım kartı.</li><li>Ne yesem? → market listesi.</li><li>Arkadaşla seri paylaşma.</li><li>Saatten tek dokunuşla su.</li></ul></div>
+    </div>
+    <div class="idea">
+      <div><b>Ramazan modu</b><p>İftar ve sahur saatine göre hatırlatmalar; protein ve suyu iftar–sahur arasına böler; Ne yesem? iftar ve sahur menüsü önerir.</p><span class="v">Masa: herkes destekledi. Şubat 2027 başından önce. İlk ekranda "oruçta ilaç kullanımını doktoruna danış" notu.</span></div>
+      <div><b>Rakamsız paylaşım kartı</b><p>Haftalık özetten Instagram hikâyesi: kilo yazmadan "Bu hafta proteinde 5 gün hedefteydim".</p><span class="v">Masa: Reklamcı ve PR çok sevdi; ücretsiz organik tanıtım. 2.1.</span></div>
+      <div><b>Market listesi</b><p>Haftanın Ne yesem? önerilerinden alışveriş listesi.</p><span class="v">Masa: güzel ama önce Ne yesem? kullanımı görülmeli. Sonra.</span></div>
+      <div><b>Arkadaşla seri</b><p>Bir kodla yalnızca seriyi paylaşmak.</p><span class="v">Masa: Developer ve Brand karşı çıktı. Sunucu gerekir, "veri telefonunda" sözü bozulur. Rafa kalktı.</span></div>
+      <div><b>Saatten su</b><p>Wear OS'ta tek dokunuşla +250 ml.</p><span class="v">Masa: widget'lar zaten var; talep görülürse.</span></div>
+    </div>
+    <div class="viz">
+      <span class="viz-h">Öneri görseli · Ramazan modu ve rakamsız paylaşım</span>
+      <div class="pair">
+        <figure class="fig"><div class="ph"><div class="sc">
+          <div class="ms"><div class="mh">Hafif<small>Ramazan · 12. gün</small></div>
+            <div class="mc" style="background:#0B3B33;color:#fff;display:grid;gap:8px">
+              <div class="mk" style="color:#9FF0D6">Ramazan modu</div>
+              <div style="display:flex;justify-content:space-between;align-items:flex-end"><div><div style="font-size:11px;color:rgba(255,255,255,.7)">İftara</div><div style="font:700 28px var(--f-d)">2 sa 14 dk</div></div><span class="e" style="font-size:40px">🌙</span></div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:11px">
+                <div style="background:rgba(255,255,255,.1);border-radius:10px;padding:8px"><span class="e">🍲</span> İftar<br><b style="font:700 13px var(--f-d)">Mercimek, tavuk şiş</b></div>
+                <div style="background:rgba(255,255,255,.1);border-radius:10px;padding:8px"><span class="e">🥚</span> Sahur<br><b style="font:700 13px var(--f-d)">Yumurta, peynir</b></div></div>
+              <div style="font-size:11px;color:rgba(255,255,255,.75)"><span class="e">💧</span> Suyu iftardan sahura yay: 4 bardak kaldı</div></div>
+            <div class="mc" style="font-size:11px;color:#5F726C">Oruçta ilaç ve iğne zamanı için doktoruna danış. Hafif yalnızca hatırlatır.</div>
+          </div></div></div><figcaption>Özet'in üstünde, yalnızca Ramazan'da</figcaption></figure>
+        <figure class="fig"><div class="story" style="background:#F4F1EA;color:#0B2420">
+          <div style="position:absolute;left:0;right:0;top:0;height:42%;background:#0B3B33"></div>
+          <div style="position:absolute;left:18px;right:18px;top:24px;color:#fff;font:700 24px/1.05 var(--f-d)">Bu haftam<br><span style="color:#9FF0D6">nasıl geçti?</span></div>
+          <div style="position:absolute;left:14px;right:14px;top:120px;background:#fff;border-radius:16px;padding:12px;display:grid;gap:8px;box-shadow:0 14px 30px -18px rgba(0,0,0,.4)">
+            <div style="display:flex;gap:8px;align-items:center;font:600 12px var(--f-b)"><span class="e" style="font-size:22px">🍳</span>Protein · 5 gün hedefte</div>
+            <div style="display:flex;gap:8px;align-items:center;font:600 12px var(--f-b)"><span class="e" style="font-size:22px">💧</span>Su · 6 gün hedefte</div>
+            <div style="display:flex;gap:8px;align-items:center;font:600 12px var(--f-b)"><span class="e" style="font-size:22px">🏋️</span>Kas · 3 gün egzersiz</div>
+            <div style="display:flex;gap:8px;align-items:center;font:600 12px var(--f-b)"><span class="e" style="font-size:22px">💉</span>İğne · zamanında</div></div>
+          <div style="position:absolute;left:14px;right:14px;bottom:18px;text-align:center;font:600 11px var(--f-b);color:#55685F">Kilo yazmaz · Hafif ile</div>
+        </div><figcaption>Haftalık özetten tek dokunuşla; kilo hiç görünmez</figcaption></figure>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="sec-h"><h2>Masada ayrışan konular</h2><span>ve nasıl bağlandı</span></div>
+  <div class="deb">
+    <div class="db"><b>Emoji mi, çizgi ikon mu?</b><p>Grafiker: mağaza ile uygulama aynı dili konuşmalı. Brand Manager: 1.9.0'da emojiden çizgiye bilerek geçildi, geri dönüş kafa karıştırır.</p><p class="res">Karar: iki katman. Gezinme çizgi, içerik emoji (karar 3).</p></div>
+    <div class="db"><b>Duraklama kartı ve koruma dönemi Plus olmalı mı?</b><p>Reklamcı: Plus'ın değeri artar. PR ve Brand: insanların uygulamayı bıraktığı anlara kilit koymak güveni zedeler.</p><p class="res">Karar: ücretsiz kalsın. Plus'ın vitrini fotoğraflar, doz planı ve rapor.</p></div>
+    <div class="db"><b>Maliyet takibi mağazada anlatılmalı mı?</b><p>Reklamcı: "kilo başına maliyet" çok konuşulur. PR: reçeteli ilaçla para konusu Google'ın ve kamuoyunun hassas olduğu bir alan.</p><p class="res">Karar: özellik yapılırsa yalnızca uygulamanın içinde; mağazada ve reklamda hiç geçmez.</p></div>
+    <div class="db"><b>Arkadaşla seri paylaşma</b><p>Stajyer: yalnız takip zor, sosyal yön lazım. Developer: sunucu demek, "veri telefonunda" sözü bozulur.</p><p class="res">Karar: rafa kalktı. Sosyal ihtiyaç rakamsız paylaşım kartıyla karşılanır.</p></div>
+  </div>
+</section>
+
+<section>
+  <div class="sec-h"><h2>Önerilen sıra</h2><span>toplantı sonunda üzerinde anlaşılan</span></div>
+  <div class="toc">
+    <div><span class="when">Üretimden önce</span><h4>Zorunlular</h4><ul><li>Satıcı adresi ve geliştirici adı "Hafif"</li><li>Veri güvenliği formu</li><li>2.0.1: Ne yesem? dahil derleme, "2.0'da yeni" sayfası, Ne yesem? yukarı</li><li>Uzun açıklamaya Ne yesem?</li><li>Görseller, öne çıkan görsel ve video YouTube'da</li></ul></div>
+    <div><span class="when">Lansman günü</span><h4>Duyuru</h4><ul><li>3 kısa dikey video</li><li>Kurucu hikâyesi</li><li>Tek sayfalık site ve basın kiti</li><li>Yorum yanıt şablonları</li><li>Diyetisyenlere Plus kodu</li></ul></div>
+    <div><span class="when">2.1</span><h4>Deneyim</h4><ul><li>İçerik katmanında emoji</li><li>Yazı boyutu ayarı</li><li>Rakamsız paylaşım kartı</li><li>Widget görselleri yeni tasarımla</li><li>Bildirimler koçun sesiyle</li></ul></div>
+    <div><span class="when">Şubat 2027'den önce</span><h4>Ramazan modu</h4><ul><li>İftar ve sahura göre hatırlatmalar</li><li>İftar ve sahur menüsü</li><li>Su planı</li><li>Doktor notu</li></ul></div>
+    <div><span class="when">Sonra</span><h4>Bekleyenler</h4><ul><li>Maliyet takibi (karar bekliyor)</li><li>Market listesi</li><li>İngilizce mağaza sayfası</li><li>Saat uygulaması</li><li>Kodun modüllere bölünmesi</li></ul></div>
+  </div>
+</section>
+
+<footer>Hafif ekip toplantısı 2 · 30 Ekim 2026 · İncelenen: 2.0 dalı (Ne yesem? dahil), magaza/tanitim-2 görselleri, hafif-tanitim-2 videosu. Maketler öneridir; uygulamada henüz yoktur.</footer>
+</div>
