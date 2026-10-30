@@ -206,9 +206,27 @@ const J = kapakE({ bg: 'radial-gradient(70% 30% at 100% 15%,#BFEBDB 0%,transpare
   card: 'linear-gradient(155deg,rgba(255,255,255,.92) 0%,rgba(255,255,255,.7) 100%)', edge: 'rgba(14,124,102,.14)', sh: '0 34px 70px -44px rgba(11,59,51,.45)',
   chip: '#F1F8F4', chipInk: '#0B3B33', plate: '#FFFFFF', rim: '#EEF5F1' });
 
+/* ———— K · F'nin cümleleri, E'nin düzeni, emoji ikonlar ———— */
+const SOZ = [['📉','Tartı','Tartın yerinde sayınca nedenini anlatır.','#E1F3EC'],['🍲','Ne yesem?','Akşam ne yiyeceğini Türk mutfağından önerir.','#FBF0DC'],['💉','İğne','İğne gününü ve doz artışını unutturmaz.','#E6EBF5'],['💧','Her gün','Suyunu, adımını, takviyeni tek yerde takip eder.','#E4F1F8'],['🏋️','İlerleme','Kaslarını ve ilerlemeni egzersiz ve fotoğrafla izlersin.','#F7E8EE'],['📋','Doktor','Doktoruna tek bir rapor götürürsün.','#EDF3F0']];
+const Kk = `<!doctype html><html><head><meta charset="utf-8">${FONTS}<style>${base}
+.s{background:radial-gradient(70% 18% at 100% 8%,#3FB592 0%,transparent 70%),linear-gradient(180deg,#167A64 0%,#0F6553 33%,#F4F1EA 33%,#F4F1EA 100%);color:#0B2420}
+.top{position:absolute;left:84px;right:84px;top:100px;color:#fff}
+h1{margin:50px 0 0;font:700 104px/1.0 Outfit;letter-spacing:-.04em}h1 em{font-style:normal;color:#B8F7E2}
+.tl{position:absolute;left:84px;right:84px;top:520px;background:#fff;border-radius:56px;padding:30px 44px;box-shadow:0 50px 90px -50px rgba(11,59,51,.5)}
+.r{display:flex;align-items:center;gap:30px;padding:28px 0}.r+.r{border-top:1px solid #EEF2EF}
+.r .c{width:136px;height:136px;border-radius:40px;display:grid;place-items:center;flex:none;font-size:70px;font-family:"Noto Color Emoji";line-height:1}
+.r small{display:block;font:700 22px Figtree;color:#0E7C66;letter-spacing:.12em;text-transform:uppercase}.r b{display:block;margin-top:8px;font:700 42px/1.16 Outfit;letter-spacing:-.015em}
+.trust{position:absolute;left:84px;right:84px;bottom:90px;display:flex;justify-content:space-between;font:600 28px Figtree;color:#0B3B33}
+.trust span:before{content:"✓ ";color:#0E7C66}
+</style></head><body><div class="s">
+<div class="top">${logo('#B8F7E2', '#fff')}<h1>Hafif seninle<br><em>neler yapar?</em></h1></div>
+<div class="tl">${SOZ.map(([e, t, d, bg]) => `<div class="r"><span class="c" style="background:${bg}">${e}</span><div><small>${t}</small><b>${d}</b></div></div>`).join('')}</div>
+<div class="trust"><span>Hesap yok</span><span>Reklam yok</span><span>Veri telefonunda</span></div>
+</div></body></html>`;
+
 (async () => {
   const b = await chromium.launch(); const p = await b.newPage({ viewport: { width: 1080, height: 1920 } });
-  for (const [ad, html] of [['D-mozaik', D], ['E-bir-gun', E], ['F-sozler', F], ['G-mozaik-premium', G], ['H-kapak', Hh], ['I-emoji-zumrut', I], ['J-emoji-acik', J]]) {
+  for (const [ad, html] of [['D-mozaik', D], ['E-bir-gun', E], ['F-sozler', F], ['G-mozaik-premium', G], ['H-kapak', Hh], ['I-emoji-zumrut', I], ['J-emoji-acik', J], ['K-sozler-liste', Kk]]) {
     const f = path.join(OUT, `_${ad}.html`); fs.writeFileSync(f, html);
     await p.goto('file://' + f); await p.evaluate(() => document.fonts.ready); await p.waitForTimeout(400);
     await p.screenshot({ path: path.join(OUT, ad + '.png') }); fs.unlinkSync(f);
