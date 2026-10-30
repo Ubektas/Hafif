@@ -659,6 +659,9 @@ label.drow{flex-direction:row;font-size:14px;font-weight:500;margin:0}
 .kband .lbl{position:relative;height:32px;margin-top:6px;font-size:11.5px;color:rgba(255,255,255,.65)}.kband .lbl span{position:absolute;transform:translateX(-50%);white-space:nowrap}.kband .lbl span.g{top:16px;color:rgba(255,255,255,.5)}
 .korcard{display:flex;flex-direction:column;gap:12px}.korst{display:flex;align-items:baseline;gap:8px}.korst b{font:700 22px var(--f-display)}.korst span{font-size:12.5px;color:var(--muted)}
 .kornote{display:flex;flex-direction:column;gap:6px;font-size:12.5px;color:var(--muted)}.kornote textarea{font:14px var(--f-body);color:var(--fg);background:var(--sunk);border:1px solid var(--line);border-radius:12px;padding:10px;resize:vertical}
+.meals{display:flex;flex-direction:column;gap:8px;margin-top:4px}.mealh{display:flex;justify-content:space-between;align-items:center}.mealh .linkbtn{margin:0;font-size:12.5px}
+.meal{display:flex;align-items:center;justify-content:space-between;gap:10px;text-align:left;border:1px solid var(--line);background:var(--surface);border-radius:14px;padding:10px 12px;cursor:pointer;color:var(--fg);font:inherit}
+.meal span{display:flex;flex-direction:column;min-width:0}.meal b{font-size:14px;font-weight:600}.meal small{font-size:12px;color:var(--muted)}.meal em{font:700 14px var(--f-body);font-style:normal;color:var(--protein);white-space:nowrap}.meal:active{transform:scale(.98)}
 .exbtn{background:var(--shot-soft);color:var(--shot);box-shadow:none;display:flex;align-items:center;justify-content:center;gap:8px}
 .exdone{display:flex;align-items:center;gap:8px;flex-wrap:wrap;background:var(--shot-soft);color:var(--shot);border-radius:14px;padding:10px 12px;font:600 14px var(--f-body)}.exdone>span{flex:1;min-width:110px}
 .exmin{display:flex;align-items:center;gap:4px}.exmin button{border:0;border-radius:99px;background:var(--surface);color:var(--fg);font:600 12.5px var(--f-body);padding:5px 9px;cursor:pointer}.exmin button[aria-pressed="true"]{background:var(--shot);color:#fff}.exmin small{font-size:11px;color:var(--shot)}
@@ -1474,10 +1477,10 @@ function coachCards(){
   const pg=pGoal(),r=dayRec(td),rem=pg-(r.p||0);
   if(hr>=16&&rem>=15&&(r.p||0)<pg*.75){
     const use={};for(const d of Object.values(S.daily||{}))for(const x of d.log||[])if(x[1]==="p"&&x[3])use[x[3]]=(use[x[3]]||0)+1;
-    const ch=FOODS.filter(f=>f.g>=10&&f.g<=rem+10).sort((a,b)=>(use[b.k]||0)-(use[a.k]||0)||b.g-a.g).slice(0,3);
+    const ch=mealPick(rem,0).L.map(m=>({k:"m:"+m.id,n:m.s,g:m.g}));
     const hic=!(r.p>0),R=Math.round(rem);
     out.push({id:"protein",c:"protein",ic:"yumurta",k:"Protein",t:hic?"Bugün protein kaydı yok.":hr>=20?`Günü tamamlamaya ${R} g kaldı.`:`Akşama ${R} g kaldı.${rem<=45?" Yetişir.":""}`,
-      b:hic?"Yediklerini eklemeyi unutmuş olabilirsin. Henüz yemediysen yoğun bir kaynakla başla:":rem>60?"Hepsine yetişmek zorunda değilsin; yarısı bile fark yaratır. En kolayı yoğun kaynaklar:":"İştahın azken en kolayı yoğun kaynaklar:",ch:ch.map(f=>[(FEM[f.k]||["🍽️"])[0],f.n,f.g,f.k]),a:[["Protein & su","go:besin"]]})}
+      b:hic?"Yediklerini eklemeyi unutmuş olabilirsin. Henüz yemediysen şunlardan biriyle başla:":rem>60?"Hepsine yetişmek zorunda değilsin; yarısı bile fark yaratır. Birkaç öneri:":"Bu akşam için birkaç öneri:",ch:ch.map(f=>["",f.n,f.g,f.k]),a:[["Protein & su","go:besin"]]})}
   // 9) su serisi (öğleden sonra, en az 3 gün)
   const wg=wGoal();let st=0;for(let i=1;i<=60;i++){if((dayRec(addDays(td,-i)).w||0)>=wg)st++;else break}
   if(st>=3&&hr>=12&&(r.w||0)<wg){let best=0,run=0;for(let i=60;i>st;i--){if((dayRec(addDays(td,-i)).w||0)>=wg){run++;best=Math.max(best,run)}else run=0}
@@ -1537,7 +1540,7 @@ function coachAct(a,id){
   else if(k==="edit")openSheet("weight",v);
   else if(k==="go"){selPhase=null;ANIM=true;tab=v;render();window.scrollTo(0,0)}
   else if(k==="water"){const r=ensureDay(td),amt=+v,from=r.w;r.w+=amt;r.log.push([Date.now(),"w",amt]);save();toast(from<wGoal()&&r.w>=wGoal()?"Su hedefi tamam":`+${amt} ml su`);render()}
-  else if(k==="prot"){const f=FOODS.find(x=>x.k===v);if(f){addProtein(f.g,f.k);toast(`+${f.g} g protein`);render()}}
+  else if(k==="prot"){const f=FOODS.find(x=>x.k===v)||(v.slice(0,2)==="m:"?mealOf(v):null);if(f){addProtein(f.g,f.k);toast(`+${f.g} g protein`);render()}}
 }
 function vOzetMain(){
   const w=sortedW(), s=sortedS(), P=S.profile;
@@ -2023,7 +2026,7 @@ function pListHtml(){
   const G={};for(const x of it){const k=x[3]||"_";(G[k]=G[k]||[]).push(x)}
   const rows=Object.entries(G).sort((a,b)=>b[1][b[1].length-1][0]-a[1][a[1].length-1][0]);
   const hm=ts=>new Date(ts).toLocaleTimeString("tr-TR",{hour:"2-digit",minute:"2-digit"});
-  const html=rows.slice(0,pAll?99:4).map(([k,xs])=>{const f=FOODS.find(y=>y.k===k),last=xs[xs.length-1],g=xs.reduce((a,x)=>a+x[2],0),n=xs.length;
+  const html=rows.slice(0,pAll?99:4).map(([k,xs])=>{const f=foodOf(k),last=xs[xs.length-1],g=xs.reduce((a,x)=>a+x[2],0),n=xs.length;
     const det=!f?(n>1?n+" giriş":"elle girildi"):f.pick?n+" "+(f.u||"adet"):n>1?(f.d==="1 adet"?n+" adet":n+" × "+f.d):f.d;
     return `<div class="pli"><span class="ic">${icon(k==="_"?"genel":k,28)}</span><div class="tx"><b>${f?f.n:"Diğer"}</b><small>${det} · ${n>1?"son ":""}${hm(last[0])}</small></div><em>+${ml(g)} g</em><button type="button" class="x" data-pdel="${last[0]}" aria-label="${n>1?"Birini sil":"Sil"}">${n>1?"−":"×"}</button></div>`}).join("");
   return html+(rows.length>4?`<button type="button" class="linkbtn" id="pMore" style="align-self:center;margin-top:6px">${pAll?"Daha az göster":`+${rows.length-4} yiyecek daha`}</button>`:"");
@@ -2080,7 +2083,66 @@ function weekHtml(){
   const row=(k,lbl,col)=>`<div class="wk2r"><span class="wk2l" style="color:${col}">${lbl}</span><div class="wk2b">${D.map(x=>`<i style="height:${Math.max(6,x[k])}%;background:${x[k]>=100?col:`color-mix(in oklab,${col} 40%,var(--surface))`}"></i>`).join("")}</div></div>`;
   return `${row("p","Protein","var(--protein)")}${row("w","Su","var(--water)")}<div class="wk2r"><span></span><div class="wk2d">${D.map(x=>`<span class="${x.i===0?"on":""}">${x.i===0?"Bugün":toD(x.d).toLocaleDateString("tr-TR",{weekday:"short"}).slice(0,3)}</span>`).join("")}</div></div>`;
 }
-function undoText(){const r=dayRec(today()),l=r.log[r.log.length-1];if(!l)return "";if(l[1]==="w")return `Son girişi geri al (+${l[2]} ml su)`;const f=FOODS.find(x=>x.k===l[3]);return `Son girişi geri al (${f?f.n+", ":""}+${l[2]} g protein)`}
+function undoText(){const r=dayRec(today()),l=r.log[r.log.length-1];if(!l)return "";if(l[1]==="w")return `Son girişi geri al (+${l[2]} ml su)`;const f=foodOf(l[3]);return `Son girişi geri al (${f?f.n+", ":""}+${l[2]} g protein)`}
+/* Türk mutfağından öğün önerileri: kalan proteine, saate ve iştaha göre 3 öneri. Değerler tipik bir porsiyon için yaklaşık.
+   t: k kahvaltı · o öğle/akşam · a ara/hafif; y: yumuşak ya da sıvı (iştah az, bulantı varken öne çıkar) */
+const MEALS=[
+ {id:"menemen",n:"Menemen + beyaz peynir",s:"Menemen",p:"2 yumurta · 50 g peynir",g:19,t:"k"},
+ {id:"omlet",n:"Kaşarlı omlet",s:"Omlet",p:"2 yumurta · 30 g kaşar",g:19,t:"k"},
+ {id:"sucuklu",n:"Sucuklu yumurta",s:"Sucuklu yumurta",p:"2 yumurta · 40 g sucuk",g:20,t:"k"},
+ {id:"yulaf",n:"Süzme yoğurt, yulaf ve ceviz",s:"Yoğurtlu yulaf",p:"200 g yoğurt · 40 g yulaf",g:25,t:"ka",y:1},
+ {id:"lortost",n:"Lorlu tam buğday tost",s:"Lorlu tost",p:"80 g lor · 2 dilim",g:16,t:"k"},
+ {id:"haslama",n:"Haşlanmış yumurta + süt",s:"Yumurta + süt",p:"2 yumurta · 1 bardak",g:19,t:"ka",y:1},
+ {id:"tavuksis",n:"Tavuk şiş + bulgur pilavı",s:"Tavuk şiş",p:"1 porsiyon",g:38,t:"o"},
+ {id:"kofte",n:"Izgara köfte + salata",s:"Izgara köfte",p:"4–5 köfte",g:27,t:"o"},
+ {id:"mercorba",n:"Mercimek çorbası + süzme yoğurt",s:"Mercimek + yoğurt",p:"1 kase · 150 g",g:24,t:"oa",y:1},
+ {id:"fasulye",n:"Kuru fasulye + cacık",s:"Fasulye + cacık",p:"1 porsiyon",g:19,t:"o"},
+ {id:"nohut",n:"Etli nohut + yoğurt",s:"Etli nohut",p:"1 porsiyon",g:24,t:"o"},
+ {id:"tonsalata",n:"Ton balıklı salata + yumurta",s:"Ton salata",p:"1 kutu · 1 yumurta",g:31,t:"oa"},
+ {id:"somon",n:"Fırında somon + sebze",s:"Somon",p:"150 g",g:33,t:"o"},
+ {id:"levrek",n:"Izgara levrek + roka",s:"Levrek",p:"1 porsiyon",g:30,t:"o"},
+ {id:"tavuksote",n:"Tavuk sote + yoğurt",s:"Tavuk sote",p:"1 porsiyon",g:33,t:"o"},
+ {id:"tavukbut",n:"Fırında tavuk but",s:"Tavuk but",p:"2 adet",g:30,t:"o"},
+ {id:"etsote",n:"Et sote + piyaz",s:"Et sote",p:"120 g et",g:32,t:"o"},
+ {id:"ispanak",n:"Kıymalı ıspanak + yoğurt",s:"Kıymalı ıspanak",p:"1 porsiyon",g:18,t:"o",y:1},
+ {id:"manti",n:"Yoğurtlu mantı",s:"Mantı",p:"1 porsiyon",g:21,t:"o"},
+ {id:"lahmacun",n:"Lahmacun + ayran",s:"Lahmacun + ayran",p:"1 adet · 1 bardak",g:21,t:"o"},
+ {id:"karniyarik",n:"Karnıyarık + yoğurt",s:"Karnıyarık",p:"1 porsiyon",g:18,t:"o"},
+ {id:"tavukcorba",n:"Tavuk suyu çorba (etli)",s:"Tavuk çorbası",p:"1 büyük kase",g:15,t:"oa",y:1},
+ {id:"ezogelin",n:"Ezogelin çorbası + yoğurt",s:"Ezogelin + yoğurt",p:"1 kase · 150 g",g:14,t:"oa",y:1},
+ {id:"ayranyum",n:"Ayran + haşlanmış yumurta",s:"Ayran + yumurta",p:"1 büyük bardak · 1 yumurta",g:14,t:"ak",y:1},
+ {id:"yogurtbal",n:"Süzme yoğurt + bal",s:"Süzme yoğurt",p:"150 g",g:15,t:"ak",y:1},
+ {id:"kefir",n:"Kefir",s:"Kefir",p:"1 büyük bardak",g:9,t:"ak",y:1},
+ {id:"lordomates",n:"Lor peyniri + domates",s:"Lor + domates",p:"100 g",g:12,t:"ak",y:1},
+ {id:"shakemuz",n:"Protein shake + muz",s:"Shake + muz",p:"1 ölçek",g:26,t:"ak",y:1},
+ {id:"yesilmer",n:"Yeşil mercimek salatası + yoğurt",s:"Mercimek salatası",p:"1 kase · 100 g",g:18,t:"oa"}
+];
+const mealOf=k=>{const m=k&&k.slice(0,2)==="m:"&&MEALS.find(x=>x.id===k.slice(2));return m?{k,n:m.n,d:m.p,g:m.g}:null};
+const foodOf=k=>FOODS.find(x=>x.k===k)||mealOf(k);
+let mealOff=0;
+function mealPick(rem,off){
+  const h=new Date().getHours(),slot=h<11?"k":h>=21?"a":"o",cap={k:30,o:40,a:20}[slot],tg=Math.max(10,Math.min(rem,cap));
+  const ap=(S.app||{})[today()],se=seOn(today()),easy=!!(ap&&ap.i!=null&&ap.i<=2)||(se.bulanti||0)>=1;
+  let L=MEALS.filter(m=>m.t.includes(slot));if(easy){const y=L.filter(m=>m.y);if(y.length>=3)L=y}
+  /* günden güne değişsin: tarihten türeyen küçük bir karıştırma; "Başka öner" kaydırır */
+  const seed=[...today()].reduce((a,c)=>a*31+c.charCodeAt(0)|0,7),j=m=>(([...m.id].reduce((a,c)=>a*17+c.charCodeAt(0)|0,seed)>>>0)%7);
+  L=L.map(m=>({m,sc:Math.abs(m.g-tg)+(m.g>rem+12?8:0)+(m.id==="shakemuz"?6:0)+j(m)})).sort((a,b)=>a.sc-b.sc).map(x=>x.m);
+  const n=L.length,o=n?(off*3)%n:0;return {slot,easy,L:[...L.slice(o),...L.slice(0,o)].slice(0,3)};
+}
+function mealSec(){
+  const rem=Math.round(pGoal()-dayRec(today()).p);if(rem<10)return `<div id="mealSec" hidden></div>`;
+  const R=mealPick(rem,mealOff),lbl={k:"Kahvaltı için",o:new Date().getHours()<16?"Öğle için":"Akşam için",a:"Hafif bir şey"}[R.slot];
+  return `<div class="meals" id="mealSec"><div class="mealh"><span class="eyebrow" style="color:var(--protein)">Ne yesem? · ${lbl}</span><button type="button" class="linkbtn" id="mealMore">Başka öner</button></div>
+    ${R.easy?`<span class="muted" style="font-size:12.5px">İştahın az görünüyor; küçük ve yumuşak seçenekler.</span>`:""}
+    ${R.L.map(m=>`<button type="button" class="meal" data-meal="${m.id}"><span><b>${esc(m.n)}</b><small>${esc(m.p)}</small></span><em>+${m.g} g</em></button>`).join("")}
+    <span class="muted" style="font-size:11.5px">Değerler tipik bir porsiyon için yaklaşık; dokununca protein eklenir.</span></div>`;
+}
+function bindMeals(){
+  const sec=$("#mealSec");if(!sec)return;
+  const re=()=>{const y=scrollY;$("#mealSec").outerHTML=mealSec();bindMeals();scrollTo(0,y)};
+  const mm=$("#mealMore");if(mm)mm.addEventListener("click",()=>{mealOff++;re()});
+  sec.querySelectorAll("[data-meal]").forEach(b=>b.addEventListener("click",()=>{const m=MEALS.find(x=>x.id===b.dataset.meal);if(!m)return;addProtein(m.g,"m:"+m.id);toast(`+${m.g} g · ${m.s}`);mealOff=0;re()}));
+}
 function todayCard(){
   const r=dayRec(today()), pg=pGoal(), wg=wGoal();
   const chips=[50,100,200,250,330,500].map(v=>`<button type="button" data-wamt="${v}" aria-pressed="${v===wAmt}">${v}</button>`).join("");
@@ -2091,6 +2153,7 @@ function todayCard(){
       <div class="pscale"><span>her blok 5 g · renk yiyeceğe göre</span><span id="pLeft">${r.p>=pg?"Hedef tamam":ml(pg-r.p)+" g kaldı"}</span></div></div>
     <div class="plist" id="pList">${pListHtml()}</div>
     <button type="button" class="paddbtn" id="pOpen"><span style="font-size:22px;line-height:0">+</span> Protein ekle</button>
+    ${mealSec()}
     <div class="psugg">${pSugg().map(f=>`<button type="button" data-food="${f.k}">${icon(f.k,20)}${f.n.replace(" göğsü","").replace(" balığı","").replace("Kırmızı ","").replace("Protein shake","Shake")} <b>${f.g} g</b></button>`).join("")}</div>
     <div class="hr"></div>
     <div class="wsec">
@@ -2253,7 +2316,7 @@ function setWAmt(v){
 function bindToday(){
   const c=$("#todayCard"); if(!c)return;
   c.querySelectorAll("[data-food]").forEach(b=>b.addEventListener("click",()=>{const f=FOODS.find(x=>x.k===b.dataset.food);addProtein(fG(f),f.k);if(b.animate)b.animate([{transform:"scale(.92)"},{transform:"none"}],{duration:260})}));
-  $("#pOpen").addEventListener("click",openProteinSheet); bindPDel();
+  $("#pOpen").addEventListener("click",openProteinSheet); bindPDel(); bindMeals();
   c.querySelectorAll("[data-wsel]").forEach(b=>b.addEventListener("click",()=>setWAmt(+b.dataset.wsel)));
   $("#wAdd").addEventListener("click",addWater);
   $("#undo").addEventListener("click",undoLast);

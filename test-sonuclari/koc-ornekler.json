@@ -6,25 +6,25 @@
       "ic": "yumurta",
       "k": "Protein",
       "t": "Akşama 35 g kaldı. Yetişir.",
-      "b": "İştahın azken en kolayı yoğun kaynaklar:",
+      "b": "Bu akşam için birkaç öneri:",
       "ch": [
         [
-          "🥛",
-          "Süzme yoğurt",
-          15,
-          "yogurt"
+          "",
+          "Tavuk şiş",
+          38,
+          "m:tavuksis"
         ],
         [
-          "🥩",
-          "Kırmızı et",
-          26,
-          "et"
+          "",
+          "Ton salata",
+          31,
+          "m:tonsalata"
         ],
         [
-          "🐟",
-          "Ton balığı",
-          25,
-          "ton"
+          "",
+          "Levrek",
+          30,
+          "m:levrek"
         ]
       ],
       "a": [
@@ -42,25 +42,25 @@
       "ic": "yumurta",
       "k": "Protein",
       "t": "Günü tamamlamaya 35 g kaldı.",
-      "b": "İştahın azken en kolayı yoğun kaynaklar:",
+      "b": "Bu akşam için birkaç öneri:",
       "ch": [
         [
-          "🥛",
-          "Süzme yoğurt",
-          15,
-          "yogurt"
+          "",
+          "Yumurta + süt",
+          19,
+          "m:haslama"
         ],
         [
-          "🥩",
-          "Kırmızı et",
-          26,
-          "et"
+          "",
+          "Mercimek salatası",
+          18,
+          "m:yesilmer"
         ],
         [
-          "🐟",
-          "Ton balığı",
-          25,
-          "ton"
+          "",
+          "Ayran + yumurta",
+          14,
+          "m:ayranyum"
         ]
       ],
       "a": [
@@ -78,25 +78,25 @@
       "ic": "yumurta",
       "k": "Protein",
       "t": "Bugün protein kaydı yok.",
-      "b": "Yediklerini eklemeyi unutmuş olabilirsin. Henüz yemediysen yoğun bir kaynakla başla:",
+      "b": "Yediklerini eklemeyi unutmuş olabilirsin. Henüz yemediysen şunlardan biriyle başla:",
       "ch": [
         [
-          "🍗",
-          "Tavuk göğsü",
+          "",
+          "Tavuk şiş",
+          38,
+          "m:tavuksis"
+        ],
+        [
+          "",
+          "Ton salata",
           31,
-          "tavuk"
+          "m:tonsalata"
         ],
         [
-          "🥩",
-          "Kırmızı et",
-          26,
-          "et"
-        ],
-        [
-          "🐟",
-          "Ton balığı",
-          25,
-          "ton"
+          "",
+          "Levrek",
+          30,
+          "m:levrek"
         ]
       ],
       "a": [
