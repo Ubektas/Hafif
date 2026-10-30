@@ -356,6 +356,8 @@ const step = (ad, sonuc, detay) => { report.adimlar.push({ ad, sonuc, detay }); 
     step('Değerlendirme penceresi çağrısı uygulamayı çökertmedi', !!pid && !report.cokme, rv + ' · pid ' + (pid || 'YOK'));
   } catch (e) {
     report.hatalar.push('TEST HATASI: ' + (e && e.stack || e));
+    try { report.hata_odak = (await device.shell('dumpsys window | grep mCurrentFocus')).toString().trim(); } catch (_) {}
+    try { report.hata_logcat = (await device.shell('logcat -d -t 1500')).toString().split('\n').filter(l => /hafif|chromium|Capacitor|ActivityManager|ActivityTaskManager|AndroidRuntime|lowmemory|WindowManager|cr_/i.test(l)).slice(-120).join('\n'); } catch (_) {}
     try { await shot('hata-ani'); } catch (_) {}
   }
   try { const c = (await device.shell('logcat -d -b crash')).toString(); if (c.trim()) report.cokme = c.slice(-3000); } catch (_) {}
