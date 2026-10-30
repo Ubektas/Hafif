@@ -169,9 +169,46 @@ h1{margin:50px 0 0;font:700 100px/1.02 Outfit;letter-spacing:-.04em}h1 em{font-s
 <div class="trust"><span class="k glass">${LI.kilit}</span><div>Hesap yok, reklam yok. <b>Her şey yalnızca senin telefonunda.</b></div></div>
 </div></body></html>`;
 
+/* ———— I / J · emoji ikonlar; I: aydınlık zümrüt, J: açık nane ———— */
+const EM = [['📉','Kilo'],['💉','İğne günü'],['💧','Su'],['💊','Takviyeler'],['👟','Adımlar'],['🏋️','Kas koruma'],['📸','Fotoğraflar'],['🗓️','Doz planı'],['💬','Koç'],['📋','Doktor raporu']];
+const emo = `font-family:"Noto Color Emoji";line-height:1`;
+const kapakE = (t) => `<!doctype html><html><head><meta charset="utf-8">${FONTS}<style>${base}
+.s{background:${t.bg};color:${t.ink}}
+.top{position:absolute;left:84px;right:84px;top:100px}
+h1{margin:50px 0 0;font:700 100px/1.02 Outfit;letter-spacing:-.04em}h1 em{font-style:normal;color:${t.acc}}
+.sub{margin-top:24px;font:500 34px/1.4 Figtree;color:${t.sub}}
+.glass{background:${t.card};border:1px solid ${t.edge};box-shadow:${t.sh}}
+.meal{position:absolute;left:84px;right:84px;top:590px;height:440px;border-radius:52px;padding:44px 48px;display:flex;gap:24px;align-items:center;overflow:hidden}
+.meal .tx{flex:1}.meal .k{display:inline-flex;align-items:center;gap:10px;font:700 22px Figtree;letter-spacing:.14em;text-transform:uppercase;color:${t.gold}}.meal .k:before{content:"";width:9px;height:9px;border-radius:50%;background:${t.gold}}
+.meal h2{margin:16px 0 20px;font:700 54px/1.06 Outfit;letter-spacing:-.025em;color:${t.ink}}
+.meal .ch{display:flex;flex-wrap:wrap;gap:10px}.meal .ch span{background:${t.chip};color:${t.chipInk};border:1px solid ${t.edge};border-radius:99px;padding:10px 20px;font:600 23px Figtree}
+.plate{position:relative;width:300px;height:300px;flex:none}
+.plate .p{position:absolute;inset:10px;border-radius:50%;background:${t.plate};box-shadow:0 24px 50px -24px rgba(0,0,0,.45),inset 0 0 0 16px ${t.rim}}
+.plate i{position:absolute;font-style:normal;${emo}}
+.grid{position:absolute;left:66px;right:66px;top:1100px;display:grid;grid-template-columns:repeat(5,1fr);gap:50px 8px}
+.it{display:flex;flex-direction:column;align-items:center;gap:16px;font:600 25px Figtree;color:${t.lab};text-align:center}
+.it span.c{width:156px;height:156px;border-radius:44px;display:grid;place-items:center;font-size:76px;${emo}}
+.trust{position:absolute;left:84px;right:84px;bottom:96px;display:flex;align-items:center;gap:22px;padding-top:36px;border-top:1px solid ${t.edge}}
+.trust .k{width:84px;height:84px;flex:none;border-radius:26px;display:grid;place-items:center;font-size:44px;${emo}}.trust div{font:500 30px/1.35 Figtree;color:${t.sub}}.trust div b{color:${t.acc};font-weight:600}
+</style></head><body><div class="s">
+<div class="top">${logo(t.acc, t.ink)}<h1>Kilo verirken<br><em>ihtiyacın olan her şey.</em></h1><div class="sub">Tartından tabağına, iğne gününden doktor kontrolüne kadar.</div></div>
+<div class="meal glass"><div class="tx"><div class="k">Ne yesem? · Akşam</div><h2>Tavuk şiş ve bulgur pilavı</h2><div class="ch"><span>🍲 Mercimek çorbası</span><span>🍖 Izgara köfte</span><span>🍳 Menemen</span></div></div>
+<div class="plate"><div class="p"></div><i style="left:70px;top:58px;font-size:96px;transform:rotate(-12deg)">🍗</i><i style="left:150px;top:118px;font-size:84px">🥗</i><i style="left:58px;top:150px;font-size:80px">🍚</i></div></div>
+<div class="grid">${EM.map(([e, n]) => `<div class="it"><span class="c glass">${e}</span>${n}</div>`).join('')}</div>
+<div class="trust"><span class="k glass">🔒</span><div>Hesap yok, reklam yok. <b>Her şey yalnızca senin telefonunda.</b></div></div>
+</div></body></html>`;
+const I = kapakE({ bg: 'radial-gradient(70% 30% at 100% 18%,#3FB592 0%,transparent 70%),radial-gradient(60% 28% at 0% 80%,#1F8A70 0%,transparent 72%),linear-gradient(180deg,#167A64 0%,#0E5C4E 100%)',
+  ink: '#fff', acc: '#B8F7E2', sub: 'rgba(255,255,255,.82)', lab: 'rgba(255,255,255,.95)', gold: '#FFD98A',
+  card: 'linear-gradient(155deg,rgba(255,255,255,.22) 0%,rgba(255,255,255,.1) 100%)', edge: 'rgba(255,255,255,.28)', sh: '0 40px 80px -44px rgba(3,40,32,.7),inset 0 1px 0 rgba(255,255,255,.25)',
+  chip: 'rgba(255,255,255,.14)', chipInk: '#fff', plate: '#FBF8F2', rim: '#EFE8DC' });
+const J = kapakE({ bg: 'radial-gradient(70% 30% at 100% 15%,#BFEBDB 0%,transparent 70%),radial-gradient(60% 28% at 0% 82%,#CFEFE3 0%,transparent 72%),linear-gradient(180deg,#EAF7F1 0%,#DDF1E8 100%)',
+  ink: '#0B3B33', acc: '#0E7C66', sub: '#4E6B63', lab: '#0B3B33', gold: '#B06D10',
+  card: 'linear-gradient(155deg,rgba(255,255,255,.92) 0%,rgba(255,255,255,.7) 100%)', edge: 'rgba(14,124,102,.14)', sh: '0 34px 70px -44px rgba(11,59,51,.45)',
+  chip: '#F1F8F4', chipInk: '#0B3B33', plate: '#FFFFFF', rim: '#EEF5F1' });
+
 (async () => {
   const b = await chromium.launch(); const p = await b.newPage({ viewport: { width: 1080, height: 1920 } });
-  for (const [ad, html] of [['D-mozaik', D], ['E-bir-gun', E], ['F-sozler', F], ['G-mozaik-premium', G], ['H-kapak', Hh]]) {
+  for (const [ad, html] of [['D-mozaik', D], ['E-bir-gun', E], ['F-sozler', F], ['G-mozaik-premium', G], ['H-kapak', Hh], ['I-emoji-zumrut', I], ['J-emoji-acik', J]]) {
     const f = path.join(OUT, `_${ad}.html`); fs.writeFileSync(f, html);
     await p.goto('file://' + f); await p.evaluate(() => document.fonts.ready); await p.waitForTimeout(400);
     await p.screenshot({ path: path.join(OUT, ad + '.png') }); fs.unlinkSync(f);
