@@ -48,6 +48,11 @@ public class WidgetPlugin extends Plugin {
                 WindowInsetsControllerCompat c = WindowCompat.getInsetsController(w, w.getDecorView());
                 c.setAppearanceLightStatusBars(!dark);
                 c.setAppearanceLightNavigationBars(!dark);
+                // çubukların arkasında görünen pencere zemini temayla aynı renk olsun (yoksa koyu temada beyaz şerit kalır)
+                int bg = dark ? 0xFF08171A : 0xFFF1F5F3;
+                w.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(bg));
+                w.getDecorView().setBackgroundColor(bg);
+                if (getBridge() != null && getBridge().getWebView() != null) getBridge().getWebView().setBackgroundColor(bg);
                 call.resolve();
             } catch (Exception e) {
                 call.reject(e.getMessage());
