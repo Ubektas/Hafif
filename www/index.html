@@ -1309,6 +1309,9 @@ function widgetData(){
       pts:w30.map(x=>[diffDays(from,x.date),x.kg]),shots:sortedS().filter(x=>x.date>=from).map(x=>diffDays(from,x.date)),first30:w30[0].kg,d30:L.kg-w30[0].kg,perWeek:T?T.slope*7:null};
     const M=milestones(),nx=M&&M.L.find(m=>!m.done);if(nx)o.badge={t:nx.t+(nx.u?" "+nx.u:""),left:Math.max(0,L.kg-nx.kg)}}
   const T=sTimes(),SE_={sabah:"☀️",ogle:"🌤️",aksam:"🌆",gece:"🌙"};
+  /* Ne yesem? widget'ı: her öğün için kalan proteine göre en iyi öneriler (widget saate göre birini seçer) */
+  const remP=Math.max(0,pg-(r.p||0)),me=m=>{const e=[...(MEAL_E[m.id]||"🍲")];return {id:m.id,n:m.n,s:m.s,g:m.g,e:e[0],e2:e[1]||"🥗"}};
+  o.meals={k:mealPick(remP,0,"k").L.map(me),o:mealPick(remP,0,"o").L.map(me),a:mealPick(remP,0,"a").L.map(me)};
   o.supp=Array.isArray(S.supps)?[...Array(7)].map((_,i)=>{const d=addDays(td,i),t=takenOn(d);return {d,s:SLOTS_S.map(([k,n])=>{const it=dosesFor(d).filter(q=>q.k===k);return it.length?{k,n,t:T[k],e:SE_[k],names:it.map(q=>q.x.name).join(" · "),done:it.filter(q=>t[q.key]).length,of:it.length}:null}).filter(Boolean)}}):[];
   return o;
 }
@@ -1319,6 +1322,7 @@ function wLink(url){const m=/^hafif:\/\/w\/(.+)$/.exec(url||"");if(!m||$("#onb")
   if(a==="water"){const v=+b||250,r=ensureDay(today());r.w+=v;r.log.push([Date.now(),"w",v]);save();go("besin");toast(`+${v} ml su eklendi`);return}
   if(a==="weight"||a==="shot"){go("ozet");setTimeout(()=>openSheet(a),350);return}
   if(a==="protein"){go("besin");setTimeout(openProteinSheet,350);return}
+  if(a==="meal"){const m=MEALS.find(x=>x.id===b);go("besin");if(m){addProtein(m.g,"m:"+m.id);toast(`+${m.g} g · ${m.s}`);render()}return}
   if(a==="supp"){const d=today();S.suppLog=S.suppLog||{};const t=S.suppLog[d]=S.suppLog[d]||{};dosesFor(d).filter(q=>q.k===b).forEach(q=>{t[q.key]=t[q.key]||Date.now()});save();go("takviye");toast("Takviyeler işaretlendi");return}
   if(a==="plus"){go("ozet");setTimeout(()=>openPaywall("widget"),350)}
 }
@@ -2117,11 +2121,13 @@ const MEALS=[
  {id:"shakemuz",n:"Protein shake + muz",s:"Shake + muz",p:"1 ölçek",g:26,t:"ak",y:1},
  {id:"yesilmer",n:"Yeşil mercimek salatası + yoğurt",s:"Mercimek salatası",p:"1 kase · 100 g",g:18,t:"oa"}
 ];
+/* widget için her öğüne bir ya da iki emoji */
+const MEAL_E={menemen:"🍳🧀",omlet:"🍳🧀",sucuklu:"🍳🌭",yulaf:"🥣🍯",lortost:"🥪🧀",haslama:"🥚🥛",tavuksis:"🍗🍚",kofte:"🍖🥗",mercorba:"🍲🥛",fasulye:"🍲🥒",nohut:"🍲🥛",tonsalata:"🐟🥗",somon:"🐟🥦",levrek:"🐟🥗",tavuksote:"🍗🥛",tavukbut:"🍗🥗",etsote:"🥩🥗",ispanak:"🥬🥛",manti:"🥟🥛",lahmacun:"🌯🥛",karniyarik:"🍆🥛",tavukcorba:"🍲🍋",ezogelin:"🍲🥛",ayranyum:"🥛🥚",yogurtbal:"🥣🍯",kefir:"🥛🍓",lordomates:"🧀🍅",shakemuz:"🥤🍌",yesilmer:"🥗🥛"};
 const mealOf=k=>{const m=k&&k.slice(0,2)==="m:"&&MEALS.find(x=>x.id===k.slice(2));return m?{k,n:m.n,d:m.p,g:m.g}:null};
 const foodOf=k=>FOODS.find(x=>x.k===k)||mealOf(k);
 let mealOff=0;
-function mealPick(rem,off){
-  const h=new Date().getHours(),slot=h<11?"k":h>=21?"a":"o",cap={k:30,o:40,a:20}[slot],tg=Math.max(10,Math.min(rem,cap));
+function mealPick(rem,off,forceSlot){
+  const h=new Date().getHours(),slot=forceSlot||(h<11?"k":h>=21?"a":"o"),cap={k:30,o:40,a:20}[slot],tg=Math.max(10,Math.min(rem,cap));
   const ap=(S.app||{})[today()],se=seOn(today()),easy=!!(ap&&ap.i!=null&&ap.i<=2)||(se.bulanti||0)>=1;
   let L=MEALS.filter(m=>m.t.includes(slot));if(easy){const y=L.filter(m=>m.y);if(y.length>=3)L=y}
   /* günden güne değişsin: tarihten türeyen küçük bir karıştırma; "Başka öner" kaydırır */

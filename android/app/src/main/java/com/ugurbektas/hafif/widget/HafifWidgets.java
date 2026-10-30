@@ -18,13 +18,13 @@ import com.ugurbektas.hafif.R;
 import java.io.File;
 import java.io.FileOutputStream;
 
-/** Hafif'in 10 ana ekran widget'ı. Her tür ayrı bir sağlayıcıdır (widget listesinde ayrı görünür). */
+/** Hafif'in 11 ana ekran widget'ı. Her tür ayrı bir sağlayıcıdır (widget listesinde ayrı görünür). */
 public final class HafifWidgets {
     private HafifWidgets() {}
 
     /** Tür numarası ve varsayılan boyutu (dp). */
-    static final int[][] DEF = {{0, 0}, {170, 170}, {170, 80}, {170, 170}, {170, 80}, {170, 170}, {170, 170}, {170, 170}, {170, 170}, {170, 170}, {170, 170}};
-    static final Class<?>[] KINDS = {null, Dongu.class, Siradaki.class, Bugun.class, Kilo.class, Grafik.class, Hedef.class, Su.class, Protein.class, Adim.class, Takviye.class};
+    static final int[][] DEF = {{0, 0}, {170, 170}, {170, 80}, {170, 170}, {170, 80}, {170, 170}, {170, 170}, {170, 170}, {170, 170}, {170, 170}, {170, 170}, {170, 170}};
+    static final Class<?>[] KINDS = {null, Dongu.class, Siradaki.class, Bugun.class, Kilo.class, Grafik.class, Hedef.class, Su.class, Protein.class, Adim.class, Takviye.class, NeYesem.class};
 
     public static void updateAll(Context ctx) {
         AppWidgetManager m = AppWidgetManager.getInstance(ctx);
@@ -83,7 +83,7 @@ public final class HafifWidgets {
         if (!dir.exists() && !dir.mkdirs()) throw new Exception("klasör açılamadı");
         WidgetData d = WidgetData.load(ctx);
         d.forcePlus = true;
-        WidgetRenderer rd = new WidgetRenderer(ctx);
+        WidgetRenderer rd = new WidgetRenderer(ctx, false);
         StringBuilder out = new StringBuilder();
         for (int k = 1; k < KINDS.length; k++) {
             int[][] sizes = (k == 2 || k == 4) ? new int[][]{{170, 80}, {360, 80}, {360, 170}} : new int[][]{{170, 170}, {360, 170}};
@@ -92,6 +92,13 @@ public final class HafifWidgets {
                 save(rd.render(k, d, sz[0], sz[1], 2f).bmp, new File(dir, name));
                 out.append(name).append(',');
             }
+        }
+        // koyu tema örnekleri (geniş boyut)
+        WidgetRenderer rn = new WidgetRenderer(ctx, true);
+        for (int k = 1; k < KINDS.length; k++) {
+            String name = k + "-koyu.png";
+            save(rn.render(k, d, 360, 170, 2f).bmp, new File(dir, name));
+            out.append(name).append(',');
         }
         d.forcePlus = false;
         save(rd.render(1, d, 170, 170, 2f).bmp, new File(dir, "kilitli.png"));
@@ -129,4 +136,5 @@ public final class HafifWidgets {
     public static class Protein extends Base { int kind() { return 8; } }
     public static class Adim extends Base { int kind() { return 9; } }
     public static class Takviye extends Base { int kind() { return 10; } }
+    public static class NeYesem extends Base { int kind() { return 11; } }
 }

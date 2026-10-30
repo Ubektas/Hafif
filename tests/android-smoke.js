@@ -286,11 +286,16 @@ const step = (ad, sonuc, detay) => { report.adimlar.push({ ad, sonuc, detay }); 
       const b64 = (await device.shell(`run-as ${PKG} base64 files/wprev/${f}`)).toString().replace(/\s+/g, '');
       if (b64) fs.writeFileSync(`${OUT}/widget-${f}`, Buffer.from(b64, 'base64'));
     }
-    step('Widget çizimleri üretildi', dosyalar.length >= 20, pv);
+    step('Widget çizimleri üretildi', dosyalar.length >= 33, pv);
     const suOnce = await page.evaluate(() => { const d = JSON.parse(localStorage.getItem('doz-defteri')); return (d.daily[Object.keys(d.daily).sort().pop()] || {}).w || 0; });
     await device.shell(`am start -W -a android.intent.action.VIEW -d "hafif://w/water/250" -n ${PKG}/.MainActivity`); await wait(2500);
     const suSonra = await page.evaluate(() => { const d = JSON.parse(localStorage.getItem('doz-defteri')); return (d.daily[Object.keys(d.daily).sort().pop()] || {}).w || 0; });
     step('Widget bağlantısı (+250 ml su) çalıştı', suSonra - suOnce === 250, suOnce + ' → ' + suSonra);
+    // 2.0: Ne yesem? widget'ının + Ekle bağlantısı proteini ekler (kefir 9 g)
+    const pOnce = await page.evaluate(() => { const d = JSON.parse(localStorage.getItem('doz-defteri')); return (d.daily[Object.keys(d.daily).sort().pop()] || {}).p || 0; });
+    await device.shell(`am start -W -a android.intent.action.VIEW -d "hafif://w/meal/kefir" -n ${PKG}/.MainActivity`); await wait(2500);
+    const pSonra = await page.evaluate(() => { const d = JSON.parse(localStorage.getItem('doz-defteri')); return (d.daily[Object.keys(d.daily).sort().pop()] || {}).p || 0; });
+    step('Ne yesem? widget bağlantısı proteini ekledi', pSonra - pOnce === 9, pOnce + ' → ' + pSonra);
     await page.evaluate(() => { const b = document.querySelector('[data-chart="egri"]'); if (b) b.click(); }); await wait(500);
 
     // 1.9.0: + panelinden su (miktar seçilerek) ve kas kütlesi

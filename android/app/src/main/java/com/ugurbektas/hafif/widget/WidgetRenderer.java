@@ -1,6 +1,7 @@
 package com.ugurbektas.hafif.widget;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.LinearGradient;
@@ -29,7 +30,7 @@ import java.util.List;
  */
 final class WidgetRenderer {
     static final int MINT = 0xFF9FF0D6, WHITE = 0xFFFFFFFF, EM = 0xFF0B3B33, ACC = 0xFF0E7C66, MUTED = 0xFF5F726C,
-            WATER = 0xFF5BC0F5, PROT = 0xFFE6B35A, STEP = 0xFFF58FB0, SHOT = 0xFFA9B8F0, SUPP = 0xFFD6CBF7, GOLD = 0xFFE8C877;
+            WATER = 0xFF3A9AD6, PROT = 0xFFD98A3D, STEP = 0xFF1C8EA6, SHOT = 0xFFA9B8F0, SUPP = 0xFFD6CBF7, GOLD = 0xFFE8C877;
 
     static final class Result {
         Bitmap bmp;
@@ -45,7 +46,10 @@ final class WidgetRenderer {
     private float W, H;
     private boolean dark;
 
-    WidgetRenderer(Context ctx) {
+    WidgetRenderer(Context ctx) { this(ctx, null); }
+
+    /** forceNight: önizlemede koyu/açık çizimi zorlamak için; null ise telefonun teması. */
+    WidgetRenderer(Context ctx, Boolean forceNight) {
         Typeface a = null, b = null, d = null;
         try {
             a = ResourcesCompat.getFont(ctx, R.font.hafif_figtree_medium);
@@ -56,7 +60,20 @@ final class WidgetRenderer {
         fm = a != null ? a : Typeface.DEFAULT;
         fb = b != null ? b : Typeface.DEFAULT_BOLD;
         db = d != null ? d : Typeface.DEFAULT_BOLD;
+        night = forceNight != null ? forceNight : (ctx.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES;
+        // 2.0 tasarımı: açık temada krem kart, koyu temada koyu zümrüt kart; tek mesaj, emoji, en fazla bir ana düğme
+        BG = night ? 0xFF0F2622 : 0xFFF7F4EE;
+        FG = night ? 0xFFE8F5F0 : 0xFF0B2420;
+        MU = night ? 0xFF93ABA3 : 0xFF5F726C;
+        AC = night ? MINT : ACC;
+        BTN = night ? MINT : EM;
+        BTNF = night ? EM : WHITE;
+        SOFT = night ? 0x1F9FF0D6 : 0xFFEAF2EE;
+        TRACK = night ? 0x24FFFFFF : 0xFFE3EAE6;
     }
+
+    private final boolean night;
+    private final int BG, FG, MU, AC, BTN, BTNF, SOFT, TRACK;
 
     Result render(int kind, WidgetData d, float wDp, float hDp, float density) {
         Result r = new Result();
@@ -69,10 +86,7 @@ final class WidgetRenderer {
         W = wDp;
         H = hDp;
         if (!d.has()) {
-            bg(true);
-            logo(14, 22, "Hafif", MINT);
-            center("Hafif'i bir kez aç", H / 2, 15, fb, WHITE);
-            center("widget verileri hazırlansın", H / 2 + 18, 11.5f, fm, 0xB3FFFFFF);
+            empty("🌿", "Hafif'i bir kez aç", "widget verileri hazırlansın");
             r.main = "tab/ozet";
         } else {
             draw(kind, d, r);
@@ -86,325 +100,365 @@ final class WidgetRenderer {
         return r;
     }
 
-    // ---------- 10 widget ----------
+    // ---------- 11 widget ----------
     private void draw(int k, WidgetData d, Result r) {
         boolean wide = W >= 230, tall = H >= 130;
         switch (k) {
             case 1: dongu(d, r, wide); break;
             case 2: siradaki(d, r, wide, tall); break;
             case 3: bugun(d, r, wide); break;
-            case 4: kilo(d, r, wide); break;
+            case 4: kilo(d, r, wide, tall); break;
             case 5: grafik(d, r, wide); break;
             case 6: hedef(d, r, wide); break;
             case 7: su(d, r, wide); break;
             case 8: protein(d, r, wide); break;
             case 9: adim(d, r, wide); break;
+            case 11: yemek(d, r, wide); break;
             default: takviye(d, r, wide); break;
         }
     }
 
+    /** Boş durum: ortada emoji, başlık ve tek satır açıklama. */
+    private void empty(String emoji, String t, String sub) {
+        bg();
+        textC(emoji, W / 2, H / 2 - 12, Math.min(30, H * 0.22f), fm, FG);
+        center(t, H / 2 + 14, 14, db, FG);
+        center(sub, H / 2 + 31, 11, fm, MU);
+    }
+
+    /** Küçük widget başlığı: solda emoji, sağda harf aralıklı etiket. */
+    private void head(String emoji, String label, int col) {
+        textC(emoji, 16 + 12, 36, 24, fm, FG);
+        tp.setLetterSpacing(0);
+        textRs(label, W - 16, 26, 9, fb, col, 1.3f);
+    }
+
+    /** Geniş widget başlığı: yaprak ve etiket solda. */
+    private void headL(String label, float x, int col) {
+        leaf(x, 26, col);
+        text(label, x + 16, 26, 9.5f, fb, col, W - x - 140, 1.3f);
+    }
+
     private boolean noShots(WidgetData d, Result r) {
         if (d.shots() && d.cyc() != null) return false;
-        bg(true);
-        logo(14, 22, "Hafif", MINT);
-        center(d.shots() ? "Henüz iğne yok" : "İğne takibi kapalı", H / 2, 15, fb, WHITE);
-        center(d.shots() ? "İlk iğneni Hafif'e ekle" : "Ayarlar'dan açabilirsin", H / 2 + 18, 11.5f, fm, 0xB3FFFFFF);
+        if (d.shots()) empty("💉", "Henüz iğne yok", "ilk iğneni Hafif'e ekle");
+        else empty("💉", "İğne takibi kapalı", "Ayarlar'dan açabilirsin");
         r.main = d.shots() ? "shot" : "tab/ayar";
         return true;
     }
 
+    /** "Bugün", "Yarın", "Pazar", "Gecikti". */
+    private String dayWord(WidgetData d) {
+        long ts = d.nextTs();
+        if (ts == 0) return "–";
+        if (ts < d.now - 6 * 3600_000L) return "Gecikti";
+        int dd = WidgetData.dayDiff(d.now, ts);
+        if (dd <= 0) return "Bugün";
+        if (dd == 1) return "Yarın";
+        return WidgetData.cap(new java.text.SimpleDateFormat("EEEE", WidgetData.TR).format(new java.util.Date(ts)));
+    }
+
+    private String hm(long ts) { return new java.text.SimpleDateFormat("HH:mm", WidgetData.TR).format(new java.util.Date(ts)); }
+
     private void dongu(WidgetData d, Result r, boolean wide) {
         r.main = "tab/ozet";
         if (noShots(d, r)) return;
-        bg(true);
-        String ph = d.phaseName(), mg = WidgetData.n1(d.mg());
+        bg();
+        String ph = d.phaseName();
+        String sub = d.cycleDay() == 1 ? "iğne günü" : "iğneden sonraki " + (d.cycleDay() - 1) + ". gün";
         if (!wide) {
-            logo(14, 22, "Hafif", WHITE);
-            float rr = Math.min(W, H) * 0.3f, cy = H * 0.5f + 2;
-            ring(W / 2, cy, rr, Math.max(7, rr * 0.17f), d.cycleFrac(), MINT, 0x1FFFFFFF);
-            center("YENİ İĞNE", cy - rr * 0.32f, 8.5f, fb, 0xB3FFFFFF, 1.2f);
-            center(d.leftText(), cy + rr * 0.22f, rr * 0.42f, db, WHITE);
-            textC(ph + "  ·  " + mg + " mg", W / 2, H - 14, 12.5f, fb, WHITE);
-        } else {
-            float rr = (H - 30) / 2, cx = 16 + rr, cy = H / 2;
-            ring(cx, cy, rr, Math.max(8, rr * 0.16f), d.cycleFrac(), MINT, 0x1FFFFFFF);
-            textC("VÜCUTTA", cx, cy - rr * 0.34f, 8.5f, fb, 0xB3FFFFFF, 1.2f);
-            textC(mg, cx, cy + rr * 0.18f, rr * 0.4f, db, WHITE);
-            textC("mg", cx, cy + rr * 0.45f, 10.5f, fm, 0xB3FFFFFF);
-            float x = cx + rr + 18, mw = W - x - 14;
-            logo(x, 24, "Hafif", WHITE);
-            text(ph + " · " + d.cycleDay() + "/" + d.cycleDays(), x, 50, 18, db, WHITE, mw);
-            wrap(d.phaseTip(), x, 68, mw, 11.5f, fm, 0xC0FFFFFF, 2);
-            chip("Yeni iğne · " + d.leftText() + " · " + d.nextWhen(), x, H - 34, 11, 0x1FFFFFFF, WHITE, mw);
+            head("🌙", "DÖNGÜ", AC);
+            text(ph, 16, H - 54, 26, db, FG, W - 32);
+            text(sub, 16, H - 36, 11.5f, fm, MU, W - 32);
+            bar(16, H - 24, W - 32, 6, d.cycleFrac(), AC, TRACK);
+            return;
         }
+        headL("DÖNGÜ · " + d.cycleDay() + "/" + d.cycleDays(), 16, AC);
+        textR("🌙", W - 16, 34, 24, fm, FG);
+        text(ph + " evresi", 16, 66, 26, db, FG, W - 32);
+        wrap(d.phaseTip(), 16, 86, W - 32, 12, fm, MU, 2);
+        bar(16, H - 46, W - 32, 6, d.cycleFrac(), AC, TRACK);
+        text("Yeni iğne: " + dayWord(d).toLowerCase(WidgetData.TR) + " " + (d.nextTs() > 0 ? hm(d.nextTs()) : ""), 16, H - 20, 11.5f, fb, FG, W - 32);
     }
 
     private void siradaki(WidgetData d, Result r, boolean wide, boolean tall) {
         r.main = "shot";
         if (noShots(d, r)) return;
-        bg(true);
+        bg();
         JSONObject n = d.next();
-        if (!wide || !tall) {
-            float ic = Math.min(40, H - 24), y0 = (H - ic) / 2;
-            rrect(14, y0, ic, ic, 12, 0x403552B0);
-            syringe(14 + ic / 2, y0 + ic / 2, ic * 0.5f, SHOT);
+        String day = dayWord(d), site = n == null ? "" : n.optString("site", "");
+        String when = (d.nextTs() > 0 ? hm(d.nextTs()) : "") + (site.isEmpty() ? "" : " · " + site.toLowerCase(WidgetData.TR));
+        if (!tall) {
+            float ic = Math.min(44, H - 24), y0 = (H - ic) / 2;
+            rrect(14, y0, ic, ic, 14, SOFT);
+            textC("💉", 14 + ic / 2, y0 + ic * 0.68f, ic * 0.5f, fm, FG);
             float x = 14 + ic + 12;
-            text("YENİ İĞNE", x, H / 2 - 10, 8.5f, fb, 0xB3FFFFFF, W - x - 10, 1.2f);
-            text(d.leftText(), x, H / 2 + 8, 19, db, WHITE, W - x - 10);
-            text(d.nextWhen() + (wide && n != null ? "   ·   " + n.optString("dose", "") + " mg · " + n.optString("site", "") : ""), x, H / 2 + 24, 11, fm, 0xC0FFFFFF, W - x - 10);
+            text(day, x, H / 2 + 2, wide ? 22 : 19, db, FG, W - x - 12);
+            text(when, x, H / 2 + 19, 11, fm, MU, W - x - 12);
             return;
         }
-        logo(14, 24, "Hafif", WHITE);
-        textR(d.nextWhenLong(), W - 14, 24, 11.5f, fm, 0xB3FFFFFF);
-        text("YENİ İĞNE", 14, 54, 8.5f, fb, 0xB3FFFFFF, 120, 1.2f);
-        text(d.leftText(), 14, 84, 30, db, WHITE, 130);
-        float x = 150, mw = W - x - 14;
-        String dose = n == null ? "" : n.optString("dose", "");
-        String drug = n == null ? "" : n.optString("drug", "");
-        text("💊  " + (dose.isEmpty() ? "–" : dose + " mg") + (drug.isEmpty() ? "" : " · " + drug), x, 56, 12.5f, fm, WHITE, mw);
-        text("📍  Önerilen: " + (n == null ? "–" : n.optString("site", "–")), x, 76, 12.5f, fm, WHITE, mw);
-        if (n != null && n.has("pen") && !n.isNull("pen")) {
-            int pen = n.optInt("pen");
-            text("🖊️  Kalemde " + pen + " doz kaldı", x, 96, 12.5f, fm, pen <= 1 ? SHOT : WHITE, mw);
+        if (!wide) {
+            head("💉", "İĞNE", AC);
+            text(day, 16, H - 38, day.length() > 7 ? 24 : 30, db, FG, W - 32);
+            text(when, 16, H - 18, 11.5f, fm, MU, W - 32);
+            return;
         }
-        buttons(r, new String[][]{{"İğneyi kaydet", "shot"}}, new int[]{0x4D3552B0}, new int[]{0xFFD2DCFA});
+        headL("SIRADAKİ İĞNE", 16, AC);
+        float rx = W - 16 - 132;
+        text(day + (d.nextTs() > 0 ? " · " + hm(d.nextTs()) : ""), 16, 74, 26, db, FG, rx - 26);
+        text(site.isEmpty() ? "" : "Önerilen bölge: " + site.toLowerCase(WidgetData.TR), 16, 94, 11.5f, fm, MU, rx - 26);
+        String dose = n == null ? "" : n.optString("dose", "");
+        if (n != null && n.has("pen") && !n.isNull("pen") && n.optInt("pen") <= 1) {
+            rrect(rx, 14, 132, 46, 14, SOFT);
+            textC("🛒", rx + 20, 43, 18, fm, FG);
+            wrap(n.optInt("pen") <= 0 ? "Kalem bitti, yeni kalem" : "Son doz, yeni kalem al", rx + 36, 33, 88, 10.5f, fb, FG, 2);
+        } else if (!dose.isEmpty()) {
+            chipR(dose + " mg", W - 16, 14, 11, SOFT, FG);
+        }
+        buttonsAt(r, rx, new String[][]{{"İğneyi kaydet", "shot"}}, new int[]{BTN}, new int[]{BTNF});
+    }
+
+    private String waterWord(double f) {
+        if (f >= 1) return "Tamam ✓";
+        if (f >= 0.75) return "Az kaldı";
+        if (f >= 0.4) return "Yarıda";
+        return f > 0 ? "Başladın" : "Henüz yok";
     }
 
     private void bugun(WidgetData d, Result r, boolean wide) {
         r.main = "tab/besin";
-        bg(true);
+        bg();
         double w = d.water(), wg = d.waterGoal(), pr = d.protein(), pg = d.proteinGoal(), st = d.steps(), sg = d.stepGoal();
         boolean hs = d.hasSteps();
+        String[] em = {"💧", "🍳", "👟"}, nm = {"Su", "Protein", "Adım"};
+        int[] col = {WATER, PROT, STEP};
+        double[] f = {w / wg, pr / pg, st / sg};
+        String[] wd = {waterWord(w / wg), pr >= pg ? "Tamam ✓" : WidgetData.n0(pg - pr) + " g kaldı", st >= sg ? "Tamam ✓" : st / sg >= 0.8 ? "Hedefe yakın" : st > 0 ? "Yolda" : "Henüz yok"};
+        int n = hs ? 3 : 2;
         if (!wide) {
-            logo(14, 22, "Bugün", WHITE);
-            int n = hs ? 3 : 2;
-            float gap = (W - 28) / n, rr = Math.min(gap * 0.36f, (H - 70) / 2f);
-            float cy = H - 30 - rr;
-            String[] lb = {WidgetData.n1(w / 1000) + " L", WidgetData.n0(pr) + " g", WidgetData.n0(st)};
-            int[] col = {WATER, PROT, STEP};
-            String[] em = {"💧", "🥚", "👣"};
-            double[] f = {w / wg, pr / pg, st / sg};
+            head("🌿", "BUGÜN", AC);
+            float y = 58, step = Math.min(34, (H - 66) / n);
             for (int i = 0; i < n; i++) {
-                float cx = 14 + gap * i + gap / 2;
-                ring(cx, cy, rr, Math.max(4.5f, rr * 0.2f), (float) f[i], col[i], 0x1FFFFFFF);
-                textC(em[i], cx, cy + rr * 0.3f, rr * 0.8f, fm, WHITE);
-                textC(lb[i], cx, H - 12, 11, fb, WHITE);
+                textC(em[i], 26, y + 8, 15, fm, FG);
+                text(wd[i], 42, y + 4, 11.5f, fb, FG, W - 58);
+                bar(42, y + 10, W - 58, 5, (float) f[i], col[i], TRACK);
+                y += step;
             }
             return;
         }
-        logo(14, 24, "Hafif", WHITE);
-        textR(WidgetData.todayLong(d.now), W - 14, 24, 11.5f, fm, 0xB3FFFFFF);
-        // üç satır düğmelerin üstüne sığsın diye aralık daralır
-        boolean three = hs && H >= 170;
-        float y = three ? 38 : 46, step = three ? 28 : 33, mw = W - 28;
-        y = barRow("💧 Su", WidgetData.n0(w) + " / " + WidgetData.n0(wg) + " ml", w / wg, WATER, y, mw, step);
-        y = barRow("🥚 Protein", WidgetData.n0(pr) + " / " + WidgetData.n0(pg) + " g", pr / pg, PROT, y, mw, step);
-        if (three) barRow("👣 Adım", WidgetData.n0(st) + " / " + WidgetData.n0(sg), st / sg, STEP, y, mw, step);
-        buttons(r, new String[][]{{"+250 ml su", "water/250"}, {"Kilo gir", "weight"}}, new int[]{0x335BC0F5, 0x299FF0D6}, new int[]{0xFFBFE6FB, MINT});
-    }
-
-    private float barRow(String a, String b, double f, int col, float y, float mw, float step) {
-        text(a, 14, y + 10, 11.5f, fm, WHITE, mw / 2);
-        textR(b, W - 14, y + 10, 11.5f, fb, WHITE);
-        bar(14, y + 15, mw, 6, (float) f, col, 0x24FFFFFF);
-        return y + step;
-    }
-
-    private void kilo(WidgetData d, Result r, boolean wide) {
-        r.main = "weight";
-        bg(false);
-        JSONObject k = d.obj("w");
-        if (k == null) { center("İlk tartını gir", H / 2, 14, fb, EM); return; }
-        float y0 = H / 2 - 22;
-        text(wide ? "HAFİF · GÜNCEL" : "GÜNCEL", 16, y0, 9, fb, ACC, 140, 1.2f);
-        float tw = text(WidgetData.n1(k.optDouble("cur")), 16, y0 + 28, 26, db, EM, 120);
-        text(" kg", 16 + tw, y0 + 28, 12, fm, MUTED, 40);
-        String ch = WidgetData.sgn(k.optDouble("change")) + " kg";
-        if (wide && k.has("pct") && !k.isNull("pct")) ch += " · hedefe %" + Math.round(k.optDouble("pct"));
-        text(ch, 16, y0 + 46, 11.5f, fb, ACC, wide ? 160 : W - 30);
-        if (wide) {
-            float x = 180, sw = W - x - 58;
-            spark(k.optJSONArray("pts"), null, x, 14, sw, H - 28, ACC, false);
-            float cx = W - 32, cy = H / 2;
-            p.setColor(EM);
-            c.drawCircle(cx, cy, 17, p);
-            textC("+", cx, cy + 7, 22, fb, MINT);
+        headL("BUGÜN", 16, AC);
+        textR(WidgetData.todayLong(d.now), W - 16, 26, 11, fm, MU);
+        float gap = 8, tw = (W - 32 - gap * (n - 1)) / n, ty = 38, th = H - ty - 56;
+        for (int i = 0; i < n; i++) {
+            float x = 16 + i * (tw + gap);
+            rrect(x, ty, tw, th, 16, SOFT);
+            textC(em[i], x + 18, ty + 24, 16, fm, FG);
+            textR(nm[i], x + tw - 10, ty + 20, 12, db, FG);
+            bar(x + 10, ty + th - 26, tw - 20, 5, (float) f[i], col[i], TRACK);
+            text(wd[i], x + 10, ty + th - 9, 10.5f, fb, MU, tw - 20);
         }
+        buttons(r, new String[][]{{"💧 +1 bardak", "water/250"}, {"Kilo gir", "weight"}}, new int[]{BTN, SOFT}, new int[]{BTNF, FG});
+    }
+
+    /** Kilo gidişi tek cümle: perWeek negatifse doğru yolda. */
+    private String trendWord(JSONObject k) {
+        if (k == null || !k.has("perWeek") || k.isNull("perWeek")) return "İlk adımlar";
+        double pw = k.optDouble("perWeek");
+        if (pw <= -0.1) return "Doğru yolda";
+        if (pw >= 0.1) return "Biraz yükseldi";
+        return "Yerinde sayıyor";
+    }
+
+    /** "hedefe Mart civarı": kalan kilo ve haftalık hızdan. */
+    private String etaWord(JSONObject k, long now) {
+        if (k == null || k.isNull("left") || k.isNull("perWeek")) return "";
+        double left = k.optDouble("left"), pw = k.optDouble("perWeek");
+        if (left <= 0) return "hedefindesin";
+        if (pw > -0.05) return "";
+        double weeks = left / -pw;
+        if (weeks > 104) return "";
+        java.util.Calendar cal = java.util.Calendar.getInstance();
+        cal.setTimeInMillis(now + (long) (weeks * 7 * 864e5));
+        return "hedefe " + new java.text.SimpleDateFormat("MMMM", WidgetData.TR).format(cal.getTime()) + " civarı";
+    }
+
+    private void kilo(WidgetData d, Result r, boolean wide, boolean tall) {
+        r.main = "weight";
+        bg();
+        JSONObject k = d.obj("w");
+        if (k == null) { empty("📉", "İlk tartını gir", "dokun, kilonu ekle"); return; }
+        String sub = WidgetData.sgn(k.optDouble("change")) + " kg başından";
+        if (!tall) {
+            float ic = Math.min(44, H - 24), y0 = (H - ic) / 2;
+            rrect(14, y0, ic, ic, 14, SOFT);
+            textC("📉", 14 + ic / 2, y0 + ic * 0.68f, ic * 0.5f, fm, FG);
+            float x = 14 + ic + 12;
+            float tw = text(WidgetData.n1(k.optDouble("cur")), x, H / 2 + 3, 22, db, FG, 110);
+            text(" kg", x + tw, H / 2 + 3, 12, fm, MU, 40);
+            text(sub, x, H / 2 + 19, 11, fm, MU, W - x - 56);
+            float cx = W - 14 - 17, cy = H / 2;
+            p.setColor(BTN);
+            c.drawCircle(cx, cy, 17, p);
+            textC("+", cx, cy + 7, 22, fb, BTNF);
+            return;
+        }
+        head("📉", "KİLO", AC);
+        float tw = text(WidgetData.n1(k.optDouble("cur")), 16, H - 60, 30, db, FG, W - 60);
+        text(" kg", 16 + tw, H - 60, 13, fm, MU, 40);
+        text(sub, 16, H - 42, 11.5f, fm, MU, W - 32);
+        buttons(r, new String[][]{{"+ Kilo gir", "weight"}}, new int[]{BTN}, new int[]{BTNF});
     }
 
     private void grafik(WidgetData d, Result r, boolean wide) {
         r.main = "tab/kilo";
-        bg(false);
+        bg();
         JSONObject k = d.obj("w");
         if (k == null || k.optJSONArray("pts") == null || k.optJSONArray("pts").length() < 2) {
-            center("Grafik için 2 tartı gerekli", H / 2, 13, fb, EM);
+            empty("📉", "Grafik için 2 tartı", "tartıların geldikçe çizilir");
             return;
         }
+        String eta = etaWord(k, d.now);
         if (!wide) {
-            text("SON 30 GÜN", 16, 26, 9, fb, ACC, W - 30, 1.2f);
-            text(WidgetData.sgn(k.optDouble("d30")) + " kg", 16, 48, 18, db, EM, W - 30);
-            spark(k.optJSONArray("pts"), null, 14, 60, W - 28, H - 74, ACC, false);
+            head("📉", "KİLO", AC);
+            spark(k.optJSONArray("pts"), null, 16, 52, W - 32, H - 112, AC, false);
+            text(trendWord(k), 16, H - 34, 20, db, FG, W - 32);
+            text(eta.isEmpty() ? "son 30 gün" : eta, 16, H - 16, 11.5f, fm, MU, W - 32);
             return;
         }
-        text("KİLO · SON 30 GÜN", 16, 26, 9, fb, ACC, 200, 1.2f);
-        if (k.has("perWeek") && !k.isNull("perWeek")) textR("haftada " + WidgetData.sgn(k.optDouble("perWeek")) + " kg", W - 16, 26, 11.5f, fb, ACC);
-        float tw = text(WidgetData.n1(k.optDouble("cur")), 16, 54, 22, db, EM, 120);
-        text(WidgetData.n1(k.optDouble("first30")) + " → " + WidgetData.n1(k.optDouble("cur")) + " kg", 24 + tw, 54, 11.5f, fm, MUTED, 200);
-        spark(k.optJSONArray("pts"), k.optJSONArray("shots"), 16, 66, W - 32, H - 82, ACC, true);
+        headL("KİLO · SON 30 GÜN", 16, AC);
+        text(trendWord(k), 16, 62, 24, db, FG, 150);
+        text(WidgetData.sgn(k.optDouble("d30")) + " kg bu ay", 16, 82, 11.5f, fm, MU, 150);
+        if (!eta.isEmpty()) chip("📍 " + eta, 16, H - 38, 11, SOFT, FG, 150);
+        spark(k.optJSONArray("pts"), k.optJSONArray("shots"), 176, 18, W - 192, H - 34, AC, true);
     }
 
     private void hedef(WidgetData d, Result r, boolean wide) {
         r.main = "tab/basari";
-        bg(true);
+        bg();
         JSONObject k = d.obj("w");
         if (k == null || !k.has("pct") || k.isNull("pct")) {
-            logo(14, 22, "Hedef", WHITE);
-            center("Hedef kilonu belirle", H / 2 + 4, 14, fb, WHITE);
+            empty("🎯", "Hedef kilonu belirle", "Ayarlar'dan ekleyebilirsin");
             r.main = "tab/ayar";
             return;
         }
         float pct = (float) Math.max(0, Math.min(100, k.optDouble("pct")));
-        String left = WidgetData.n1(Math.max(0, k.optDouble("left"))) + " kg";
+        double left = Math.max(0, k.optDouble("left"));
+        String big = left <= 0.05 ? "Hedefindesin" : WidgetData.n1(left) + " kg kaldı";
+        String sub = "hedef " + WidgetData.n0(k.optDouble("goal")) + " kg";
         if (!wide) {
-            logo(14, 22, "Hedef", WHITE);
-            float rr = Math.min(W, H) * 0.3f, cy = H * 0.5f + 1;
-            ring(W / 2, cy, rr, Math.max(7, rr * 0.17f), pct / 100f, MINT, 0x1FFFFFFF);
-            center("%" + Math.round(pct), cy + rr * 0.12f, rr * 0.45f, db, WHITE);
-            center(WidgetData.n0(k.optDouble("goal")) + " kg hedef", cy + rr * 0.45f, 10, fm, 0xB3FFFFFF);
-            textC(left + " kaldı", W / 2, H - 14, 12, fb, MINT);
+            head("🎯", "HEDEF", AC);
+            text(big, 16, H - 50, big.length() > 11 ? 20 : 24, db, FG, W - 32);
+            text(sub, 16, H - 32, 11.5f, fm, MU, W - 32);
+            bar(16, H - 22, W - 32, 6, pct / 100f, AC, TRACK);
             return;
         }
-        float rr = (H - 30) / 2, cx = 16 + rr, cy = H / 2;
-        ring(cx, cy, rr, Math.max(8, rr * 0.16f), pct / 100f, MINT, 0x1FFFFFFF);
-        textC("%" + Math.round(pct), cx, cy + rr * 0.12f, rr * 0.45f, db, WHITE);
-        textC("hedefe", cx, cy + rr * 0.42f, 10.5f, fm, 0xB3FFFFFF);
-        float x = cx + rr + 18, mw = W - x - 14;
-        logo(x, 24, "Hafif", WHITE);
-        text("KALAN", x, 46, 8.5f, fb, 0xB3FFFFFF, mw, 1.2f);
-        text(left, x, 66, 18, db, WHITE, mw);
+        headL("HEDEFE İLERLEME", 16, AC);
+        textR("🎯", W - 16, 34, 24, fm, FG);
+        text(big, 16, 70, 28, db, FG, W - 32);
+        text(sub + " · yolun %" + Math.round(pct) + "'i", 16, 90, 11.5f, fm, MU, W - 32);
+        bar(16, 100, W - 32, 6, pct / 100f, AC, TRACK);
         JSONObject b = d.obj("badge");
         if (b != null) {
-            rrect(x, 78, mw, 40, 12, 0x2EC9A04A);
-            textC("🏅", x + 18, 104, 18, fm, WHITE);
-            text("SIRADAKİ ROZET", x + 36, 93, 8, fb, GOLD, mw - 40, 1.1f);
-            text(b.optString("t") + " · " + WidgetData.n1(b.optDouble("left")) + " kg kaldı", x + 36, 109, 12, fb, WHITE, mw - 42);
+            rrect(16, H - 48, W - 32, 34, 14, SOFT);
+            textC("🏅", 34, H - 25, 15, fm, FG);
+            text("Sıradaki rozet: " + b.optString("t") + " · " + WidgetData.n1(b.optDouble("left")) + " kg", 50, H - 26, 11.5f, fb, FG, W - 80);
         }
     }
 
     private void su(WidgetData d, Result r, boolean wide) {
         r.main = "tab/besin";
-        bg(true);
+        bg();
         double w = d.water(), g = d.waterGoal();
         float f = (float) Math.min(1, w / g);
+        int cups = (int) Math.ceil(Math.max(0, g - w) / 250.0);
+        String big = cups == 0 ? "Tamam" : cups + " bardak", sub = cups == 0 ? "bugünkü su hedefi" : "daha, hedefe";
         if (!wide) {
-            float gh = H - 74, gw = gh * 0.62f;
-            glass(14, 16, gw, gh, f);
-            float x = 14 + gw + 12;
-            text("SU", x, 30, 8.5f, fb, 0xB3FFFFFF, W - x - 10, 1.2f);
-            text(WidgetData.n0(w), x, 52, 18, db, WHITE, W - x - 10);
-            text("/ " + WidgetData.n0(g) + " ml", x, 68, 11, fm, 0xB3FFFFFF, W - x - 10);
-            buttons(r, new String[][]{{"+250 ml", "water/250"}}, new int[]{0x405BC0F5}, new int[]{0xFFBFE6FB});
+            textC("💧", 28, 36, 24, fm, FG);
+            glass(W - 16 - 26, 14, 26, 38, f);
+            text(big, 16, H - 66, 26, db, FG, W - 32);
+            text(sub, 16, H - 50, 11.5f, fm, MU, W - 32);
+            buttons(r, new String[][]{{"+1 bardak", "water/250"}}, new int[]{BTN}, new int[]{BTNF});
             return;
         }
-        float gh = H - 28, gw = gh * 0.62f;
-        glass(16, 14, gw, gh, f);
-        float x = 16 + gw + 18, mw = W - x - 14;
-        logo(x, 24, "Hafif", WHITE);
-        float tw = text(WidgetData.n0(w), x, 56, 26, db, WHITE, mw);
-        text(" / " + WidgetData.n0(g) + " ml", x + tw, 56, 11.5f, fm, 0xB3FFFFFF, mw - tw);
-        bar(x, 68, mw, 7, f, WATER, 0x24FFFFFF);
-        buttonsAt(r, x, new String[][]{{"+250 ml", "water/250"}, {"+500 ml", "water/500"}}, new int[]{0x405BC0F5, 0x405BC0F5}, new int[]{0xFFBFE6FB, 0xFFBFE6FB});
+        float gh = H - 32, gw = gh * 0.62f;
+        glass(18, 16, gw, gh, f);
+        float x = 18 + gw + 20, mw = W - x - 16;
+        headL("SU", x, AC);
+        text(cups == 0 ? "Bugün tamam" : big + " daha", x, 66, 26, db, FG, mw);
+        bar(x, 78, mw, 6, f, WATER, TRACK);
+        buttonsAt(r, x, new String[][]{{"+1 bardak", "water/250"}, {"+2 bardak", "water/500"}}, new int[]{BTN, SOFT}, new int[]{BTNF, FG});
     }
 
     private void protein(WidgetData d, Result r, boolean wide) {
         r.main = "protein";
-        bg(true);
+        bg();
         double pr = d.protein(), g = d.proteinGoal();
         JSONArray cols = d.fresh && d.day() != null ? d.day().optJSONArray("pc") : null;
         int of = (int) Math.max(12, Math.ceil(g / 5));
+        String big = pr >= g ? "Tamam ✓" : WidgetData.n0(g - pr) + " g kaldı";
         if (!wide) {
-            text("PROTEİN", 14, 24, 8.5f, fb, 0xB3FFFFFF, 80, 1.2f);
-            textR("%" + Math.round(Math.min(100, pr / g * 100)), W - 14, 24, 11, fm, 0xB3FFFFFF);
-            float tw = text(WidgetData.n0(pr), 14, 54, 24, db, WHITE, 80);
-            text(" / " + WidgetData.n0(g) + " g", 14 + tw, 54, 11, fm, 0xB3FFFFFF, 80);
-            blocks(cols, of, 14, 68, W - 28, H - 82, 8);
+            head("🍳", "PROTEİN", night ? 0xFFE8B062 : 0xFFB06D10);
+            text(big, 16, 76, 22, db, FG, W - 32);
+            blocks(cols, of, 16, 88, W - 32, H - 102, 8);
             return;
         }
-        logo(14, 24, "Hafif", WHITE);
-        textR(WidgetData.n0(Math.max(0, g - pr)) + " g kaldı", W - 14, 24, 11.5f, fm, 0xB3FFFFFF);
-        float tw = text(WidgetData.n0(pr), 14, 62, 28, db, WHITE, 90);
-        text(" / " + WidgetData.n0(g) + " g", 14 + tw, 62, 11, fm, 0xB3FFFFFF, 80);
-        blocks(cols, of, 120, 38, W - 134, 50, 11);
+        headL("PROTEİN", 16, night ? 0xFFE8B062 : 0xFFB06D10);
+        text(big, 16, 62, 24, db, FG, 150);
+        blocks(cols, of, 176, 18, W - 192, 64, 11);
         JSONArray foods = d.fresh && d.day() != null ? d.day().optJSONArray("foods") : null;
-        float x = 14;
+        float x = 16;
         if (foods != null) for (int i = 0; i < foods.length() && i < 3; i++) {
-            float cw = chip(foods.optString(i), x, H - 34, 11, 0x1FFFFFFF, WHITE, W - x - 70);
+            float cw = chip(foods.optString(i), x, H - 38, 11, SOFT, FG, W - x - 80);
             x += cw + 6;
-            if (x > W - 120) break;
+            if (x > W - 130) break;
         }
-        chip("+ Ekle", Math.min(x, W - 70), H - 34, 11, 0x40E6B35A, 0xFFF3D29A, 60);
+        chip("+ Ekle", Math.min(x, W - 72), H - 38, 11, BTN, BTNF, 64);
     }
 
     private void adim(WidgetData d, Result r, boolean wide) {
         r.main = "tab/adim";
-        bg(true);
-        if (!d.hasSteps()) {
-            logo(14, 22, "Adım", WHITE);
-            center("Adımlarını bağla", H / 2 + 2, 14, fb, WHITE);
-            center("Health Connect ile", H / 2 + 20, 11, fm, 0xB3FFFFFF);
-            return;
-        }
+        bg();
+        if (!d.hasSteps()) { empty("👟", "Adımlarını bağla", "Health Connect ile"); return; }
         double st = d.steps(), g = d.stepGoal();
-        JSONObject day = d.day();
-        String km = day != null && d.fresh ? WidgetData.n1(day.optDouble("km")) : "0";
-        String mn = day != null && d.fresh ? WidgetData.n0(day.optDouble("min")) : "0";
+        String big = WidgetData.n0(st), sub = st >= g ? "bugünkü hedef tamam" : WidgetData.n0(g - st) + " adım kaldı";
         if (!wide) {
-            logo(14, 22, "Adım", WHITE);
-            float rr = Math.min(W, H) * 0.3f, cy = H * 0.5f + 1;
-            ring(W / 2, cy, rr, Math.max(7, rr * 0.17f), (float) (st / g), STEP, 0x1FFFFFFF);
-            center(WidgetData.n0(st), cy + rr * 0.1f, rr * 0.36f, db, WHITE);
-            center("/ " + WidgetData.n0(g), cy + rr * 0.42f, 10, fm, 0xB3FFFFFF);
-            textC(km + " km · " + mn + " dk", W / 2, H - 14, 11.5f, fm, 0xC0FFFFFF);
+            head("👟", "ADIM", AC);
+            text(big, 16, H - 50, 28, db, FG, W - 32);
+            text(sub, 16, H - 32, 11.5f, fm, MU, W - 32);
+            bar(16, H - 22, W - 32, 6, (float) (st / g), STEP, TRACK);
             return;
         }
-        float rr = (H - 30) / 2, cx = 16 + rr, cy = H / 2;
-        ring(cx, cy, rr, Math.max(8, rr * 0.15f), (float) (st / g), STEP, 0x1FFFFFFF);
-        textC(WidgetData.n0(st), cx, cy + rr * 0.1f, rr * 0.36f, db, WHITE);
-        textC("adım", cx, cy + rr * 0.42f, 10.5f, fm, 0xB3FFFFFF);
-        float x = cx + rr + 18, mw = W - x - 14;
-        logo(x, 24, "Hafif", WHITE);
-        text(WidgetData.n0(Math.max(0, g - st)) + " adım kaldı · " + km + " km", x, 44, 11.5f, fm, 0xC0FFFFFF, mw);
+        headL("ADIM", 16, AC);
+        text(big, 16, 66, 28, db, FG, 150);
+        text(sub, 16, 86, 11.5f, fm, MU, 150);
+        JSONObject day = d.day();
         JSONArray wk = day != null ? day.optJSONArray("wk") : null;
         if (wk != null && wk.length() > 0) {
             int n = wk.length();
-            float bw = mw / n, top = 56, bh = H - top - 30;
+            float x = 176, mw = W - x - 16, bw = mw / n, top = 18, bh = H - top - 34;
             double mx = g;
             for (int i = 0; i < n; i++) mx = Math.max(mx, wk.optDouble(i));
             for (int i = 0; i < n; i++) {
                 double v = (i == n - 1 && !d.fresh) ? 0 : wk.optDouble(i);
-                float h = (float) Math.max(3, v / mx * bh);
-                rrect(x + i * bw + bw * 0.2f, top + bh - h, bw * 0.6f, h, 4, v >= g ? STEP : 0x66F58FB0);
+                float h = (float) Math.max(4, v / mx * bh);
+                rrect(x + i * bw + bw * 0.22f, top + bh - h, bw * 0.56f, h, 5, v >= g ? STEP : (STEP & 0x00FFFFFF) | 0x55000000);
             }
             JSONArray lb = day.optJSONArray("wkl");
             if (lb != null) for (int i = 0; i < n && i < lb.length(); i++)
-                textC(lb.optString(i), x + i * bw + bw / 2, H - 14, 9.5f, fm, 0x99FFFFFF);
+                textC(lb.optString(i), x + i * bw + bw / 2, H - 14, 9.5f, fm, MU);
         }
     }
 
     private void takviye(WidgetData d, Result r, boolean wide) {
         r.main = "tab/takviye";
-        bg(true);
+        bg();
         JSONArray days = d.o.optJSONArray("supp");
         JSONArray slots = null;
         if (days != null) for (int i = 0; i < days.length(); i++) {
             JSONObject x = days.optJSONObject(i);
             if (x != null && d.today.equals(x.optString("d"))) { slots = x.optJSONArray("s"); break; }
         }
-        if (slots == null || slots.length() == 0) {
-            logo(14, 22, "Takviye", WHITE);
-            center("Bugün takviye yok", H / 2 + 4, 14, fb, WHITE);
-            return;
-        }
+        if (slots == null || slots.length() == 0) { empty("💊", "Bugün takviye yok", "programını Hafif'te kur"); return; }
         int done = 0, of = 0;
         JSONObject nx = null;
         boolean useLog = d.fresh;
@@ -415,38 +469,76 @@ final class WidgetRenderer {
             of += sl.optInt("of");
             if (nx == null && dn < sl.optInt("of")) nx = sl;
         }
+        int pink = night ? 0xFFF2A9C4 : 0xFFB8577A;
         if (!wide) {
-            logo(14, 22, "Takviye", WHITE);
-            chipR(done + "/" + of, W - 14, 10, 11, 0x1FFFFFFF, WHITE);
+            head("💊", nx == null ? "TAKVİYE" : nx.optString("n").toUpperCase(WidgetData.TR) + " · " + nx.optString("t"), pink);
             if (nx == null) {
-                center("Bugün hepsi alındı", H / 2 + 6, 14, fb, MINT);
+                text("Hepsi alındı ✓", 16, H - 44, 20, db, FG, W - 32);
+                text("bugün " + done + "/" + of, 16, H - 26, 11.5f, fm, MU, W - 32);
                 return;
             }
-            text("SIRADAKİ · " + nx.optString("t"), 14, 52, 8.5f, fb, 0xB3FFFFFF, W - 28, 1.2f);
-            text(nx.optString("n"), 14, 72, 17, db, WHITE, W - 28);
-            text(nx.optString("names"), 14, 88, 11.5f, fm, 0xC0FFFFFF, W - 28);
-            buttons(r, new String[][]{{"Hepsini aldım", "supp/" + nx.optString("k")}}, new int[]{0x4D7B5BD0}, new int[]{SUPP});
+            wrap(nx.optString("names").replace(" · ", ", "), 16, 76, W - 32, 17, db, FG, 2);
+            buttons(r, new String[][]{{"Hepsini aldım", "supp/" + nx.optString("k")}}, new int[]{BTN}, new int[]{BTNF});
             return;
         }
-        logo(14, 24, "Hafif", WHITE);
-        chipR("Bugün " + done + "/" + of, W - 14, 12, 11, 0x1FFFFFFF, WHITE);
-        // en fazla iki vakit: sıradaki ve ondan önceki (yoksa ilk ikisi)
+        headL("TAKVİYELER", 16, pink);
+        chipR("Bugün " + done + "/" + of, W - 16, 12, 11, SOFT, FG);
         int ni = 0;
         for (int i = 0; i < slots.length(); i++) if (slots.optJSONObject(i) == nx) { ni = i; break; }
         int a = Math.max(0, Math.min(ni - (nx == null ? 0 : 1), slots.length() - 2));
         int cnt = Math.min(2, slots.length());
-        float cw = (W - 28 - 8 * (cnt - 1)) / cnt;
+        float cw = (W - 32 - 8 * (cnt - 1)) / cnt;
         for (int j = 0; j < cnt; j++) {
             JSONObject sl = slots.optJSONObject(a + j);
-            float x = 14 + j * (cw + 8);
-            rrect(x, 38, cw, 62, 14, 0x12FFFFFF);
-            text(sl.optString("e") + " " + sl.optString("n") + " · " + sl.optString("t"), x + 10, 56, 11.5f, fb, WHITE, cw - 20);
-            text(sl.optString("names"), x + 10, 72, 11, fm, 0xC0FFFFFF, cw - 20);
+            float x = 16 + j * (cw + 8);
+            rrect(x, 40, cw, 62, 16, SOFT);
+            text(sl.optString("e") + " " + sl.optString("n") + " · " + sl.optString("t"), x + 12, 59, 11.5f, fb, FG, cw - 24);
+            text(sl.optString("names"), x + 12, 75, 11, fm, MU, cw - 24);
             boolean ok = useLog && sl.optInt("done") >= sl.optInt("of");
-            text(ok ? "✓ alındı" : "bekliyor", x + 10, 90, 11, fb, ok ? MINT : SUPP, cw - 20);
+            text(ok ? "✓ alındı" : "bekliyor", x + 12, 92, 11, fb, ok ? AC : pink, cw - 24);
         }
         if (nx != null)
-            buttons(r, new String[][]{{nx.optString("n") + " takviyelerini aldım", "supp/" + nx.optString("k")}}, new int[]{0x4D7B5BD0}, new int[]{SUPP});
+            buttons(r, new String[][]{{nx.optString("n") + " takviyelerini aldım", "supp/" + nx.optString("k")}}, new int[]{BTN}, new int[]{BTNF});
+    }
+
+    /** Ne yesem?: saate göre öğün önerisi; + Ekle proteini uygulamada ekler. */
+    private void yemek(WidgetData d, Result r, boolean wide) {
+        r.main = "tab/besin";
+        bg();
+        JSONObject ms = d.obj("meals");
+        double rem = d.proteinGoal() - d.protein();
+        if (ms == null) { empty("🍲", "Hafif'i bir kez aç", "öneriler hazırlansın"); return; }
+        if (rem < 10) { empty("🍳", "Bugünkü protein tamam", "yarın yeni önerilerle"); return; }
+        int h = java.util.Calendar.getInstance().get(java.util.Calendar.HOUR_OF_DAY);
+        String slot = h < 11 ? "k" : h >= 21 ? "a" : "o";
+        String lbl = slot.equals("k") ? "KAHVALTI" : slot.equals("a") ? "HAFİF BİR ŞEY" : h < 16 ? "ÖĞLE" : "AKŞAM";
+        JSONArray L = ms.optJSONArray(slot);
+        JSONObject m = L == null || L.length() == 0 ? null : L.optJSONObject(0);
+        if (m == null) { empty("🍲", "Öneri yok", "Hafif'i açınca yenilenir"); return; }
+        String remT = WidgetData.n0(rem) + " g protein kaldı";
+        int gold = night ? 0xFFE8B062 : 0xFFB06D10;
+        String act = "meal/" + m.optString("id");
+        if (!wide) {
+            head(m.optString("e", "🍲"), "NE YESEM? · " + lbl, gold);
+            wrap(m.optString("s"), 16, 72, W - 32, 19, db, FG, 2);
+            text("+" + m.optInt("g") + " g protein", 16, H - 56, 11.5f, fb, gold, W - 32);
+            buttons(r, new String[][]{{"+ Ekle", act}}, new int[]{BTN}, new int[]{BTNF});
+            return;
+        }
+        float pd = H - 28, px = 16, py = 14;
+        p.setShader(null);
+        p.setStyle(Paint.Style.FILL);
+        p.setColor(night ? 0xFFF3EEE5 : 0xFFEFE8DC);
+        c.drawCircle(px + pd / 2, py + pd / 2, pd / 2, p);
+        p.setColor(WHITE);
+        c.drawCircle(px + pd / 2, py + pd / 2, pd / 2 - 7, p);
+        textC(m.optString("e", "🍲"), px + pd * 0.42f, py + pd * 0.52f, pd * 0.34f, fm, FG);
+        textC(m.optString("e2", "🥗"), px + pd * 0.66f, py + pd * 0.74f, pd * 0.26f, fm, FG);
+        float x = px + pd + 18, mw = W - x - 16;
+        text("NE YESEM? · " + lbl, x, 28, 9.5f, fb, gold, mw, 1.3f);
+        wrap(m.optString("n"), x, 56, mw, 18, db, FG, 2);
+        text(remT, x, 96, 11.5f, fm, MU, mw);
+        buttonsAt(r, x, new String[][]{{"+ Ekle · " + m.optInt("g") + " g", act}, {"Başka öner", "tab/besin"}}, new int[]{BTN, SOFT}, new int[]{BTNF, FG});
     }
 
     // ---------- Plus kilidi ----------
@@ -457,40 +549,29 @@ final class WidgetRenderer {
         Bitmap out = Bitmap.createBitmap(src.getWidth(), src.getHeight(), Bitmap.Config.ARGB_8888);
         c = new Canvas(out);
         c.scale(s, s);
-        bg(true);
+        bg();
         Paint ip = new Paint(Paint.FILTER_BITMAP_FLAG);
-        ip.setAlpha(110);
+        ip.setAlpha(90);
         c.save();
         c.scale(1 / s, 1 / s);
         c.drawBitmap(blur, 0, 0, ip);
         c.restore();
         float cy = H / 2;
-        center("✦ HAFİF PLUS", cy - 14, 11.5f, fb, MINT, 1.2f);
-        center("Widget'lar Plus'ta", cy + 4, 12.5f, fm, WHITE);
-        float bw2 = 64, bx = W / 2 - bw2 / 2;
-        rrect(bx, cy + 14, bw2, 24, 12, MINT);
-        textC("Aç", W / 2, cy + 30.5f, 12, fb, EM);
+        center("✦ HAFİF PLUS", cy - 14, 10.5f, fb, AC, 1.3f);
+        center("Widget'lar Plus'ta", cy + 5, 13, db, FG);
+        float bw2 = 72, bx = W / 2 - bw2 / 2;
+        rrect(bx, cy + 15, bw2, 26, 13, BTN);
+        textC("Aç", W / 2, cy + 32.5f, 12, fb, BTNF);
         return out;
     }
 
     // ---------- çizim yardımcıları ----------
-    private void bg(boolean darkBg) {
-        dark = darkBg;
-        RectF r = new RectF(0, 0, W, H);
+    private void bg() {
+        dark = night;
         p.setShader(null);
         p.setStyle(Paint.Style.FILL);
-        p.setColor(0xFF000000); // önceki çizimden kalan saydamlık gölgelendiriciye geçmesin
-        if (darkBg) {
-            p.setShader(new LinearGradient(0, 0, W * 0.6f, H, 0xFF0B3B33, 0xFF062520, Shader.TileMode.CLAMP));
-            c.drawRoundRect(r, 22, 22, p);
-            p.setColor(0xFF000000);
-            p.setShader(new RadialGradient(W, 0, Math.max(W, H) * 0.9f, 0x991F8A70, 0x001F8A70, Shader.TileMode.CLAMP));
-            c.drawRoundRect(r, 22, 22, p);
-        } else {
-            p.setColor(0xF7FFFFFF);
-            c.drawRoundRect(r, 22, 22, p);
-        }
-        p.setShader(null);
+        p.setColor(BG);
+        c.drawRoundRect(new RectF(0, 0, W, H), 24, 24, p);
     }
 
     private void rrect(float x, float y, float w, float h, float rad, int col) {
@@ -506,7 +587,7 @@ final class WidgetRenderer {
         p.setStyle(Paint.Style.STROKE);
         p.setStrokeWidth(st);
         p.setStrokeCap(Paint.Cap.ROUND);
-        p.setColor(dark ? track : 0xFFEDF3F0);
+        p.setColor(track);
         c.drawCircle(cx, cy, r, p);
         if (f > 0.005f) {
             p.setColor(col);
@@ -517,7 +598,7 @@ final class WidgetRenderer {
 
     private void bar(float x, float y, float w, float h, float f, int col, int track) {
         f = Math.max(0, Math.min(1, f));
-        rrect(x, y, w, h, h / 2, dark ? track : 0xFFEDF3F0);
+        rrect(x, y, w, h, h / 2, track);
         if (f > 0.01f) rrect(x, y, Math.max(h, w * f), h, h / 2, col);
     }
 
@@ -614,28 +695,33 @@ final class WidgetRenderer {
         chip(s, right - w, y, size, bgc, fg, w + 4);
     }
 
-    private void logo(float x, float y, String label, int col) {
+    private void leaf(float x, float y, int col) {
         Path leaf = new Path();
-        float s = 11 / 24f, ox = x, oy = y - 10;
-        leaf.moveTo(ox + 5 * s, oy + 21 * s);
-        leaf.lineTo(ox + 5 * s, oy + 12 * s);
-        leaf.cubicTo(ox + 5 * s, oy + 7.6f * s, ox + 8.6f * s, oy + 4 * s, ox + 13 * s, oy + 4 * s);
-        leaf.lineTo(ox + 19 * s, oy + 4 * s);
-        leaf.lineTo(ox + 19 * s, oy + 10 * s);
-        leaf.cubicTo(ox + 19 * s, oy + 14.4f * s, ox + 15.4f * s, oy + 18 * s, ox + 11 * s, oy + 18 * s);
-        leaf.lineTo(ox + 7 * s, oy + 18 * s);
-        leaf.moveTo(ox + 9 * s, oy + 15 * s);
-        leaf.lineTo(ox + 15 * s, oy + 9 * s);
+        float sc = 12 / 24f, ox = x, oy = y - 11;
+        leaf.moveTo(ox + 20 * sc, oy + 4 * sc);
+        leaf.cubicTo(ox + 11 * sc, oy + 4 * sc, ox + 5 * sc, oy + 9 * sc, ox + 5 * sc, oy + 17 * sc);
+        leaf.lineTo(ox + 5 * sc, oy + 20 * sc);
+        leaf.moveTo(ox + 20 * sc, oy + 4 * sc);
+        leaf.cubicTo(ox + 20 * sc, oy + 13 * sc, ox + 15 * sc, oy + 18 * sc, ox + 7 * sc, oy + 18 * sc);
         p.setShader(null);
         p.setStyle(Paint.Style.STROKE);
-        p.setStrokeWidth(1.6f);
+        p.setStrokeWidth(1.7f);
         p.setStrokeCap(Paint.Cap.ROUND);
         p.setColor(col);
-        p.setAlpha(dark ? 200 : 255);
         c.drawPath(leaf, p);
         p.setStyle(Paint.Style.FILL);
-        p.setAlpha(255);
-        text(label, x + 15, y, 11, fb, dark ? 0xCCFFFFFF : ACC, 120);
+    }
+
+    private void textRs(String s, float x, float y, float size, Typeface tf, int col, float spacingEm) {
+        tp.setTypeface(tf);
+        tp.setTextSize(size);
+        tp.setColor(col);
+        tp.setLetterSpacing(spacingEm / 10f);
+        tp.setTextAlign(Paint.Align.RIGHT);
+        CharSequence t = TextUtils.ellipsize(s, tp, W - 64, TextUtils.TruncateAt.END);
+        c.drawText(t, 0, t.length(), x, y, tp);
+        tp.setTextAlign(Paint.Align.LEFT);
+        tp.setLetterSpacing(0);
     }
 
     private void syringe(float cx, float cy, float sz, int col) {
@@ -663,7 +749,7 @@ final class WidgetRenderer {
         g.close();
         p.setShader(null);
         p.setStyle(Paint.Style.FILL);
-        p.setColor(0x1AFFFFFF);
+        p.setColor(night ? 0x1AFFFFFF : 0xFFEAF5FB);
         c.drawPath(g, p);
         c.save();
         c.clipPath(g);
@@ -675,7 +761,7 @@ final class WidgetRenderer {
         c.restore();
         p.setStyle(Paint.Style.STROKE);
         p.setStrokeWidth(1.6f);
-        p.setColor(0x66FFFFFF);
+        p.setColor(night ? 0x66FFFFFF : 0xFF9CC9E2);
         c.drawPath(g, p);
         p.setStyle(Paint.Style.FILL);
     }
@@ -684,7 +770,7 @@ final class WidgetRenderer {
         int rows = (int) Math.ceil(of / (double) perRow);
         float gap = 3, sz = Math.min((w - gap * (perRow - 1)) / perRow, (h - gap * (rows - 1)) / rows);
         for (int i = 0; i < of; i++) {
-            int col = cols != null && i < cols.length() ? parse(cols.optString(i)) : 0x1FFFFFFF;
+            int col = cols != null && i < cols.length() ? parse(cols.optString(i)) : TRACK;
             rrect(x + (i % perRow) * (sz + gap), y + (i / perRow) * (sz + gap), sz, sz, Math.min(4, sz / 3), col);
         }
     }
@@ -748,7 +834,7 @@ final class WidgetRenderer {
         float y = H - 14 - 32, gap = 8, w = (W - x0 - 14 - gap * (b.length - 1)) / b.length;
         for (int i = 0; i < b.length; i++) {
             float x = x0 + i * (w + gap);
-            rrect(x, y, w, 32, 12, bgc[i]);
+            rrect(x, y, w, 32, 16, bgc[i]);
             tp.setTypeface(fb);
             tp.setTextSize(12);
             tp.setLetterSpacing(0);
