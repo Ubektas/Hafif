@@ -169,6 +169,16 @@ const step = (ad, sonuc, detay) => { report.adimlar.push({ ad, sonuc, detay }); 
     const bugun = Object.keys(yk.sides || {})[0];
     step('Yan etki kaydedildi', bugun && yk.sides[bugun].bulanti === 2, JSON.stringify(yk.sides));
     step('Kalem stoğu iğneyle azaldı', yk.profile.penLeft === 3, 'kalan ' + yk.profile.penLeft);
+    // 2.0 · G6: doz planı (Plus deneme süresi içinde): geçmişten dolan plan kaydedilir
+    await tap(page, '.tab[data-tab="igne"]'); await wait(700);
+    await tap(page, '#dzOpen'); await wait(700); await shot('doz-plani');
+    await tap(page, '#dzSave'); await wait(800);
+    const dp = await D();
+    step('Doz planı kaydedildi', !!(dp.profile.dplan && dp.profile.dplan.steps.length >= 1), JSON.stringify(dp.profile.dplan));
+    // 2.0 · G5: + panelinden egzersiz tek dokunuşla
+    await ekle(page, 'ex'); await wait(800);
+    const ex = await D();
+    step('Egzersiz + panelinden kaydedildi', Object.keys(ex.ex || {}).length === 1, JSON.stringify(ex.ex));
     await tap(page, '.tab[data-tab="kilo"]'); await wait(600);
     await tap(page, '#mAdd'); await wait(600); await type(page, '#m-bel', '96,5'); await type(page, '#m-kalca', '110');
     await tap(page, '#fM [type="submit"]'); await wait(900);

@@ -2877,13 +2877,13 @@ function checkCelebrate(){
   P.celebrated=[...new Set([...P.celebrated,...fresh.map(x=>x.id)])]; save();
   showCelebration(m);
 }
-/* Play'in kendi değerlendirme penceresi: rozet sevincinde, en az 1 hafta ve 5 tartıdan sonra, 60 günde bir */
+/* Play'in kendi değerlendirme penceresi: mutlu anlarda (rozet sevinci, yeni en düşük tartı), en az 1 hafta ve 5 tartıdan sonra, 60 günde bir, en fazla 3 kez */
 const IAR=()=>window.Capacitor&&window.Capacitor.isNativePlatform&&window.Capacitor.isNativePlatform()&&window.Capacitor.Plugins&&window.Capacitor.Plugins.InAppReview||null;
 function askReview(){
   const R=IAR(); if(!R) return; const P=S.profile, d=S.weights.map(x=>x.date).sort();
-  if(P.reviewAt&&diffDays(P.reviewAt,today())<60) return;
+  if(P.reviewAt&&diffDays(P.reviewAt,today())<60||(P.reviewN||0)>=3) return;
   if(d.length<5||diffDays(d[0],today())<7) return;
-  P.reviewAt=today(); save(); setTimeout(()=>{try{R.requestReview().catch(()=>{})}catch(_){}},700);
+  P.reviewAt=today(); P.reviewN=(P.reviewN||0)+1; save(); setTimeout(()=>{try{R.requestReview().catch(()=>{})}catch(_){}},700);
 }
 function showCelebration(m){
   const title=m.goal?"Hedefine ulaştın!":m.id[0]==="p"?`Vücut ağırlığının %${m.id.slice(1)}'ini verdin`:`${m.kg} kg'ın altına indin`;
@@ -4503,9 +4503,12 @@ function openSheet(kind,editId){
       const fv=num($("#w-fat").value); if(fv!=null&&(fv<3||fv>70)){toast("Yağ oranını yüzde olarak yaz, ör. 28,4");return}
       const mv=num($("#w-mus").value); if(mv!=null&&(mv<5||mv>=v)){toast("Kas kütlesini kg olarak yaz, ör. 31,6");return}
       if(ew){Object.assign(ew,{date:$("#w-date").value||ew.date,kg:v,fat:fv,mus:mv,note:$("#w-note").value.trim()||null});save();closeSheet();toast("Tartı güncellendi");return}
+      const low=S.weights.length>=5&&v<Math.min(...S.weights.map(x=>x.kg))-0.05;
       S.weights.push({id:uid(),date:$("#w-date").value||today(),kg:v,fat:fv,mus:mv,note:$("#w-note").value.trim()||null,t:Date.now()});
       if(S.profile.startWeight==null&&S.weights.length===1)S.profile.startWeight=v;
-      save(); closeSheet(); toast("Kilo kaydedildi");
+      save(); closeSheet(); toast(low?"Kilo kaydedildi · en düşük tartın":"Kilo kaydedildi");
+      /* yeni en düşük tartı: rozet kutlaması açılmadıysa değerlendirme penceresi için iyi an */
+      if(low)setTimeout(()=>{if(!$("#celeb")&&!$("#sheetRoot").firstChild)askReview()},2600);
     });
   } else {
     let site=ssite;
