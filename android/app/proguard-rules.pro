@@ -19,3 +19,9 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+# Hafif: kendi eklentimiz ve widget sınıfları (manifest ve köprü yansımayla çağırır)
+-keep class com.ugurbektas.hafif.** { *; }
+# WebView ve JavaScript köprüsü
+-keepattributes JavascriptInterface,*Annotation*
+-keepclassmembers class * { @android.webkit.JavascriptInterface <methods>; }

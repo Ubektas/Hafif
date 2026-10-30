@@ -4,6 +4,9 @@ import android.content.ClipData;
 import android.content.Intent;
 import android.net.Uri;
 import androidx.core.content.FileProvider;
+import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
+import android.view.Window;
 import com.getcapacitor.JSObject;
 import com.getcapacitor.Plugin;
 import com.getcapacitor.PluginCall;
@@ -33,6 +36,23 @@ public class WidgetPlugin extends Plugin {
         } catch (Exception e) {
             call.reject(e.getMessage());
         }
+    }
+
+    /** Uygulamanın kendi teması (Sistem/Açık/Koyu) ile durum ve gezinme çubuğu simgelerinin rengini eşler. */
+    @PluginMethod
+    public void bars(PluginCall call) {
+        final boolean dark = Boolean.TRUE.equals(call.getBoolean("dark", false));
+        getActivity().runOnUiThread(() -> {
+            try {
+                Window w = getActivity().getWindow();
+                WindowInsetsControllerCompat c = WindowCompat.getInsetsController(w, w.getDecorView());
+                c.setAppearanceLightStatusBars(!dark);
+                c.setAppearanceLightNavigationBars(!dark);
+                call.resolve();
+            } catch (Exception e) {
+                call.reject(e.getMessage());
+            }
+        });
     }
 
     /** "Hafif ekibine gönder": alıcısı, konusu, metni dolu ve görseli ekli e-posta; yalnızca e-posta uygulamaları listelenir. */
