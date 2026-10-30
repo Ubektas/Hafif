@@ -90,6 +90,7 @@ Her adım tek tek konuşulup karar veriliyor; onaylananlar Claude sürümüne i�
 - **2.0.0 derlendi (30 Ekim):** surum-2.0 dalından (37a8080), sürüm kodu 16. .aab 5,6 MB (1.9.0: 8,2), APK 4,4 MB (1.9.0: 8,5); R8 + shrinkResources sonrası widget/bildirim/yazı tipi kaynakları duruyor, pakette kişisel veri yok. Emülatör testi 46/46 (küçültülmüş debug), değerlendirme penceresi çağrısı çökmüyor. Önceki iki koşuda Adım paylaşımında görülen bağlantı kopması tekrarlanmadı (emülatör kaynaklı görünüyor). Henüz yapılmayan: surum-2.0 → main birleştirmesi (Play'e çıkınca).
 
 ## Sırada (karar bekleyen / sonraki sürümler)
+- **Maliyet takibi (kullanıcı düşünecek):** "Yeni kalem açtım"da isteğe bağlı fiyat (son fiyat hazır, "Ücretsiz / SGK"); İğneler'de "Harcamam": bu ay, toplam, aylık ortalama, kilo başına, doz planına göre gelecek ay tahmini. Yemek harcamasındaki düşüş: açılışta "önce ayda ne harcıyordun / şimdi ne harcıyorsun" → fark ilk iğneden bugüne geriye dönük günlük hesap, net maliyet ve kilo başına net; "şimdi" tutarı istenince güncellenir. Geçmiş kalemler açılışta bir kez sorulur. Varsayılan kapalı, tutarları gizle seçeneği, paylaşım/rapor/mağazada yok; dil nötr ("yemek harcamandaki düşüş"). Açık: Plus mı, yemek kısmı ayrı açılıp kapansın mı.
 - Plus koç kartları: haftalık özet ve "gelecek haftanın tek hedefi", duraklama analizi (ölçü ve adım karşılaştırması)
 - Koçtaki kişisel bulantı örüntüsü ücretsiz mi kalsın, Plus'a mı bağlansın (öneri: ücretsiz)
 - Büyük yazı ayarı: şu an tamamen kapalı (textZoom 100); en fazla %115'e izin veren ara çözüm
