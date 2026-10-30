@@ -81,12 +81,6 @@
       "b": "Yediklerini eklemeyi unutmuş olabilirsin. Henüz yemediysen yoğun bir kaynakla başla:",
       "ch": [
         [
-          "🥛",
-          "Pınar Protein Pro Süt",
-          52,
-          "psutpro"
-        ],
-        [
           "🍗",
           "Tavuk göğsü",
           31,
@@ -97,6 +91,12 @@
           "Kırmızı et",
           26,
           "et"
+        ],
+        [
+          "🐟",
+          "Ton balığı",
+          25,
+          "ton"
         ]
       ],
       "a": [
@@ -617,6 +617,137 @@
       ],
       "saat": 9,
       "tip": "normal"
+    }
+  ],
+  "plato": [
+    {
+      "id": "plato",
+      "c": "accent",
+      "ic": "grafik",
+      "k": "Duraklama",
+      "t": "Tartı 3 gündür 103,1 kg civarında.",
+      "b": "Normal; kilo verirken vücut ara ara su tutar, sonra tartı birden düşer. Bundan önceki 35 günde 3,8 kg vermiştin; duraklama bunun bir parçası.",
+      "chk": [
+        [
+          false,
+          "Protein 2/7 gün hedefte"
+        ],
+        [
+          false,
+          "Su ortalaman 1,4 L"
+        ],
+        [
+          null,
+          "Bu ay ölçü almadın"
+        ],
+        [
+          false,
+          "Direnç egzersizi 0/3 gün"
+        ],
+        [
+          true,
+          "İğnelerin zamanında"
+        ]
+      ],
+      "a": [
+        [
+          "Ölçü ekle",
+          "meas"
+        ],
+        [
+          "Eğrime bak",
+          "go:kilo"
+        ]
+      ],
+      "n": "",
+      "saat": 9,
+      "tip": "hergun"
+    },
+    {
+      "id": "plato",
+      "c": "accent",
+      "ic": "grafik",
+      "k": "Duraklama",
+      "t": "Tartı 3 gündür 117,8 kg civarında.",
+      "b": "Normal; kilo verirken vücut ara ara su tutar, sonra tartı birden düşer.",
+      "chk": [
+        [
+          false,
+          "Protein 3/7 gün hedefte"
+        ],
+        [
+          false,
+          "Su ortalaman 1,5 L"
+        ],
+        [
+          null,
+          "Bu ay ölçü almadın"
+        ],
+        [
+          false,
+          "Direnç egzersizi 0/3 gün"
+        ],
+        [
+          true,
+          "İğnelerin zamanında"
+        ]
+      ],
+      "a": [
+        [
+          "Ölçü ekle",
+          "meas"
+        ],
+        [
+          "Eğrime bak",
+          "go:kilo"
+        ]
+      ],
+      "n": "",
+      "saat": 9,
+      "tip": "geri"
+    },
+    {
+      "id": "plato",
+      "c": "accent",
+      "ic": "grafik",
+      "k": "Duraklama",
+      "t": "Tartı 3 gündür 106,9 kg civarında.",
+      "b": "Normal; kilo verirken vücut ara ara su tutar, sonra tartı birden düşer.",
+      "chk": [
+        [
+          false,
+          "Protein 1/7 gün hedefte"
+        ],
+        [
+          false,
+          "Su ortalaman 1,4 L"
+        ],
+        [
+          null,
+          "Bu ay ölçü almadın"
+        ],
+        [
+          false,
+          "Direnç egzersizi 0/3 gün"
+        ],
+        [
+          true,
+          "İğnelerin zamanında"
+        ]
+      ],
+      "a": [
+        [
+          "Ölçü ekle",
+          "meas"
+        ],
+        [
+          "Eğrime bak",
+          "go:kilo"
+        ]
+      ],
+      "n": "",
+      "saat": 9,
+      "tip": "geri"
     }
   ]
 }

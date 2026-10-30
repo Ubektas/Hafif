@@ -1,32 +1,33 @@
 {
-  "kullanici": 500,
-  "degerlendirme": 1500,
-  "kartli": 1251,
+  "kullanici": 300,
+  "degerlendirme": 900,
+  "kartli": 759,
   "turler": {
-    "protein": 336,
-    "bulanti": 54,
-    "gecikti": 144,
-    "guvenlik": 48,
-    "hizli": 144,
-    "esik": 63,
-    "tarti": 39,
-    "donus": 315,
-    "bugun": 39,
-    "su": 12,
-    "yarin": 57
+    "protein": 204,
+    "bulanti": 36,
+    "gecikti": 78,
+    "guvenlik": 27,
+    "hizli": 87,
+    "esik": 27,
+    "tarti": 30,
+    "donus": 186,
+    "bugun": 27,
+    "su": 6,
+    "yarin": 36,
+    "plato": 15
   },
   "hatalar": [],
   "tipler": {
-    "duraklama": 47,
-    "bos": 52,
-    "seyrek": 49,
-    "normal": 124,
-    "geri": 41,
-    "hizli": 58,
-    "aynigun": 45,
-    "yeni": 46,
-    "hergun": 38
+    "duraklama": 27,
+    "bos": 30,
+    "seyrek": 26,
+    "normal": 82,
+    "geri": 27,
+    "hizli": 35,
+    "aynigun": 22,
+    "yeni": 28,
+    "hergun": 23
   },
   "sonuc": "BAŞARILI",
-  "kartOrani": "83%"
+  "kartOrani": "84%"
 }
