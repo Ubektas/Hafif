@@ -1,0 +1,51 @@
+name: iOS simülatör testi
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  ios:
+    runs-on: macos-15
+    timeout-minutes: 50
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - run: npm ci
+      - run: npx cap sync ios
+      - name: CocoaPods
+        run: cd ios/App && pod install
+      - name: Simülatör için derle (imzasız)
+        run: |
+          cd ios/App
+          set -o pipefail
+          xcodebuild -workspace App.xcworkspace -scheme App -configuration Debug \
+            -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' \
+            -derivedDataPath build CODE_SIGNING_ALLOWED=NO build 2>&1 | tee ../../xcodebuild.log | grep -E "error:|warning: .*deprecated|BUILD (SUCCEEDED|FAILED)" | tail -80
+      - name: Simülatörde aç, ekran görüntüleri al
+        run: |
+          mkdir -p ios-sonuclari
+          DEV=$(xcrun simctl list devices available | grep -E "iPhone 1[5-7]( Pro)? \(" | head -1 | grep -oE '[0-9A-F-]{36}')
+          echo "Cihaz: $DEV"; xcrun simctl list devices available | grep -E "iPhone 1[5-7]( Pro)? \(" | head -1 > ios-sonuclari/cihaz.txt
+          xcrun simctl boot "$DEV"
+          xcrun simctl bootstatus "$DEV" -b
+          xcrun simctl install "$DEV" ios/App/build/Build/Products/Debug-iphonesimulator/App.app
+          xcrun simctl launch "$DEV" com.ugurbektas.hafif
+          sleep 8;  xcrun simctl io "$DEV" screenshot ios-sonuclari/01-acilis.png
+          sleep 12; xcrun simctl io "$DEV" screenshot ios-sonuclari/02-acilis-20sn.png
+          xcrun simctl ui "$DEV" appearance dark
+          sleep 4;  xcrun simctl io "$DEV" screenshot ios-sonuclari/03-koyu.png
+          xcrun simctl spawn "$DEV" log show --last 2m --predicate 'process == "App"' --style compact 2>/dev/null | tail -150 > ios-sonuclari/log.txt || true
+      - name: Sonuçları ios-sonuclari dalına kaydet
+        if: always()
+        run: |
+          mkdir -p ios-sonuclari; cp xcodebuild.log ios-sonuclari/ 2>/dev/null || true
+          grep -E "error:" xcodebuild.log | head -60 > ios-sonuclari/hatalar.txt 2>/dev/null || true
+          cd ios-sonuclari
+          git init -q -b ios-sonuclari
+          git -c user.name="github-actions" -c user.email="actions@github.com" add -A
+          git -c user.name="github-actions" -c user.email="actions@github.com" commit -q -m "iOS testi ${GITHUB_SHA::7}"
+          git push -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}" ios-sonuclari

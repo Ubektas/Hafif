@@ -1241,6 +1241,9 @@ function nextSite(){const A=activeSites();if(!A.length)return SITES[0];let best=
 const PLUS_ID="hafif_plus";
 const PLANS=[{k:"aylik",n:"Aylık",p:"99,99 ₺",m:"/ ay",sub:"her ay yenilenir",mo:1},{k:"uc-aylik",n:"3 aylık",p:"229,99 ₺",m:"76,66 ₺ / ay",sub:"%23 tasarruf",mo:3},{k:"yillik",n:"Yıllık",p:"499,99 ₺",m:"41,67 ₺ / ay",sub:"%58 tasarruf",mo:12,best:true}];
 const NATIVE=()=>!!(window.Capacitor&&window.Capacitor.isNativePlatform&&window.Capacitor.isNativePlatform());
+/* iPhone: adımlar ve tartı Apple Sağlık'tan, abonelik App Store'dan */
+const IOS=()=>!!(window.Capacitor&&window.Capacitor.getPlatform&&window.Capacitor.getPlatform()==="ios");
+const HCN=()=>IOS()?"Apple Sağlık":"Health Connect",hcAbl=()=>IOS()?"Apple Sağlık'tan":"Health Connect'ten",hcDat=()=>IOS()?"Apple Sağlık'a":"Health Connect'e";
 let plusOwned=(()=>{try{return localStorage.getItem("hf-plus")==="1"}catch(e){return false}})();
 /* ilk 7 gün Plus özellikleri herkese açık (ödeme bilgisi istenmez) */
 const TRIAL_DAYS=7;
@@ -1249,16 +1252,21 @@ const trialLeft=()=>Math.max(0,TRIAL_DAYS-diffDays(plusSince(),today()));
 function PLUS(){return NATIVE()?(plusOwned||trialLeft()>0):!S.profile.pvFree}
 function trialEndCheck(){const P=S.profile;if(!NATIVE()||plusOwned||!P.onboarded||trialLeft()>0||P.trialEndSeen)return;P.trialEndSeen=today();save();setTimeout(()=>{if(!$("#onb")&&!$("#celeb"))openPaywall("trialEnd")},1800)}
 const IAP=()=>window.CdvPurchase&&window.CdvPurchase.store||null;
+/* App Store'da her süre ayrı ürün (aynı abonelik grubunda); Google Play'de tek ürün, üç temel plan */
+const IOS_IDS={aylik:"hafif_plus_aylik","uc-aylik":"hafif_plus_uc_aylik",yillik:"hafif_plus_yillik"};
+const plusOwnedNow=st=>IOS()?Object.values(IOS_IDS).some(id=>st.owned(id)):!!st.owned(PLUS_ID);
 function iapInit(){
-  const st=IAP();if(!st||st.__hf)return;st.__hf=1;const C=window.CdvPurchase;
-  st.register([{id:PLUS_ID,type:C.ProductType.PAID_SUBSCRIPTION,platform:C.Platform.GOOGLE_PLAY}]);
+  const st=IAP();if(!st||st.__hf)return;st.__hf=1;const C=window.CdvPurchase,PF=IOS()?C.Platform.APPLE_APPSTORE:C.Platform.GOOGLE_PLAY;
+  st.register(IOS()?Object.values(IOS_IDS).map(id=>({id,type:C.ProductType.PAID_SUBSCRIPTION,platform:PF})):[{id:PLUS_ID,type:C.ProductType.PAID_SUBSCRIPTION,platform:PF}]);
   st.when().approved(t=>t.verify()).verified(r=>r.finish())
-    .receiptUpdated(()=>{const o=!!st.owned(PLUS_ID);if(o!==plusOwned){plusOwned=o;try{localStorage.setItem("hf-plus",o?"1":"0")}catch(e){}if(o){closePaywall();toast("Hafif Plus açıldı. Teşekkürler!")}render()}})
+    .receiptUpdated(()=>{const o=plusOwnedNow(st);if(o!==plusOwned){plusOwned=o;try{localStorage.setItem("hf-plus",o?"1":"0")}catch(e){}if(o){closePaywall();toast("Hafif Plus açıldı. Teşekkürler!")}render()}})
     .productUpdated(()=>{if($("#paywall"))pwRefresh()});
-  st.initialize([C.Platform.GOOGLE_PLAY]).catch(()=>{});
+  st.initialize([PF]).catch(()=>{});
 }
 document.addEventListener("deviceready",iapInit,false);
-function pwOffer(k){const st=IAP();if(!st)return null;const pr=st.get(PLUS_ID);if(!pr||!pr.offers)return null;
+function pwOffer(k){const st=IAP();if(!st)return null;
+  if(IOS()){const p=st.get(IOS_IDS[k]);if(!p||!p.offers||!p.offers.length)return null;return p.offers.find(o=>o.pricingPhases[0]&&o.pricingPhases[0].paymentMode==="FreeTrial"&&o.canPurchase!==false)||p.offers[0]}
+  const pr=st.get(PLUS_ID);if(!pr||!pr.offers)return null;
   const all=pr.offers.filter(o=>o.id===PLUS_ID+"@"+k||o.id.startsWith(PLUS_ID+"@"+k+"@"));
   return all.find(o=>o.pricingPhases[0]&&o.pricingPhases[0].paymentMode==="FreeTrial"&&o.canPurchase!==false)||all.find(o=>o.id===PLUS_ID+"@"+k)||all[0]||null}
 function pwTrial(o){const ph=o&&o.pricingPhases[0];if(!ph||ph.paymentMode!=="FreeTrial")return "";const m=/P(\d+)([DWM])/.exec(ph.billingPeriod||"");if(!m)return "ücretsiz deneme";return `${+m[1]*(m[2]==="W"?7:1)} ${m[2]==="M"?"ay":"gün"} ücretsiz`}
@@ -1273,7 +1281,7 @@ function pwPlansHtml(){
     return `<button type="button" class="pwp" role="radio" data-pw="${P.k}" aria-checked="${P.k===pwSel}">${bdg?`<span class="bdg">${bdg}</span>`:""}<span class="rd"></span><span><b>${P.n}</b><small>${sub}</small></span><span class="pr"><b>${price}</b><small>${per}</small></span></button>`}).join("");
 }
 function pwCta(){const o=pwOffer(pwSel),tr=pwTrial(o),P=PLANS.find(x=>x.k===pwSel),last=o&&o.pricingPhases[o.pricingPhases.length-1];
-  return {btn:tr?tr.charAt(0).toLocaleUpperCase("tr-TR")+tr.slice(1)+" dene":"Hafif Plus'a geç",fine:`${tr?`Deneme bitince ${last?last.price:P.p} alınır. `:""}Abonelik, iptal edilmedikçe ${P.mo===1?"her ay":P.mo===3?"3 ayda bir":"yılda bir"} Google Play hesabından otomatik yenilenir. İstediğin zaman Google Play → Abonelikler'den iptal edebilirsin.`}}
+  return {btn:tr?tr.charAt(0).toLocaleUpperCase("tr-TR")+tr.slice(1)+" dene":"Hafif Plus'a geç",fine:`${tr?`Deneme bitince ${last?last.price:P.p} alınır. `:""}Abonelik, iptal edilmedikçe ${P.mo===1?"her ay":P.mo===3?"3 ayda bir":"yılda bir"} ${IOS()?"Apple hesabından otomatik yenilenir. İstediğin zaman Ayarlar → Apple Kimliği → Abonelikler'den iptal edebilirsin.":"Google Play hesabından otomatik yenilenir. İstediğin zaman Google Play → Abonelikler'den iptal edebilirsin."}`}}
 function pwRefresh(){const w=$("#paywall");if(!w)return;$("#pwPlans").innerHTML=pwPlansHtml();const c=pwCta();$("#pwBuy").textContent=c.btn;$("#pwFine").textContent=c.fine;bindPw()}
 function bindPw(){document.querySelectorAll("[data-pw]").forEach(b=>b.addEventListener("click",()=>{pwSel=b.dataset.pw;pwRefresh()}))}
 function closePaywall(){const w=$("#paywall");if(w)w.remove()}
@@ -1295,15 +1303,15 @@ function openPaywall(src){
       <button type="button" class="pwcta" id="pwBuy">${c.btn}</button>
       <p class="pwfine" id="pwFine">${c.fine}</p>
       <p class="pwfine" id="pwMsg" role="status" style="color:var(--bad)"></p>
-      <div class="pwl"><button type="button" id="pwRestore">Satın alımları geri yükle</button><button type="button" id="pwManage">Aboneliği yönet</button><a href="https://ubektas.github.io/hafif-gizlilik/" target="_blank" rel="noopener">Gizlilik</a></div>
+      <div class="pwl"><button type="button" id="pwRestore">Satın alımları geri yükle</button><button type="button" id="pwManage">Aboneliği yönet</button><a href="https://ubektas.github.io/hafif-gizlilik/" target="_blank" rel="noopener">Gizlilik</a>${IOS()?`<a href="https://www.apple.com/legal/internet-services/itunes/dev/stdeula/" target="_blank" rel="noopener">Kullanım koşulları</a>`:""}</div>
     </div>`;
   document.body.appendChild(d);bindPw();
   $("#pwX").addEventListener("click",closePaywall);
   $("#pwBuy").addEventListener("click",async()=>{const m=$("#pwMsg");m.textContent="";
     if(!NATIVE()){toast("Satın alma Android uygulamasında yapılır");return}
-    const o=pwOffer(pwSel);if(!o){m.textContent="Abonelik bilgisi Google Play'den alınamadı. İnternet bağlantını kontrol edip tekrar dene.";return}
+    const o=pwOffer(pwSel);if(!o){m.textContent=`Abonelik bilgisi ${IOS()?"App Store'dan":"Google Play'den"} alınamadı. İnternet bağlantını kontrol edip tekrar dene.`;return}
     const b=$("#pwBuy");b.disabled=true;try{const err=await o.order();if(err&&err.code!==window.CdvPurchase.ErrorCode.PAYMENT_CANCELLED)m.textContent="Satın alma tamamlanamadı: "+(err.message||"bilinmeyen hata")}catch(e){m.textContent="Satın alma başlatılamadı."}b.disabled=false});
-  $("#pwRestore").addEventListener("click",async()=>{const st=IAP();if(!st){toast(NATIVE()?"Google Play'e bağlanılamadı":"Bu görünümde satın alma yok");return}await st.restorePurchases().catch(()=>{});toast(st.owned(PLUS_ID)?"Hafif Plus geri yüklendi":"Bu hesapta etkin bir Hafif Plus aboneliği bulunamadı")});
+  $("#pwRestore").addEventListener("click",async()=>{const st=IAP();if(!st){toast(NATIVE()?(IOS()?"App Store'a bağlanılamadı":"Google Play'e bağlanılamadı"):"Bu görünümde satın alma yok");return}await st.restorePurchases().catch(()=>{});toast(plusOwnedNow(st)?"Hafif Plus geri yüklendi":"Bu hesapta etkin bir Hafif Plus aboneliği bulunamadı")});
   $("#pwManage").addEventListener("click",()=>{const st=IAP();if(st&&st.manageSubscriptions)st.manageSubscriptions().catch(()=>{});else window.open("https://play.google.com/store/account/subscriptions","_blank")});
 }
 document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-plus]");if(b){e.stopPropagation();e.preventDefault();openPaywall("kilit")}},true);
@@ -1356,7 +1364,7 @@ if(NATIVE()&&window.Capacitor.Plugins&&window.Capacitor.Plugins.App){
 const plock=(html,title,sub)=>`<div class="plock"><div class="pbl" aria-hidden="true">${html}</div><div class="pov"><b>${title}</b><span>${sub}</span><button type="button" class="plusbtn" data-plus>✦ Plus'a geç</button></div></div>`;
 function plusCard(){
   if(NATIVE()&&!plusOwned&&trialLeft()>0) return `<button type="button" class="plcard" data-plus><span class="st">✦</span><span style="flex:1"><b>Plus özellikleri açık · ${trialLeft()} gün</b><small>İlk ${TRIAL_DAYS} gün her şey ücretsiz. Sonrası için abonelik seçeneklerine bak.</small></span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg></button>`;
-  if(PLUS()&&NATIVE()) return `<button type="button" class="plcard" id="plManage"><span class="st">✦</span><span style="flex:1"><b>Hafif Plus aktif</b><small>Google Play'den yönet</small></span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg></button>`;
+  if(PLUS()&&NATIVE()) return `<button type="button" class="plcard" id="plManage"><span class="st">✦</span><span style="flex:1"><b>Hafif Plus aktif</b><small>${IOS()?"App Store'dan yönet":"Google Play'den yönet"}</small></span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg></button>`;
   if(!NATIVE()) return `<div class="card" style="display:flex;flex-direction:column;gap:10px"><div><h2>Hafif Plus <span class="ptag">Önizleme</span></h2><span class="muted" style="font-size:12.5px">Claude'da tüm Plus özellikleri açık. Android'de ilk ${TRIAL_DAYS} gün her şey açık, sonra Plus alanları kilitlenir; o görünümü ve ödeme ekranını buradan deneyebilirsin.</span></div>
     <label class="sw" style="padding:2px 0"><span><b>Ücretsiz sürümü göster</b><small>kilitli alanlar bulanık görünür</small></span><input type="checkbox" id="pvFree" ${S.profile.pvFree?"checked":""}><i></i></label>
     <button type="button" class="btn ghost" data-plus>Ödeme ekranını aç</button></div>`;
@@ -2841,7 +2849,7 @@ function storyOf(cv){const W=1080,H=1920,o=document.createElement("canvas");o.wi
   c.fillStyle="rgba(0,0,0,.38)";c.fillRect(0,0,W,H);
   const cw=900,ch=cw*cv.height/cv.width,x=(W-cw)/2,y=(H-ch)/2-20;c.save();c.shadowColor="rgba(0,0,0,.5)";c.shadowBlur=60;c.shadowOffsetY=24;rr(c,x,y,cw,ch,44);c.fillStyle="#000";c.fill();c.restore();
   c.save();rr(c,x,y,cw,ch,44);c.clip();c.drawImage(cv,x,y,cw,ch);c.restore();
-  c.textAlign="center";c.fillStyle="rgba(255,255,255,.92)";c.font=`600 34px ${FONT_B}`;c.fillText("Google Play'de · Hafif: Kilo ve İğne Takibi",W/2,H-150);c.textAlign="left";
+  c.textAlign="center";c.fillStyle="rgba(255,255,255,.92)";c.font=`600 34px ${FONT_B}`;c.fillText((IOS()?"App Store'da":"Google Play'de")+" · Hafif: Kilo ve İğne Takibi",W/2,H-150);c.textAlign="left";
   return o}
 const MAILI=`<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M4 7l8 6 8-6"/></svg>`;
 let teamVis="bas";
@@ -4125,7 +4133,7 @@ function vAyar(){
     <div class="sgroup">
       ${row("Protein","a-prot",P.proteinGoal??"","g",protSuggest()[2],"numeric")}
       ${row("Su","a-water",P.waterGoal??"","ml","2500","numeric")}
-      ${HP()?`${row("Adım","a-step",P.stepGoal??"","adım","7500","numeric")}<div class="setr"><span>Health Connect</span><button type="button" class="linkbtn" id="a-hc">${S.hc&&S.hc.on?"Bağlı · yönet":"Bağlan"}</button></div>${ASP()&&S.hc&&S.hc.on?`<div class="setr"><span>Telefonun adım sayacı<small style="display:block;font-size:12.5px;color:var(--muted)">Health Connect'e adım gelmeyen günlerde</small></span><button type="button" class="linkbtn" id="a-ps">${S.ps&&S.ps.on?"Açık · kapat":"Aç"}</button></div>`:""}`:""}
+      ${HP()?`${row("Adım","a-step",P.stepGoal??"","adım","7500","numeric")}<div class="setr"><span>${HCN()}</span><button type="button" class="linkbtn" id="a-hc">${S.hc&&S.hc.on?"Bağlı · yönet":"Bağlan"}</button></div>${ASP()&&S.hc&&S.hc.on?`<div class="setr"><span>Telefonun adım sayacı<small style="display:block;font-size:12.5px;color:var(--muted)">Health Connect'e adım gelmeyen günlerde</small></span><button type="button" class="linkbtn" id="a-ps">${S.ps&&S.ps.on?"Açık · kapat":"Aç"}</button></div>`:""}`:""}
     </div>
     <p class="hint">${protSuggest()[0]?`Genel öneri kilogram başına 1,2–1,5 g protein, yani senin için ${protSuggest()[0]}–${protSuggest()[1]} g. Su için günde 2–3 litre yaygın bir hedef. Kendi hedefini doktorun ya da diyetisyeninle belirlemek en doğrusu.`:"Protein için yaygın hedef kilogram başına 1,2–1,5 g."}</p>
     <div class="fsec"><span>Tercihler</span></div>
@@ -4155,10 +4163,10 @@ function stDays(){const g=stepGoal();let h="";for(let i=6;i>=0;i--){const d=addD
   h+=`<div class="${i===0?"tdy":""}">${n>=g?`<i class="ok${td}" aria-label="${lab}: hedef tamam">${ST_OK}</i>`:`<i class="p${td}" style="--f:${f}%" aria-label="${lab}: hedefin %${f}'${pctEk(f)}"><span>%${f}</span></i>`}<small>${lab}</small></div>`}return `<div class="stdays">${h}</div>`}
 function stepCard(){
   if(!HP()&&!PV()) return "";
-  if(!PV()&&!(S.hc&&S.hc.on)) return `<button type="button" class="card stcta" data-hc><span class="mi">${FOOT}</span><span style="flex:1;min-width:0"><b>Adımlarını ve tartını bağla</b><small>Health Connect'ten adım, kilo ve yağ oranı otomatik gelsin</small></span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="var(--muted)" stroke-width="2" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg></button>`;
+  if(!PV()&&!(S.hc&&S.hc.on)) return `<button type="button" class="card stcta" data-hc><span class="mi">${FOOT}</span><span style="flex:1;min-width:0"><b>Adımlarını ve tartını bağla</b><small>${hcAbl()} adım, kilo ve yağ oranı otomatik gelsin</small></span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="var(--muted)" stroke-width="2" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg></button>`;
   const n=stepsOn(today()),g=stepGoal(),E=stepEst(n),left=Math.max(0,g-n),f=Math.min(1,n/g),sk=stStreak();
   return `<button type="button" class="card stcard" data-go="adim">
-    <div class="sthead"><h2>Bugün hareket</h2>${PV()?'<span class="pvtag">Önizleme</span>':`<span class="muted" style="font-size:12.5px">${PS_TODAY?"Telefon":"Health Connect"}</span>`}</div>
+    <div class="sthead"><h2>Bugün hareket</h2>${PV()?'<span class="pvtag">Önizleme</span>':`<span class="muted" style="font-size:12.5px">${PS_TODAY?"Telefon":HCN()}</span>`}</div>
     <div class="stnum"><span><b>${fmtN(n)}</b><small>adım</small></span><em>${left?fmtN(left)+" kaldı":`Hedef tamam ${UI_I(UIC.onay,16)}`}</em></div>
     <div><div class="stpath"><div class="trk"><i style="width:${f*100}%"></i></div><span class="me" style="left:calc((100% - 30px) * ${f.toFixed(3)})">${ST_WALK}</span><span class="flag">${ST_FLAG}</span></div>
       <div class="stscale"><span>0</span><span>Hedef ${fmtN(g)}</span></div></div>
@@ -4203,7 +4211,7 @@ function stHistory(){
 }
 function vAdim(){
   const back=`<button type="button" class="backbtn" data-go="ozet">‹ Özet</button>`;
-  if(!PV()&&(!HP()||!(S.hc&&S.hc.on))) return `<section>${back}<div class="card empty"><h2>Adımlar bağlı değil</h2><p class="muted" style="margin:0">Health Connect'e bağlanınca adımların burada görünür.</p><button class="btn stepbtn" data-hc>Bağlan</button></div></section>`;
+  if(!PV()&&(!HP()||!(S.hc&&S.hc.on))) return `<section>${back}<div class="card empty"><h2>Adımlar bağlı değil</h2><p class="muted" style="margin:0">${hcDat()} bağlanınca adımların burada görünür.</p><button class="btn stepbtn" data-hc>Bağlan</button></div></section>`;
   const n=stepsOn(today()),g=stepGoal(),E=stepEst(n);
   const wk=[...Array(7)].map((_,i)=>stepsOn(addDays(today(),-i))),avg=wk.reduce((a,b)=>a+b,0)/7;
   const H=PV()?DEMO_H:HOURS||Array(24).fill(0),mx=Math.max(1,...H);
@@ -4216,20 +4224,20 @@ function vAdim(){
     <div class="card"><h2 style="margin-bottom:10px">Gün içinde</h2><div class="sthours">${H.map(v=>`<i class="${v>=mx*.6&&v>0?"h":""}" style="height:${Math.max(4,v/mx*100)}%"></i>`).join("")}</div><div class="sthx"><span>00</span><span>06</span><span>12</span><span>18</span><span>24</span></div></div>
     <button type="button" class="card stshare" id="stShareBtn"><span class="mi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg></span><span style="flex:1;min-width:0;text-align:left"><b>Adımlarını paylaş</b><small>Fotoğraflı ya da hazır kart · WhatsApp, Instagram ya da Hafif ekibi</small></span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button>
     ${stHistory()}
-    <div class="stsrc"><span class="mi" style="width:30px;height:30px;border-radius:10px;background:var(--step-soft);color:var(--step);display:grid;place-items:center">${HEART.replace('<svg ','<svg width="18" height="18" ')}</span>${PV()?"<span><b>Önizleme · örnek veriler.</b> Gerçek adımların Android uygulamasında Health Connect'ten gelir.</span>":`${PS_TODAY?"Telefonun adım sayacından":"Health Connect'ten"} · ${S.hc.last?"son güncelleme "+new Date(S.hc.last).toLocaleTimeString("tr-TR",{hour:"2-digit",minute:"2-digit"}):"güncelleniyor"} · hedefini Ayarlar'dan değiştirebilirsin`}</div>
+    <div class="stsrc"><span class="mi" style="width:30px;height:30px;border-radius:10px;background:var(--step-soft);color:var(--step);display:grid;place-items:center">${HEART.replace('<svg ','<svg width="18" height="18" ')}</span>${PV()?"<span><b>Önizleme · örnek veriler.</b> Gerçek adımların Android uygulamasında Health Connect'ten gelir.</span>":`${PS_TODAY?"Telefonun adım sayacından":hcAbl()} · ${S.hc.last?"son güncelleme "+new Date(S.hc.last).toLocaleTimeString("tr-TR",{hour:"2-digit",minute:"2-digit"}):"güncelleniyor"} · hedefini Ayarlar'dan değiştirebilirsin`}</div>
   </section>`;
 }
 function openHealthSheet(){
-  $("#sheetRoot").innerHTML=`<div class="scrim" data-close><div class="sheet" role="dialog" aria-modal="true" aria-label="Health Connect"><div class="grab"></div>
+  $("#sheetRoot").innerHTML=`<div class="scrim" data-close><div class="sheet" role="dialog" aria-modal="true" aria-label="${HCN()}"><div class="grab"></div>
     <header><span></span><button class="del" data-x>Kapat</button></header>
     <div style="display:flex;flex-direction:column;gap:14px;text-align:center">
       <div class="hcicon">${HEART}</div>
       <h2 style="font-size:24px;line-height:1.15">Adımlarını ve tartını<br><span style="color:var(--step)">bağla</span></h2>
-      <p class="muted" style="margin:0;font-size:14px">Hafif, telefonundaki <b>Health Connect</b>'ten okur. Samsung Health, Google Fit, Fitbit, akıllı saatin ve akıllı tartın buraya yazar.</p>
+      <p class="muted" style="margin:0;font-size:14px">${IOS()?"Hafif, <b>Apple Sağlık</b>'tan okur. iPhone'un adımları, Apple Watch ve akıllı tartın buraya yazar.":"Hafif, telefonundaki <b>Health Connect</b>'ten okur. Samsung Health, Google Fit, Fitbit, akıllı saatin ve akıllı tartın buraya yazar."}</p>
       <div class="hcperm" style="text-align:left"><div><span>${UI_I(UIC.adim,20)}</span>Adımlar<em>okunur</em></div><div><span>${UI_I(UIC.tarti,20)}</span>Kilo<em>okunur</em></div><div><span>${UI_I(UIC.damla,20)}</span>Vücut yağ oranı<em>okunur</em></div></div>
-      <p class="muted" style="margin:0;font-size:12.5px"><span style="display:inline-block;vertical-align:-2px;margin-right:4px">${UI_I(UIC.kilit,14)}</span><span>Veriler yalnızca bu telefonda kalır, hiçbir sunucuya gönderilmez. İzni istediğin zaman Health Connect'ten kaldırabilirsin.</span></p>
+      <p class="muted" style="margin:0;font-size:12.5px"><span style="display:inline-block;vertical-align:-2px;margin-right:4px">${UI_I(UIC.kilit,14)}</span><span>Veriler yalnızca bu telefonda kalır, hiçbir sunucuya gönderilmez. ${IOS()?"İzni istediğin zaman Sağlık uygulamasından kaldırabilirsin.":"İzni istediğin zaman Health Connect'ten kaldırabilirsin."}</span></p>
       <p class="muted" id="hcMsg" role="status" style="margin:0;font-size:12.5px;color:var(--bad)"></p>
-      <button type="button" class="btn stepbtn" id="hcGo">Health Connect'e bağlan</button>
+      <button type="button" class="btn stepbtn" id="hcGo">${hcDat()} bağlan</button>
     </div></div></div>`;
   const root=$("#sheetRoot");
   root.querySelector(".scrim").addEventListener("click",e=>{if(e.target.classList.contains("scrim"))closeSheet()});
@@ -4240,10 +4248,10 @@ async function hcConnect(){
   const H=HP(),m=$("#hcMsg"); if(!H) return;
   try{
     const a=await H.isAvailable();
-    if(!a||!a.available){m.textContent="Bu telefonda Health Connect bulunamadı. Play Store'dan “Health Connect” uygulamasını yükleyip tekrar dene.";try{await H.openHealthConnectSettings()}catch(_){}return}
+    if(!a||!a.available){if(IOS()){m.textContent="Bu cihazda Apple Sağlık kullanılamıyor.";return}m.textContent="Bu telefonda Health Connect bulunamadı. Play Store'dan “Health Connect” uygulamasını yükleyip tekrar dene.";try{await H.openHealthConnectSettings()}catch(_){}return}
     const r=await H.requestAuthorization({read:HC_READ});
-    if(!r||!(r.readAuthorized||[]).includes("steps")){m.textContent="Adım izni verilmedi. Bağlanmak için Health Connect penceresinde Adımlar'a izin ver.";return}
-    S.hc={on:true,last:null,wFrom:addDays(today(),-30)}; save(); closeSheet(); toast("Health Connect bağlandı"); await syncHealth(true);
+    if(!r||!(r.readAuthorized||[]).includes("steps")){m.textContent=`Adım izni verilmedi. Bağlanmak için ${HCN()} penceresinde Adımlar'a izin ver.`;return}
+    S.hc={on:true,last:null,wFrom:addDays(today(),-30)}; save(); closeSheet(); toast(HCN()+" bağlandı"); await syncHealth(true);
   }catch(e){m.textContent="Bağlanılamadı: "+(e&&e.message||"bilinmeyen hata")}
 }
 async function psEnable(){
@@ -4700,7 +4708,7 @@ function bindView(){
   v.querySelectorAll("[data-psite]").forEach(b=>b.addEventListener("click",()=>b.setAttribute("aria-pressed",b.getAttribute("aria-pressed")!=="true")));
   bindRem();
   if($("#a-ps"))$("#a-ps").addEventListener("click",()=>{S.ps&&S.ps.on?psDisable():psEnable()});
-  if($("#a-hc"))$("#a-hc").addEventListener("click",()=>{if(S.hc&&S.hc.on){try{HP().openHealthConnectSettings()}catch(_){}}else openHealthSheet()});
+  if($("#a-hc"))$("#a-hc").addEventListener("click",()=>{if(S.hc&&S.hc.on){if(IOS()){toast("İzinleri Sağlık uygulamasında yönetebilirsin: Paylaşım → Uygulamalar → Hafif");return}try{HP().openHealthConnectSettings()}catch(_){}}else openHealthSheet()});
   v.querySelectorAll("[data-hc]").forEach(b=>b.addEventListener("click",e=>{e.stopPropagation();openHealthSheet()}));
   /* ayarlar: her değişiklik o an kaydedilir; hatalı değer kaydedilmez, eski hâline döner */
   if(f){
