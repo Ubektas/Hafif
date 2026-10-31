@@ -1,6 +1,9 @@
 name: iOS simülatör testi
 on:
   workflow_dispatch:
+  push:
+    branches: [surum-2.0]
+    paths: ['ios/**', 'www/**', '.github/workflows/ios-test.yml']
 
 permissions:
   contents: write
