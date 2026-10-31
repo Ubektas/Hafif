@@ -60,32 +60,51 @@ public class WidgetPlugin extends Plugin {
         });
     }
 
-    /** "Hafif ekibine gönder": alıcısı, konusu, metni dolu ve görseli ekli e-posta; yalnızca e-posta uygulamaları listelenir. */
+    /**
+     * "Hafif ekibine gönder": alıcısı, konusu, metni dolu ve görseli ekli e-posta.
+     * Seçici-filtreli paylaşım (setSelector) bazı Samsung telefonlarda "Bu eylemi hiçbir uygulama gerçekleştiremez"
+     * diyor; bu yüzden mailto açabilen uygulamalar tek tek bulunup her birine paketli ACTION_SEND hazırlanır.
+     * Ek kabul eden uygulama yoksa görselsiz mailto taslağı açılır.
+     */
     @PluginMethod
     public void email(PluginCall call) {
         try {
-            Intent mail = new Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:"));
-            if (mail.resolveActivity(getContext().getPackageManager()) == null) {
-                call.reject("e-posta uygulaması yok");
-                return;
-            }
-            String to = call.getString("to", "");
+            android.content.pm.PackageManager pm = getContext().getPackageManager();
+            String to = call.getString("to", ""), subject = call.getString("subject", ""), body = call.getString("body", "");
             File f = new File(getContext().getCacheDir(), call.getString("path", ""));
-            Intent send = new Intent(Intent.ACTION_SEND);
-            send.setType("image/png");
-            send.putExtra(Intent.EXTRA_EMAIL, new String[] { to });
-            send.putExtra(Intent.EXTRA_SUBJECT, call.getString("subject", ""));
-            send.putExtra(Intent.EXTRA_TEXT, call.getString("body", ""));
-            if (f.exists()) {
-                Uri uri = FileProvider.getUriForFile(getContext(), getContext().getPackageName() + ".fileprovider", f);
-                send.putExtra(Intent.EXTRA_STREAM, uri);
-                send.setClipData(ClipData.newRawUri("", uri));
-                send.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            Uri uri = f.exists() ? FileProvider.getUriForFile(getContext(), getContext().getPackageName() + ".fileprovider", f) : null;
+            java.util.List<android.content.pm.ResolveInfo> mailApps = pm.queryIntentActivities(new Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:")), 0);
+            java.util.ArrayList<Intent> targets = new java.util.ArrayList<>();
+            java.util.HashSet<String> seen = new java.util.HashSet<>();
+            for (android.content.pm.ResolveInfo ri : mailApps) {
+                String pkg = ri.activityInfo.packageName;
+                if (!seen.add(pkg)) continue;
+                Intent send = new Intent(Intent.ACTION_SEND);
+                send.setType(uri != null ? "image/png" : "text/plain");
+                send.putExtra(Intent.EXTRA_EMAIL, new String[] { to });
+                send.putExtra(Intent.EXTRA_SUBJECT, subject);
+                send.putExtra(Intent.EXTRA_TEXT, body);
+                if (uri != null) {
+                    send.putExtra(Intent.EXTRA_STREAM, uri);
+                    send.setClipData(ClipData.newRawUri("", uri));
+                    send.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                }
+                send.setPackage(pkg);
+                if (send.resolveActivity(pm) != null) targets.add(send);
             }
-            send.setSelector(mail);
-            Intent chooser = Intent.createChooser(send, "E-posta uygulamanı seç");
-            chooser.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            getContext().startActivity(chooser);
+            Intent open;
+            if (targets.isEmpty()) {
+                if (mailApps.isEmpty()) { call.reject("e-posta uygulaması yok"); return; }
+                // ek kabul eden yok: görselsiz taslak
+                open = new Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:" + Uri.encode(to) + "?subject=" + Uri.encode(subject) + "&body=" + Uri.encode(body)));
+            } else if (targets.size() == 1) {
+                open = targets.get(0);
+            } else {
+                open = Intent.createChooser(targets.remove(0), "E-posta uygulamanı seç");
+                open.putExtra(Intent.EXTRA_INITIAL_INTENTS, targets.toArray(new android.os.Parcelable[0]));
+            }
+            open.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            getContext().startActivity(open);
             call.resolve();
         } catch (Exception e) {
             call.reject(e.getMessage());
