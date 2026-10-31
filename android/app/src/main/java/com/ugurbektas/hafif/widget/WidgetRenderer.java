@@ -284,8 +284,14 @@ final class WidgetRenderer {
             c.drawCircle(cx, cy, ic / 2, p);
             glyphC("igne", cx, cy, ic * 0.58f, IG);
             float x = 14 + ic + 12;
-            text(day + (t.isEmpty() ? "" : " " + t), x, cy + 1, wide ? 20 : 17, db, FG, W - x - 12);
-            text(site.isEmpty() ? "sıradaki iğne" : site, x, cy + 18, 11.5f, fm, MU, W - x - 12);
+            if (wide) {
+                text(day + (t.isEmpty() ? "" : " " + t), x, cy + 1, 20, db, FG, W - x - 12);
+                text(site.isEmpty() ? "sıradaki iğne" : site, x, cy + 18, 11.5f, fm, MU, W - x - 12);
+            } else {
+                // dar: gün tek başına, saat ve bölge alt satırda
+                text(day, x, cy + 1, day.length() > 8 ? 15 : 17, db, FG, W - x - 10);
+                text(t + (site.isEmpty() ? "" : " · " + site), x, cy + 17, 11, fm, MU, W - x - 10);
+            }
             return;
         }
         hdr("igne", "Sıradaki iğne", IG, MU, null);
@@ -347,13 +353,14 @@ final class WidgetRenderer {
             return;
         }
         boolean btn = H >= 140;
-        float bottom = btn ? H - 54 : H - 12, s = Math.max(30, Math.min(52, bottom - 40)), cy = 36 + (bottom - 36) / 2;
-        float cw = (W - 32) / n;
+        float cw = (W - 32) / n, bottom = btn ? H - 54 : H - 12;
+        float s = Math.max(30, Math.min(n == 3 ? 42 : 52, bottom - 40)), cy = 36 + (bottom - 36) / 2;
+        float vs = n == 3 ? 15 : 17;
         for (int i = 0; i < n; i++) {
             float x = 16 + i * cw;
-            ringG(x + s / 2, cy, s, 6, f[i], col[i], gk[i]);
-            text(val[i], x + s + 9, cy - 1, 17, db, FG, cw - s - 14);
-            text(sub[i], x + s + 9, cy + 15, 11, fm, MU, cw - s - 14);
+            ringG(x + s / 2, cy, s, 5, f[i], col[i], gk[i]);
+            text(val[i], x + s + 8, cy - 1, vs, db, FG, cw - s - 10);
+            text(sub[i], x + s + 8, cy + 14, 10.5f, fm, MU, cw - s - 10);
         }
         if (btn) buttons(r, new String[][]{{"+ 250 ml su", "water/250"}, {"+ Protein", "protein"}}, new int[]{SU_S, PRO_S}, new int[]{SU, PRO});
     }
