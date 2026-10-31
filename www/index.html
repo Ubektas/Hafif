@@ -1455,7 +1455,7 @@ function coachCards(){
     if(sp>=14){const pw=(f.kg-l.kg)/f.kg/sp*7*100;if(pw>1.5){hizli=true;
       out.push({id:"hizli",c:"warn",ic:"uyari",k:"Hız",t:"Çok hızlı gidiyorsun.",
         b:`Son ${sp} günde ${kg(f.kg-l.kg)} kg verdin; haftada vücut ağırlığının yaklaşık %${p1c(pw)}'i. Bu hız genelde önerilenden fazla. Doktoruna söylemen ve proteini aksatmaman iyi olur.`,
-        a:[["Protein & su","go:besin"]]})}}}
+        a:[["Günlük","go:besin"]]})}}}
   // 3) dönüş: 3+ gündür hiç kayıt yok
   const la=lastActivity(),gap=la?diffDays(la,td):null;
   if(gap!=null&&gap>=3)out.push({id:"donus",c:"accent",ic:"yaprak",k:"Hoş geldin",t:"Kaldığın yerden devam.",
@@ -1518,7 +1518,7 @@ function coachCards(){
     const ch=mealPick(rem,0).L.map(m=>({k:"m:"+m.id,n:m.s,g:m.g}));
     const hic=!(r.p>0),R=Math.round(rem);
     out.push({id:"protein",c:"protein",ic:"yumurta",k:"Protein",t:hic?"Bugün protein kaydı yok.":hr>=20?`Günü tamamlamaya ${R} g kaldı.`:`Akşama ${R} g kaldı.${rem<=45?" Yetişir.":""}`,
-      b:hic?"Yediklerini eklemeyi unutmuş olabilirsin. Henüz yemediysen şunlardan biriyle başla:":rem>60?"Hepsine yetişmek zorunda değilsin; yarısı bile fark yaratır. Birkaç öneri:":"Bu akşam için birkaç öneri:",ch:ch.map(f=>["",f.n,f.g,f.k]),a:[["Protein & su","go:besin"]]})}
+      b:hic?"Yediklerini eklemeyi unutmuş olabilirsin. Henüz yemediysen şunlardan biriyle başla:":rem>60?"Hepsine yetişmek zorunda değilsin; yarısı bile fark yaratır. Birkaç öneri:":"Bu akşam için birkaç öneri:",ch:ch.map(f=>["",f.n,f.g,f.k]),a:[["Günlük","go:besin"]]})}
   // 9) su serisi (öğleden sonra, en az 3 gün)
   const wg=wGoal();let st=0;for(let i=1;i<=60;i++){if((dayRec(addDays(td,-i)).w||0)>=wg)st++;else break}
   if(st>=3&&hr>=12&&(r.w||0)<wg){let best=0,run=0;for(let i=60;i>st;i--){if((dayRec(addDays(td,-i)).w||0)>=wg){run++;best=Math.max(best,run)}else run=0}

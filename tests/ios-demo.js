@@ -25,3 +25,22 @@
     localStorage.setItem('doz-defteri', JSON.stringify(S));
   } catch (e) {}
 })();
+/* Ekran gezintisi: açılıştan 14 sn sonra başlar, 6 sn'de bir adım; test aynı aralıklarla ekran görüntüsü alır. */
+(function () {
+  var q = function (s) { return document.querySelector(s); };
+  var tap = function (s) { var e = q(s); if (e) e.click(); };
+  var steps = [
+    function () { tap('.tab[data-tab="besin"]'); },
+    function () { tap('.tab[data-tab="kilo"]'); },
+    function () { tap('.tab[data-tab="igne"]'); },
+    function () { tap('.tab[data-tab="ozet"]'); setTimeout(function () { tap('.tring[data-go="adim"]'); }, 700); },
+    function () { tap('#gearBtn'); },
+    function () { tap('[data-plus]'); },
+    function () { tap('#pwX'); tap('.tab[data-tab="ozet"]'); setTimeout(function () { tap('#navPlus'); }, 700); },
+    function () { tap('[data-x]'); var s = q('#sheetRoot'); if (s) s.innerHTML = ''; tap('.tab[data-tab="ozet"]'); },
+    function () { tap('.tab[data-tab="besin"]'); }
+  ];
+  window.addEventListener('load', function () {
+    steps.forEach(function (f, k) { setTimeout(function () { try { f(); window.scrollTo(0, 0); } catch (e) {} }, 14000 + 6000 * k); });
+  });
+})();

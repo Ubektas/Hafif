@@ -47,17 +47,15 @@ jobs:
           xcrun simctl status_bar "$DEV" override --time "09:41" --batteryState charged --batteryLevel 100 --cellularBars 4 --wifiBars 3 || true
           xcrun simctl install "$DEV" ios/App/build/Build/Products/Debug-iphonesimulator/App.app
           xcrun simctl launch "$DEV" com.ugurbektas.hafif
-          sleep 15; xcrun simctl io "$DEV" screenshot ios-sonuclari/01-ozet.png
-          i=2
-          for a in tab/besin tab/kilo tab/igne tab/adim tab/basari tab/ayar plus; do
-            xcrun simctl openurl "$DEV" "hafif://w/$a" || true
-            sleep 4; xcrun simctl io "$DEV" screenshot "ios-sonuclari/$(printf %02d $i)-$(echo $a | tr '/' '-').png"; i=$((i+1))
+          T0=$(date +%s)
+          at() { while [ $(date +%s) -lt $((T0 + $1)) ]; do sleep 0.2; done; }
+          at 12; xcrun simctl io "$DEV" screenshot ios-sonuclari/01-ozet.png
+          k=0
+          for n in gunluk kilo igneler adim ayarlar plus ekle koyu-ozet koyu-gunluk; do
+            [ "$n" = "koyu-ozet" ] && { at $((17 + 6 * k - 4)); xcrun simctl ui "$DEV" appearance dark; }
+            at $((17 + 6 * k)); xcrun simctl io "$DEV" screenshot "ios-sonuclari/$(printf %02d $((k + 2)))-$n.png"
+            k=$((k + 1))
           done
-          xcrun simctl openurl "$DEV" "hafif://w/tab/ozet" || true
-          xcrun simctl ui "$DEV" appearance dark
-          sleep 4; xcrun simctl io "$DEV" screenshot ios-sonuclari/20-koyu-ozet.png
-          xcrun simctl openurl "$DEV" "hafif://w/tab/besin" || true
-          sleep 4; xcrun simctl io "$DEV" screenshot ios-sonuclari/21-koyu-gunluk.png
           xcrun simctl spawn "$DEV" log show --last 4m --predicate 'process == "App"' --style compact 2>/dev/null | tail -200 > ios-sonuclari/log.txt || true
       - name: Sonuçları ios-sonuclari dalına kaydet
         if: always()
