@@ -6,7 +6,7 @@ Hafif: Kilo ve İğne Takibi
 ## Kısa açıklama (en fazla 80 karakter)
 Kilo, haftalık iğne, protein ve su takibi. Hesap yok, veri telefonunda.
 
-## Tam açıklama (en fazla 4000 karakter · 2.0, 3949 karakter)
+## Tam açıklama (en fazla 4000 karakter · 2.0, 3970 karakter)
 Hafif, kilo verme yolculuğunu sade ve motive edici bir şekilde takip etmen için tasarlandı. Kilo takibi, haftalık iğne takibi, protein ve su, takviyeler, vücut ölçüleri ve adımların tek bir yerde; ilerlemeni anlaşılır grafiklerle görürsün. Hesap yok, veriler yalnızca telefonunda.
 
 HEPSİ TEK EKRANDA
@@ -65,11 +65,11 @@ HATIRLATICILAR
 • Bildirimden tek dokunuşla kaydet: "+250 ml", "Hepsini aldım" gibi
 
 ADIM SAYAR
-• Health Connect ile günlük ve saatlik adımlarını gör; hedef, mesafe, kalori ve yürüyüş süresi
+• Health Connect'ten ya da telefonunun kendi sayacından günlük ve saatlik adımların; hedef, mesafe, kalori, yürüyüş
 
 ROZETLER, WIDGET'LAR, KOYU TEMA
 • Ara hedeflere ulaştıkça rozet kazan; ilerlemeni şık bir görselle paylaş
-• 10 ana ekran widget'ı
+• 11 ana ekran widget'ı
 • Telefonunun ayarını izleyen koyu tema
 
 VERİLERİN SENİN
