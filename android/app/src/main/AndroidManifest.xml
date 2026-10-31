@@ -30,6 +30,9 @@
         </activity>
 
         <!-- Ana ekran widget'ları (Hafif Plus) -->
+        <receiver android:name=".adim.AdimAlarm" android:exported="false">
+            <intent-filter><action android:name="android.intent.action.BOOT_COMPLETED" /></intent-filter>
+        </receiver>
         <receiver android:name=".widget.HafifWidgets$Dongu" android:exported="false" android:label="@string/w_name_1">
             <intent-filter><action android:name="android.appwidget.action.APPWIDGET_UPDATE" /></intent-filter>
             <meta-data android:name="android.appwidget.provider" android:resource="@xml/hafif_widget_1" />
@@ -88,6 +91,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <!-- Health Connect'e adım gelmeyen telefonlarda yedek: telefonun kendi adım sayacı (kullanıcı açarsa istenir). -->
     <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <!-- Hatırlatıcılar esnek zamanlıdır; kesin alarm izni gerekmez. -->
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" tools:node="remove" />
     <!-- Health Connect: yalnızca adım, kilo ve yağ oranı okunur. Eklentinin tanımladığı diğer izinler kaldırılır. -->

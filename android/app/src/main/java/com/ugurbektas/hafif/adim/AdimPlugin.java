@@ -23,7 +23,7 @@ public class AdimPlugin extends Plugin {
 
     @Override
     public void load() {
-        if (AdimSayar.acik(getContext()) && izinVar()) AdimWorker.kur(getContext());
+        if (AdimSayar.acik(getContext()) && izinVar()) AdimAlarm.kur(getContext());
     }
 
     @PluginMethod
@@ -50,14 +50,14 @@ public class AdimPlugin extends Plugin {
 
     private void ac(PluginCall call) {
         AdimSayar.acikYap(getContext(), true);
-        AdimWorker.kur(getContext());
+        AdimAlarm.kur(getContext());
         getBridge().execute(() -> { AdimSayar.ornekle(getContext(), 3000); call.resolve(); });
     }
 
     @PluginMethod
     public void durdur(PluginCall call) {
         AdimSayar.acikYap(getContext(), false);
-        AdimWorker.kaldir(getContext());
+        AdimAlarm.kaldir(getContext());
         call.resolve();
     }
 
