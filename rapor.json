@@ -1,0 +1,315 @@
+{
+  "adimlar": [
+    {
+      "ad": "İlk kurulum ekranı açıldı",
+      "sonuc": true
+    },
+    {
+      "ad": "Tıbbi uyarı onaylanmadan başlanamıyor",
+      "sonuc": true
+    },
+    {
+      "ad": "İlk kurulum tamamlandı",
+      "sonuc": true
+    },
+    {
+      "ad": "Adım kartı görünüyor",
+      "sonuc": true,
+      "detay": "{\"platform\":\"android\",\"available\":true}"
+    },
+    {
+      "ad": "Telefon adım sayacı eklentisi yanıt veriyor",
+      "sonuc": true,
+      "detay": "{\"sensor\":false,\"izin\":false,\"acik\":false}"
+    },
+    {
+      "ad": "Health Connect izin penceresi açıldı",
+      "sonuc": true,
+      "detay": "mCurrentFocus=Window{3c3948b u0 com.google.android.permissioncontroller/com.android.permissioncontroller.permission.ui.GrantPermissionsActivity}"
+    },
+    {
+      "ad": "Hatırlatıcılar kuruldu",
+      "sonuc": true,
+      "detay": "4 bekleyen bildirim"
+    },
+    {
+      "ad": "Bildirim telefonda göründü",
+      "sonuc": true
+    },
+    {
+      "ad": "Uygulama açıldı (Capacitor)",
+      "sonuc": true,
+      "detay": "{\"native\":true,\"eklentiler\":[\"App\",\"HafifWidget\",\"InAppReview\",\"SystemBars\",\"LocalNotifications\",\"Health\",\"HafifAdim\",\"CapacitorCookies\",\"WebView\",\"Filesystem\",\"Share\",\"CapacitorHttp\"],\"fontlar\":[\"Outfit:true\",\"Figtree:true\"],\"ekran\":[412,842],\"navAlt\":842,\"padUst\":\"0px\",\"padAlt\":\"0px\",\"senkron\":\"Bu cihazda kayıtlı\"}"
+    },
+    {
+      "ad": "Tüm sekmeler açıldı",
+      "sonuc": true,
+      "detay": ""
+    },
+    {
+      "ad": "Kayıt eklendi",
+      "sonuc": true,
+      "detay": "{\"tarti\":1,\"igne\":1,\"gun\":1}"
+    },
+    {
+      "ad": "Uygulama kapatılıp açılınca veriler duruyor",
+      "sonuc": true,
+      "detay": "{\"tarti\":1,\"igne\":1}"
+    },
+    {
+      "ad": "Tartı düzenlendi",
+      "sonuc": true,
+      "detay": "Tartıyı düzenle {\"tarti\":1,\"kg\":87.9}"
+    },
+    {
+      "ad": "Veri dosyası yazıldı",
+      "sonuc": true,
+      "detay": "{\"app\":\"Hafif\",\"version\":1,\"saved\":\"2026-10-31T18:44:11.620Z\",\"data\":{\"profile\":{\"drug\":null,\"startWeight\":88.4,\"goalWei"
+    },
+    {
+      "ad": "Web depolaması silinince veriler dosyadan geri yüklendi",
+      "sonuc": true,
+      "detay": "{\"tarti\":1,\"igne\":1,\"kurulum\":false}"
+    },
+    {
+      "ad": "İştah ve yemek düşüncesi kaydedildi",
+      "sonuc": true,
+      "detay": "{\"i\":2,\"f\":0}"
+    },
+    {
+      "ad": "Yan etki kaydedildi",
+      "sonuc": true,
+      "detay": "{\"2026-10-31\":{\"bulanti\":2}}"
+    },
+    {
+      "ad": "Kalem stoğu iğneyle azaldı",
+      "sonuc": true,
+      "detay": "kalan 3"
+    },
+    {
+      "ad": "Doz planı kaydedildi",
+      "sonuc": true,
+      "detay": "{\"steps\":[{\"d\":\"2,5\",\"w\":1},{\"d\":\"5\",\"w\":4},{\"d\":\"7,5\",\"w\":0}],\"rem\":true}"
+    },
+    {
+      "ad": "Egzersiz + panelinden kaydedildi",
+      "sonuc": true,
+      "detay": "{\"2026-10-31\":{\"m\":null}}"
+    },
+    {
+      "ad": "Vücut ölçüsü kaydedildi",
+      "sonuc": true,
+      "detay": "[{\"id\":\"bdbotlkqmvwr37xc\",\"date\":\"2026-10-31\",\"bel\":96.5,\"kalca\":110}]"
+    },
+    {
+      "ad": "Karanlık tema açıldı",
+      "sonuc": true,
+      "detay": "dark"
+    },
+    {
+      "ad": "Geri tuşu açık pencereyi kapatıyor",
+      "sonuc": true
+    },
+    {
+      "ad": "Geri tuşu Özet sekmesine dönüyor",
+      "sonuc": true,
+      "detay": "ozet"
+    },
+    {
+      "ad": "Özet'te geri tuşu uygulamadan çıkıyor",
+      "sonuc": true,
+      "detay": "mCurrentFocus=Window{830c3a4 u0 com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLauncherActivity}"
+    },
+    {
+      "ad": "Yedek dosyası → paylaş penceresi",
+      "sonuc": true,
+      "detay": "mCurrentFocus=Window{a1d2c9a u0 com.android.intentresolver/com.android.intentresolver.ChooserActivityLauncher}\n  mFocusedApp=ActivityRecord{3bd3500 u0 com.android.intentresolver/.ChooserActivityLauncher t12}"
+    },
+    {
+      "ad": "Yedek dosyası hata mesajı yok",
+      "sonuc": true,
+      "detay": ""
+    },
+    {
+      "ad": "Excel dosyası hata mesajı yok",
+      "sonuc": true,
+      "detay": ""
+    },
+    {
+      "ad": "Google Play faturalandırma eklentisi yüklendi",
+      "sonuc": true
+    },
+    {
+      "ad": "Ücretsiz dönemde doktor raporu (PDF) → paylaş penceresi",
+      "sonuc": true,
+      "detay": "mCurrentFocus=Window{e7bc23f u0 com.android.intentresolver/com.android.intentresolver.ChooserActivityLauncher}"
+    },
+    {
+      "ad": "Ücretsiz dönem bitince ödeme ekranı bir kez açıldı",
+      "sonuc": true
+    },
+    {
+      "ad": "Rapor (Plus) → ödeme ekranı açıldı",
+      "sonuc": true,
+      "detay": "{\"acik\":true,\"planlar\":3,\"baslik\":\"Kilo vermeninen hafif yolu.\"}"
+    },
+    {
+      "ad": "Geri tuşu ödeme ekranını kapatıyor",
+      "sonuc": true
+    },
+    {
+      "ad": "Plus grafikleri kilitli görünüyor",
+      "sonuc": true
+    },
+    {
+      "ad": "12 widget sağlayıcısı kayıtlı",
+      "sonuc": true,
+      "detay": "12 sağlayıcı"
+    },
+    {
+      "ad": "Widget veri dosyası yazıldı",
+      "sonuc": true,
+      "detay": "{\"v\":1,\"gen\":1793472340897,\"date\":\"2026-10-31\",\"shots\":true,\"plusUntil\":1578441600000,\"cyc\":{\"t0\":17"
+    },
+    {
+      "ad": "Widget çizimleri üretildi",
+      "sonuc": true,
+      "detay": "1-170x170.png,1-360x170.png,1-170x96.png,1-360x110.png,1-170x74.png,2-170x80.png,2-360x80.png,2-360x170.png,3-170x170.png,3-360x170.png,3-170x96.png,3-360x110.png,3-170x74.png,4-170x80.png,4-360x80.png,4-360x170.png,5-170x170.png,5-360x170.png,5-170x96.png,5-360x110.png,5-170x74.png,6-170x170.png,6-360x170.png,6-170x96.png,6-360x110.png,6-170x74.png,7-170x170.png,7-360x170.png,7-170x96.png,7-360x110.png,7-170x74.png,8-170x170.png,8-360x170.png,8-170x96.png,8-360x110.png,8-170x74.png,9-170x170.png,9-360x170.png,9-170x96.png,9-360x110.png,9-170x74.png,10-170x170.png,10-360x170.png,10-170x96.png,10-360x110.png,10-170x74.png,11-170x170.png,11-360x170.png,11-170x96.png,11-360x110.png,11-170x74.png,12-360x360.png,12-300x300.png,1-koyu-kucuk.png,1-koyu.png,2-koyu-kucuk.png,2-koyu.png,3-koyu-kucuk.png,3-koyu.png,4-koyu-kucuk.png,4-koyu.png,5-koyu-kucuk.png,5-koyu.png,6-koyu-kucuk.png,6-koyu.png,7-koyu-kucuk.png,7-koyu.png,8-koyu-kucuk.png,8-koyu.png,9-koyu-kucuk.png,9-koyu.png,10-koyu-kucuk.png,10-koyu.png,11-koyu-kucuk.png,11-koyu.png,12-koyu.png,kilitli.png"
+    },
+    {
+      "ad": "Widget bağlantısı (+250 ml su) çalıştı",
+      "sonuc": true,
+      "detay": "1750 → 2000"
+    },
+    {
+      "ad": "Ne yesem? widget bağlantısı proteini ekledi",
+      "sonuc": true,
+      "detay": "74 → 83"
+    },
+    {
+      "ad": "+ paneli → su penceresi → 500 ml eklendi",
+      "sonuc": true,
+      "detay": "2000 → 2500"
+    },
+    {
+      "ad": "Kas kütlesi kaydedildi",
+      "sonuc": true,
+      "detay": "[{\"id\":\"dgov1bj1mvwr59sy\",\"date\":\"2026-10-31\",\"kg\":88.2,\"fat\":null,\"mus\":31.4,\"note\":null,\"t\":1793472375778}]"
+    },
+    {
+      "ad": "Takviye için ikinci hatırlatma kuruldu",
+      "sonuc": true,
+      "detay": "iğne ikinci hatırlatması da var · 2034,2550,2032,2030,2504,2548,2502,2546,2028,2544,2026,2542,2024,2508,2506,6000,9998,2044,2042,2040,2514,2512,2038,2510,2554,2036,2552,5302,2518,2516"
+    },
+    {
+      "ad": "Adım paylaşım kartı çizildi",
+      "sonuc": true,
+      "detay": "637514 bayt"
+    },
+    {
+      "ad": "Fotoğraf seçici açıldı (izin istemeden)",
+      "sonuc": true,
+      "detay": "mCurrentFocus=Window{f2ec25b u0 com.google.android.providers.media.module/com.android.providers.media.photopicker.PhotoPickerGetContentActivity}"
+    },
+    {
+      "ad": "Hafif ekibine gönder → e-posta seçici açıldı",
+      "sonuc": true,
+      "detay": "mCurrentFocus=Window{d2229de u0 android/com.android.internal.app.ResolverActivity}"
+    },
+    {
+      "ad": "Fotoğraf ekle → seçici açıldı (izin istemeden)",
+      "sonuc": true,
+      "detay": "mCurrentFocus=Window{ac067d2 u0 com.google.android.providers.media.module/com.android.providers.media.photopicker.PhotoPickerGetContentActivity}"
+    },
+    {
+      "ad": "İlerleme fotoğrafı kaydedildi ve kartta göründü",
+      "sonuc": true,
+      "detay": "{\"n\":1,\"im\":[600]}"
+    },
+    {
+      "ad": "Değerlendirme penceresi çağrısı uygulamayı çökertmedi",
+      "sonuc": true,
+      "detay": "ret: Request review failed · pid 6121"
+    }
+  ],
+  "hatalar": [],
+  "konsol": [
+    "error: Failed to load resource: the server responded with a status of 404 (Not Found)",
+    "error: {message: 'readFile' failed because file at '/data/user/0/co…ktas.hafif/files/hafif-veri.json' does not exist., code: OS-PLUG-FILE-0008}",
+    "error: Failed to load resource: the server responded with a status of 404 (Not Found)",
+    "error: Failed to load resource: the server responded with a status of 404 (Not Found)",
+    "error: Failed to load resource: the server responded with a status of 404 (Not Found)",
+    "error: Failed to load resource: the server responded with a status of 404 (Not Found)",
+    "error: {message: Share canceled}",
+    "error: {message: Share canceled}",
+    "error: {message: Share canceled}",
+    "error: {message: android.health.connect.HealthConnectException: jav…lass android.health.connect.datatypes.StepsRecord, code: permission-denied}",
+    "error: {message: android.health.connect.HealthConnectException: jav…lass android.health.connect.datatypes.StepsRecord, code: permission-denied}",
+    "error: {message: android.health.connect.HealthConnectException: jav…ss android.health.connect.datatypes.BodyFatRecord}",
+    "error: {message: android.health.connect.HealthConnectException: jav…ass android.health.connect.datatypes.WeightRecord}",
+    "error: {message: android.health.connect.HealthConnectException: jav…lass android.health.connect.datatypes.StepsRecord, code: permission-denied}",
+    "error: {message: android.health.connect.HealthConnectException: jav…lass android.health.connect.datatypes.StepsRecord, code: permission-denied}",
+    "error: {message: android.health.connect.HealthConnectException: jav…ss android.health.connect.datatypes.BodyFatRecord}",
+    "error: {message: android.health.connect.HealthConnectException: jav…ass android.health.connect.datatypes.WeightRecord}",
+    "error: {message: android.health.connect.HealthConnectException: jav…lass android.health.connect.datatypes.StepsRecord, code: permission-denied}",
+    "error: {message: android.health.connect.HealthConnectException: jav…lass android.health.connect.datatypes.StepsRecord, code: permission-denied}",
+    "error: {message: android.health.connect.HealthConnectException: jav…ss android.health.connect.datatypes.BodyFatRecord}",
+    "error: {message: android.health.connect.HealthConnectException: jav…ass android.health.connect.datatypes.WeightRecord}",
+    "error: {message: android.health.connect.HealthConnectException: jav…lass android.health.connect.datatypes.StepsRecord, code: permission-denied}",
+    "error: {message: android.health.connect.HealthConnectException: jav…lass android.health.connect.datatypes.StepsRecord, code: permission-denied}",
+    "error: {message: android.health.connect.HealthConnectException: jav…ss android.health.connect.datatypes.BodyFatRecord}",
+    "error: {message: android.health.connect.HealthConnectException: jav…ass android.health.connect.datatypes.WeightRecord}",
+    "error: {message: android.health.connect.HealthConnectException: jav…lass android.health.connect.datatypes.StepsRecord, code: permission-denied}",
+    "error: {message: android.health.connect.HealthConnectException: jav…lass android.health.connect.datatypes.StepsRecord, code: permission-denied}",
+    "error: {message: android.health.connect.HealthConnectException: jav…ass android.health.connect.datatypes.WeightRecord}",
+    "error: {message: android.health.connect.HealthConnectException: jav…ss android.health.connect.datatypes.BodyFatRecord}",
+    "error: {message: android.health.connect.HealthConnectException: jav…lass android.health.connect.datatypes.StepsRecord, code: permission-denied}",
+    "error: {message: android.health.connect.HealthConnectException: jav…lass android.health.connect.datatypes.StepsRecord, code: permission-denied}",
+    "error: {message: android.health.connect.HealthConnectException: jav…ss android.health.connect.datatypes.BodyFatRecord}",
+    "error: {message: android.health.connect.HealthConnectException: jav…ass android.health.connect.datatypes.WeightRecord}",
+    "error: {message: android.health.connect.HealthConnectException: jav…lass android.health.connect.datatypes.StepsRecord, code: permission-denied}",
+    "error: {message: android.health.connect.HealthConnectException: jav…lass android.health.connect.datatypes.StepsRecord, code: permission-denied}",
+    "error: {message: android.health.connect.HealthConnectException: jav…ass android.health.connect.datatypes.WeightRecord}",
+    "error: {message: android.health.connect.HealthConnectException: jav…ss android.health.connect.datatypes.BodyFatRecord}",
+    "error: {message: android.health.connect.HealthConnectException: jav…lass android.health.connect.datatypes.StepsRecord, code: permission-denied}",
+    "error: {message: android.health.connect.HealthConnectException: jav…lass android.health.connect.datatypes.StepsRecord, code: permission-denied}",
+    "error: {message: android.health.connect.HealthConnectException: jav…ass android.health.connect.datatypes.WeightRecord}",
+    "error: {message: android.health.connect.HealthConnectException: jav…ss android.health.connect.datatypes.BodyFatRecord}",
+    "error: {message: android.health.connect.HealthConnectException: jav…lass android.health.connect.datatypes.StepsRecord, code: permission-denied}",
+    "error: {message: android.health.connect.HealthConnectException: jav…lass android.health.connect.datatypes.StepsRecord, code: permission-denied}",
+    "error: {message: android.health.connect.HealthConnectException: jav…ass android.health.connect.datatypes.WeightRecord}",
+    "error: {message: android.health.connect.HealthConnectException: jav…ss android.health.connect.datatypes.BodyFatRecord}",
+    "error: {message: android.health.connect.HealthConnectException: jav…lass android.health.connect.datatypes.StepsRecord, code: permission-denied}",
+    "error: {message: android.health.connect.HealthConnectException: jav…lass android.health.connect.datatypes.StepsRecord, code: permission-denied}",
+    "error: {message: android.health.connect.HealthConnectException: jav…ass android.health.connect.datatypes.WeightRecord}",
+    "error: {message: android.health.connect.HealthConnectException: jav…ss android.health.connect.datatypes.BodyFatRecord}",
+    "error: {message: Request review failed}",
+    "error: {message: Request review task Failed}",
+    "warning: {message: Request review task Failed}"
+  ],
+  "fps": {
+    "ozet": 61,
+    "besin": 58,
+    "kilo": 61,
+    "igne": 60,
+    "besin_bosta": 61
+  },
+  "sekme_besin": {
+    "sonuc": "Günlük",
+    "ms": 181
+  },
+  "sekme_kilo": {
+    "sonuc": "Kilo",
+    "ms": 13
+  },
+  "sekme_igne": {
+    "sonuc": "İğneler",
+    "ms": 9
+  },
+  "sekme_ozet": {
+    "sonuc": "Hafif",
+    "ms": 11
+  },
+  "durum_cubugu_koyu": "mLastStatusBarAppearanceRegions=\n      AppearanceRegion{ bounds=[0,0][1080,2400]}",
+  "sonuc": "BAŞARILI"
+}
