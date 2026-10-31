@@ -14,7 +14,7 @@ Yeni: Ne yesem?, doz planın, fotoğraflar ve koruma dönemi.
 • Doz planı: artış haftasını, yeni kalemi hatırlatır
 • Kas koruma: haftalık direnç egzersizi
 • İştah kaydı ve iğne gününe göre örüntü
-• Tartı yerinde sayınca yol gösteren kart
+• Adımlar telefonun kendi sayacıyla da sayılabilir
 • Hedefe ulaşınca koruma dönemi
 • Uygulama küçüldü, hatalar düzeltildi
 </tr-TR>
