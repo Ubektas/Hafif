@@ -25,7 +25,7 @@
     localStorage.setItem('doz-defteri', JSON.stringify(S));
   } catch (e) {}
 })();
-/* Ekran gezintisi: açılıştan 14 sn sonra başlar, 6 sn'de bir adım; test aynı aralıklarla ekran görüntüsü alır. */
+/* Ekran gezintisi: açılıştan 17,5 sn sonra başlar, 6 sn'de bir adım; test aynı aralıklarla ekran görüntüsü alır. */
 (function () {
   var q = function (s) { return document.querySelector(s); };
   var tap = function (s) { var e = q(s); if (e) e.click(); };
@@ -41,6 +41,6 @@
     function () { tap('.tab[data-tab="besin"]'); }
   ];
   window.addEventListener('load', function () {
-    steps.forEach(function (f, k) { setTimeout(function () { try { f(); window.scrollTo(0, 0); } catch (e) {} }, 14000 + 6000 * k); });
+    steps.forEach(function (f, k) { setTimeout(function () { try { f(); window.scrollTo(0, 0); } catch (e) {} }, 17500 + 6000 * k); });
   });
 })();
