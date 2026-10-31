@@ -47,6 +47,7 @@ Bu dosya, Hafif üzerinde çalışan yeni bir Claude oturumunun kaldığı yerde
 - **31 Ekim · 2.0.1 devam:** + menüsü 3×3, Noto Emoji (tek renk) ikonları gömülü SVG (`NQ`), 9. kutu Takviye. Widget'larda küçültülünce üst üste binme düzeltildi (`WidgetRenderer.low()` = H<120 için `compact()` düzeni; geniş alçakta sığmayan parçalar gizlenir). Emülatör widget önizlemeleri artık 170x96, 170x74, 360x110 boylarını da üretir. Test 48/48. Açık soru: widget emojileri hâlâ telefonun renkli emojisi; tek renkli çizime geçirilsin mi (kullanıcıya soruldu).
 
 ## Sıradaki işler (toplantı 2 kararları ve açık konular)
+0. **Kapalı test sayacı:** 31 Ekim'de 12 testçi kayıtlı, 14 gün sayacı başladı (1. gün). Testçiler çıkmazsa ~14 Kasım'da "Üretime başvur" açılır. `hafif_plus` henüz kurulu değil: "Google Play ile para kazanın" sayfası "kurulumu kontrol panelinde tamamlayın" diyor; Kontrol paneli → Uygulamanızı ayarlayın görevleri ve ödeme profili kontrol edilecek, sonra abonelik `magaza/abonelik-rehberi.md`'ye göre kurulacak.
 1. **Üretimden önce:** Play'de görünen ev adresi ve geliştirici adı ("Hafif" olmalı), veri güvenliği formu (kullanıcı yapar).
 2. **2.0.1:** gezinme, widget seti, Pano ve e-posta düzeltmesi `surum-2.0`'da hazır (test 48/48); kullanıcı derlemeyi şimdilik istemedi. "2.0'da yeni" tanıtım sayfası iptal (kullanıcı kararı: uygulama henüz yayında değil, eski kullanıcı yok).
 3. Yorum yanıt şablonları; mağaza görseli 6'daki Ne yesem? widget'ını akşam saatine göre yeniden çizdirmek (isteğe bağlı).
