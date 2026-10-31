@@ -19,6 +19,15 @@ jobs:
           node-version: 22
       - run: npm ci
       - run: npx cap sync ios
+      - name: Test verisi (yalnızca bu derlemede)
+        run: |
+          cp tests/ios-demo.js ios/App/App/public/ios-demo.js
+          python3 - <<'PY'
+          p='ios/App/App/public/index.html'
+          s=open(p,encoding='utf8').read()
+          s=s.replace('<meta charset=utf8>','<meta charset=utf8><script src="ios-demo.js"></script>',1)
+          open(p,'w',encoding='utf8').write(s)
+          PY
       - name: CocoaPods
         run: cd ios/App && pod install
       - name: Simülatör için derle (imzasız)
@@ -31,17 +40,25 @@ jobs:
       - name: Simülatörde aç, ekran görüntüleri al
         run: |
           mkdir -p ios-sonuclari
-          DEV=$(xcrun simctl list devices available | grep -E "iPhone 1[5-7]( Pro)? \(" | head -1 | grep -oE '[0-9A-F-]{36}')
-          echo "Cihaz: $DEV"; xcrun simctl list devices available | grep -E "iPhone 1[5-7]( Pro)? \(" | head -1 > ios-sonuclari/cihaz.txt
-          xcrun simctl boot "$DEV"
-          xcrun simctl bootstatus "$DEV" -b
+          LINE=$(xcrun simctl list devices available | grep -E "iPhone 1[6-7] Pro Max \(" | head -1)
+          [ -z "$LINE" ] && LINE=$(xcrun simctl list devices available | grep -E "iPhone 1[5-7]( Pro)?( Max)? \(" | head -1)
+          DEV=$(echo "$LINE" | grep -oE '[0-9A-F-]{36}'); echo "$LINE" > ios-sonuclari/cihaz.txt; echo "Cihaz: $LINE"
+          xcrun simctl boot "$DEV"; xcrun simctl bootstatus "$DEV" -b
+          xcrun simctl status_bar "$DEV" override --time "09:41" --batteryState charged --batteryLevel 100 --cellularBars 4 --wifiBars 3 || true
           xcrun simctl install "$DEV" ios/App/build/Build/Products/Debug-iphonesimulator/App.app
           xcrun simctl launch "$DEV" com.ugurbektas.hafif
-          sleep 8;  xcrun simctl io "$DEV" screenshot ios-sonuclari/01-acilis.png
-          sleep 12; xcrun simctl io "$DEV" screenshot ios-sonuclari/02-acilis-20sn.png
+          sleep 15; xcrun simctl io "$DEV" screenshot ios-sonuclari/01-ozet.png
+          i=2
+          for a in tab/besin tab/kilo tab/igne tab/adim tab/basari tab/ayar plus; do
+            xcrun simctl openurl "$DEV" "hafif://w/$a" || true
+            sleep 4; xcrun simctl io "$DEV" screenshot "ios-sonuclari/$(printf %02d $i)-$(echo $a | tr '/' '-').png"; i=$((i+1))
+          done
+          xcrun simctl openurl "$DEV" "hafif://w/tab/ozet" || true
           xcrun simctl ui "$DEV" appearance dark
-          sleep 4;  xcrun simctl io "$DEV" screenshot ios-sonuclari/03-koyu.png
-          xcrun simctl spawn "$DEV" log show --last 2m --predicate 'process == "App"' --style compact 2>/dev/null | tail -150 > ios-sonuclari/log.txt || true
+          sleep 4; xcrun simctl io "$DEV" screenshot ios-sonuclari/20-koyu-ozet.png
+          xcrun simctl openurl "$DEV" "hafif://w/tab/besin" || true
+          sleep 4; xcrun simctl io "$DEV" screenshot ios-sonuclari/21-koyu-gunluk.png
+          xcrun simctl spawn "$DEV" log show --last 4m --predicate 'process == "App"' --style compact 2>/dev/null | tail -200 > ios-sonuclari/log.txt || true
       - name: Sonuçları ios-sonuclari dalına kaydet
         if: always()
         run: |
