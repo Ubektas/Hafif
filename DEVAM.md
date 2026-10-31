@@ -9,7 +9,7 @@ Bu dosya, Hafif üzerinde çalışan yeni bir Claude oturumunun kaldığı yerde
 - Gizlilik sayfası ayrı repo: `Ubektas/hafif-gizlilik` (main yayında, 2.0 metni dahil).
 
 ## Kaynak dosya (önemli)
-- Uygulamanın asıl kaynağı tek bir HTML dosyası: Claude artifact'i **https://claude.ai/artifact/HLc1A77LCcKJpmgXxitBdw** (sürüm 111 en güncel hâl).
+- Uygulamanın asıl kaynağı tek bir HTML dosyası: Claude artifact'i **https://claude.ai/artifact/HLc1A77LCcKJpmgXxitBdw** (sürüm 112 en güncel hâl).
 - Bu dosya kişisel test verileri (Tracky, Zepp, takviye listesi) içerir; **repoya konmaz**. Yeni oturumda Artifact aracıyla `action: "read"` ile indirilir, örneğin `/home/user/hafif-kaynak/artifact.html` olarak kaydedilir.
 - Android'e giden sürüm bundan üretilir; araç kişisel verileri ayıklar:
   `python3 araclar/android-uyarla.py <artifact.html> www/index.html`
@@ -41,9 +41,12 @@ Bu dosya, Hafif üzerinde çalışan yeni bir Claude oturumunun kaldığı yerde
 - **31 Ekim · telefonun adım sayacı (2.0.1 adayı, `surum-2.0`'da, test 48/48):** Yeni Samsung telefonda Samsung Health Health Connect'e hiç yazmadı (izinler açık olduğu hâlde), Hafif 0 adım gösterdi. Çözüm: Health Connect'te adım yoksa adım ekranında "Health Connect'e adım gelmiyor" kartı → "Telefonun sayacıyla say" (ACTIVITY_RECOGNITION izni). Yerel eklenti `android/.../adim/` (HafifAdim): donanım sayacı TYPE_STEP_COUNTER, AlarmManager ile 15 dk'da bir okuma, açılışta yeniden kurulum (BOOT_COMPLETED), günlük ve saatlik adımlar SharedPreferences'ta. Health Connect'te o gün adım varsa her zaman Health Connect kullanılır. Ayarlar'da "Telefonun adım sayacı · Aç/kapat". WorkManager denendi, ListenableFuture derleme hatası verdiği için bırakıldı. Kullanıcıya üçüncü taraf uygulama önerilmez (kullanıcı kararı).
   Açık: gizlilik metnine telefon sayacı cümlesi, veri güvenliği formu kontrolü, gerçek telefonda deneme (emülatörde sensör yok).
 
+- **31 Ekim · 2.0.0 Play'de (kod 19, kapalı test Alpha).** Sağlık beyanı formunda yalnızca Aktivite ve fitness + Beslenme ve kilo yönetimi; ACTIVITY_RECOGNITION için açıklama metni girildi. Mağaza metni `magaza/aciklama.md` (3970 karakter, 11 widget, telefon sayacı). Video açılışı yenilendi (logo yerine başlık + emojiler, `magaza/kaynak/video/sahne-2.html`). YouTube logosu 800×800 (`assets/icon-only.png`'den).
+- **31 Ekim · 2.0.1 gezinme (`surum-2.0`'da, test 48/48, henüz derlenmedi):** Alt çubuk `Özet · Günlük · + · Kilo · İğneler`. Protein & Su ile Takviye "Günlük" sekmesinde birleşti (iç ad hâlâ `besin`): üstte protein/su/takviye kutuları (`data-gjump`, dokununca bölüme kayar), her zaman görünen Ne yesem? kartı (hedefe <10 g kalınca da), protein+su kartı (`#todayCard`, su `#secSu`), takviyeler (`#secSupp`, `suppBody()`). `tab="takviye"` ve `"besin:su"` gibi adresler render() başında Günlük'ün ilgili bölümüne çevrilir (bildirim, widget, Özet halkaları). Yüzen + kalktı, ortada `#navPlus`. Gezinme ikonları Noto Emoji (tek renk, 400/600 ağırlık SVG yolu olarak gömülü); Kilo için aynı tarzda tartı çizildi. Kullanıcı kararı: ad "Günlük", ikon Yön 3. Maket: https://claude.ai/artifact/VaQL7TNobbqwu7VwwR5Nc1
+
 ## Sıradaki işler (toplantı 2 kararları ve açık konular)
 1. **Üretimden önce:** Play'de görünen ev adresi ve geliştirici adı ("Hafif" olmalı), veri güvenliği formu (kullanıcı yapar).
-2. **2.0.1:** "2.0'da yeni" tanıtım sayfası (bir kez), Ne yesem?'i Protein & Su'da protein kartının hemen altına taşımak.
+2. **2.0.1:** "2.0'da yeni" tanıtım sayfası (bir kez; yeni Günlük sekmesini ve ortadaki +'yı da anlatmalı). Ne yesem? taşıma işi yapıldı.
 3. Yorum yanıt şablonları; mağaza görseli 6'daki Ne yesem? widget'ını akşam saatine göre yeniden çizdirmek (isteğe bağlı).
 4. **2.1:** içerik katmanında emoji (+ paneli vb.), yazı boyutu ayarı (en fazla %115), rakamsız haftalık paylaşım kartı, bildirimleri koçun sesiyle yeniden yazmak.
 5. **Şubat 2027'den önce:** Ramazan modu.
