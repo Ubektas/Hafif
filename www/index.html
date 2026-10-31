@@ -1,5 +1,4 @@
-<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}.plcard{padding:12px 16px!important;gap:12px!important;align-items:center}.plcard .st{width:34px!important;height:34px!important;font-size:16px!important;border-radius:11px!important}.plcard b{font-size:15.5px!important}.plcard small{font-size:12.5px!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block}.plcard>span:nth-child(2){min-width:0}
-</style></head><body>
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <title>Hafif</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="stylesheet" href="fonts/fonts.css">
@@ -861,6 +860,7 @@ button.mscount i{font-style:normal;font-size:22px;color:var(--muted);margin-left
 .stbig b{font:700 40px var(--f-display);letter-spacing:-.04em;color:var(--head)}.stbig span{font-size:12.5px;color:var(--muted)}
 .pvtag{font:600 11px var(--f-body);letter-spacing:.06em;text-transform:uppercase;color:var(--step);background:var(--step-soft);border-radius:99px;padding:3px 9px}
 .stsrc{display:flex;align-items:center;gap:10px;font-size:12.5px;color:var(--muted)}
+.pscard{display:flex;flex-direction:column;gap:10px;box-shadow:inset 0 0 0 1.5px var(--step-ring),var(--shadow)}.pscard .linkbtn{align-self:center}
 .stcta{display:flex;align-items:center;gap:14px;padding:14px 16px;cursor:pointer;text-align:left;font:inherit;color:inherit;width:100%;border:0}
 .stcta .mi{width:48px;height:48px;border-radius:15px;background:var(--step-soft);color:var(--step);display:grid;place-items:center;flex:none}.stcta .mi svg{width:26px;height:26px}
 .stcta b{font:700 15.5px var(--f-display);color:var(--fg)}.stcta small{display:block;font-size:12.5px;color:var(--muted)}
@@ -1105,6 +1105,9 @@ const shotChip=s=>SHOTS()?"<span><b>"+s.length+"</b> iğne</span>":"";
 /* Health Connect (yalnızca Android uygulamasında; Claude'da HP() boş döner) */
 const HP=()=>window.Capacitor&&window.Capacitor.isNativePlatform&&window.Capacitor.isNativePlatform()&&window.Capacitor.Plugins&&window.Capacitor.Plugins.Health||null;
 const HC_READ=["steps","weight","bodyFat"];
+/* yedek adım kaynağı: Health Connect'e o gün adım gelmezse telefonun kendi adım sayacı (yalnızca Android) */
+const ASP=()=>window.Capacitor&&window.Capacitor.isNativePlatform&&window.Capacitor.isNativePlatform()&&window.Capacitor.Plugins&&window.Capacitor.Plugins.HafifAdim||null;
+let PS_TODAY=false;
 const stepGoal=()=>S.profile.stepGoal||7500;
 /* Claude'da (web) adım bölümü örnek verilerle önizleme olarak görünür; Android uygulamasında gerçek veri gelir */
 const PV=()=>!HP()&&!(window.Capacitor&&window.Capacitor.isNativePlatform&&window.Capacitor.isNativePlatform());
@@ -4084,7 +4087,7 @@ function vAyar(){
     <div class="sgroup">
       ${row("Protein","a-prot",P.proteinGoal??"","g",protSuggest()[2],"numeric")}
       ${row("Su","a-water",P.waterGoal??"","ml","2500","numeric")}
-      ${HP()?`${row("Adım","a-step",P.stepGoal??"","adım","7500","numeric")}<div class="setr"><span>Health Connect</span><button type="button" class="linkbtn" id="a-hc">${S.hc&&S.hc.on?"Bağlı · yönet":"Bağlan"}</button></div>`:""}
+      ${HP()?`${row("Adım","a-step",P.stepGoal??"","adım","7500","numeric")}<div class="setr"><span>Health Connect</span><button type="button" class="linkbtn" id="a-hc">${S.hc&&S.hc.on?"Bağlı · yönet":"Bağlan"}</button></div>${ASP()&&S.hc&&S.hc.on?`<div class="setr"><span>Telefonun adım sayacı<small style="display:block;font-size:12.5px;color:var(--muted)">Health Connect'e adım gelmeyen günlerde</small></span><button type="button" class="linkbtn" id="a-ps">${S.ps&&S.ps.on?"Açık · kapat":"Aç"}</button></div>`:""}`:""}
     </div>
     <p class="hint">${protSuggest()[0]?`Genel öneri kilogram başına 1,2–1,5 g protein, yani senin için ${protSuggest()[0]}–${protSuggest()[1]} g. Su için günde 2–3 litre yaygın bir hedef. Kendi hedefini doktorun ya da diyetisyeninle belirlemek en doğrusu.`:"Protein için yaygın hedef kilogram başına 1,2–1,5 g."}</p>
     <div class="fsec"><span>Tercihler</span></div>
@@ -4117,7 +4120,7 @@ function stepCard(){
   if(!PV()&&!(S.hc&&S.hc.on)) return `<button type="button" class="card stcta" data-hc><span class="mi">${FOOT}</span><span style="flex:1;min-width:0"><b>Adımlarını ve tartını bağla</b><small>Health Connect'ten adım, kilo ve yağ oranı otomatik gelsin</small></span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="var(--muted)" stroke-width="2" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg></button>`;
   const n=stepsOn(today()),g=stepGoal(),E=stepEst(n),left=Math.max(0,g-n),f=Math.min(1,n/g),sk=stStreak();
   return `<button type="button" class="card stcard" data-go="adim">
-    <div class="sthead"><h2>Bugün hareket</h2>${PV()?'<span class="pvtag">Önizleme</span>':'<span class="muted" style="font-size:12.5px">Health Connect</span>'}</div>
+    <div class="sthead"><h2>Bugün hareket</h2>${PV()?'<span class="pvtag">Önizleme</span>':`<span class="muted" style="font-size:12.5px">${PS_TODAY?"Telefon":"Health Connect"}</span>`}</div>
     <div class="stnum"><span><b>${fmtN(n)}</b><small>adım</small></span><em>${left?fmtN(left)+" kaldı":`Hedef tamam ${UI_I(UIC.onay,16)}`}</em></div>
     <div><div class="stpath"><div class="trk"><i style="width:${f*100}%"></i></div><span class="me" style="left:calc((100% - 30px) * ${f.toFixed(3)})">${ST_WALK}</span><span class="flag">${ST_FLAG}</span></div>
       <div class="stscale"><span>0</span><span>Hedef ${fmtN(g)}</span></div></div>
@@ -4168,13 +4171,14 @@ function vAdim(){
   const H=PV()?DEMO_H:HOURS||Array(24).fill(0),mx=Math.max(1,...H);
   return `<section>${back}
     ${stepCard().replace('data-go="adim"','')}
+    ${!PV()&&ASP()&&S.hc.empty&&!(S.ps&&S.ps.on)?`<div class="card pscard"><h2>Health Connect'e adım gelmiyor</h2><p class="muted" style="margin:0;font-size:14px">Telefonundaki sağlık uygulaması Health Connect'e henüz adım yazmıyor. Hafif adımlarını telefonun kendi sayacıyla sayabilir; pil harcamaz, veriler telefonda kalır.</p><button type="button" class="btn stepbtn" id="psOn">Telefonun sayacıyla say</button><button type="button" class="linkbtn" id="psHc">Health Connect ayarlarını aç</button></div>`:""}
     <div class="card" style="display:flex;flex-direction:column;gap:16px;align-items:stretch" hidden>
       <div class="stbig">${stRing(n,200,16)}<div><b>${fmtN(n)}</b><span>hedef ${fmtN(g)} adım</span></div></div>
       <div class="sttrio"><div><b>${E.km.toLocaleString("tr-TR",{maximumFractionDigits:1})} km</b><span>mesafe (tahmini)</span></div><div><b>${fmtN(E.kcal)}</b><span>kcal (tahmini)</span></div><div><b>${fmtN(E.min)} dk</b><span>yürüyüş (tahmini)</span></div></div></div>
     <div class="card"><h2 style="margin-bottom:10px">Gün içinde</h2><div class="sthours">${H.map(v=>`<i class="${v>=mx*.6&&v>0?"h":""}" style="height:${Math.max(4,v/mx*100)}%"></i>`).join("")}</div><div class="sthx"><span>00</span><span>06</span><span>12</span><span>18</span><span>24</span></div></div>
     <button type="button" class="card stshare" id="stShareBtn"><span class="mi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg></span><span style="flex:1;min-width:0;text-align:left"><b>Adımlarını paylaş</b><small>Fotoğraflı ya da hazır kart · WhatsApp, Instagram ya da Hafif ekibi</small></span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button>
     ${stHistory()}
-    <div class="stsrc"><span class="mi" style="width:30px;height:30px;border-radius:10px;background:var(--step-soft);color:var(--step);display:grid;place-items:center">${HEART.replace('<svg ','<svg width="18" height="18" ')}</span>${PV()?"<span><b>Önizleme · örnek veriler.</b> Gerçek adımların Android uygulamasında Health Connect'ten gelir.</span>":`Health Connect'ten · ${S.hc.last?"son güncelleme "+new Date(S.hc.last).toLocaleTimeString("tr-TR",{hour:"2-digit",minute:"2-digit"}):"güncelleniyor"} · hedefini Ayarlar'dan değiştirebilirsin`}</div>
+    <div class="stsrc"><span class="mi" style="width:30px;height:30px;border-radius:10px;background:var(--step-soft);color:var(--step);display:grid;place-items:center">${HEART.replace('<svg ','<svg width="18" height="18" ')}</span>${PV()?"<span><b>Önizleme · örnek veriler.</b> Gerçek adımların Android uygulamasında Health Connect'ten gelir.</span>":`${PS_TODAY?"Telefonun adım sayacından":"Health Connect'ten"} · ${S.hc.last?"son güncelleme "+new Date(S.hc.last).toLocaleTimeString("tr-TR",{hour:"2-digit",minute:"2-digit"}):"güncelleniyor"} · hedefini Ayarlar'dan değiştirebilirsin`}</div>
   </section>`;
 }
 function openHealthSheet(){
@@ -4204,19 +4208,33 @@ async function hcConnect(){
     S.hc={on:true,last:null,wFrom:addDays(today(),-30)}; save(); closeSheet(); toast("Health Connect bağlandı"); await syncHealth(true);
   }catch(e){m.textContent="Bağlanılamadı: "+(e&&e.message||"bilinmeyen hata")}
 }
+async function psEnable(){
+  const A=ASP(); if(!A) return;
+  try{await A.baslat();S.ps={on:true};save();toast("Adımların artık telefondan da sayılıyor");await syncHealth(true);render()}
+  catch(e){toast(e&&e.code==="sensor-yok"?"Bu telefonda adım sayacı bulunamadı":"İzin verilmedi. Android ayarlarından Fiziksel aktivite iznini açabilirsin.")}
+}
+async function psDisable(){const A=ASP();try{if(A)await A.durdur()}catch(_){}S.ps={on:false};PS_TODAY=false;save();render()}
 let hcBusy=false,hcLast=0;
 async function syncHealth(force){
   const H=HP(); if(!H||!(S.hc&&S.hc.on)||hcBusy) return; if(!force&&Date.now()-hcLast<60000) return;
-  hcBusy=true; hcLast=Date.now(); let changed=false;
+  hcBusy=true; hcLast=Date.now(); let changed=false; const hcDays={};
   const iso=d=>toD(d).toISOString();
   try{
     const r=await H.queryAggregated({dataType:"steps",startDate:iso(addDays(today(),-89)),endDate:new Date().toISOString(),bucket:"day",aggregation:"sum"});
-    S.steps=S.steps||{}; for(const b of (r&&r.samples)||[]){const d=ymd(new Date(b.startDate).getTime()+36e5*12);const v=Math.round(b.value||0);if(S.steps[d]!==v){S.steps[d]=v;changed=true}}
+    S.steps=S.steps||{}; for(const b of (r&&r.samples)||[]){const d=ymd(new Date(b.startDate).getTime()+36e5*12);const v=Math.round(b.value||0);if(v>0)hcDays[d]=v;if(S.steps[d]!==v){S.steps[d]=v;changed=true}}
     for(const d of Object.keys(S.steps))if(d<addDays(today(),-90))delete S.steps[d];
   }catch(_){}
   try{
     const r=await H.queryAggregated({dataType:"steps",startDate:iso(today()),endDate:new Date().toISOString(),bucket:"hour",aggregation:"sum"});
     const h=Array(24).fill(0); for(const b of (r&&r.samples)||[])h[new Date(b.startDate).getHours()]+=Math.round(b.value||0); HOURS=h;
+  }catch(_){}
+  S.hc.empty=!Object.keys(hcDays).length; PS_TODAY=false;
+  if(S.ps&&S.ps.on&&ASP())try{
+    const st=await ASP().durum();
+    if(!st.izin||!st.acik){S.ps.on=false;changed=true}
+    else{const p=await ASP().oku();
+      for(const [d,v] of Object.entries(p.gunler||{}))if(!(hcDays[d]>0)&&v>0&&S.steps[d]!==v){S.steps[d]=v;changed=true}
+      if(!(hcDays[today()]>0)&&p.saatler){HOURS=p.saatler.map(x=>+x||0);PS_TODAY=true}}
   }catch(_){}
   try{
     const from=S.hc.wFrom||addDays(today(),-30);
@@ -4619,6 +4637,8 @@ function bindView(){
     bs.forEach(b=>b.addEventListener("click",()=>{const r=b.getBoundingClientRect();pick(r.left+r.width/2)}))}
   v.querySelectorAll("[data-open]").forEach(b=>b.addEventListener("click",()=>openSheet(b.dataset.open)));
   const stb=v.querySelector("#stShareBtn");if(stb)stb.addEventListener("click",openStShare);
+  const pso=v.querySelector("#psOn");if(pso)pso.addEventListener("click",psEnable);
+  const psh=v.querySelector("#psHc");if(psh)psh.addEventListener("click",()=>{try{HP().openHealthConnectSettings()}catch(_){}});
   v.querySelectorAll("[data-coach-act]").forEach(b=>b.addEventListener("click",()=>coachAct(b.dataset.coachAct,b.closest("[data-coach]").dataset.coach)));
   v.querySelectorAll("[data-edit-w]").forEach(b=>b.addEventListener("click",()=>openSheet("weight",b.dataset.editW)));
   v.querySelectorAll("[data-edit-shot]").forEach(b=>b.addEventListener("click",()=>openSheet("shot",b.dataset.editShot)));
@@ -4641,6 +4661,7 @@ function bindView(){
   if(f)$("#a-shots").addEventListener("change",e=>{$("#a-shotf").hidden=!e.target.checked});
   v.querySelectorAll("[data-psite]").forEach(b=>b.addEventListener("click",()=>b.setAttribute("aria-pressed",b.getAttribute("aria-pressed")!=="true")));
   bindRem();
+  if($("#a-ps"))$("#a-ps").addEventListener("click",()=>{S.ps&&S.ps.on?psDisable():psEnable()});
   if($("#a-hc"))$("#a-hc").addEventListener("click",()=>{if(S.hc&&S.hc.on){try{HP().openHealthConnectSettings()}catch(_){}}else openHealthSheet()});
   v.querySelectorAll("[data-hc]").forEach(b=>b.addEventListener("click",e=>{e.stopPropagation();openHealthSheet()}));
   /* ayarlar: her değişiklik o an kaydedilir; hatalı değer kaydedilmez, eski hâline döner */

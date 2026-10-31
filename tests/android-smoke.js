@@ -54,6 +54,9 @@ const step = (ad, sonuc, detay) => { report.adimlar.push({ ad, sonuc, detay }); 
     // Adım sayar: kart görünüyor mu, Health Connect var mı, izin penceresi açılıyor mu?
     const hc = await page.evaluate(async () => ({ kart: !!document.querySelector('.stcta'), uygun: await Capacitor.Plugins.Health.isAvailable().then(r => JSON.stringify(r), e => 'hata: ' + e.message) }));
     step('Adım kartı görünüyor', hc.kart, hc.uygun);
+    // 2.0.1: Health Connect'e adım gelmezse yedek olarak telefonun kendi adım sayacı
+    const ps = await page.evaluate(() => Capacitor.Plugins.HafifAdim.durum().then(r => JSON.stringify(r), e => 'hata: ' + e.message));
+    step('Telefon adım sayacı eklentisi yanıt veriyor', !ps.startsWith('hata'), ps);
     await tap(page, '.stcta'); await wait(700); await shot('adim-baglan');
     await tap(page, '#hcGo');
     // pencere yavaş emülatörde geç açılabilir: 15 sn'ye kadar bekle, sonra uygulamaya dönene kadar geri bas
