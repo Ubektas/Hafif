@@ -9,7 +9,7 @@ Bu dosya, Hafif üzerinde çalışan yeni bir Claude oturumunun kaldığı yerde
 - Gizlilik sayfası ayrı repo: `Ubektas/hafif-gizlilik` (main yayında, 2.0 metni dahil).
 
 ## Kaynak dosya (önemli)
-- Uygulamanın asıl kaynağı tek bir HTML dosyası: Claude artifact'i **https://claude.ai/artifact/HLc1A77LCcKJpmgXxitBdw** (sürüm 110 en güncel hâl).
+- Uygulamanın asıl kaynağı tek bir HTML dosyası: Claude artifact'i **https://claude.ai/artifact/HLc1A77LCcKJpmgXxitBdw** (sürüm 111 en güncel hâl).
 - Bu dosya kişisel test verileri (Tracky, Zepp, takviye listesi) içerir; **repoya konmaz**. Yeni oturumda Artifact aracıyla `action: "read"` ile indirilir, örneğin `/home/user/hafif-kaynak/artifact.html` olarak kaydedilir.
 - Android'e giden sürüm bundan üretilir; araç kişisel verileri ayıklar:
   `python3 araclar/android-uyarla.py <artifact.html> www/index.html`
@@ -37,6 +37,9 @@ Bu dosya, Hafif üzerinde çalışan yeni bir Claude oturumunun kaldığı yerde
 - **2.0.0 hazır** (kod 18): G1–G8, Ne yesem? (Türk mutfağı önerileri), yorum isteme anları, yeni widget'lar (A · krem kart, koyu temada koyu) ve 11. widget "Ne yesem?". Kullanıcı Play kapalı test kanalına yükleyecek.
 - Mağaza: 8 görsel `magaza/tanitim-2/`, öne çıkan görsel `magaza/tanitim-2/one-cikan-1024x500.png`, video `magaza/video/hafif-tanitim-2-1920x1080.mp4`, metinler `magaza/aciklama.md` (3949 karakter), sürüm notu `magaza/surum-notlari.md`.
 - Ekip toplantısı 2 raporu: `magaza/taslak/toplanti-2/index.html` (artifact: https://claude.ai/artifact/6rTSGcM2pwaeVJ87PjYXVz).
+
+- **31 Ekim · telefonun adım sayacı (2.0.1 adayı, `surum-2.0`'da, test 48/48):** Yeni Samsung telefonda Samsung Health Health Connect'e hiç yazmadı (izinler açık olduğu hâlde), Hafif 0 adım gösterdi. Çözüm: Health Connect'te adım yoksa adım ekranında "Health Connect'e adım gelmiyor" kartı → "Telefonun sayacıyla say" (ACTIVITY_RECOGNITION izni). Yerel eklenti `android/.../adim/` (HafifAdim): donanım sayacı TYPE_STEP_COUNTER, AlarmManager ile 15 dk'da bir okuma, açılışta yeniden kurulum (BOOT_COMPLETED), günlük ve saatlik adımlar SharedPreferences'ta. Health Connect'te o gün adım varsa her zaman Health Connect kullanılır. Ayarlar'da "Telefonun adım sayacı · Aç/kapat". WorkManager denendi, ListenableFuture derleme hatası verdiği için bırakıldı. Kullanıcıya üçüncü taraf uygulama önerilmez (kullanıcı kararı).
+  Açık: gizlilik metnine telefon sayacı cümlesi, veri güvenliği formu kontrolü, gerçek telefonda deneme (emülatörde sensör yok).
 
 ## Sıradaki işler (toplantı 2 kararları ve açık konular)
 1. **Üretimden önce:** Play'de görünen ev adresi ve geliştirici adı ("Hafif" olmalı), veri güvenliği formu (kullanıcı yapar).
