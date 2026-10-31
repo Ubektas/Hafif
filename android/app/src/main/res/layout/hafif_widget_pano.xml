@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 4×4 Pano: görselin üstünde dokunma bölgeleri; oranlar WidgetRenderer.pano() ile aynı (üst %51, halkalar %29, kartlar %20). -->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/w_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/w_img"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:contentDescription="@string/w_name_12"
+        android:scaleType="fitXY" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView android:id="@+id/z_top" android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="51" android:contentDescription="Kilo" />
+
+        <LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="29" android:orientation="horizontal">
+            <TextView android:id="@+id/z_a" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:contentDescription="Protein ekle" />
+            <TextView android:id="@+id/z_b" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:contentDescription="250 ml su ekle" />
+            <TextView android:id="@+id/z_c" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:contentDescription="Adımlar" />
+        </LinearLayout>
+
+        <LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="20" android:orientation="horizontal">
+            <TextView android:id="@+id/z_d" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:contentDescription="Sıradaki" />
+            <TextView android:id="@+id/z_e" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:contentDescription="Takviye" />
+        </LinearLayout>
+    </LinearLayout>
+</FrameLayout>

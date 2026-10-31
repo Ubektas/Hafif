@@ -18,13 +18,13 @@ import com.ugurbektas.hafif.R;
 import java.io.File;
 import java.io.FileOutputStream;
 
-/** Hafif'in 11 ana ekran widget'ı. Her tür ayrı bir sağlayıcıdır (widget listesinde ayrı görünür). */
+/** Hafif'in 12 ana ekran widget'ı. Her tür ayrı bir sağlayıcıdır (widget listesinde ayrı görünür). */
 public final class HafifWidgets {
     private HafifWidgets() {}
 
     /** Tür numarası ve varsayılan boyutu (dp). */
-    static final int[][] DEF = {{0, 0}, {170, 170}, {170, 80}, {170, 170}, {170, 80}, {170, 170}, {170, 170}, {170, 170}, {170, 170}, {170, 170}, {170, 170}, {360, 170}};
-    static final Class<?>[] KINDS = {null, Dongu.class, Siradaki.class, Bugun.class, Kilo.class, Grafik.class, Hedef.class, Su.class, Protein.class, Adim.class, Takviye.class, NeYesem.class};
+    static final int[][] DEF = {{0, 0}, {170, 170}, {170, 80}, {170, 170}, {170, 80}, {170, 170}, {170, 170}, {170, 170}, {170, 170}, {170, 170}, {170, 170}, {360, 170}, {360, 360}};
+    static final Class<?>[] KINDS = {null, Dongu.class, Siradaki.class, Bugun.class, Kilo.class, Grafik.class, Hedef.class, Su.class, Protein.class, Adim.class, Takviye.class, NeYesem.class, Pano.class};
 
     public static void updateAll(Context ctx) {
         AppWidgetManager m = AppWidgetManager.getInstance(ctx);
@@ -45,6 +45,16 @@ public final class HafifWidgets {
             if (h <= 0) h = DEF[kind][1];
             float density = ctx.getResources().getDisplayMetrics().density;
             WidgetRenderer.Result r = new WidgetRenderer(ctx).render(kind, d, w, h, density);
+            if (kind == 12) {
+                // Pano: tek görsel, üstünde altı dokunma bölgesi (kilo, üç halka, iki kart)
+                RemoteViews v = new RemoteViews(ctx.getPackageName(), R.layout.hafif_widget_pano);
+                v.setImageViewBitmap(R.id.w_img, r.bmp);
+                int[] ids = {R.id.z_top, R.id.z_a, R.id.z_b, R.id.z_c, R.id.z_d, R.id.z_e};
+                for (int i = 0; i < ids.length; i++)
+                    v.setOnClickPendingIntent(ids[i], intent(ctx, id * 10 + i, r.zones != null && i < r.zones.length ? r.zones[i] : r.main));
+                m.updateAppWidget(id, v);
+                return;
+            }
             RemoteViews v = new RemoteViews(ctx.getPackageName(), R.layout.hafif_widget);
             v.setImageViewBitmap(R.id.w_img, r.bmp);
             v.setOnClickPendingIntent(R.id.w_img, intent(ctx, id * 10, r.main));
@@ -86,7 +96,7 @@ public final class HafifWidgets {
         WidgetRenderer rd = new WidgetRenderer(ctx, false);
         StringBuilder out = new StringBuilder();
         for (int k = 1; k < KINDS.length; k++) {
-            int[][] sizes = (k == 2 || k == 4) ? new int[][]{{170, 80}, {360, 80}, {360, 170}} : new int[][]{{170, 170}, {360, 170}, {170, 96}, {360, 110}, {170, 74}};
+            int[][] sizes = k == 12 ? new int[][]{{360, 360}, {300, 300}} : (k == 2 || k == 4) ? new int[][]{{170, 80}, {360, 80}, {360, 170}} : new int[][]{{170, 170}, {360, 170}, {170, 96}, {360, 110}, {170, 74}};
             for (int[] sz : sizes) {
                 String name = k + "-" + sz[0] + "x" + sz[1] + ".png";
                 save(rd.render(k, d, sz[0], sz[1], 2f).bmp, new File(dir, name));
@@ -97,7 +107,12 @@ public final class HafifWidgets {
         WidgetRenderer rn = new WidgetRenderer(ctx, true);
         for (int k = 1; k < KINDS.length; k++) {
             String name = k + "-koyu.png";
-            save(rn.render(k, d, 360, 170, 2f).bmp, new File(dir, name));
+            save(rn.render(k, d, 360, k == 12 ? 360 : 170, 2f).bmp, new File(dir, name));
+            if (k != 12) {
+                String n2 = k + "-koyu-kucuk.png";
+                save(rn.render(k, d, 170, k == 2 || k == 4 ? 80 : 170, 2f).bmp, new File(dir, n2));
+                out.append(n2).append(',');
+            }
             out.append(name).append(',');
         }
         d.forcePlus = false;
@@ -137,4 +152,5 @@ public final class HafifWidgets {
     public static class Adim extends Base { int kind() { return 9; } }
     public static class Takviye extends Base { int kind() { return 10; } }
     public static class NeYesem extends Base { int kind() { return 11; } }
+    public static class Pano extends Base { int kind() { return 12; } }
 }

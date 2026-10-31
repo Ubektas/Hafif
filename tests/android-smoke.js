@@ -266,7 +266,7 @@ const step = (ad, sonuc, detay) => { report.adimlar.push({ ad, sonuc, detay }); 
     // Ana ekran widget'ları: 10 sağlayıcı kayıtlı, veri dosyası yazılıyor, çizimler üretiliyor, widget bağlantısı çalışıyor
     const aw = (await device.shell('dumpsys appwidget')).toString();
     const saglayici = new Set((aw.match(/HafifWidgets\$\w+/g) || [])).size;
-    step('11 widget sağlayıcısı kayıtlı', saglayici === 11, saglayici + ' sağlayıcı');
+    step('12 widget sağlayıcısı kayıtlı', saglayici === 12, saglayici + ' sağlayıcı');
     await wait(1500);
     const wj = (await device.shell(`run-as ${PKG} cat files/widget.json`)).toString();
     step('Widget veri dosyası yazıldı', wj.includes('"cyc"') && wj.includes('"day"'), wj.slice(0, 100));

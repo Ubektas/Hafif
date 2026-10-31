@@ -26,4 +26,6 @@
     <string name="w_desc_10">Sıradaki vakit ve hepsini aldım</string>
     <string name="w_name_11">Hafif · Ne yesem?</string>
     <string name="w_desc_11">Saate göre öğün önerisi, tek dokunuşla ekle</string>
+    <string name="w_name_12">Hafif · Pano</string>
+    <string name="w_desc_12">Kilo yolun, bugünün ve sıradakiler tek yerde</string>
 </resources>
