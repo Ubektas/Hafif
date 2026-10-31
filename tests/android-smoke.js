@@ -25,7 +25,7 @@ const step = (ad, sonuc, detay) => { report.adimlar.push({ ad, sonuc, detay }); 
   };
   const tap = async (page, sel) => { await page.waitForSelector(sel, { state: 'attached', timeout: 20000 }); await page.evaluate(s => document.querySelector(s).click(), sel); };
   // + düğmesi → hızlı ekleme panelinden kilo (w) ya da iğne (s)
-  const ekle = async (page, k) => { await new Promise(r => setTimeout(r, 900)); await tap(page, '#fab'); await new Promise(r => setTimeout(r, 500)); await tap(page, `[data-q="${k}"]`); };
+  const ekle = async (page, k) => { await new Promise(r => setTimeout(r, 900)); await tap(page, '#navPlus'); await new Promise(r => setTimeout(r, 500)); await tap(page, `[data-q="${k}"]`); };
   const type = (page, sel, v) => page.evaluate(([s, v]) => { const e = document.querySelector(s); e.value = v; e.dispatchEvent(new Event('input', { bubbles: true })); }, [sel, v]);
   try {
     // Emülatörde başka uygulamaların "yanıt vermiyor" pencereleri testi kapatmasın
@@ -95,7 +95,7 @@ const step = (ad, sonuc, detay) => { report.adimlar.push({ ad, sonuc, detay }); 
 
     const fps = () => Promise.race([page.evaluate(() => new Promise(r => { let n = 0; const t0 = performance.now(); (function f() { n++; if (performance.now() - t0 < 2000) requestAnimationFrame(f); else r(Math.round(n / 2)); })(); })), wait(8000).then(() => 'yanıt yok')]);
     report.fps = { ozet: await fps() };
-    for (const t of ['takviye', 'besin', 'kilo', 'igne', 'ozet']) {
+    for (const t of ['besin', 'kilo', 'igne', 'ozet']) {
       const t0 = Date.now();
       const r = await Promise.race([page.evaluate(s => { document.querySelector(s).click(); return document.querySelector('#title')?.textContent; }, `.tab[data-tab="${t}"]`), wait(10000).then(() => 'ZAMAN AŞIMI')]);
       report['sekme_' + t] = { sonuc: r, ms: Date.now() - t0 };

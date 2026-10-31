@@ -1,0 +1,141 @@
+<title>Hafif Gezinme Seçenekleri</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&family=Figtree:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,300..500,0..1,0&icon_names=add,monitor_weight,nutrition,space_dashboard,syringe&display=block">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,200..400,0..1,0&icon_names=add,grid_view,local_dining,scale,vaccines&display=block">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Emoji:wght@400;600&display=block">
+<style>
+/* Layout: karar sayfası 2; üstte sekme adı ve birleşik ekran, altta üç yeni ikon yönü; uygulamanın kendi zümrüt tokenları */
+:root{
+  --bg:#F1F5F3; --surface:#FFFFFF; --sunk:#EDF3F0; --fg:#0B2420; --muted:#5F726C; --line:#E0E8E4;
+  --accent:#0E7C66; --accent-soft:#E1F3EC; --head:#0B3B33; --protein:#C27A12; --protein-soft:#FBF0DC; --protein-ink:#8A5A10;
+  --water:#2E8BC0; --water-soft:#E4F1F8; --supp:#B8577A; --supp-soft:#F7E8EE; --frame:#0B2420; --nav:rgba(255,255,255,.96);
+  --f-d:"Outfit",ui-rounded,system-ui,sans-serif; --f-b:"Figtree",system-ui,-apple-system,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#08171A; --surface:#10221F; --sunk:#0B1C19; --fg:#E4F1EC; --muted:#8FA8A1; --line:#1D3631;
+  --accent:#43C9A0; --accent-soft:#103A30; --head:#CFEDE3; --protein:#D9952F; --protein-soft:#33260F; --protein-ink:#F0C27A;
+  --water:#4FA6D6; --water-soft:#10293A; --supp:#E28BAE; --supp-soft:#3A1C28; --frame:#2A4741; --nav:rgba(10,24,22,.96); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#08171A; --surface:#10221F; --sunk:#0B1C19; --fg:#E4F1EC; --muted:#8FA8A1; --line:#1D3631;
+  --accent:#43C9A0; --accent-soft:#103A30; --head:#CFEDE3; --protein:#D9952F; --protein-soft:#33260F; --protein-ink:#F0C27A;
+  --water:#4FA6D6; --water-soft:#10293A; --supp:#E28BAE; --supp-soft:#3A1C28; --frame:#2A4741; --nav:rgba(10,24,22,.96); color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font:15px/1.45 var(--f-b);margin:0}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 60px;display:flex;flex-direction:column;gap:38px}
+h1{font:700 30px/1.1 var(--f-d);letter-spacing:-.02em;margin:0;color:var(--head);text-wrap:balance}
+h2{font:700 21px/1.2 var(--f-d);margin:0;color:var(--head);text-wrap:balance}
+.lead{color:var(--muted);margin:8px 0 0;max-width:70ch}
+section{display:flex;flex-direction:column;gap:14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px;align-items:start}
+.tag{display:inline-flex;align-items:center;gap:8px;font:700 12px var(--f-b);letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
+.tag.rec::after{content:"Önerim";letter-spacing:.04em;text-transform:none;background:var(--accent);color:var(--surface);border-radius:99px;padding:2px 9px;font-size:11.5px}
+.box{background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:16px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.box h3{margin:0;font:700 17px var(--f-d);color:var(--head)}.box p{margin:0;font-size:13.5px;color:var(--muted)}
+/* alt çubuk */
+.bar{display:grid;grid-template-columns:repeat(5,1fr);align-items:end;background:var(--nav);border:1px solid var(--line);border-radius:16px;padding:10px 4px 9px}
+.it{display:flex;flex-direction:column;align-items:center;gap:3px;font:600 11px var(--f-b);color:var(--muted);min-width:0;white-space:nowrap}
+.it.on{color:var(--accent)}
+.plus{justify-self:center;width:48px;height:48px;border-radius:16px;background:var(--head);color:var(--surface);display:grid;place-items:center}
+/* ikon yönleri */
+.mr{font-family:"Material Symbols Rounded";font-size:26px;line-height:1;font-variation-settings:"FILL" 0,"wght" 400,"opsz" 24;font-feature-settings:"liga";-webkit-font-feature-settings:"liga"}
+.mr.on{font-variation-settings:"FILL" 1,"wght" 500,"opsz" 24}
+.k1 .it.on .pill{background:var(--accent-soft);border-radius:99px;padding:3px 16px}
+.mo{font-family:"Material Symbols Outlined";font-size:26px;line-height:1;font-variation-settings:"FILL" 0,"wght" 250,"opsz" 24;font-feature-settings:"liga";-webkit-font-feature-settings:"liga"}
+.mo.on{font-variation-settings:"FILL" 0,"wght" 400,"opsz" 24}
+.k2 .it.on::after{content:"";width:18px;height:2.5px;border-radius:3px;background:var(--accent)}
+.ne{font-family:"Noto Emoji";font-size:23px;line-height:1.1;font-weight:400}
+.ne.on{font-weight:600}
+.k3 .it.on .pill{background:var(--accent-soft);border-radius:12px;padding:3px 12px}
+.plus .mr,.plus .mo{font-size:28px}.plus .ne{font-size:26px;font-weight:600}
+.big{display:flex;gap:18px;flex-wrap:wrap;align-items:center;color:var(--fg);font-size:12px}
+.big span{display:flex;flex-direction:column;align-items:center;gap:4px;color:var(--muted)}
+.big i{font-style:normal;color:var(--fg)}
+/* ad seçenekleri */
+.names{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+.nm{display:flex;flex-direction:column;gap:8px}
+.nm b{font:700 16px var(--f-d);color:var(--head)}.nm small{font-size:13px;color:var(--muted)}
+/* telefon */
+.flow{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px;align-items:start}
+.phone{width:100%;max-width:330px;margin:0 auto;border-radius:36px;border:8px solid var(--frame);background:var(--bg);overflow:hidden;height:600px;display:flex;flex-direction:column}
+.scr{flex:1;overflow:hidden;padding:16px 14px 0;display:flex;flex-direction:column;gap:10px}
+.ph{display:flex;justify-content:space-between;align-items:baseline}.ph b{font:700 22px var(--f-d);color:var(--head)}.ph span{font-size:12px;color:var(--muted)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:12px}
+.card.hl{box-shadow:0 0 0 2.5px var(--supp)}
+.duo{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}
+.mini{border-radius:14px;padding:9px;display:flex;flex-direction:column;gap:2px}
+.mini small{font:700 9.5px var(--f-b);letter-spacing:.08em;text-transform:uppercase}
+.mini b{font:700 18px/1 var(--f-d)}.mini b span{font:500 10.5px var(--f-b);color:var(--muted)}
+.mini .q{margin-top:5px;height:5px;border-radius:9px;background:var(--surface);overflow:hidden}.mini .q i{display:block;height:100%}
+.mini.p{background:var(--protein-soft)}.mini.p small{color:var(--protein-ink)}.mini.p .q i{background:var(--protein)}
+.mini.w{background:var(--water-soft)}.mini.w small{color:var(--water)}.mini.w .q i{background:var(--water)}
+.mini.s{background:var(--supp-soft)}.mini.s small{color:var(--supp)}.mini.s .q i{background:var(--supp)}
+.lbl{font:700 11px var(--f-b);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);display:flex;justify-content:space-between}
+.row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-top:1px solid var(--line);font-size:13px}.row b{font-weight:600}.row small{display:block;color:var(--muted);font-size:11.5px}.row em{font-style:normal;font-weight:700}
+.tapnote{display:flex;gap:8px;align-items:center;font:600 12px var(--f-b);color:var(--supp)}
+.tapnote::before{content:"";width:12px;height:12px;border-radius:50%;background:var(--supp);box-shadow:0 0 0 5px var(--supp-soft)}
+.cap{font-size:13px;color:var(--muted);text-align:center;margin-top:8px}
+.nav{background:var(--nav);border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(5,1fr);padding:7px 4px 12px;align-items:end}
+.nav .plus{width:46px;height:46px;margin-top:-20px;box-shadow:0 10px 18px -8px rgba(11,59,51,.6)}
+footer{font-size:12.5px;color:var(--muted)}
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>Gezinme, 2. tur</h1>
+    <p class="lead">Protein, su ve takviye tek sekmede birleşiyor. Üç karar kaldı: sekmenin adı, Özet'ten takviyeye nasıl gidileceği ve ikonlar. İkonları baştan çalıştım; üç yönün üçü de çizgi ağırlıklı, üçüncüsü tek renkli emoji.</p>
+  </header>
+
+  <section>
+    <h2>1. Sekmenin adı</h2>
+    <div class="names" id="adlar"></div>
+  </section>
+
+  <section>
+    <h2>2. Özet'ten takviyeye</h2>
+    <p class="lead" style="margin:0">Evet, gider. Özet'teki takviye kartına dokununca birleşik sekme açılır ve sayfa doğrudan Takviyeler bölümüne kayar; bölüm bir an vurgulanır. Protein ve su kartları da aynı şekilde kendi bölümlerine götürür. Sekmenin üstünde üç küçük kutu da var; onlara dokunmak da aynı yere kaydırır.</p>
+    <div class="flow" id="akis"></div>
+  </section>
+
+  <section>
+    <h2>3. İkonlar</h2>
+    <div class="grid" id="ikonlar"></div>
+  </section>
+
+  <footer>Maketler öneridir. Material Symbols, Google'ın Android için çizdiği açık lisanslı set; uygulamaya yalnızca kullandığımız ikonlar gömülür, internet gerekmez. Noto Emoji de Google'ın tek renkli, açık lisanslı emoji yazı tipi.</footer>
+</div>
+
+<script>
+/* ikon yönleri: [sınıf, Özet, Günlük, Kilo, İğneler, +] */
+const K={
+ k1:{ad:"Material, yuvarlak",not:"Google'ın Android setinin yuvarlak hâli. Seçili sekme dolu ikon ve açık yeşil hap; Android kullanıcısına en tanıdık görünen.",c:"mr",i:["space_dashboard","nutrition","monitor_weight","syringe","add"],rec:1},
+ k2:{ad:"Material, ince çizgi",not:"Aynı ailenin ince, köşeli hâli; seçili sekme kalınlaşır, altında kısa bir çizgi. Daha sakin ve klinik.",c:"mo",i:["grid_view","local_dining","scale","vaccines","add"]},
+ k3:{ad:"Tek renkli emoji",not:"Noto Emoji: renkli emojinin çizgisel, tek renkli hâli. Sıcak ama çocuksu değil; içerikteki renkli emojilerle de akraba.",c:"ne",i:["🏠","🥗","⚖","💉","+"]}
+};
+const ADLAR=["Özet","Günlük","Kilo","İğneler"];
+const icon=(k,j,on)=>`<span class="${K[k].c}${on?" on":""}">${K[k].i[j]}</span>`;
+const bar=(k,sel,ad2)=>`<div class="bar">${[0,1].map(j=>`<span class="it${sel===j?" on":""}"><span class="pill">${icon(k,j,sel===j)}</span>${j===1?(ad2||ADLAR[1]):ADLAR[j]}</span>`).join("")}<span class="plus">${icon(k,4,true)}</span>${[2,3].map(j=>`<span class="it${sel===j?" on":""}"><span class="pill">${icon(k,j,sel===j)}</span>${ADLAR[j]}</span>`).join("")}</div>`;
+
+document.getElementById("adlar").innerHTML=[
+ ["Günlük","Her gün yaptıkların: protein, su, takviye. Kısa, sekme altına rahat sığar.",1],
+ ["Bugün","En doğal okunan; ama Özet'in en üstündeki \"Bugün\" kartıyla karışabilir.",0],
+ ["Rutin","Takviye ve suyu iyi anlatır; proteinde biraz zorlanır.",0]
+].map(([n,s,r])=>`<div class="box nm"><span class="tag${r?" rec":""}">${n}</span><small>${s}</small><div class="k1">${bar("k1",1,n)}</div></div>`).join("");
+
+const nav=(sel)=>`<nav class="nav k1">${[0,1].map(j=>`<span class="it${sel===j?" on":""}"><span class="pill">${icon("k1",j,sel===j)}</span>${ADLAR[j]}</span>`).join("")}<span class="plus">${icon("k1",4,true)}</span>${[2,3].map(j=>`<span class="it"><span class="pill">${icon("k1",j)}</span>${ADLAR[j]}</span>`).join("")}</nav>`;
+const OZET=`<div class="phone"><div class="scr"><div class="ph"><b>Özet</b><span>31 Ekim</span></div>
+  <div class="card" style="background:var(--head);color:#fff;border:0"><span class="lbl" style="color:rgba(255,255,255,.7)">Verdiğin kilo</span><b style="font:700 34px var(--f-d)">−6,4 kg</b></div>
+  <div class="card"><span class="lbl">Bugün</span><div class="row"><span><b>Protein</b><small>93 / 100 g</small></span><em style="color:var(--protein-ink)">%93</em></div><div class="row"><span><b>Su</b><small>1,2 / 2,5 L</small></span><em style="color:var(--water)">%48</em></div></div>
+  <div class="card hl"><span class="lbl">Takviyeler <span>akşam</span></span><div class="row"><span><b>D vitamini · Magnezyum</b><small>21:00</small></span><em style="color:var(--supp)">0 / 2</em></div><div class="tapnote">Dokun</div></div>
+  </div>${nav(0)}</div>`;
+const GUN=`<div class="phone"><div class="scr"><div class="ph"><b>Günlük</b><span>31 Ekim</span></div>
+  <div class="duo"><div class="mini p"><small>Protein</small><b>93<span> /100 g</span></b><div class="q"><i style="width:93%"></i></div></div><div class="mini w"><small>Su</small><b>1,2<span> /2,5 L</span></b><div class="q"><i style="width:48%"></i></div></div><div class="mini s"><small>Takviye</small><b>4<span> /6</span></b><div class="q"><i style="width:66%"></i></div></div></div>
+  <div class="card hl"><span class="lbl">Takviyeler <span>Hepsini aldım</span></span><div class="row"><span><b>Sabah</b><small>Omega-3 · B12</small></span><em style="color:var(--supp)">✓</em></div><div class="row"><span><b>Öğle</b><small>Demir · C vitamini</small></span><em style="color:var(--supp)">✓</em></div><div class="row"><span><b>Akşam</b><small>D vitamini · Magnezyum</small></span><em style="color:var(--supp)">0 / 2</em></div></div>
+  <div class="card"><span class="lbl">Ne yesem? · hedefe 7 g</span><div class="row"><span><b>Yoğurt + ceviz</b><small>1 kase</small></span><em style="color:var(--protein-ink)">+8 g</em></div></div>
+  </div>${nav(1)}</div>`;
+document.getElementById("akis").innerHTML=`<div>${OZET}<p class="cap">Özet'te takviye kartına dokun</p></div><div>${GUN}<p class="cap">Günlük açılır, Takviyeler bölümüne kayar ve vurgulanır</p></div>`;
+
+document.getElementById("ikonlar").innerHTML=Object.keys(K).map((k,n)=>`<div class="box ${k}"><span class="tag${K[k].rec?" rec":""}">Yön ${n+1}</span><h3>${K[k].ad}</h3><p>${K[k].not}</p>${bar(k,0)}${bar(k,1)}
+  <div class="big">${ADLAR.map((a,j)=>`<span><i class="${K[k].c}" style="font-size:40px">${K[k].i[j]}</i>${a}</span>`).join("")}</div></div>`).join("");
+</script>
