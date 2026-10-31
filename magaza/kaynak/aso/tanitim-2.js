@@ -105,17 +105,12 @@ const s06 = head(`
 .tri{position:absolute;left:84px;right:84px;top:600px;display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
 .tri .card{padding:40px 28px;text-align:center}.tri .e{font-size:110px;display:block;margin:6px 0 22px}.tri b{display:block;font:700 40px Outfit}.tri span{display:block;margin-top:8px;font:500 25px/1.35 Figtree;color:#5F726C}
 .wh{position:absolute;left:84px;top:1150px;font:700 22px Figtree;letter-spacing:.12em;text-transform:uppercase;color:${AC}}
-.home{position:absolute;left:84px;right:84px;top:1200px;height:580px;border-radius:56px;background:linear-gradient(160deg,#CFE8DE,#B7D9CC);padding:40px;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:28px}
-.w{border-radius:40px;background:rgba(255,255,255,.88);padding:28px 30px;display:flex;flex-direction:column;justify-content:space-between;box-shadow:0 20px 40px -30px rgba(11,59,51,.5)}
-.w .e{font-size:64px}.w b{font:700 34px/1.15 Outfit}.w small{display:block;font:500 22px Figtree;color:#5F726C;margin-top:4px}
-.w.dk{background:${Z};color:#fff}.w.dk small{color:rgba(255,255,255,.65)}.w .btn{align-self:flex-start;background:${N};color:${Z};border-radius:99px;padding:10px 20px;font:700 24px Figtree}`) + `
-<div class="band"><div class="t">${logo(N, '#fff')}<h1>Küçük alışkanlıklar,<br><em>tek dokunuş.</em></h1><div class="sub">Su, adım ve takviyelerin; zamanında hatırlatmalarla.</div></div></div>
+.home{position:absolute;left:84px;right:84px;top:1200px;height:580px;border-radius:56px;background:linear-gradient(160deg,#9DBDB2,#5E8A86 55%,#3F6670);padding:36px 30px;display:grid;grid-template-columns:403px 190px 190px;grid-auto-rows:190px;gap:30px 19px;align-content:center;justify-content:center}
+.home img{display:block;width:100%;height:100%;filter:drop-shadow(0 18px 24px rgba(11,40,36,.35))}`) + `
+<div class="band"><div class="t">${logo(N, '#fff')}<h1>Küçük alışkanlıklar,<br><em>tek dokunuş.</em></h1><div class="sub">Su, adım, takviye ve Ne yesem?; ana ekrandan tek dokunuş.</div></div></div>
 <div class="tri"><div class="card"><span class="e">💧</span><b>Su</b><span>Bardağını seç, tek dokunuşla ekle</span></div><div class="card"><span class="e">👟</span><b>Adım</b><span>Health Connect'ten kendiliğinden</span></div><div class="card"><span class="e">💊</span><b>Takviye</b><span>Sabah, akşam, gece programın</span></div></div>
 <div class="wh">Ana ekran widget'ları</div>
-<div class="home"><div class="w dk"><span class="e">💉</span><div><b>İğneye 4 gün</b><small>Önerilen bölge hazır</small></div></div>
-<div class="w"><span class="e">💧</span><div><b>Su</b><small>Hedefe az kaldı</small></div><span class="btn">+ Bardak</span></div>
-<div class="w"><span class="e">💊</span><div><b>Akşam takviyeleri</b><small>Hepsini aldım</small></div></div>
-<div class="w"><span class="e">🔔</span><div><b>Hatırlatmalar</b><small>İğne, su, tartı, kalem</small></div></div></div>` + end;
+<div class="home"><img src="file:///home/user/hafif/magaza/kaynak/aso/widget/widget-11-360x170.png" alt=""><img src="file:///home/user/hafif/magaza/kaynak/aso/widget/widget-7-170x170.png" alt=""><img src="file:///home/user/hafif/magaza/kaynak/aso/widget/widget-8-170x170.png" alt=""><img src="file:///home/user/hafif/magaza/kaynak/aso/widget/widget-3-360x170.png" alt=""><img src="file:///home/user/hafif/magaza/kaynak/aso/widget/widget-10-170x170.png" alt=""><img src="file:///home/user/hafif/magaza/kaynak/aso/widget/widget-9-170x170.png" alt=""></div></div>` + end;
 
 /* 07 · İlerleme — krem; iki polaroid, egzersiz haftası, şerit metre */
 const sil = c => `<svg viewBox="0 0 200 260"><rect width="200" height="260" fill="${c[0]}"/><circle cx="100" cy="86" r="34" fill="${c[1]}"/><path d="M${c[2]} 260c0-70 30-108 ${100 - c[2]}-108s${100 - c[2]} 38 ${100 - c[2]} 108z" fill="${c[1]}"/></svg>`;
