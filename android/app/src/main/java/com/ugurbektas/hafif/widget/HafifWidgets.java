@@ -86,7 +86,7 @@ public final class HafifWidgets {
         WidgetRenderer rd = new WidgetRenderer(ctx, false);
         StringBuilder out = new StringBuilder();
         for (int k = 1; k < KINDS.length; k++) {
-            int[][] sizes = (k == 2 || k == 4) ? new int[][]{{170, 80}, {360, 80}, {360, 170}} : new int[][]{{170, 170}, {360, 170}};
+            int[][] sizes = (k == 2 || k == 4) ? new int[][]{{170, 80}, {360, 80}, {360, 170}} : new int[][]{{170, 170}, {360, 170}, {170, 96}, {360, 110}, {170, 74}};
             for (int[] sz : sizes) {
                 String name = k + "-" + sz[0] + "x" + sz[1] + ".png";
                 save(rd.render(k, d, sz[0], sz[1], 2f).bmp, new File(dir, name));

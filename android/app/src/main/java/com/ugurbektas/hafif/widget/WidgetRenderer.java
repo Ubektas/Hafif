@@ -133,6 +133,19 @@ final class WidgetRenderer {
         textRs(label, W - 16, 26, 9, fb, col, 1.3f);
     }
 
+    /** Alçak boy (küçültülmüş) küçük widget: üstte küçük emoji ve etiket, altında büyük değer; yer varsa alt satır ve çubuk. */
+    private boolean low() { return H < 120; }
+
+    private void compact(String emoji, String label, int col, String big, String sub, float frac, int barCol) {
+        textC(emoji, 24, 26, 14, fm, FG);
+        text(label, 38, 25, 9, fb, col, W - 54, 1.3f);
+        boolean hasSub = sub != null && H >= 96, hasBar = frac >= 0;
+        float y = hasSub ? Math.min(H - 38, 58) : Math.min(H - (hasBar ? 22 : 14), 56);
+        text(big, 16, y, big.length() > 11 ? 18 : 22, db, FG, W - 32);
+        if (hasSub) text(sub, 16, y + 16, 11, fm, MU, W - 32);
+        if (hasBar) bar(16, H - 16, W - 32, 5, Math.max(0, Math.min(1, frac)), barCol, TRACK);
+    }
+
     /** Geniş widget başlığı: yaprak ve etiket solda. */
     private void headL(String label, float x, int col) {
         leaf(x, 26, col);
@@ -166,6 +179,7 @@ final class WidgetRenderer {
         bg();
         String ph = d.phaseName();
         String sub = d.cycleDay() == 1 ? "iğne günü" : "iğneden sonraki " + (d.cycleDay() - 1) + ". gün";
+        if (!wide && low()) { compact("🌙", "DÖNGÜ", AC, ph, sub, d.cycleFrac(), AC); return; }
         if (!wide) {
             head("🌙", "DÖNGÜ", AC);
             text(ph, 16, H - 54, 26, db, FG, W - 32);
@@ -176,7 +190,7 @@ final class WidgetRenderer {
         headL("DÖNGÜ · " + d.cycleDay() + "/" + d.cycleDays(), 16, AC);
         textR("🌙", W - 16, 34, 24, fm, FG);
         text(ph + " evresi", 16, 66, 26, db, FG, W - 32);
-        wrap(d.phaseTip(), 16, 86, W - 32, 12, fm, MU, 2);
+        if (H >= 140) wrap(d.phaseTip(), 16, 86, W - 32, 12, fm, MU, 2);
         bar(16, H - 46, W - 32, 6, d.cycleFrac(), AC, TRACK);
         text("Yeni iğne: " + dayWord(d).toLowerCase(WidgetData.TR) + " " + (d.nextTs() > 0 ? hm(d.nextTs()) : ""), 16, H - 20, 11.5f, fb, FG, W - 32);
     }
@@ -235,6 +249,16 @@ final class WidgetRenderer {
         double[] f = {w / wg, pr / pg, st / sg};
         String[] wd = {waterWord(w / wg), pr >= pg ? "Tamam ✓" : WidgetData.n0(pg - pr) + " g kaldı", st >= sg ? "Tamam ✓" : st / sg >= 0.8 ? "Hedefe yakın" : st > 0 ? "Yolda" : "Henüz yok"};
         int n = hs ? 3 : 2;
+        if (!wide && low()) {
+            textC("🌿", 24, 26, 14, fm, FG);
+            text("BUGÜN", 38, 25, 9, fb, AC, W - 54, 1.3f);
+            float y = 44, step = Math.max(14, (H - 50) / n);
+            for (int i = 0; i < n; i++) {
+                text(nm[i] + " · " + wd[i], 16, y + 4, 10.5f, fb, FG, W - 32);
+                y += step;
+            }
+            return;
+        }
         if (!wide) {
             head("🌿", "BUGÜN", AC);
             float y = 58, step = Math.min(34, (H - 66) / n);
@@ -248,6 +272,19 @@ final class WidgetRenderer {
         }
         headL("BUGÜN", 16, AC);
         textR(WidgetData.todayLong(d.now), W - 16, 26, 11, fm, MU);
+        if (H < 150) {
+            // alçak geniş: kutular yerine tek satır; düğmeler yalnızca sığarsa
+            boolean btn = H >= 104;
+            float cw = (W - 32) / n, y = btn ? 50 : Math.min(H / 2 + 8, 58);
+            for (int i = 0; i < n; i++) {
+                float x = 16 + i * cw;
+                textC(em[i], x + 9, y + 1, 13, fm, FG);
+                text(wd[i], x + 22, y, 10.5f, fb, FG, cw - 28);
+                bar(x, y + 7, cw - 12, 4, (float) f[i], col[i], TRACK);
+            }
+            if (btn) buttons(r, new String[][]{{"💧 +1 bardak", "water/250"}, {"Kilo gir", "weight"}}, new int[]{BTN, SOFT}, new int[]{BTNF, FG});
+            return;
+        }
         float gap = 8, tw = (W - 32 - gap * (n - 1)) / n, ty = 38, th = H - ty - 56;
         for (int i = 0; i < n; i++) {
             float x = 16 + i * (tw + gap);
@@ -326,6 +363,7 @@ final class WidgetRenderer {
             return;
         }
         String eta = etaWord(k, d.now);
+        if (!wide && low()) { compact("📉", "KİLO", AC, trendWord(k), eta.isEmpty() ? "son 30 gün" : eta, -1, AC); return; }
         if (!wide) {
             head("📉", "KİLO", AC);
             spark(k.optJSONArray("pts"), null, 16, 52, W - 32, H - 112, AC, false);
@@ -353,6 +391,7 @@ final class WidgetRenderer {
         double left = Math.max(0, k.optDouble("left"));
         String big = left <= 0.05 ? "Hedefindesin" : WidgetData.n1(left) + " kg kaldı";
         String sub = "hedef " + WidgetData.n0(k.optDouble("goal")) + " kg";
+        if (!wide && low()) { compact("🎯", "HEDEF", AC, big, sub, pct / 100f, AC); return; }
         if (!wide) {
             head("🎯", "HEDEF", AC);
             text(big, 16, H - 50, big.length() > 11 ? 20 : 24, db, FG, W - 32);
@@ -366,7 +405,7 @@ final class WidgetRenderer {
         text(sub + " · yolun %" + Math.round(pct) + "'i", 16, 90, 11.5f, fm, MU, W - 32);
         bar(16, 100, W - 32, 6, pct / 100f, AC, TRACK);
         JSONObject b = d.obj("badge");
-        if (b != null) {
+        if (b != null && H >= 150) {
             rrect(16, H - 48, W - 32, 34, 14, SOFT);
             textC("🏅", 34, H - 25, 15, fm, FG);
             text("Sıradaki rozet: " + b.optString("t") + " · " + WidgetData.n1(b.optDouble("left")) + " kg", 50, H - 26, 11.5f, fb, FG, W - 80);
@@ -380,6 +419,15 @@ final class WidgetRenderer {
         float f = (float) Math.min(1, w / g);
         int cups = (int) Math.ceil(Math.max(0, g - w) / 250.0);
         String big = cups == 0 ? "Tamam" : cups + " bardak", sub = cups == 0 ? "bugünkü su hedefi" : "daha, hedefe";
+        if (!wide && low()) {
+            boolean btn = H >= 100;
+            textC("💧", 24, 26, 14, fm, FG);
+            text("SU", 38, 25, 9, fb, AC, W - 54, 1.3f);
+            text(cups == 0 ? "Tamam" : big + " daha", 16, btn ? 50 : Math.min(H - 22, 56), 20, db, FG, W - 32);
+            if (btn) buttons(r, new String[][]{{"+1 bardak", "water/250"}}, new int[]{BTN}, new int[]{BTNF});
+            else bar(16, H - 16, W - 32, 5, f, WATER, TRACK);
+            return;
+        }
         if (!wide) {
             textC("💧", 28, 36, 24, fm, FG);
             glass(W - 16 - 26, 14, 26, 38, f);
@@ -404,6 +452,7 @@ final class WidgetRenderer {
         JSONArray cols = d.fresh && d.day() != null ? d.day().optJSONArray("pc") : null;
         int of = (int) Math.max(12, Math.ceil(g / 5));
         String big = pr >= g ? "Tamam ✓" : WidgetData.n0(g - pr) + " g kaldı";
+        if (!wide && low()) { compact("🍳", "PROTEİN", night ? 0xFFE8B062 : 0xFFB06D10, big, null, (float) (pr / g), PROT); return; }
         if (!wide) {
             head("🍳", "PROTEİN", night ? 0xFFE8B062 : 0xFFB06D10);
             text(big, 16, 76, 22, db, FG, W - 32);
@@ -415,12 +464,12 @@ final class WidgetRenderer {
         blocks(cols, of, 176, 18, W - 192, 64, 11);
         JSONArray foods = d.fresh && d.day() != null ? d.day().optJSONArray("foods") : null;
         float x = 16;
-        if (foods != null) for (int i = 0; i < foods.length() && i < 3; i++) {
+        if (foods != null && H >= 110) for (int i = 0; i < foods.length() && i < 3; i++) {
             float cw = chip(foods.optString(i), x, H - 38, 11, SOFT, FG, W - x - 80);
             x += cw + 6;
             if (x > W - 130) break;
         }
-        chip("+ Ekle", Math.min(x, W - 72), H - 38, 11, BTN, BTNF, 64);
+        if (H >= 110) chip("+ Ekle", Math.min(x, W - 72), H - 38, 11, BTN, BTNF, 64);
     }
 
     private void adim(WidgetData d, Result r, boolean wide) {
@@ -429,6 +478,7 @@ final class WidgetRenderer {
         if (!d.hasSteps()) { empty("👟", "Adımlarını bağla", "Health Connect ile"); return; }
         double st = d.steps(), g = d.stepGoal();
         String big = WidgetData.n0(st), sub = st >= g ? "bugünkü hedef tamam" : WidgetData.n0(g - st) + " adım kaldı";
+        if (!wide && low()) { compact("👟", "ADIM", AC, big, sub, (float) (st / g), STEP); return; }
         if (!wide) {
             head("👟", "ADIM", AC);
             text(big, 16, H - 50, 28, db, FG, W - 32);
@@ -478,6 +528,10 @@ final class WidgetRenderer {
             if (nx == null && dn < sl.optInt("of")) nx = sl;
         }
         int pink = night ? 0xFFF2A9C4 : 0xFFB8577A;
+        if (!wide && low()) {
+            compact("💊", "TAKVİYE", pink, nx == null ? "Hepsi alındı ✓" : nx.optString("n") + " · " + nx.optString("t"), nx == null ? "bugün " + done + "/" + of : nx.optString("names"), of == 0 ? -1 : (float) done / of, pink);
+            return;
+        }
         if (!wide) {
             head("💊", nx == null ? "TAKVİYE" : nx.optString("n").toUpperCase(WidgetData.TR) + " · " + nx.optString("t"), pink);
             if (nx == null) {
@@ -494,6 +548,12 @@ final class WidgetRenderer {
         int ni = 0;
         for (int i = 0; i < slots.length(); i++) if (slots.optJSONObject(i) == nx) { ni = i; break; }
         int a = Math.max(0, Math.min(ni - (nx == null ? 0 : 1), slots.length() - 2));
+        if (H < 150) {
+            text(nx == null ? "Hepsi alındı ✓" : nx.optString("e") + " " + nx.optString("n") + " · " + nx.optString("t"), 16, 60, 16, db, FG, W - 32);
+            if (nx != null) text(nx.optString("names"), 16, 78, 11, fm, MU, W - 32);
+            if (nx != null && H >= 120) buttons(r, new String[][]{{nx.optString("n") + " takviyelerini aldım", "supp/" + nx.optString("k")}}, new int[]{BTN}, new int[]{BTNF});
+            return;
+        }
         int cnt = Math.min(2, slots.length());
         float cw = (W - 32 - 8 * (cnt - 1)) / cnt;
         for (int j = 0; j < cnt; j++) {
@@ -526,6 +586,7 @@ final class WidgetRenderer {
         String remT = WidgetData.n0(rem) + " g protein kaldı";
         int gold = night ? 0xFFE8B062 : 0xFFB06D10;
         String act = "meal/" + m.optString("id");
+        if (!wide && low()) { compact(m.optString("e", "🍲"), "NE YESEM?", gold, m.optString("s"), "+" + m.optInt("g") + " g protein", -1, gold); return; }
         if (!wide) {
             head(m.optString("e", "🍲"), "NE YESEM?", gold);
             wrap(m.optString("s"), 16, 72, W - 32, 19, db, FG, 2);
