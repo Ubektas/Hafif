@@ -1278,7 +1278,7 @@ function pwRefresh(){const w=$("#paywall");if(!w)return;$("#pwPlans").innerHTML=
 function bindPw(){document.querySelectorAll("[data-pw]").forEach(b=>b.addEventListener("click",()=>{pwSel=b.dataset.pw;pwRefresh()}))}
 function closePaywall(){const w=$("#paywall");if(w)w.remove()}
 function openPaywall(src){
-  closePaywall();if(PLUS()&&NATIVE())return;iapInit();
+  closePaywall();if(plusOwned&&NATIVE())return;iapInit(); /* ücretsiz dönemde de açılır: kullanıcı abonelik seçeneklerini görebilsin */
   const d=document.createElement("div");d.id="paywall";d.setAttribute("role","dialog");d.setAttribute("aria-modal","true");d.setAttribute("aria-label","Hafif Plus");
   const c=pwCta();
   d.innerHTML=`<div class="pwtop"><button type="button" class="pwx" id="pwX" aria-label="Kapat">✕</button><span class="pwk">✦ Hafif Plus</span><h1>Kilo vermenin<br>en hafif yolu.</h1><p>${src==="trialEnd"?"7 günlük ücretsiz Plus dönemin bitti. Vücuttaki ilaç düzeyi, tüm grafikler ve doktor raporu için devam et.":"İlaç düzeyi, tüm grafikler, doktor raporu ve yan etki analizi tek abonelikte."}</p></div>
@@ -1289,7 +1289,7 @@ function openPaywall(src){
         <div><i style="background:var(--accent-soft);color:var(--accent)">${CAM_I(18)}</i><span>İlerleme fotoğrafları<br><small>Haftada bir fotoğraf; iki tarih yan yana, kilo ve bel farkıyla</small></span></div>
         <div><i style="background:var(--accent-soft);color:var(--accent)">${UI_I(UIC.belge,18)}</i><span>Doktor için PDF rapor<br><small>Kilo, doz, yan etki ve ölçüler tek dosyada</small></span></div>
         <div><i style="background:var(--shot-soft);color:var(--shot)">${UI_I(UIC.nabiz,18)}</i><span>Yan etki analizi<br><small>Hangi gün, hangi belirti yoğunlaşıyor</small></span></div>
-        <div><i style="background:var(--water-soft);color:var(--water)">${UI_I(UIC.telefon,18)}</i><span>Ana ekran widget'ları<br><small>10 widget; uygulamayı açmadan su ekle, takviyeni işaretle</small></span></div>
+        <div><i style="background:var(--water-soft);color:var(--water)">${UI_I(UIC.telefon,18)}</i><span>Ana ekran widget'ları<br><small>12 widget ve 4×4 Pano; uygulamayı açmadan su ekle, takviyeni işaretle</small></span></div>
       </div>
       <div id="pwPlans" role="radiogroup" aria-label="Plan" style="display:flex;flex-direction:column;gap:12px">${pwPlansHtml()}</div>
       <button type="button" class="pwcta" id="pwBuy">${c.btn}</button>
