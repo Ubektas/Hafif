@@ -48,7 +48,7 @@ Bu dosya, Hafif üzerinde çalışan yeni bir Claude oturumunun kaldığı yerde
 
 ## Sıradaki işler (toplantı 2 kararları ve açık konular)
 1. **Üretimden önce:** Play'de görünen ev adresi ve geliştirici adı ("Hafif" olmalı), veri güvenliği formu (kullanıcı yapar).
-2. **2.0.1:** "2.0'da yeni" tanıtım sayfası (bir kez; yeni Günlük sekmesini ve ortadaki +'yı da anlatmalı). Ne yesem? taşıma işi yapıldı.
+2. **2.0.1:** gezinme, widget seti, Pano ve e-posta düzeltmesi `surum-2.0`'da hazır (test 48/48); kullanıcı derlemeyi şimdilik istemedi. "2.0'da yeni" tanıtım sayfası iptal (kullanıcı kararı: uygulama henüz yayında değil, eski kullanıcı yok).
 3. Yorum yanıt şablonları; mağaza görseli 6'daki Ne yesem? widget'ını akşam saatine göre yeniden çizdirmek (isteğe bağlı).
 4. **2.1:** içerik katmanında emoji (+ paneli vb.), yazı boyutu ayarı (en fazla %115), rakamsız haftalık paylaşım kartı, bildirimleri koçun sesiyle yeniden yazmak.
 5. **Şubat 2027'den önce:** Ramazan modu.
