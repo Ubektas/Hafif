@@ -189,9 +189,10 @@ final class WidgetRenderer {
         }
         headL("DÖNGÜ · " + d.cycleDay() + "/" + d.cycleDays(), 16, AC);
         textR("🌙", W - 16, 34, 24, fm, FG);
-        text(ph + " evresi", 16, 66, 26, db, FG, W - 32);
-        if (H >= 140) wrap(d.phaseTip(), 16, 86, W - 32, 12, fm, MU, 2);
-        bar(16, H - 46, W - 32, 6, d.cycleFrac(), AC, TRACK);
+        boolean lo = H < 140;
+        text(ph + " evresi", 16, lo ? 58 : 66, lo ? 22 : 26, db, FG, W - 32);
+        if (!lo) wrap(d.phaseTip(), 16, 86, W - 32, 12, fm, MU, 2);
+        bar(16, lo ? H - 36 : H - 46, W - 32, 6, d.cycleFrac(), AC, TRACK);
         text("Yeni iğne: " + dayWord(d).toLowerCase(WidgetData.TR) + " " + (d.nextTs() > 0 ? hm(d.nextTs()) : ""), 16, H - 20, 11.5f, fb, FG, W - 32);
     }
 
@@ -252,8 +253,9 @@ final class WidgetRenderer {
         if (!wide && low()) {
             textC("🌿", 24, 26, 14, fm, FG);
             text("BUGÜN", 38, 25, 9, fb, AC, W - 54, 1.3f);
-            float y = 44, step = Math.max(14, (H - 50) / n);
-            for (int i = 0; i < n; i++) {
+            int fit = Math.max(1, Math.min(n, (int) ((H - 36) / 14)));
+            float y = 44, step = Math.max(14, (H - 50) / fit);
+            for (int i = 0; i < fit; i++) {
                 text(nm[i] + " · " + wd[i], 16, y + 4, 10.5f, fb, FG, W - 32);
                 y += step;
             }
@@ -440,8 +442,9 @@ final class WidgetRenderer {
         glass(18, 16, gw, gh, f);
         float x = 18 + gw + 20, mw = W - x - 16;
         headL("SU", x, AC);
-        text(cups == 0 ? "Bugün tamam" : big + " daha", x, 66, 26, db, FG, mw);
-        bar(x, 78, mw, 6, f, WATER, TRACK);
+        boolean lo = H < 140;
+        text(cups == 0 ? "Bugün tamam" : big + " daha", x, lo ? 54 : 66, lo ? 20 : 26, db, FG, mw);
+        if (!lo) bar(x, 78, mw, 6, f, WATER, TRACK);
         buttonsAt(r, x, new String[][]{{"+1 bardak", "water/250"}, {"+2 bardak", "water/500"}}, new int[]{BTN, SOFT}, new int[]{BTNF, FG});
     }
 
@@ -605,8 +608,11 @@ final class WidgetRenderer {
         textC(m.optString("e2", "🥗"), px + pd * 0.66f, py + pd * 0.74f, pd * 0.26f, fm, FG);
         float x = px + pd + 18, mw = W - x - 16;
         text("NE YESEM? · " + lbl, x, 28, 9.5f, fb, gold, mw, 1.3f);
-        wrap(m.optString("n"), x, 56, mw, 18, db, FG, 2);
-        text(remT, x, 96, 11.5f, fm, MU, mw);
+        if (H < 140) text(m.optString("n"), x, 54, 16, db, FG, mw);
+        else {
+            wrap(m.optString("n"), x, 56, mw, 18, db, FG, 2);
+            text(remT, x, 96, 11.5f, fm, MU, mw);
+        }
         buttonsAt(r, x, new String[][]{{"+ Ekle · " + m.optInt("g") + " g", act}, {"Başka öner", "tab/besin"}}, new int[]{BTN, SOFT}, new int[]{BTNF, FG});
     }
 
