@@ -4358,9 +4358,15 @@ async function remSchedule(){
 }
 async function remEnable(){
   const N=LN(); if(!N) return;
-  try{let p=await N.checkPermissions();if(p.display!=="granted")p=await N.requestPermissions();
-    if(p.display!=="granted"){toast("Bildirim izni verilmedi. Android ayarlarından açabilirsin.");return}
-    S.profile.rem=Object.assign({},rem(),{on:true});save();render();toast("Hatırlatıcılar açıldı")}catch(e){toast("Bildirim izni alınamadı")}
+  /* izin sorma ile ekranı yeniden çizme ayrı: çizim hatası "izin alınamadı" diye görünmesin; izin hatası da nedeniyle yazılsın */
+  const ayar=IOS()?"Ayarlar → Hafif → Bildirimler":"Ayarlar → Uygulamalar → Hafif → Bildirimler";
+  let p;
+  try{p=await N.checkPermissions();if(p.display!=="granted")p=await N.requestPermissions()}
+  catch(e){toast(`Bildirim izni sorulamadı (${(e&&e.message)||"bilinmeyen hata"}). ${ayar}'den açıp tekrar dene.`);return}
+  if(p.display!=="granted"){toast(`Bildirim izni verilmedi. ${ayar}'den açabilirsin.`);return}
+  S.profile.rem=Object.assign({},rem(),{on:true});save();
+  try{render()}catch(e){console.warn("hatırlatıcı çizimi",e)}
+  toast("Hatırlatıcılar açıldı")
 }
 function remCta(){
   if(!LN()||remOn()||S.profile.remHide) return "";
