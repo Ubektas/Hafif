@@ -18,7 +18,8 @@ permissions:
 
 jobs:
   testflight:
-    runs-on: macos-15
+    # App Store, iOS 26 SDK (Xcode 26) ile derlenmiş uygulama istiyor (ITMS-90725)
+    runs-on: macos-26
     timeout-minutes: 60
     env:
       ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
@@ -31,6 +32,14 @@ jobs:
         run: |
           for v in ASC_KEY_ID ASC_ISSUER_ID APPLE_TEAM_ID; do [ -n "${!v}" ] || { echo "::error::$v secret'ı eksik"; exit 1; }; done
           [ -n "$ASC_KEY_P8" ] || { echo "::error::ASC_KEY_P8 secret'ı eksik"; exit 1; }
+      - name: Xcode 26 seç
+        run: |
+          ls -d /Applications/Xcode*.app
+          X=$(ls -d /Applications/Xcode_26*.app 2>/dev/null | sort -V | tail -1)
+          [ -z "$X" ] && X=$(ls -d /Applications/Xcode.app)
+          sudo xcode-select -s "$X/Contents/Developer"
+          xcodebuild -version | tee xcode-surum.txt
+          xcodebuild -version | grep -qE "Xcode (2[6-9]|[3-9][0-9])" || { echo "::error::Xcode 26 veya üstü bulunamadı"; exit 1; }
       - uses: actions/setup-node@v5
         with:
           node-version: 22
@@ -137,6 +146,7 @@ jobs:
           mkdir -p sonuc
           for f in xcodebuild-archive.log xcodebuild-export.log xcodebuild-upload.log; do [ -f "$f" ] && grep -vE "authenticationKey|AuthKey_" "$f" > "sonuc/$f" || true; done
           grep -hE "error:|error |ERROR|failed|Upload succeeded|UPLOAD SUCCEEDED|No errors uploading|EXPORT SUCCEEDED|ARCHIVE SUCCEEDED" sonuc/*.log 2>/dev/null | head -80 > sonuc/ozet.txt || true
+          [ -f xcode-surum.txt ] && cat xcode-surum.txt >> sonuc/ozet.txt || true
           [ -f anahtar.txt ] && cat anahtar.txt >> sonuc/ozet.txt || true
           echo "${GITHUB_SHA::7} · çalışma $GITHUB_RUN_NUMBER · derleme $((GITHUB_RUN_NUMBER + 1))" >> sonuc/ozet.txt
           rm -rf "$RUNNER_TEMP/keys"
