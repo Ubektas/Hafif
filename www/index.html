@@ -2531,7 +2531,9 @@ function heroHtml(X){
 let shareOpt=(()=>{try{return Object.assign({weights:true,fat:true,shots:false,tpl:"zumrut"},JSON.parse(localStorage.getItem("hf-share")||"{}"))}catch(e){return {weights:true,fat:true,shots:false}}})();
 let shareCanvas=null;
 function shareData(){
-  const w=sortedW(), s=sortedS(), P=S.profile; if(w.length<2) return null;
+  const w=sortedW(), s=sortedS(), P=S.profile; if(!w.length) return null;
+  /* tek tartı: "yolculuğum başladı" kartı (başlangıç, hedef, iniş çizgisi) */
+  if(w.length<2)return {single:true,w,a:w[0],b:w[0],goal:P.goalWeight,shots:s.length,totalDays:diffDays(w[0].date,today())};
   const a=w[0], b=w[w.length-1], days=Math.max(1,diffDays(a.date,b.date));
   const fw=w.filter(x=>x.fat!=null); let fat=null;
   if(fw.length>1){const A=fw[0],B=fw[fw.length-1];const dd=A.kg*A.fat/100-B.kg*B.fat/100;fat={d:dd,from:A.fat,to:B.fat,share:A.kg>B.kg?dd/(A.kg-B.kg)*100:null}}
@@ -2696,28 +2698,58 @@ function tAfis(c,W,H,D,o){
 
 const TPL_FN={zumrut:tZumrut,fis:tFis,mezura:tMezura,basamak:tBasamak,afis:tAfis};
 if(!TPL_FN[shareOpt.tpl])shareOpt.tpl="zumrut";
+/* ---- Başlangıç: tek tartıyla paylaşım (Zümrüt tarzı) ---- */
+function tBaslangic(c,W,H,D,o){
+  let g=c.createLinearGradient(0,0,W*.55,H);g.addColorStop(0,"#0D4237");g.addColorStop(1,"#051D18");c.fillStyle=g;c.fillRect(0,0,W,H);
+  g=c.createRadialGradient(W*.95,-40,0,W*.95,-40,900);g.addColorStop(0,"rgba(42,160,128,.7)");g.addColorStop(1,"rgba(42,160,128,0)");c.fillStyle=g;c.fillRect(0,0,W,H);
+  leaf(c,80,92,2.6,"#9FF0D6");c.fillStyle="#FFF";c.font=`700 70px ${FONT_D}`;LS(c,"-2px");c.fillText("Hafif",158,150);LS(c,"0px");
+  c.font=`500 30px ${FONT_B}`;c.fillStyle="rgba(255,255,255,.6)";c.textAlign="right";c.fillText(toD(today()).toLocaleDateString("tr-TR",{day:"numeric",month:"long",year:"numeric"}),W-80,140);c.textAlign="left";
+  c.font=`600 30px ${FONT_B}`;c.fillStyle="rgba(255,255,255,.62)";LS(c,"5px");c.fillText(o.shots&&D.shots?"İĞNE YOLCULUĞUM BAŞLADI":"YOLCULUĞUM BAŞLADI",80,300);LS(c,"0px");
+  const big=`${D.totalDays+1}. gün`;c.font=`700 230px ${FONT_D}`;LS(c,"-10px");c.fillStyle="#FFF";c.fillText(big,64,530);LS(c,"0px");
+  const hasGoal=D.goal!=null&&D.goal<D.a.kg;
+  c.font=`500 42px ${FONT_B}`;c.fillStyle="rgba(255,255,255,.75)";
+  c.fillText(hasGoal?(o.weights?`Hedefe ${kg(D.a.kg-D.goal)} kg var.`:"Hedefimi koydum, ilk adımı attım."):"İlk adımı attım.",80,620);
+  /* iniş çizgisi: bugünden hedefe kesikli yol */
+  const x0=120,y0=780,x1=W-170,y1=hasGoal?960:900;
+  c.beginPath();c.moveTo(x0,y0);c.bezierCurveTo(x0+(x1-x0)*.45,y0,x0+(x1-x0)*.55,y1,x1,y1);
+  c.setLineDash([22,18]);c.strokeStyle="#9FF0D6";c.lineWidth=7;c.lineCap="round";c.shadowColor="rgba(159,240,214,.5)";c.shadowBlur=16;c.stroke();c.shadowBlur=0;c.setLineDash([]);
+  c.beginPath();c.arc(x0,y0,20,0,Math.PI*2);c.fillStyle="#FFF";c.fill();c.beginPath();c.arc(x0,y0,34,0,Math.PI*2);c.strokeStyle="rgba(255,255,255,.35)";c.lineWidth=3;c.stroke();
+  /* bayrak */
+  c.strokeStyle="#FFF";c.lineWidth=6;c.beginPath();c.moveTo(x1,y1);c.lineTo(x1,y1-120);c.stroke();
+  c.beginPath();c.moveTo(x1,y1-120);c.lineTo(x1+78,y1-96);c.lineTo(x1,y1-72);c.closePath();c.fillStyle="#9FF0D6";c.fill();
+  c.font=`600 30px ${FONT_B}`;c.fillStyle="rgba(255,255,255,.65)";c.fillText("Bugün",x0-40,y0-56);
+  if(o.weights){c.font=`500 44px ${FONT_M}`;c.fillStyle="#FFF";c.fillText(`${kg(D.a.kg)} kg`,x0-40,y0+82)}
+  if(hasGoal){c.textAlign="right";c.font=`600 30px ${FONT_B}`;c.fillStyle="rgba(255,255,255,.65)";c.fillText("Hedef",x1-28,o.weights?y1-130:y1-86);
+    if(o.weights){c.font=`500 44px ${FONT_M}`;c.fillStyle="#FFF";c.fillText(`${kg(D.goal)} kg`,x1-28,y1-78)}c.textAlign="left"}
+  const B=[["Haftada 1","tartı"],["Her gün","protein ve su"],[o.shots&&D.shots?"Haftada 1":"Haftada 3",o.shots&&D.shots?"iğne":"hareket"]],gap=20,bwid=(W-160-gap*2)/3,bh=150,y=1080;
+  B.forEach(([v,l],i)=>{const x=80+i*(bwid+gap);rr(c,x,y,bwid,bh,30);c.fillStyle="rgba(255,255,255,.07)";c.fill();c.strokeStyle="rgba(159,240,214,.22)";c.lineWidth=2;c.stroke();
+    c.fillStyle="#FFF";LS(c,"-1px");fitFont(c,v,bwid-48,700,52,FONT_D,32);c.fillText(v,x+26,y+80);LS(c,"0px");c.font=`500 28px ${FONT_B}`;c.fillStyle="rgba(255,255,255,.65)";c.fillText(l,x+26,y+122)});
+  c.font=`500 26px ${FONT_B}`;c.fillStyle="rgba(255,255,255,.42)";c.fillText("Hafif ile takip ediliyor",80,H-42);c.textAlign="right";c.fillText(`başlangıç ${fmtShort(D.a.date)}`,W-80,H-42);c.textAlign="left";
+}
 async function drawShare(tpl){
   const D=shareData(); if(!D) return null; await shareFonts();
   const W=1080,H=1350,cv=document.createElement("canvas");cv.width=W;cv.height=H;const c=cv.getContext("2d");c.textBaseline="alphabetic";
-  (TPL_FN[tpl||shareOpt.tpl]||tZumrut)(c,W,H,D,{...shareOpt,shots:shareOpt.shots&&SHOTS()}); return cv;
+  (D.single?tBaslangic:TPL_FN[tpl||shareOpt.tpl]||tZumrut)(c,W,H,D,{...shareOpt,shots:shareOpt.shots&&SHOTS()}); cv.single=!!D.single; return cv;
 }
 async function renderSharePreview(){
   const img=$("#shImg"); if(!img) return; img.style.opacity=.4;
-  shareCanvas=await drawShare(); if(!shareCanvas){img.alt="Paylaşmak için en az iki tartı gerekiyor.";return}
+  shareCanvas=await drawShare(); if(!shareCanvas){img.hidden=true;const h=$("#shHint");if(h)h.textContent="Paylaşmak için önce bir tartı gir.";const b=$("#shSave");if(b)b.disabled=true;return}
   img.src=shareCanvas.toDataURL("image/png"); img.style.opacity=1;
+  if(shareCanvas.single)return;
   for(const [k] of SHARE_TPLS){const cv=k===shareOpt.tpl?shareCanvas:await drawShare(k); if(!cv) continue;
     const t=document.createElement("canvas");t.width=216;t.height=270;t.getContext("2d").drawImage(cv,0,0,216,270);
     const im=document.querySelector(`[data-tpl="${k}"] img`); if(im) im.src=t.toDataURL("image/png");}
 }
 function openShare(){
   if(!shareOpt.tpl)shareOpt.tpl="zumrut";
+  const one=sortedW().length<2;
   const sw=(k,l,d)=>`<label class="sw"><span><b>${l}</b><small>${d}</small></span><input type="checkbox" id="sh-${k}" ${shareOpt[k]?"checked":""}><i></i></label>`;
   $("#sheetRoot").innerHTML=`<div class="scrim" data-close><div class="sheet" role="dialog" aria-modal="true" aria-label="İlerlemeni paylaş"><div class="grab"></div>
     <header><h2>İlerlemeni paylaş</h2><button class="del" data-x>Kapat</button></header>
     <div style="display:flex;flex-direction:column;gap:14px">
       <img id="shImg" class="shimg" alt="İlerleme kartı önizlemesi">
-      <div class="tpls" role="radiogroup" aria-label="Şablon">${SHARE_TPLS.map(([k,n])=>`<button type="button" class="tpl" role="radio" data-tpl="${k}" aria-checked="${k===shareOpt.tpl}"><img alt=""><span>${n}</span></button>`).join("")}</div>
-      <div class="sws">${sw("weights","Kilo değerleri","başlangıç, şimdiki ve hedef kilo")}${sw("fat","Yağ bilgisi","verilen yağ ve yağ oranı")}${SHOTS()?sw("shots","İğne bilgisi","iğne sayısı ve ilk iğne ifadesi"):""}</div>
+      <div class="tpls" role="radiogroup" aria-label="Şablon" ${one?"hidden":""}>${SHARE_TPLS.map(([k,n])=>`<button type="button" class="tpl" role="radio" data-tpl="${k}" aria-checked="${k===shareOpt.tpl}"><img alt=""><span>${n}</span></button>`).join("")}</div>
+      <div class="sws">${sw("weights","Kilo değerleri","başlangıç, şimdiki ve hedef kilo")}${one?"":sw("fat","Yağ bilgisi","verilen yağ ve yağ oranı")}${SHOTS()?sw("shots","İğne bilgisi","iğne sayısı ve ilk iğne ifadesi"):""}</div>
       <button class="btn" id="shSave" type="button">Görseli kaydet / paylaş</button>
       <button class="btn ghost tsbtn" id="shTeam" type="button">${MAILI}Hafif ekibine gönder</button>
       <p class="muted" id="shHint" style="margin:0;font-size:12.5px;text-align:center">Telefonunun paylaşım menüsü açılır; WhatsApp'ı, Instagram'ı ya da galeriye kaydetmeyi seçebilirsin.</p>
@@ -3079,7 +3111,14 @@ async function nativeSave(name,data){
   if(typeof data==="string") opts={data,encoding:"utf8"};
   else{const blob=data instanceof Blob?data:new Blob([data]);opts={data:await new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(String(r.result).split(",")[1]);r.onerror=rej;r.readAsDataURL(blob)})}}
   const {uri}=await CAP.Filesystem.writeFile({path:name,directory:"CACHE",...opts});
-  try{await CAP.Share.share({title:name,files:[uri]})}catch(e){if(/cancel/i.test(String(e&&e.message)))throw {code:"declined"};throw e}
+  const share=async()=>{try{await CAP.Share.share({title:name,files:[uri]})}catch(e){if(/cancel/i.test(String(e&&e.message)))throw {code:"declined"};throw e}};
+  /* Android: dosya doğrudan İndirilenler klasörüne kaydedilir (paylaşım menüsünde "kaydet" seçeneği her telefonda yok); olmazsa paylaşım menüsü */
+  if(!(typeof IOS==="function"&&IOS())){
+    const dot=name.lastIndexOf("."),alt=name.slice(0,dot)+"-"+nowHM().replace(":","")+name.slice(dot);
+    for(const nm of [name,alt]){try{await CAP.Filesystem.writeFile({path:"Download/"+nm,directory:"EXTERNAL_STORAGE",recursive:true,...opts});
+      setTimeout(()=>toast(`İndirilenler klasörüne kaydedildi: ${nm}`,["Paylaş",()=>share().catch(()=>{})]),60);return {status:"saved",where:"Download/"+nm}}catch(e){console.warn("indirme",nm,e&&e.message)}}
+  }
+  await share();
   return {status:"saved"};
 }
 async function dlSave(name,data){if(CAP)return nativeSave(name,data);const dl=window.claude&&window.claude.use?await claude.use("downloads"):null;if(!dl)throw {code:"unavailable"};return dl.save({filename:name,data})}

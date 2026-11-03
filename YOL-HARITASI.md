@@ -99,6 +99,8 @@ Her adım tek tek konuşulup karar veriliyor; onaylananlar Claude sürümüne i�
 
 - **+ menüsü, iğne kullanmayan (2.0.1, 3 Kasım):** 7 kutu 9'a tamamlandı: **İştah** (İğneler'deki iştah kaydının aynısı, açılır pencerede; Bugün/Dün/önceki gün) ve **Not** (güne bağlı serbest not, en fazla 500 karakter, son 5 not pencerede, yedekle taşınır; rapor ve Excel'e henüz eklenmedi). İğne kullananda menü aynen kaldı.
 
+- **2.0.1 hata düzeltmeleri (3 Kasım):** bildirim izni (R8 kuralları; yayın derlemesi artık emülatörde ayrıca deneniyor), tek tartıyla ilerleme paylaşımı ("Yolculuğum başladı" kartı), PDF/Excel/yedek doğrudan İndirilenler klasörüne.
+
 ## Sırada (karar bekleyen / sonraki sürümler)
 - **Maliyet takibi (kullanıcı düşünecek):** "Yeni kalem açtım"da isteğe bağlı fiyat (son fiyat hazır, "Ücretsiz / SGK"); İğneler'de "Harcamam": bu ay, toplam, aylık ortalama, kilo başına, doz planına göre gelecek ay tahmini. Yemek harcamasındaki düşüş: açılışta "önce ayda ne harcıyordun / şimdi ne harcıyorsun" → fark ilk iğneden bugüne geriye dönük günlük hesap, net maliyet ve kilo başına net; "şimdi" tutarı istenince güncellenir. Geçmiş kalemler açılışta bir kez sorulur. Varsayılan kapalı, tutarları gizle seçeneği, paylaşım/rapor/mağazada yok; dil nötr ("yemek harcamandaki düşüş"). Açık: Plus mı, yemek kısmı ayrı açılıp kapansın mı.
 - Plus koç kartları: haftalık özet ve "gelecek haftanın tek hedefi", duraklama analizi (ölçü ve adım karşılaştırması)

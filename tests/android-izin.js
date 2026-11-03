@@ -24,6 +24,9 @@ const wait = ms => new Promise(r => setTimeout(r, ms));
       await dene('bildirim_request', () => P.LocalNotifications.requestPermissions());
       await dene('bildirim_pending', () => P.LocalNotifications.getPending());
       await dene('dosya_check', () => P.Filesystem.checkPermissions());
+      // PDF/Excel/yedek İndirilenler klasörüne kaydedilir (nativeSave)
+      await dene('indir_yaz', () => P.Filesystem.writeFile({ path: 'Download/hafif-test.pdf', directory: 'EXTERNAL_STORAGE', recursive: true, data: btoa('%PDF-1.4 test') }));
+      await dene('indir_sil', () => P.Filesystem.deleteFile({ path: 'Download/hafif-test.pdf', directory: 'EXTERNAL_STORAGE' }));
       return out;
     });
     const ok = v => typeof v === 'string' && !v.startsWith('HATA');
@@ -31,6 +34,7 @@ const wait = ms => new Promise(r => setTimeout(r, ms));
     step('Yayın derlemesi: bildirim izni isteme', ok(r.bildirim_request) && /granted/.test(r.bildirim_request), r.bildirim_request);
     step('Yayın derlemesi: bekleyen bildirimler', ok(r.bildirim_pending), r.bildirim_pending);
     step('Yayın derlemesi: dosya izni kontrolü', ok(r.dosya_check), r.dosya_check);
+    step('Yayın derlemesi: İndirilenler klasörüne kaydetme', ok(r.indir_yaz) && ok(r.indir_sil), r.indir_yaz + ' · ' + r.indir_sil);
     await device.screenshot({ path: `${OUT}/izin-yayin.png` });
   } catch (e) { step('Yayın derlemesi testi çalıştı', false, e.message); }
   fs.writeFileSync(`${OUT}/izin-yayin.json`, JSON.stringify(sonuc, null, 2));

@@ -63,7 +63,14 @@ async function nativeSave(name,data){
   if(typeof data==="string") opts={data,encoding:"utf8"};
   else{const blob=data instanceof Blob?data:new Blob([data]);opts={data:await new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(String(r.result).split(",")[1]);r.onerror=rej;r.readAsDataURL(blob)})}}
   const {uri}=await CAP.Filesystem.writeFile({path:name,directory:"CACHE",...opts});
-  try{await CAP.Share.share({title:name,files:[uri]})}catch(e){if(/cancel/i.test(String(e&&e.message)))throw {code:"declined"};throw e}
+  const share=async()=>{try{await CAP.Share.share({title:name,files:[uri]})}catch(e){if(/cancel/i.test(String(e&&e.message)))throw {code:"declined"};throw e}};
+  /* Android: dosya doğrudan İndirilenler klasörüne kaydedilir (paylaşım menüsünde "kaydet" seçeneği her telefonda yok); olmazsa paylaşım menüsü */
+  if(!(typeof IOS==="function"&&IOS())){
+    const dot=name.lastIndexOf("."),alt=name.slice(0,dot)+"-"+nowHM().replace(":","")+name.slice(dot);
+    for(const nm of [name,alt]){try{await CAP.Filesystem.writeFile({path:"Download/"+nm,directory:"EXTERNAL_STORAGE",recursive:true,...opts});
+      setTimeout(()=>toast(`İndirilenler klasörüne kaydedildi: ${nm}`,["Paylaş",()=>share().catch(()=>{})]),60);return {status:"saved",where:"Download/"+nm}}catch(e){console.warn("indirme",nm,e&&e.message)}}
+  }
+  await share();
   return {status:"saved"};
 }
 async function dlSave(name,data){if(CAP)return nativeSave(name,data);const dl=""", "dlSave")
