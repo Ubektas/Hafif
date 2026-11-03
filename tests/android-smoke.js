@@ -68,9 +68,30 @@ const step = (ad, sonuc, detay) => { report.adimlar.push({ ad, sonuc, detay }); 
     for (let i = 0; i < 4 && !/hafif\/.*MainActivity/.test(await odakNe()); i++) { await device.shell('input keyevent 4'); await wait(1500); }
     await page.evaluate(() => { const r = document.querySelector('#sheetRoot'); if (r) r.innerHTML = ''; });
     // Hatırlatıcılar: izin ver, aç, bildirimler kuruldu mu; gerçek bir bildirim gösterilebiliyor mu?
-    await device.shell(`pm grant ${PKG} android.permission.POST_NOTIFICATIONS`);
+    // Gerçek izin yolu: izin önceden verilmez; "Aç" Android'in izin penceresini açmalı, "İzin ver"e basılınca hatırlatıcılar açılmalı
+    // (önceden pm grant verildiği için requestPermissions yolu hiç denenmiyordu; Play'deki "Bildirim izni alınamadı" bu yolda)
     await page.evaluate(() => document.querySelector('.remcta').scrollIntoView({ block: 'center' })); await shot('hatirlatici-kart');
-    await tap(page, '.remcta [data-rem-on]'); await wait(3500);
+    const izinOnce = await page.evaluate(async () => { try { return (await Capacitor.Plugins.LocalNotifications.checkPermissions()).display; } catch (e) { return 'HATA: ' + e.message; } });
+    await tap(page, '.remcta [data-rem-on]');
+    let bpen = '';
+    for (let i = 0; i < 10; i++) { await wait(1000); bpen = await odakNe(); if (/permissioncontroller|GrantPermissions/i.test(bpen)) break; }
+    await shot('bildirim-izin-penceresi');
+    step('Bildirim izin penceresi açıldı', /permissioncontroller|GrantPermissions/i.test(bpen), 'önce: ' + izinOnce + ' · ' + bpen);
+    if (/permissioncontroller|GrantPermissions/i.test(bpen)) {
+      await device.shell('uiautomator dump /sdcard/ui.xml'); const ui = (await device.shell('cat /sdcard/ui.xml')).toString();
+      const m = /resource-id="com\.android\.permissioncontroller:id\/permission_allow_button"[^>]*bounds="\[(\d+),(\d+)\]\[(\d+),(\d+)\]"/.exec(ui);
+      if (m) await device.shell(`input tap ${(+m[1] + +m[3]) >> 1} ${(+m[2] + +m[4]) >> 1}`);
+      await wait(2500);
+    }
+    const izinSonuc = await page.evaluate(() => ({ toast: document.querySelector('.toast')?.textContent || '', acik: !!(window.__hafifKoc && window.__hafifKoc.get().profile.rem && window.__hafifKoc.get().profile.rem.on) }));
+    step('İzin verilince hatırlatıcılar açıldı', izinSonuc.acik, JSON.stringify(izinSonuc));
+    if (!izinSonuc.acik) {
+      // sonraki adımlar sürsün: izni elle verip tekrar dene
+      await device.shell(`pm grant ${PKG} android.permission.POST_NOTIFICATIONS`).catch(() => {});
+      for (let i = 0; i < 4 && !/hafif\/.*MainActivity/.test(await odakNe()); i++) { await device.shell('input keyevent 4'); await wait(1500); }
+      await page.evaluate(() => document.querySelector('[data-rem-on]')?.click()); 
+    }
+    await wait(3500);
     const bek = await page.evaluate(async () => (await Capacitor.Plugins.LocalNotifications.getPending()).notifications.length);
     step('Hatırlatıcılar kuruldu', bek > 0, bek + ' bekleyen bildirim');
     await page.evaluate(() => Capacitor.Plugins.LocalNotifications.schedule({ notifications: [{ id: 9998, title: 'Hafif test', body: 'Bir bardak su?', actionTypeId: 'SU', schedule: { at: new Date(Date.now() + 3000), allowWhileIdle: true }, isExactNotification: false }] }));
