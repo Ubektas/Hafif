@@ -6,7 +6,10 @@ const OUT = process.env.OUT || 'test-sonuclari';
 fs.mkdirSync(OUT, { recursive: true });
 const report = { adimlar: [], hatalar: [], konsol: [] };
 const wait = ms => new Promise(r => setTimeout(r, ms));
-const step = (ad, sonuc, detay) => { report.adimlar.push({ ad, sonuc, detay }); console.log(sonuc ? '✓' : '✗', ad, detay ?? ''); };
+const yaz = () => { try { fs.writeFileSync(`${OUT}/rapor.json`, JSON.stringify(report, null, 2)); } catch (_) {} };
+const step = (ad, sonuc, detay) => { report.adimlar.push({ ad, sonuc, detay }); console.log(sonuc ? '✓' : '✗', ad, detay ?? ''); yaz(); };
+// takılırsa (ör. yanıt vermeyen eklenti çağrısı) iş 40 dk'da kesilmesin: 15 dk sonra o ana kadarki raporla çık
+setTimeout(() => { report.hatalar.push('TEST 15 dk içinde bitmedi; son adım: ' + (report.adimlar.at(-1)?.ad || '-')); yaz(); process.exit(0); }, 15 * 60e3).unref();
 
 (async () => {
   const [device] = await android.devices();

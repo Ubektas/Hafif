@@ -6,9 +6,11 @@ const PKG = 'com.ugurbektas.hafif';
 const OUT = process.env.OUT || 'test-sonuclari';
 fs.mkdirSync(OUT, { recursive: true });
 const wait = ms => new Promise(r => setTimeout(r, ms));
+setTimeout(() => process.exit(0), 5 * 60e3).unref();
 (async () => {
   const sonuc = { adimlar: [] };
-  const step = (ad, ok, detay) => { sonuc.adimlar.push({ ad, sonuc: ok, detay }); console.log(ok ? '✓' : '✗', ad, detay ?? ''); };
+  const step = (ad, ok, detay) => { sonuc.adimlar.push({ ad, sonuc: ok, detay }); console.log(ok ? '✓' : '✗', ad, detay ?? ''); fs.writeFileSync(`${OUT}/izin-yayin.json`, JSON.stringify(sonuc, null, 2)); };
+  step('Yayın derlemesi testi başladı', true);
   const [device] = await android.devices();
   try {
     // kullanıcının durumu: bildirim izni zaten verilmiş
@@ -19,7 +21,7 @@ const wait = ms => new Promise(r => setTimeout(r, ms));
     await page.waitForSelector('#view', { timeout: 30000 }); await wait(1500);
     const r = await page.evaluate(async () => {
       const P = Capacitor.Plugins, out = {};
-      const dene = async (ad, f) => { try { out[ad] = JSON.stringify(await f()); } catch (e) { out[ad] = 'HATA: ' + (e && e.message); } };
+      const dene = async (ad, f) => { try { out[ad] = JSON.stringify(await Promise.race([f(), new Promise((_, no) => setTimeout(() => no(new Error('15 sn yanıt yok')), 15000))])); } catch (e) { out[ad] = 'HATA: ' + (e && e.message); } };
       await dene('bildirim_check', () => P.LocalNotifications.checkPermissions());
       await dene('bildirim_request', () => P.LocalNotifications.requestPermissions());
       await dene('bildirim_pending', () => P.LocalNotifications.getPending());
