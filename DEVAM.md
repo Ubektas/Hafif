@@ -58,7 +58,7 @@ Bu dosya, Hafif üzerinde çalışan yeni bir Claude oturumunun kaldığı yerde
 - **3 Kasım · 2.0.1 derlendi (kod 20, `a55ca8e`, Release v2.0.1: .aab 5,4 MB, APK 4,3 MB); 3 Kasım 12:24 Play kapalı teste (Alpha) gönderildi, Gönderim 7 · incelemede** (`surum-2.0`, sürüm notu `magaza/surum-notlari.md`, 377 karakter).
 - **3 Kasım · paylaşım tek tartıyla:** "İlerlemeni paylaş" artık 1 tartıyla da çalışıyor: "Yolculuğum başladı · 1. gün" kartı (`tBaslangic`): bugünkü kilo, hedef ve kesikli iniş çizgisi, alışkanlık kutuları. Tek tartıda şablon seçimi ve yağ anahtarı gizli. Tartı yoksa kırık görsel yerine "Paylaşmak için önce bir tartı gir."
 - **3 Kasım · PDF/Excel/yedek indirme (Android):** `nativeSave` dosyayı doğrudan `Download/` klasörüne yazar (Android 11+ izinsiz), bildirimde "Paylaş" seçeneği; olmazsa (Android 8–10) eskisi gibi paylaşım menüsü. iOS'ta paylaşım menüsü (Dosyalar'a Kaydet orada var).
-- **3 Kasım · alt çubuk iğnesiz kullanımda (2.0.1'den sonra, henüz derlenmedi):** İğneler gizlenince 4 öğe kalıyor ve + ortadan kayıyordu. Artık iğnesiz kullanımda İğneler yerine **Adımlar** sekmesi (`.tab[data-tab="adim"]`, Noto Emoji 👟 400/600): Özet · Günlük · + · Kilo · Adımlar; ızgara her zaman 5 sütun.
+- **3 Kasım · alt çubuk iğnesiz kullanımda (2.0.2; 2.0.1 Play'de yayında):** İğneler gizlenince 4 öğe kalıyor ve + ortadan kayıyordu. Artık iğnesiz kullanımda İğneler yerine **Adımlar** sekmesi (`.tab[data-tab="adim"]`, Noto Emoji 👟 400/600): Özet · Günlük · + · Kilo · Adımlar; ızgara her zaman 5 sütun.
 - **Kullanım sınırı:** Kullanıcı haftalık kullanımına dikkat ediyor; her büyük iş ayrı oturumda, görseller toplu ve az, küçük işlerde maket yok.
 
 ## Sıradaki işler (toplantı 2 kararları ve açık konular)

@@ -2,6 +2,15 @@
 
 Play en fazla 500 karakter kabul eder. Aşağıdaki bloğu olduğu gibi yapıştır.
 
+## 2.0.2
+
+```
+<tr-TR>
+Düzeltme: iğne takibi kapalıyken alt çubuk.
+• İğne kullanmıyorsan alt çubukta İğneler yerine Adımlar sekmesi var; + düğmesi artık ortada.
+</tr-TR>
+```
+
 ## 2.0.1
 
 ```
