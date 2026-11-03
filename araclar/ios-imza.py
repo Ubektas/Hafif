@@ -55,7 +55,20 @@ def hazirla(out):
     subprocess.run(["openssl", "genrsa", "-out", k, "2048"], check=True, capture_output=True)
     subprocess.run(["openssl", "req", "-new", "-key", k, "-out", c, "-subj", "/CN=Hafif CI/emailAddress=apphafif@gmail.com"], check=True)
     csr = open(c).read()
-    cert = call("POST", "/certificates", {"data": {"type": "certificates", "attributes": {"certificateType": "DISTRIBUTION", "csrContent": csr}}})["data"]
+    body = "".join(l for l in csr.splitlines() if "-----" not in l)
+    var = call("GET", "/certificates?limit=50")["data"]
+    print("Hesaptaki sertifikalar:", ", ".join(f"{x['attributes']['certificateType']} ({x['attributes'].get('expirationDate','')[:10]})" for x in var) or "yok")
+    cert = None
+    # Apple ara sıra 500 dönüyor; tür ve CSR biçimi değiştirilerek, kısa beklemelerle denenir
+    for tur, icerik in [("DISTRIBUTION", csr), ("DISTRIBUTION", body), ("IOS_DISTRIBUTION", csr), ("IOS_DISTRIBUTION", body), ("DISTRIBUTION", csr)]:
+        r = requests.post(API + "/certificates", json={"data": {"type": "certificates", "attributes": {"certificateType": tur, "csrContent": icerik}}},
+                          headers={"Authorization": "Bearer " + token()}, timeout=60)
+        print(f"Sertifika denemesi {tur} · {'PEM' if icerik is csr else 'gövde'} → {r.status_code}", (r.text[:300] if r.status_code >= 300 else ""))
+        if r.status_code == 201:
+            cert = r.json()["data"]; break
+        time.sleep(8)
+    if not cert:
+        print("::error::Apple dağıtım sertifikası oluşturulamadı (yukarıdaki yanıtlar)"); sys.exit(1)
     open(os.path.join(out, "cert.cer"), "wb").write(base64.b64decode(cert["attributes"]["certificateContent"]))
     print("Sertifika oluşturuldu:", cert["attributes"].get("name"), cert["id"])
 
