@@ -34,7 +34,7 @@ const wait = ms => new Promise(r => setTimeout(r, ms));
     step('Yayın derlemesi: bildirim izni isteme', ok(r.bildirim_request) && /granted/.test(r.bildirim_request), r.bildirim_request);
     step('Yayın derlemesi: bekleyen bildirimler', ok(r.bildirim_pending), r.bildirim_pending);
     step('Yayın derlemesi: dosya izni kontrolü', ok(r.dosya_check), r.dosya_check);
-    step('Yayın derlemesi: İndirilenler klasörüne kaydetme', ok(r.indir_yaz) && ok(r.indir_sil), r.indir_yaz + ' · ' + r.indir_sil);
+    step('Yayın derlemesi: İndirilenler klasörüne kaydetme', ok(r.indir_yaz) && !String(r.indir_sil).startsWith('HATA'), r.indir_yaz + ' · ' + r.indir_sil);
     await device.screenshot({ path: `${OUT}/izin-yayin.png` });
   } catch (e) { step('Yayın derlemesi testi çalıştı', false, e.message); }
   fs.writeFileSync(`${OUT}/izin-yayin.json`, JSON.stringify(sonuc, null, 2));

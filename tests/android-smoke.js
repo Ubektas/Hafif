@@ -239,17 +239,17 @@ const step = (ad, sonuc, detay) => { report.adimlar.push({ ad, sonuc, detay }); 
     // Ayarlar → yedek indir: Android paylaş penceresi açılmalı
     await tap(page, '#gearBtn'); await wait(700);
     await page.evaluate(() => document.querySelector('#exJson').scrollIntoView()); await wait(500); await shot('ayarlar-verilerim');
+    // 2.0.1: dosyalar paylaşım menüsü yerine doğrudan İndirilenler klasörüne kaydedilir
+    const indirildi = async (on) => { const ls = (await device.shell('ls /sdcard/Download')).toString(); const t = await page.evaluate(() => document.querySelector('.toast')?.textContent || ''); return { ok: ls.split(/\s+/).some(f => f.startsWith(on)) && /İndirilenler/.test(t), ls: ls.trim().replace(/\s+/g, ' '), t }; };
     await tap(page, '#exJson'); await wait(2500);
-    await shot('yedek-paylas-penceresi');
-    const pencere = await device.shell('dumpsys window | grep -E "mCurrentFocus|mFocusedApp"');
-    step('Yedek dosyası → paylaş penceresi', !/hafif\/.*MainActivity/.test(pencere.toString().split('\n').find(l => l.includes('mCurrentFocus')) || ''), pencere.toString().trim());
-    await device.shell('input keyevent 4'); await wait(1000);
+    await shot('yedek-indirildi');
+    const iy = await indirildi('hafif-yedek'); step('Yedek dosyası → İndirilenler', iy.ok, JSON.stringify(iy));
     const msg = await page.textContent('#dataMsg');
     step('Yedek dosyası hata mesajı yok', !msg, msg);
 
     await tap(page, '#exXlsx'); await wait(3500);
-    await shot('excel-paylas-penceresi');
-    await device.shell('input keyevent 4'); await wait(1000);
+    await shot('excel-indirildi');
+    const ix = await indirildi('hafif-veriler'); step('Excel dosyası → İndirilenler', ix.ok, JSON.stringify(ix));
     const msg2 = await page.textContent('#dataMsg');
     step('Excel dosyası hata mesajı yok', !msg2, msg2);
 
@@ -257,10 +257,8 @@ const step = (ad, sonuc, detay) => { report.adimlar.push({ ad, sonuc, detay }); 
     const iap = await page.evaluate(() => !!(window.CdvPurchase && window.CdvPurchase.store));
     step('Google Play faturalandırma eklentisi yüklendi', iap);
     await tap(page, '#exPdf'); await wait(5000);
-    await shot('rapor-paylas-penceresi');
-    const pencere3 = (await device.shell('dumpsys window | grep mCurrentFocus')).toString();
-    step('Ücretsiz dönemde doktor raporu (PDF) → paylaş penceresi', !/hafif\/.*MainActivity/.test(pencere3), pencere3.trim());
-    await device.shell('input keyevent 4'); await wait(1000);
+    await shot('rapor-indirildi');
+    const ip = await indirildi('hafif-rapor'); step('Ücretsiz dönemde doktor raporu (PDF) → İndirilenler', ip.ok, JSON.stringify(ip));
     // 7 gün geçmiş gibi: Plus alanları kilitlenir, dönem bitince ödeme ekranı bir kez açılır
     await wait(1000);
     await page.evaluate(() => { const S = JSON.parse(localStorage.getItem('doz-defteri')); S.profile.since = '2020-01-01'; delete S.profile.trialEndSeen; localStorage.setItem('doz-defteri', JSON.stringify(S)); });
