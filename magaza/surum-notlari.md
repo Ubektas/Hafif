@@ -2,6 +2,21 @@
 
 Play en fazla 500 karakter kabul eder. Aşağıdaki bloğu olduğu gibi yapıştır.
 
+## 2.0.1
+
+```
+<tr-TR>
+Yeni gezinme: Günlük sekmesi ve ortada + düğmesi.
+• Protein, su ve takviyeler tek sekmede: Günlük
+• + menüsü 3×3; iğnesiz kullanımda İştah ve Not
+• Widget'lar yenilendi, küçük boyda taşma yok
+• Tek tartıyla da ilerlemeni paylaşabilirsin
+• Rapor, Excel ve yedek İndirilenler'e kaydedilir
+• Düzeltildi: "Bildirim izni alınamadı" hatası
+• Düzeltildi: ekibe gönderme ve Plus ekranı
+</tr-TR>
+```
+
 ## 2.0.0
 
 ```
