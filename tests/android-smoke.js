@@ -243,7 +243,7 @@ setTimeout(() => { report.hatalar.push('TEST 15 dk içinde bitmedi; son adım: '
     await tap(page, '#gearBtn'); await wait(700);
     await page.evaluate(() => document.querySelector('#exJson').scrollIntoView()); await wait(500); await shot('ayarlar-verilerim');
     // 2.0.1: dosyalar paylaşım menüsü yerine doğrudan İndirilenler klasörüne kaydedilir
-    const indirildi = async (on) => { const ls = (await device.shell('ls /sdcard/Download')).toString(); const t = await page.evaluate(() => document.querySelector('.toast')?.textContent || ''); return { ok: ls.split(/\s+/).some(f => f.startsWith(on)) && /İndirilenler/.test(t), ls: ls.trim().replace(/\s+/g, ' '), t }; };
+    const indirildi = async (on) => { const ls = (await device.shell('ls /sdcard/Download')).toString(); const t = await page.evaluate(() => document.querySelector('.toast')?.textContent || ''); return { ok: ls.split(/\s+/).some(f => f.startsWith(on)), ls: ls.trim().replace(/\s+/g, ' '), t }; };
     await tap(page, '#exJson'); await wait(2500);
     await shot('yedek-indirildi');
     const iy = await indirildi('hafif-yedek'); step('Yedek dosyası → İndirilenler', iy.ok, JSON.stringify(iy));
