@@ -27,6 +27,16 @@ jobs:
         working-directory: android
         env:
           HAFIF_TEST_MINIFY: '1'
+      - name: Yayın derlemesi (izin testi için; WebView hata ayıklaması yalnızca bu derlemede açılır)
+        run: |
+          f=src/main/assets/capacitor.config.json
+          cp $f /tmp/cap-orj.json
+          jq '.android = ((.android // {}) + {webContentsDebuggingEnabled: true})' /tmp/cap-orj.json > $f
+          ./gradlew assembleRelease
+          cp /tmp/cap-orj.json $f
+        working-directory: android
+        env:
+          HAFIF_TEST_RELEASE: '1'
       - name: KVM'yi aç
         run: |
           echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
@@ -44,6 +54,9 @@ jobs:
           script: |
             adb install -r android/app/build/outputs/apk/debug/app-debug.apk
             OUT=test-sonuclari node tests/android-smoke.js
+            adb uninstall com.ugurbektas.hafif || true
+            adb install android/app/build/outputs/apk/release/app-release.apk
+            OUT=test-sonuclari node tests/android-izin.js
       - name: Sonuçları test-sonuclari dalına kaydet
         if: always()
         run: |

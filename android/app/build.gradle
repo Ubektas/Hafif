@@ -31,6 +31,8 @@ android {
     buildTypes {
         release {
             if (System.getenv("HAFIF_KEYSTORE_FILE")) signingConfig signingConfigs.release
+            // Emülatör testi: yayın derlemesi (R8 tam iyileştirme) hata ayıklama anahtarıyla imzalanıp kurulur
+            else if (System.getenv("HAFIF_TEST_RELEASE")) signingConfig signingConfigs.debug
             // Play: kod küçültme ve karartma (R8). Capacitor eklentilerinin kuralları kütüphanelerle birlikte gelir.
             minifyEnabled true
             shrinkResources true
