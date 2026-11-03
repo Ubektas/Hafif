@@ -3,7 +3,8 @@ name: iOS TestFlight
 # Başlatma: "ios-v2.0.2" gibi bir etiket gönder (git tag ios-v2.0.2-1 && git push origin ios-v2.0.2-1)
 # ya da (iş akışı main'e alınınca) Actions sekmesinden elle.
 # Gereken GitHub secrets: ASC_KEY_ID, ASC_ISSUER_ID, ASC_KEY_P8 (.p8 dosyasının tüm metni), APPLE_TEAM_ID
-# İmzalama otomatik: Xcode, API anahtarıyla (Admin rolü) dağıtım sertifikasını ve profili kendisi oluşturur.
+# İmzalama: araclar/ios-imza.py API anahtarıyla (Admin rolü) her çalışmada geçici Apple Distribution sertifikası ve
+# App Store profili oluşturur, iş bitince siler (cihaz kaydı ya da Mac gerekmez).
 on:
   push:
     tags: ['ios-v*']
@@ -54,6 +55,37 @@ jobs:
           echo "Key ID uzunluğu: ${#ASC_KEY_ID} · Issuer ID uzunluğu: ${#ASC_ISSUER_ID} · Team ID uzunluğu: ${#APPLE_TEAM_ID}"
           openssl pkey -in "$RUNNER_TEMP/keys/AuthKey_${ASC_KEY_ID}.p8" -noout && echo "Anahtar okunabiliyor ✓" || echo "::error::.p8 anahtarı okunamıyor; ASC_KEY_P8 secret'ını yeniden yapıştır"
           echo "KEY_PATH=$RUNNER_TEMP/keys/AuthKey_${ASC_KEY_ID}.p8" >> "$GITHUB_ENV"
+      - name: Geçici App Store imzası (sertifika + profil)
+        shell: bash
+        run: |
+          exec > >(tee -a anahtar.txt) 2>&1
+          python3 -m venv "$RUNNER_TEMP/v" && "$RUNNER_TEMP/v/bin/pip" -q install pyjwt cryptography requests
+          BUNDLE=com.ugurbektas.hafif "$RUNNER_TEMP/v/bin/python" araclar/ios-imza.py hazirla "$RUNNER_TEMP/imza"
+          I="$RUNNER_TEMP/imza"
+          /usr/bin/openssl x509 -inform DER -in "$I/cert.cer" -out "$I/cert.pem"
+          /usr/bin/openssl pkcs12 -export -inkey "$I/key.pem" -in "$I/cert.pem" -out "$I/imza.p12" -passout pass:hafif
+          KC="$RUNNER_TEMP/hafif.keychain-db"
+          security create-keychain -p hafif "$KC"
+          security set-keychain-settings -lut 3600 "$KC"
+          security unlock-keychain -p hafif "$KC"
+          security import "$I/imza.p12" -k "$KC" -P hafif -T /usr/bin/codesign -T /usr/bin/security
+          security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k hafif "$KC" >/dev/null
+          security list-keychains -d user -s "$KC" $(security list-keychains -d user | tr -d '"')
+          security find-identity -v -p codesigning "$KC"
+          UUID=$(python3 -c "import json;print(json.load(open('$I/ids.json'))['uuid'])")
+          NAME=$(python3 -c "import json;print(json.load(open('$I/ids.json'))['name'])")
+          for d in "$HOME/Library/MobileDevice/Provisioning Profiles" "$HOME/Library/Developer/Xcode/UserData/Provisioning Profiles"; do mkdir -p "$d"; cp "$I/profile.mobileprovision" "$d/$UUID.mobileprovision"; done
+          echo "PROFILE_NAME=$NAME" >> "$GITHUB_ENV"
+          # yalnızca App hedefi elle imzalanır (Pods hedeflerine dokunulmaz)
+          python3 - "$NAME" "$APPLE_TEAM_ID" <<'PY'
+          import sys
+          p='ios/App/App.xcodeproj/project.pbxproj'; s=open(p).read(); name,team=sys.argv[1],sys.argv[2]
+          blocks=s.split('buildSettings = {')
+          for i,b in enumerate(blocks):
+              if 'PRODUCT_BUNDLE_IDENTIFIER = com.ugurbektas.hafif;' in b.split('};')[0]:
+                  blocks[i]=b.replace('CODE_SIGN_STYLE = Automatic;',f'CODE_SIGN_STYLE = Manual;\n\t\t\t\tCODE_SIGN_IDENTITY = "Apple Distribution";\n\t\t\t\tDEVELOPMENT_TEAM = {team};\n\t\t\t\tPROVISIONING_PROFILE_SPECIFIER = "{name}";',1)
+          open(p,'w').write('buildSettings = {'.join(blocks)); print('App hedefi elle imzaya ayarlandı')
+          PY
       - name: Arşivle (imzalı)
         run: |
           cd ios/App
@@ -63,20 +95,20 @@ jobs:
           echo "Derleme numarası: $BUILD"
           xcodebuild -workspace App.xcworkspace -scheme App -configuration Release \
             -destination 'generic/platform=iOS' -archivePath "$RUNNER_TEMP/Hafif.xcarchive" \
-            DEVELOPMENT_TEAM="$APPLE_TEAM_ID" CODE_SIGN_STYLE=Automatic CURRENT_PROJECT_VERSION="$BUILD" \
-            -allowProvisioningUpdates \
-            -authenticationKeyPath "$KEY_PATH" -authenticationKeyID "$ASC_KEY_ID" -authenticationKeyIssuerID "$ASC_ISSUER_ID" \
+            CURRENT_PROJECT_VERSION="$BUILD" \
             archive 2>&1 | tee ../../xcodebuild-archive.log | grep -E "error:|BUILD|ARCHIVE" | tail -60
-      - name: TestFlight'a yükle
+      - name: IPA üret
         run: |
           cat > "$RUNNER_TEMP/ExportOptions.plist" <<EOF
           <?xml version="1.0" encoding="UTF-8"?>
           <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
           <plist version="1.0"><dict>
             <key>method</key><string>app-store-connect</string>
-            <key>destination</key><string>upload</string>
+            <key>destination</key><string>export</string>
             <key>teamID</key><string>${APPLE_TEAM_ID}</string>
-            <key>signingStyle</key><string>automatic</string>
+            <key>signingStyle</key><string>manual</string>
+            <key>signingCertificate</key><string>Apple Distribution</string>
+            <key>provisioningProfiles</key><dict><key>com.ugurbektas.hafif</key><string>${PROFILE_NAME}</string></dict>
             <key>uploadSymbols</key><true/>
             <key>manageAppVersionAndBuildNumber</key><false/>
           </dict></plist>
@@ -84,15 +116,27 @@ jobs:
           set -o pipefail
           xcodebuild -exportArchive -archivePath "$RUNNER_TEMP/Hafif.xcarchive" \
             -exportOptionsPlist "$RUNNER_TEMP/ExportOptions.plist" -exportPath "$RUNNER_TEMP/out" \
-            -allowProvisioningUpdates \
-            -authenticationKeyPath "$KEY_PATH" -authenticationKeyID "$ASC_KEY_ID" -authenticationKeyIssuerID "$ASC_ISSUER_ID" \
-            2>&1 | tee xcodebuild-export.log | grep -E "error|Upload|EXPORT|succeeded|failed" | tail -60
+            2>&1 | tee xcodebuild-export.log | grep -E "error|EXPORT|succeeded|failed" | tail -40
+          ls -la "$RUNNER_TEMP/out"
+      - name: TestFlight'a yükle
+        run: |
+          mkdir -p "$HOME/.appstoreconnect/private_keys"
+          cp "$KEY_PATH" "$HOME/.appstoreconnect/private_keys/AuthKey_${ASC_KEY_ID}.p8"
+          IPA=$(ls "$RUNNER_TEMP"/out/*.ipa | head -1)
+          set -o pipefail
+          xcrun altool --upload-app -f "$IPA" -t ios --apiKey "$ASC_KEY_ID" --apiIssuer "$ASC_ISSUER_ID" 2>&1 | tee xcodebuild-upload.log | tail -30
+      - name: Geçici imzayı sil
+        if: always()
+        run: |
+          [ -d "$RUNNER_TEMP/v" ] && "$RUNNER_TEMP/v/bin/python" araclar/ios-imza.py temizle "$RUNNER_TEMP/imza" 2>&1 | tee -a anahtar.txt || true
+          security delete-keychain "$RUNNER_TEMP/hafif.keychain-db" 2>/dev/null || true
+          rm -rf "$HOME/.appstoreconnect/private_keys" "$RUNNER_TEMP/imza"
       - name: Günlükleri ios-testflight-sonuc dalına kaydet
         if: always()
         run: |
           mkdir -p sonuc
-          for f in xcodebuild-archive.log xcodebuild-export.log; do [ -f "$f" ] && grep -vE "authenticationKey|AuthKey_" "$f" > "sonuc/$f" || true; done
-          grep -hE "error:|error |failed|Upload succeeded|EXPORT SUCCEEDED|ARCHIVE SUCCEEDED" sonuc/*.log 2>/dev/null | head -80 > sonuc/ozet.txt || true
+          for f in xcodebuild-archive.log xcodebuild-export.log xcodebuild-upload.log; do [ -f "$f" ] && grep -vE "authenticationKey|AuthKey_" "$f" > "sonuc/$f" || true; done
+          grep -hE "error:|error |ERROR|failed|Upload succeeded|UPLOAD SUCCEEDED|No errors uploading|EXPORT SUCCEEDED|ARCHIVE SUCCEEDED" sonuc/*.log 2>/dev/null | head -80 > sonuc/ozet.txt || true
           [ -f anahtar.txt ] && cat anahtar.txt >> sonuc/ozet.txt || true
           echo "${GITHUB_SHA::7} · çalışma $GITHUB_RUN_NUMBER · derleme $((GITHUB_RUN_NUMBER + 1))" >> sonuc/ozet.txt
           rm -rf "$RUNNER_TEMP/keys"
