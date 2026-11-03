@@ -1,0 +1,38 @@
+name: iOS TestFlight durumu
+# App Store Connect'ten derlemelerin işlenme durumunu ve test gruplarını okur (Mac gerekmez).
+# Başlatma: ios/DURUM dosyasına bir satır ekleyip surum-2.0'a gönder. Sonuç: ios-durum-sonuc dalında durum.txt
+on:
+  push:
+    branches: [surum-2.0]
+    paths: ['ios/DURUM']
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  durum:
+    runs-on: ubuntu-latest
+    env:
+      ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+      ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+      ASC_KEY_P8: ${{ secrets.ASC_KEY_P8 }}
+    steps:
+      - uses: actions/checkout@v5
+      - name: Durumu oku
+        run: |
+          python3 - "$RUNNER_TEMP/k.p8" <<'PY'
+          import os,re,sys
+          t=os.environ["ASC_KEY_P8"].replace("\\n","\n").replace("\r","").strip().strip('"').strip("'")
+          m=re.search(r"-----BEGIN PRIVATE KEY-----(.*?)-----END PRIVATE KEY-----",t,re.S)
+          body=re.sub(r"[^A-Za-z0-9+/=]","",m.group(1) if m else t)
+          open(sys.argv[1],"w").write("-----BEGIN PRIVATE KEY-----\n"+"\n".join(body[i:i+64] for i in range(0,len(body),64))+"\n-----END PRIVATE KEY-----\n")
+          PY
+          pip -q install pyjwt cryptography requests
+          KEY_PATH="$RUNNER_TEMP/k.p8" python3 araclar/ios-imza.py durum sonuc || true
+          rm -f "$RUNNER_TEMP/k.p8"
+      - name: ios-durum-sonuc dalına kaydet
+        run: |
+          mkdir -p sonuc; date -u +"%Y-%m-%d %H:%M UTC" >> sonuc/durum.txt
+          cd sonuc && git init -q -b ios-durum-sonuc
+          git -c user.name="github-actions" -c user.email="actions@github.com" add -A
+          git -c user.name="github-actions" -c user.email="actions@github.com" commit -q -m "iOS durum"
+          git push -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}" ios-durum-sonuc

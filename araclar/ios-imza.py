@@ -91,5 +91,30 @@ def temizle(out):
     print("Geçici sertifika ve profil silindi")
 
 
+def durum(out):
+    """Uygulamanın TestFlight derlemelerini ve test gruplarını listeler (ios-durum iş akışı)."""
+    bundle = os.environ.get("BUNDLE", "com.ugurbektas.hafif")
+    apps = call("GET", f"/apps?filter[bundleId]={bundle}")["data"]
+    if not apps:
+        print("Uygulama kaydı bulunamadı"); return
+    aid = apps[0]["id"]
+    satir = [f"Uygulama: {apps[0]['attributes']['name']} ({aid})"]
+    builds = call("GET", f"/builds?filter[app]={aid}&sort=-uploadedDate&limit=10&include=preReleaseVersion,buildBetaDetail")
+    inc = {(x["type"], x["id"]): x for x in builds.get("included", [])}
+    for b in builds["data"]:
+        a = b["attributes"]
+        pv = inc.get(("preReleaseVersions", (b["relationships"].get("preReleaseVersion", {}).get("data") or {}).get("id")), {})
+        bd = inc.get(("buildBetaDetails", (b["relationships"].get("buildBetaDetail", {}).get("data") or {}).get("id")), {})
+        satir.append(f"Derleme {pv.get('attributes', {}).get('version', '?')} ({a.get('version')}) · işlenme: {a.get('processingState')}"
+                     f" · süresi doldu: {a.get('expired')} · yüklendi: {a.get('uploadedDate', '')[:16]}"
+                     f" · iç test: {bd.get('attributes', {}).get('internalBuildState', '-')}"
+                     f" · şifreleme sorusu: {'cevaplanmalı' if a.get('usesNonExemptEncryption') is None else a.get('usesNonExemptEncryption')}")
+    gr = call("GET", f"/betaGroups?filter[app]={aid}&limit=20")["data"]
+    satir.append("Test grupları: " + (", ".join(f"{g['attributes']['name']} ({'iç' if g['attributes'].get('isInternalGroup') else 'dış'})" for g in gr) or "yok"))
+    os.makedirs(out, exist_ok=True)
+    open(os.path.join(out, "durum.txt"), "w").write("\n".join(satir) + "\n")
+    print("\n".join(satir))
+
+
 if __name__ == "__main__":
-    {"hazirla": hazirla, "temizle": temizle}[sys.argv[1]](sys.argv[2])
+    {"hazirla": hazirla, "temizle": temizle, "durum": durum}[sys.argv[1]](sys.argv[2])
