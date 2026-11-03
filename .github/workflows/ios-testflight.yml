@@ -145,7 +145,7 @@ jobs:
         run: |
           mkdir -p sonuc
           for f in xcodebuild-archive.log xcodebuild-export.log xcodebuild-upload.log; do [ -f "$f" ] && grep -vE "authenticationKey|AuthKey_" "$f" > "sonuc/$f" || true; done
-          grep -hE "error:|error |ERROR|failed|Upload succeeded|UPLOAD SUCCEEDED|No errors uploading|EXPORT SUCCEEDED|ARCHIVE SUCCEEDED" sonuc/*.log 2>/dev/null | head -80 > sonuc/ozet.txt || true
+          grep -hE "error:|error |ERROR|failed|Upload succeeded|UPLOAD SUCCEEDED|No errors uploading|Delivery UUID|EXPORT SUCCEEDED|ARCHIVE SUCCEEDED" sonuc/*.log 2>/dev/null | head -80 > sonuc/ozet.txt || true
           [ -f xcode-surum.txt ] && cat xcode-surum.txt >> sonuc/ozet.txt || true
           [ -f anahtar.txt ] && cat anahtar.txt >> sonuc/ozet.txt || true
           echo "${GITHUB_SHA::7} · çalışma $GITHUB_RUN_NUMBER · derleme $((GITHUB_RUN_NUMBER + 1))" >> sonuc/ozet.txt
