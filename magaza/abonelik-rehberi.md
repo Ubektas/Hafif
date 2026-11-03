@@ -56,6 +56,50 @@ Uygulama denemeyi kendisi algılar: ödeme ekranında yıllık planda "7 GÜN Ü
 ## 5. Veri güvenliği formu
 Satın alma işlemi Google Play üzerinden yapılır ve Hafif hiçbir satın alma verisini kendi sunucusuna göndermez. Bu yüzden veri güvenliği formundaki "Veri toplanmıyor" cevabı değişmez. Gizlilik politikasına "Hafif Plus aboneliği" bölümü eklendi.
 
+## 6. Yurtdışı: ülkeler ve ülke başına fiyat
+Uygulama Türkçe kalarak, Türkçe konuşan kullanıcıların çok olduğu ülkelerde de açılır. **Kod değişmez:** ödeme ekranı fiyatı, para birimini, "aylık karşılığı"nı ve "% tasarruf"u mağazadan alır. Sabit TL fiyatları (`PLANS`) yalnızca mağaza fiyat gönderemezse görünür (örneğin internet yoksa); o an satın alma da yapılamaz.
+
+### Hangi ülkeler
+| Öncelik | Ülkeler | Neden |
+|---|---|---|
+| 1 | Almanya, Hollanda, Avusturya, Belçika, Fransa | En büyük Türk nüfusu |
+| 2 | İsviçre, Birleşik Krallık, Danimarka, İsveç | Orta büyüklükte Türk nüfusu, alım gücü yüksek |
+| 3 | Kıbrıs, Azerbaycan | Türkçe anlaşılır. KKTC Play'de ayrı ülke değil; oradaki kullanıcılar çoğunlukla Türkiye hesabıyla gelir |
+| İsteğe bağlı | ABD | GLP-1 pazarı büyük, Türkçe konuşan kitle küçük; açmanın zararı yok |
+
+### Önerilen fiyatlar (KDV dahil, kullanıcının gördüğü)
+TL fiyatını otomatik çevirmek Avrupa'da çok ucuz kalır (99,99 ₺ ≈ 2,5 €). Benzer uygulamalar Avrupa'da aylık 4–8 €, yıllık 30–50 € arasında. Önerilen fiyatlar aşağıda; bunlar **elle** girilir:
+
+| Ülke | Aylık (`aylik`) | 3 aylık (`uc-aylik`) | Yıllık (`yillik`) |
+|---|---|---|---|
+| Türkiye (temel) | 99,99 ₺ | 229,99 ₺ | 499,99 ₺ |
+| Euro bölgesi (DE, NL, AT, BE, FR) | 4,99 € | 11,99 € | 34,99 € |
+| Kıbrıs | 2,99 € | 6,99 € | 19,99 € |
+| İsviçre | 5,00 CHF | 12,00 CHF | 36,00 CHF |
+| Birleşik Krallık | £3.99 | £9.99 | £29.99 |
+| Danimarka | 35 kr | 89 kr | 249 kr |
+| İsveç | 49 kr | 119 kr | 349 kr |
+| Azerbaycan | Play'in önerisini kabul et | | |
+| ABD | $4.99 | $11.99 | $34.99 |
+
+Euro bölgesinde ödeme ekranında 3 aylık plan "%20 tasarruf", yıllık plan "%42 tasarruf" yazar (uygulama bunu kendisi hesaplar). Türkiye'deki oranlar %23 ve %58; yıllık planı daha cazip yapmak istersen yıllık fiyatı 29,99 €'ya indir (%50).
+
+**Eline geçen (Almanya örneği, aylık 4,99 €):** %19 KDV düşülünce 4,19 €, %15 komisyon düşülünce yaklaşık **3,56 €**. AB'de KDV'yi Google ve Apple kendileri öder; senin ayrıca AB KDV kaydı yapman gerekmez.
+
+### Google Play'de
+1. **Fiyatlar:** Abonelikler → `hafif_plus` → her temel plan → **Fiyatları ayarla** → Türkiye fiyatını gir → listede ülkeyi bul → fiyatı yukarıdaki tabloya göre elle değiştir → Kaydet. Üç planın her biri için ayrı ayrı yapılır.
+2. **Ülkeler:** Test ve sürüm → **Üretim → Ülkeler/bölgeler → Ülke/bölge ekle** → listedeki ülkeleri seç. Kapalı testte ülke seçimi ayrıdır; üretime çıkışta yeniden seçilir.
+3. Mağaza sayfası yalnızca Türkçe olduğu için Almanca telefonlarda da Türkçe görünür; bu beklenen durumdur.
+
+### App Store'da (iOS)
+1. Uygulama → **Fiyatlandırma ve Kullanılabilirlik → Kullanılabilirlik:** ülkeleri seç.
+2. Abonelikler → Hafif Plus grubu → her ürün (`hafif_plus_aylik`, `hafif_plus_uc_aylik`, `hafif_plus_yillik`) → **Abonelik Fiyatları** → temel ülke **Türkiye** → diğer ülkeler otomatik eşitlenir → **Fiyatları düzenle** ile yukarıdaki ülkeleri elle değiştir.
+
+### Dikkat
+- **Gizlilik metni Türkçe:** Türkçe kullanan kullanıcı için GDPR açısından yeterli. "Veri toplanmıyor" yanıtı değişmez.
+- **Sonradan fiyat değişikliği:** Fiyat düşürülürse mevcut aboneler de düşük fiyattan yenilenir. Fiyat artırılırsa mevcut aboneler bildirim alır ve onay vermesi gerekebilir. Bu yüzden ilk fiyatı düşük değil, doğru koymak daha kolaydır.
+- Ülke başına abone sayıları Play Console → Para kazanma → Abonelikler raporunda görülür; ilk aylardan sonra fiyatlar buna göre ayarlanır.
+
 ## Notlar
 - Google'ın komisyonu abonelikte **%15**.
 - Abonelik iptal edilirse kullanıcının verileri silinmez; yalnızca Plus alanları yeniden kilitlenir.
