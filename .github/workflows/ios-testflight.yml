@@ -38,9 +38,21 @@ jobs:
       - name: CocoaPods
         run: cd ios/App && pod install
       - name: API anahtarı
+        shell: bash
         run: |
+          exec > >(tee anahtar.txt) 2>&1
           mkdir -p "$RUNNER_TEMP/keys"
-          printf '%s\n' "$ASC_KEY_P8" > "$RUNNER_TEMP/keys/AuthKey_${ASC_KEY_ID}.p8"
+          # yapıştırırken bozulmuş olabilir (tek satır, \r, boşluk, tırnak): gövdeyi ayıklayıp 64'lük satırlarla yeniden yaz
+          python3 - "$RUNNER_TEMP/keys/AuthKey_${ASC_KEY_ID}.p8" <<'PY'
+          import os,re,sys
+          t=os.environ["ASC_KEY_P8"].replace("\\n","\n").replace("\r","").strip().strip('"').strip("'")
+          m=re.search(r"-----BEGIN PRIVATE KEY-----(.*?)-----END PRIVATE KEY-----",t,re.S)
+          body=re.sub(r"[^A-Za-z0-9+/=]","",m.group(1) if m else t)
+          print("Anahtar biçimi: BEGIN/END",bool(m),"· gövde uzunluğu",len(body),"(ES256 anahtarında genelde 200)")
+          open(sys.argv[1],"w").write("-----BEGIN PRIVATE KEY-----\n"+"\n".join(body[i:i+64] for i in range(0,len(body),64))+"\n-----END PRIVATE KEY-----\n")
+          PY
+          echo "Key ID uzunluğu: ${#ASC_KEY_ID} · Issuer ID uzunluğu: ${#ASC_ISSUER_ID} · Team ID uzunluğu: ${#APPLE_TEAM_ID}"
+          openssl pkey -in "$RUNNER_TEMP/keys/AuthKey_${ASC_KEY_ID}.p8" -noout && echo "Anahtar okunabiliyor ✓" || echo "::error::.p8 anahtarı okunamıyor; ASC_KEY_P8 secret'ını yeniden yapıştır"
           echo "KEY_PATH=$RUNNER_TEMP/keys/AuthKey_${ASC_KEY_ID}.p8" >> "$GITHUB_ENV"
       - name: Arşivle (imzalı)
         run: |
@@ -81,6 +93,7 @@ jobs:
           mkdir -p sonuc
           for f in xcodebuild-archive.log xcodebuild-export.log; do [ -f "$f" ] && grep -vE "authenticationKey|AuthKey_" "$f" > "sonuc/$f" || true; done
           grep -hE "error:|error |failed|Upload succeeded|EXPORT SUCCEEDED|ARCHIVE SUCCEEDED" sonuc/*.log 2>/dev/null | head -80 > sonuc/ozet.txt || true
+          [ -f anahtar.txt ] && cat anahtar.txt >> sonuc/ozet.txt || true
           echo "${GITHUB_SHA::7} · çalışma $GITHUB_RUN_NUMBER · derleme $((GITHUB_RUN_NUMBER + 1))" >> sonuc/ozet.txt
           rm -rf "$RUNNER_TEMP/keys"
           cd sonuc
