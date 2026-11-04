@@ -6,8 +6,8 @@
 
 Ortam: ASC_KEY_ID, ASC_ISSUER_ID, KEY_PATH (.p8), BUNDLE (com.ugurbektas.hafif)
 Gerekli paketler: pyjwt, cryptography, requests
-Sertifika her çalışmada yeniden oluşturulup sonunda silinir: Apple'ın dağıtım sertifikası sınırına
-takılmaz; TestFlight'a yüklenmiş derlemeler sertifika silinince etkilenmez.
+Sertifika bir kez oluşturulur; anahtarı şifrelenip gizli hafif-imza deposunda saklanır (parola: API anahtarından türetilir,
+IMZA_PAROLA). Silinmez: silinen sertifikayla imzalı derleme incelemede ITMS-90035 ile reddedilir.
 """
 import base64, json, os, subprocess, sys, time
 import jwt, requests
@@ -52,43 +52,71 @@ def hazirla(out):
                                                          "relationships": {"bundleId": {"data": {"type": "bundleIds", "id": bid}}}}})
 
     k, c = os.path.join(out, "key.pem"), os.path.join(out, "csr.pem")
-    subprocess.run(["openssl", "genrsa", "-out", k, "2048"], check=True, capture_output=True)
-    subprocess.run(["openssl", "req", "-new", "-key", k, "-out", c, "-subj", "/CN=Hafif CI/emailAddress=apphafif@gmail.com"], check=True)
-    csr = open(c).read()
-    body = "".join(l for l in csr.splitlines() if "-----" not in l)
-    var = call("GET", "/certificates?limit=50")["data"]
-    print("Hesaptaki sertifikalar:", ", ".join(f"{x['attributes']['certificateType']} ({x['attributes'].get('expirationDate','')[:10]})" for x in var) or "yok")
+    cer = os.path.join(out, "cert.cer")
+    kal = os.environ.get("KALICI", os.path.join(out, "kalici"))  # hafif-imza deposundan gelen şifreli sertifika
+    os.makedirs(kal, exist_ok=True)
     cert = None
-    # Apple ara sıra 500 dönüyor; tür ve CSR biçimi değiştirilerek, kısa beklemelerle denenir
-    for tur, icerik in [("DISTRIBUTION", csr), ("DISTRIBUTION", body), ("IOS_DISTRIBUTION", csr), ("IOS_DISTRIBUTION", body), ("DISTRIBUTION", csr)]:
-        r = requests.post(API + "/certificates", json={"data": {"type": "certificates", "attributes": {"certificateType": tur, "csrContent": icerik}}},
-                          headers={"Authorization": "Bearer " + token()}, timeout=60)
-        print(f"Sertifika denemesi {tur} · {'PEM' if icerik is csr else 'gövde'} → {r.status_code}", (r.text[:300] if r.status_code >= 300 else ""))
-        if r.status_code == 201:
-            cert = r.json()["data"]; break
-        time.sleep(8)
+    # 1) kalıcı sertifika varsa ve Apple'da hâlâ geçerliyse onu kullan (silinen sertifikayla imzalanan derleme incelemede reddedilir: ITMS-90035)
+    enc, idf = os.path.join(kal, "dagitim.enc"), os.path.join(kal, "dagitim.json")
+    if os.path.exists(enc) and os.path.exists(idf):
+        cid = json.load(open(idf))["cert"]
+        r = requests.get(API + f"/certificates/{cid}", headers={"Authorization": "Bearer " + token()}, timeout=60)
+        if r.status_code == 200:
+            subprocess.run(["openssl", "enc", "-d", "-aes-256-cbc", "-pbkdf2", "-iter", "200000", "-in", enc, "-out", os.path.join(out, "d.tar"), "-pass", "env:IMZA_PAROLA"], check=True)
+            subprocess.run(["tar", "-xf", os.path.join(out, "d.tar"), "-C", out], check=True)
+            cert = r.json()["data"]
+            print("Kalıcı sertifika kullanılıyor:", cert["attributes"].get("name"), cid, "· bitiş", cert["attributes"].get("expirationDate", "")[:10])
+        else:
+            print("Kayıtlı sertifika Apple'da yok/geçersiz →", r.status_code, "· yenisi oluşturulacak")
+    # 2) yoksa yeni sertifika oluştur, şifreleyip hafif-imza deposuna yazılmak üzere hazırla
     if not cert:
-        print("::error::Apple dağıtım sertifikası oluşturulamadı (yukarıdaki yanıtlar)"); sys.exit(1)
-    open(os.path.join(out, "cert.cer"), "wb").write(base64.b64decode(cert["attributes"]["certificateContent"]))
-    print("Sertifika oluşturuldu:", cert["attributes"].get("name"), cert["id"])
+        subprocess.run(["openssl", "genrsa", "-out", k, "2048"], check=True, capture_output=True)
+        subprocess.run(["openssl", "req", "-new", "-key", k, "-out", c, "-subj", "/CN=Hafif CI/emailAddress=apphafif@gmail.com"], check=True)
+        csr = open(c).read()
+        body = "".join(l for l in csr.splitlines() if "-----" not in l)
+        var = call("GET", "/certificates?limit=50")["data"]
+        print("Hesaptaki sertifikalar:", ", ".join(f"{x['attributes']['certificateType']} ({x['attributes'].get('expirationDate','')[:10]})" for x in var) or "yok")
+        # Apple ara sıra 500 dönüyor; tür ve CSR biçimi değiştirilerek, kısa beklemelerle denenir
+        for tur, icerik in [("DISTRIBUTION", csr), ("DISTRIBUTION", body), ("IOS_DISTRIBUTION", csr), ("IOS_DISTRIBUTION", body), ("DISTRIBUTION", csr), ("DISTRIBUTION", csr)]:
+            r = requests.post(API + "/certificates", json={"data": {"type": "certificates", "attributes": {"certificateType": tur, "csrContent": icerik}}},
+                              headers={"Authorization": "Bearer " + token()}, timeout=60)
+            print(f"Sertifika denemesi {tur} · {'PEM' if icerik is csr else 'gövde'} → {r.status_code}", (r.text[:200] if r.status_code >= 300 else ""))
+            if r.status_code == 201:
+                cert = r.json()["data"]; break
+            time.sleep(8)
+        if not cert:
+            print("::error::Apple dağıtım sertifikası oluşturulamadı (yukarıdaki yanıtlar)"); sys.exit(1)
+        open(cer, "wb").write(base64.b64decode(cert["attributes"]["certificateContent"]))
+        subprocess.run(["tar", "-cf", os.path.join(out, "d.tar"), "-C", out, "key.pem", "cert.cer"], check=True)
+        subprocess.run(["openssl", "enc", "-aes-256-cbc", "-pbkdf2", "-iter", "200000", "-salt", "-in", os.path.join(out, "d.tar"), "-out", enc, "-pass", "env:IMZA_PAROLA"], check=True)
+        json.dump({"cert": cert["id"], "bitis": cert["attributes"].get("expirationDate", "")[:10]}, open(idf, "w"))
+        open(os.path.join(kal, "YENI"), "w").write("1")
+        print("Yeni kalıcı sertifika oluşturuldu:", cert["attributes"].get("name"), cert["id"])
+    os.remove(os.path.join(out, "d.tar"))
 
-    name = f"Hafif CI {time.strftime('%Y%m%d-%H%M%S')}"
-    prof = call("POST", "/profiles", {"data": {"type": "profiles", "attributes": {"name": name, "profileType": "IOS_APP_STORE"},
-                                               "relationships": {"bundleId": {"data": {"type": "bundleIds", "id": bid}},
-                                                                 "certificates": {"data": [{"type": "certificates", "id": cert["id"]}]}}}})["data"]
+    # profil: aynı adla, bu sertifikayı içeren etkin profil varsa kullanılır; yoksa yenisi
+    name = "Hafif App Store"
+    prof = None
+    for x in call("GET", f"/profiles?filter[name]={requests.utils.quote(name)}&limit=20")["data"]:
+        certs = [y["id"] for y in call("GET", f"/profiles/{x['id']}/certificates")["data"]]
+        if x["attributes"].get("profileState") == "ACTIVE" and cert["id"] in certs and not prof:
+            prof = x
+        else:
+            call("DELETE", f"/profiles/{x['id']}", ok=(204, 404))
+    if not prof:
+        prof = call("POST", "/profiles", {"data": {"type": "profiles", "attributes": {"name": name, "profileType": "IOS_APP_STORE"},
+                                                   "relationships": {"bundleId": {"data": {"type": "bundleIds", "id": bid}},
+                                                                     "certificates": {"data": [{"type": "certificates", "id": cert["id"]}]}}}})["data"]
+        print("Profil oluşturuldu:", name)
+    else:
+        print("Mevcut profil kullanılıyor:", name)
     open(os.path.join(out, "profile.mobileprovision"), "wb").write(base64.b64decode(prof["attributes"]["profileContent"]))
-    print("Profil oluşturuldu:", name, prof["attributes"].get("uuid"))
     json.dump({"cert": cert["id"], "profile": prof["id"], "name": name, "uuid": prof["attributes"].get("uuid")}, open(os.path.join(out, "ids.json"), "w"))
 
 
 def temizle(out):
-    try:
-        ids = json.load(open(os.path.join(out, "ids.json")))
-    except FileNotFoundError:
-        print("Silinecek bir şey yok"); return
-    call("DELETE", f"/profiles/{ids['profile']}", ok=(204, 404))
-    call("DELETE", f"/certificates/{ids['cert']}", ok=(204, 404))
-    print("Geçici sertifika ve profil silindi")
+    """Artık sertifika ve profil silinmez (silinen sertifikayla imzalanan derleme App Store/dış test incelemesinde reddediliyor)."""
+    print("Sertifika ve profil korunuyor")
 
 
 def durum(out):

@@ -2,9 +2,10 @@ name: iOS TestFlight
 # İmzalı iOS derlemesi üretip App Store Connect'e (TestFlight) yükler.
 # Başlatma: "ios-v2.0.2" gibi bir etiket gönder (git tag ios-v2.0.2-1 && git push origin ios-v2.0.2-1)
 # ya da (iş akışı main'e alınınca) Actions sekmesinden elle.
-# Gereken GitHub secrets: ASC_KEY_ID, ASC_ISSUER_ID, ASC_KEY_P8 (.p8 dosyasının tüm metni), APPLE_TEAM_ID
-# İmzalama: araclar/ios-imza.py API anahtarıyla (Admin rolü) her çalışmada geçici Apple Distribution sertifikası ve
-# App Store profili oluşturur, iş bitince siler (cihaz kaydı ya da Mac gerekmez).
+# Gereken GitHub secrets: ASC_KEY_ID, ASC_ISSUER_ID, ASC_KEY_P8 (.p8 dosyasının tüm metni), APPLE_TEAM_ID,
+# IMZA_DEPO_TOKEN (yalnızca Ubektas/hafif-imza deposuna Contents yazma izni olan token)
+# İmzalama: araclar/ios-imza.py API anahtarıyla (Admin rolü) bir kez Apple Distribution sertifikası oluşturur,
+# anahtarını şifreleyip gizli Ubektas/hafif-imza deposunda saklar (IMZA_DEPO_TOKEN) ve sonraki derlemelerde kullanır; 'Hafif App Store' profili yeniden kullanılır.
 on:
   push:
     tags: ['ios-v*']
@@ -26,6 +27,7 @@ jobs:
       ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
       APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
       ASC_KEY_P8: ${{ secrets.ASC_KEY_P8 }}
+      IMZA_DEPO_TOKEN: ${{ secrets.IMZA_DEPO_TOKEN }}
     steps:
       - uses: actions/checkout@v5
       - name: Gizli değerler tanımlı mı
@@ -64,12 +66,26 @@ jobs:
           echo "Key ID uzunluğu: ${#ASC_KEY_ID} · Issuer ID uzunluğu: ${#ASC_ISSUER_ID} · Team ID uzunluğu: ${#APPLE_TEAM_ID}"
           openssl pkey -in "$RUNNER_TEMP/keys/AuthKey_${ASC_KEY_ID}.p8" -noout && echo "Anahtar okunabiliyor ✓" || echo "::error::.p8 anahtarı okunamıyor; ASC_KEY_P8 secret'ını yeniden yapıştır"
           echo "KEY_PATH=$RUNNER_TEMP/keys/AuthKey_${ASC_KEY_ID}.p8" >> "$GITHUB_ENV"
-      - name: Geçici App Store imzası (sertifika + profil)
+      - name: App Store imzası (kalıcı sertifika + profil)
         shell: bash
         run: |
           exec > >(tee -a anahtar.txt) 2>&1
           python3 -m venv "$RUNNER_TEMP/v" && "$RUNNER_TEMP/v/bin/pip" -q install pyjwt cryptography requests
+          # kalıcı dağıtım sertifikası: gizli Ubektas/hafif-imza deposunda, ayrıca şifreli (parola API anahtarından türetilir)
+          [ -n "$IMZA_DEPO_TOKEN" ] || { echo "::error::IMZA_DEPO_TOKEN secret'ı eksik (hafif-imza deposuna yazma izni olan token)"; exit 1; }
+          export IMZA_PAROLA=$(shasum -a 256 "$KEY_PATH" | cut -d' ' -f1)
+          export KALICI="$RUNNER_TEMP/kalici"
+          git clone -q --depth=1 "https://x-access-token:${IMZA_DEPO_TOKEN}@github.com/Ubektas/hafif-imza.git" "$KALICI" || { echo "::error::hafif-imza deposu açılamadı (depo var mı, token doğru mu?)"; exit 1; }
           BUNDLE=com.ugurbektas.hafif "$RUNNER_TEMP/v/bin/python" araclar/ios-imza.py hazirla "$RUNNER_TEMP/imza"
+          if [ -f "$KALICI/YENI" ]; then
+            rm "$KALICI/YENI"
+            cd "$KALICI"
+            git -c user.name="github-actions" -c user.email="actions@github.com" add dagitim.enc dagitim.json
+            git -c user.name="github-actions" -c user.email="actions@github.com" commit -q -m "iOS dağıtım sertifikası (şifreli)"
+            git push -q origin HEAD && echo "Sertifika hafif-imza deposuna kaydedildi"
+            cd "$GITHUB_WORKSPACE"
+          fi
+          rm -rf "$KALICI/.git"
           I="$RUNNER_TEMP/imza"
           /usr/bin/openssl x509 -inform DER -in "$I/cert.cer" -out "$I/cert.pem"
           /usr/bin/openssl pkcs12 -export -inkey "$I/key.pem" -in "$I/cert.pem" -out "$I/imza.p12" -passout pass:hafif
@@ -134,7 +150,7 @@ jobs:
           IPA=$(ls "$RUNNER_TEMP"/out/*.ipa | head -1)
           set -o pipefail
           xcrun altool --upload-app -f "$IPA" -t ios --apiKey "$ASC_KEY_ID" --apiIssuer "$ASC_ISSUER_ID" 2>&1 | tee xcodebuild-upload.log | tail -30
-      - name: Geçici imzayı sil
+      - name: Anahtarlığı temizle
         if: always()
         run: |
           [ -d "$RUNNER_TEMP/v" ] && "$RUNNER_TEMP/v/bin/python" araclar/ios-imza.py temizle "$RUNNER_TEMP/imza" 2>&1 | tee -a anahtar.txt || true
@@ -147,7 +163,7 @@ jobs:
           for f in xcodebuild-archive.log xcodebuild-export.log xcodebuild-upload.log; do [ -f "$f" ] && grep -vE "authenticationKey|AuthKey_" "$f" > "sonuc/$f" || true; done
           grep -hE "error:|error |ERROR|failed|Upload succeeded|UPLOAD SUCCEEDED|No errors uploading|Delivery UUID|EXPORT SUCCEEDED|ARCHIVE SUCCEEDED" sonuc/*.log 2>/dev/null | head -80 > sonuc/ozet.txt || true
           [ -f xcode-surum.txt ] && cat xcode-surum.txt >> sonuc/ozet.txt || true
-          [ -f anahtar.txt ] && cat anahtar.txt >> sonuc/ozet.txt || true
+          [ -f anahtar.txt ] && grep -vE "x-access-token|github_pat_|PRIVATE KEY" anahtar.txt >> sonuc/ozet.txt || true
           echo "${GITHUB_SHA::7} · çalışma $GITHUB_RUN_NUMBER · derleme $((GITHUB_RUN_NUMBER + 1))" >> sonuc/ozet.txt
           rm -rf "$RUNNER_TEMP/keys"
           cd sonuc
