@@ -687,6 +687,7 @@ button.mscount{border:0;background:none;cursor:pointer;padding:0;font:inherit;al
 button.mscount i{font-style:normal;font-size:22px;color:var(--muted);margin-left:4px}
 .backbtn{align-self:flex-start;border:0;background:var(--surface);box-shadow:var(--shadow);color:var(--head);font:600 14px var(--f-body);padding:8px 14px;border-radius:99px;cursor:pointer}
 .bgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px 8px}
+.bsh{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:14px}.bsh span{font-size:12.5px;text-align:right}
 .bcell{display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center}
 .bcell b{font-size:12.5px;line-height:1.25;color:var(--fg)}
 .bcell span{font-size:11px;color:var(--muted)}
@@ -1360,7 +1361,7 @@ function coachCards(){
   // 7) eşiğe yaklaşma
   if(!hizli&&bmiOk&&T&&T.slope<-0.01){const M=milestones(),nx=M&&M.L.find(m=>!m.done);
     if(nx){const left=M.cur-nx.kg;if(left>0&&left<=0.6){
-      const ad=nx.goal?"Hedefine":nx.u==="kg"?`${nx.t} kg'ın altına`:`${nx.t} eşiğine`;
+      const ad=nx.goal?"Hedefine":nx.drop?`İlk ${nx.drop} kg'a`:nx.u==="kg"?`${nx.t} kg'ın altına`:`${nx.t} eşiğine`;
       const eta=nx.eta&&diffDays(td,nx.eta)<=14&&diffDays(td,nx.eta)>=1?` Bu hızla <b>${toD(nx.eta).toLocaleDateString("tr-TR",{weekday:"long"})}</b> civarı.`:"";
       out.push({id:"esik",c:"accent",ic:"rozet",k:"Rozet",t:`${ad} ${kg(left)} kg kaldı.`,
         b:`${eta.trim()} Başladığından beri ${kg(M.start-M.cur)} kg verdin.`.trim(),bar:Math.max(0,Math.min(1,(M.start-M.cur)/(M.start-nx.kg)))})}}}
@@ -1515,13 +1516,10 @@ function nextShotRow(){
 }
 /* Özet: rozetler tek satır */
 function msStrip(){
-  /* son kazanılan rozet renkli solda; altında sıradaki rozete ilerleme */
-  const M=milestones(); if(!M) return "";
-  const done=M.L.filter(m=>m.done),next=M.L.find(m=>!m.done),last=done[done.length-1];
-  const name=m=>m.goal?`Hedef kilo · ${kg(m.kg)} kg`:m.id[0]==="p"?`%${m.id.slice(1)} vücut ağırlığı`:`${m.kg} kg'ın altı`;
-  const pr=next?Math.max(0,Math.min(1,((last?last.kg:M.start)-M.cur)/((last?last.kg:M.start)-next.kg))):1;
-  const nx=next?`<span class="msn"><i style="width:${Math.round(pr*100)}%"></i></span><small>Sıradaki: ${name(next)} · ${kg(Math.max(0,M.cur-next.kg))} kg kaldı</small>`:`<small>Tüm rozetler senin</small>`;
-  return `<button type="button" class="card msstrip" data-go="basari">${last?medal(last,52):next?medal(next,52,pr):""}<span class="nst">${last?`<span class="mse">Son rozet · ${fmtShort(last.done)}</span><b>${name(last)}</b>`:`<span class="mse">İlk rozetin yolda</span><b>${name(next)}</b>`}${nx}</span><span class="msc">${done.length}/${M.L.length}<i>›</i></span></button>`;
+  /* son kazanılan rozet renkli solda; altında tamamlanmaya en yakın rozete ilerleme */
+  const A=badgeState(),{done,last,next,pr}=A; if(!last&&!next) return "";
+  const nx=next?`<span class="msn"><i style="width:${Math.round(pr*100)}%"></i></span><small>Sıradaki: ${msName(next)} · ${msLeft(next,A).replace(/<\/?b>/g,"")}</small>`:`<small>Tüm rozetler senin</small>`;
+  return `<button type="button" class="card msstrip" data-go="basari">${last?medal(last,52):medal(next,52,pr)}<span class="nst">${last?`<span class="mse">Son rozet · ${fmtShort(last.done)}</span><b>${msName(last)}</b>`:`<span class="mse">İlk rozetin yolda</span><b>${msName(next)}</b>`}${nx}</span><span class="msc">${done.length}/${A.all.length}<i>›</i></span></button>`;
 }
 /* su ekle: miktar seçilir ya da −/+ ile ayarlanır */
 function openWaterSheet(){
@@ -2534,6 +2532,8 @@ function milestones(){
   const start=w[0].kg, goal=S.profile.goalWeight, floor=goal??start*0.75, L=[];
   for(let k=Math.floor((start-0.01)/5)*5;k>floor+0.01;k-=5)L.push({id:"kg"+k,kg:k,t:`${k}`,u:"kg",s:`${k} kg`});
   [5,10,15,20,25].forEach(p=>{const k=Math.round(start*(1-p/100)*10)/10;if(k>=floor-0.01)L.push({id:"p"+p,kg:k,t:`%${p}`,u:"",s:`vücut ağırlığı · ${kg(k)} kg`})});
+  /* ilk küçük adımlar: 5 kg ve %5 uzak gelmesin diye 1 ve 3 kg */
+  [1,3].forEach(n=>{const k=Math.round((start-n)*10)/10;if(k>floor+0.01&&!L.some(m=>Math.abs(m.kg-k)<0.5))L.push({id:"d"+n,kg:k,t:`−${n}`,u:"kg",s:`${kg(k)} kg`,drop:n})});
   if(goal!=null)L.push({id:"goal",kg:goal,t:"Hedef",u:"",s:`${kg(goal)} kg`,goal:true});
   L.sort((a,b)=>b.kg-a.kg);
   const T=trendInfo();
@@ -2541,14 +2541,55 @@ function milestones(){
     if(!m.done&&T&&T.slope<-0.01)m.eta=addDays(T.date,Math.ceil((T.cur-m.kg)/-T.slope))}
   return {L,start,cur:w[w.length-1].kg};
 }
-const MPAL={em:["#C4F5E3","#2A9A7C","#0B3B33","#3CC39C","#0E7C66","#0A4A3D","#0B3B33","#15775F"],li:["#ECE4FF","#8D72E2","#46348F","#AF96F4","#7558D2","#4A3897","#46348F","#6C55C6"],go:["#FFF4CC","#DDAA3F","#86601A","#F7D774","#CC982F","#8C6418","#9E2F2F","#C24545"],off:["#FFFFFF","#E3EAE6","#C9D3CE","#F4F7F5","#ECF1EE","#E2E9E5","#D3DCD7","#E1E8E4"]};
+const MPAL={em:["#C4F5E3","#2A9A7C","#0B3B33","#3CC39C","#0E7C66","#0A4A3D","#0B3B33","#15775F"],li:["#ECE4FF","#8D72E2","#46348F","#AF96F4","#7558D2","#4A3897","#46348F","#6C55C6"],go:["#FFF4CC","#DDAA3F","#86601A","#F7D774","#CC982F","#8C6418","#9E2F2F","#C24545"],off:["#FFFFFF","#E3EAE6","#C9D3CE","#F4F7F5","#ECF1EE","#E2E9E5","#D3DCD7","#E1E8E4"],
+  pr:["#FFE9C2","#D9952F","#7A4B0C","#F2B65A","#C27A12","#7A4B0C","#8A5A10","#B5761A"],su:["#D8EEFB","#2E8BC0","#123E5C","#6BB8E3","#2E8BC0","#17507A","#17507A","#2775A6"],
+  ad:["#D4F2F5","#1C8EA6","#0B3E4A","#4FC3D3","#1C8EA6","#0E4E5C","#0E4E5C","#16798F"],ta:["#E3EEE9","#5E8C7C","#24433A","#8FBFAE","#4E7F6E","#2A4D42","#2A4D42","#457263"],
+  ig:["#DDE5F7","#4560A8","#1B2C57","#7590D6","#3A55A0","#1E3266","#1E3266","#34508F"],tk:["#F9DCE7","#B8577A","#5C2238","#E08AAB","#B8577A","#6E2843","#6E2843","#9A4566"]};
+/* ---------- alışkanlık rozetleri: protein, su, adım, tartı, iğne, takviye. Kazanılan rozet profile yazılır, sonradan geri alınmaz ---------- */
+const HSUB={pr:"PROTEİN",su:"SU",ad:"ADIM",ta:"TARTI",ig:"İĞNE",tk:"TAKVİYE"};
+function habits(){
+  const P=S.profile,won=P.badges&&typeof P.badges==="object"?P.badges:(P.badges={}),D=S.daily||{},out=[];let ch=false;
+  const has=k=>Object.keys(won).some(id=>id.startsWith("h"+k));
+  const add=(k,title,note,tiers,days,nm,unit="gün")=>{
+    days=unit==="gün"?[...new Set(days)].sort():[...days].sort();
+    const B=tiers.map(n=>{const id="h"+k+n,done=won[id]||days[n-1]||null;if(done&&!won[id]){won[id]=done;ch=true}
+      return {id,kind:k,n,t:String(n),sub:HSUB[k],name:nm(n),cur:done?n:Math.min(n,days.length),done,unit}});
+    out.push({k,title,note,B});
+  };
+  const ds=Object.keys(D).filter(d=>d>=startCut());
+  add("pr","Protein",`Günlük hedef ${pGoal()} g`,[1,7,30,100],ds.filter(d=>(D[d].p||0)>=pGoal()),n=>n===1?"İlk protein hedefi":`${n} gün protein hedefi`);
+  add("su","Su",`Günlük hedef ${(wGoal()/1000).toLocaleString("tr-TR")} L`,[1,7,30,100],ds.filter(d=>(D[d].w||0)>=wGoal()),n=>n===1?"İlk su hedefi":`${n} gün su hedefi`);
+  /* adım geçmişi 90 günde budanır; hedef tutan günler ayrıca saklanır ki 100 gün rozeti de mümkün olsun */
+  const real=HP()&&S.hc&&S.hc.on;
+  if(real||has("ad")){const keep=Array.isArray(P.stepDays)?P.stepDays:[],g=stepGoal();
+    const hit=Object.keys(S.steps||{}).filter(d=>(S.steps[d]||0)>=g&&!keep.includes(d));if(hit.length){P.stepDays=[...keep,...hit].sort();ch=true}
+    add("ad","Adım",`Günlük hedef ${fmtN(g)} adım`,[1,7,30,100],P.stepDays||[],n=>n===1?"İlk adım hedefi":`${n} gün adım hedefi`)}
+  add("ta","Tartı","Kilo girdiğin her gün sayılır",[5,20,50,100],S.weights.map(x=>x.date),n=>`${n} gün tartı`);
+  if(SHOTS()||has("ig"))add("ig","İğne","Kaydettiğin her iğne sayılır",[4,12,26,52],S.shots.map(x=>x.date),n=>`${n} iğne`,"iğne");
+  if((Array.isArray(S.supps)&&S.supps.length)||has("tk"))add("tk","Takviye","Günün tüm takviyeleri alındığında",[7,30,100],
+    Object.keys(S.suppLog||{}).filter(d=>{const L=dosesFor(d),t=takenOn(d);return L.length&&L.every(q=>t[q.key])}),n=>`${n} gün tam takviye`);
+  if(ch)save();
+  return out;
+}
+const msName=m=>m.kind?m.name:m.goal?`Hedef kilo · ${kg(m.kg)} kg`:m.drop?`İlk ${m.drop} kg`:m.id[0]==="p"?`%${m.id.slice(1)} vücut ağırlığı`:`${m.kg} kg'ın altı`;
+/* tüm rozetler: son kazanılan, ve tamamlanmaya en yakın olan "sıradaki" */
+function badgeState(){
+  const M=milestones(),H=habits(),all=[...(M?M.L:[]),...H.flatMap(c=>c.B)];
+  const done=all.filter(m=>m.done).sort((a,b)=>a.done<b.done?-1:a.done>b.done?1:(a.kind?1:0)-(b.kind?1:0)||(a.n||0)-(b.n||0)),last=done[done.length-1];
+  const cand=[];
+  if(M){const wd=M.L.filter(m=>m.done),nx=M.L.find(m=>!m.done);if(nx){const from=wd.length?wd[wd.length-1].kg:M.start;cand.push([nx,Math.max(0,Math.min(1,(from-M.cur)/(from-nx.kg)))])}}
+  for(const c of H){const nx=c.B.find(b=>!b.done);if(nx)cand.push([nx,nx.cur/nx.n])}
+  cand.sort((a,b)=>b[1]-a[1]);
+  return {M,H,all,done,last,next:cand[0]?cand[0][0]:null,pr:cand[0]?cand[0][1]:1};
+}
+const msLeft=(m,A)=>m.kind?`<b>${m.n-m.cur} ${m.unit}</b> kaldı`:`<b>${kg(Math.max(0,A.M.cur-m.kg))} kg</b> kaldı`;
 function medalDefs(){return `<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>${Object.entries(MPAL).map(([k,c])=>`
   <linearGradient id="mo-${k}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${c[0]}"/><stop offset=".5" stop-color="${c[1]}"/><stop offset="1" stop-color="${c[2]}"/></linearGradient>
   <radialGradient id="mi-${k}" cx=".35" cy=".3" r=".8"><stop offset="0" stop-color="${c[3]}"/><stop offset=".6" stop-color="${c[4]}"/><stop offset="1" stop-color="${c[5]}"/></radialGradient>`).join("")}</defs></svg>`}
-function mKind(m){return !m.done?"off":m.goal?"go":m.id[0]==="p"?"li":"em"}
+function mKind(m){return !m.done?"off":m.kind||(m.goal?"go":m.id[0]==="p"?"li":"em")}
 function medal(m,size=64,ring=null){
   const k=mKind(m),c=MPAL[k],off=k==="off",fg=off?"#7C8A84":"#FFFFFF";
-  const main=m.goal?"★":m.t, sub=m.goal?"HEDEF":m.u?"KG":"VÜCUT";
+  const main=m.goal?"★":m.t, sub=m.kind?m.sub:m.goal?"HEDEF":m.u?"KG":"VÜCUT";
   const rg=ring!=null?(()=>{const R=40,C=2*Math.PI*R;return `<circle cx="36" cy="36" r="${R}" fill="none" stroke="var(--line)" stroke-width="3"/><circle cx="36" cy="36" r="${R}" fill="none" stroke="var(--accent)" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="${C*ring} ${C}" transform="rotate(-90 36 36)"/>`})():"";
   return `<svg class="medal${off?" off":""}" width="${size}" height="${size*88/72}" viewBox="${ring!=null?"-8 -8 88 104":"0 0 72 88"}" aria-hidden="true">
     <path d="M22 56 L14 86 L24 80 L30 88 L36 62Z" fill="${c[6]}"/><path d="M50 56 L58 86 L48 80 L42 88 L36 62Z" fill="${c[7]}"/>
@@ -2562,23 +2603,23 @@ function medal(m,size=64,ring=null){
     ${off?`<g transform="translate(58 13)"><circle r="8" fill="#FFFFFF" stroke="#D6DED9"/><path d="M-3 0.5h6v4h-6z" fill="#8A9792"/><path d="M-1.8 0.5v-1.6a1.8 1.8 0 0 1 3.6 0v1.6" fill="none" stroke="#8A9792" stroke-width="1.2"/></g>`:""}
   </svg>`;
 }
-function nextMsHtml(M){
-  const done=M.L.filter(m=>m.done), next=M.L.find(m=>!m.done), last=done[done.length-1];
-  if(!next) return `<div class="nextms"><div class="nmt">Tüm rozetler senin. Harika iş!</div></div>`;
-  const from=last?last.kg:M.start;const pr=Math.max(0,Math.min(1,(from-M.cur)/(from-next.kg)));
-  return `<div class="nextms">${medal(next,74,pr)}<div style="min-width:0;flex:1;display:flex;flex-direction:column;gap:4px"><span class="eyebrow" style="color:var(--accent)">Sıradaki rozet</span>
-      <div class="nmt">${next.goal?`Hedef kilo · ${kg(next.kg)} kg`:next.id[0]==="p"?`Vücut ağırlığının %${next.id.slice(1)}'i`:`${next.kg} kg'ın altı`}</div>
-      <div class="nchips"><span><b>${kg(Math.max(0,M.cur-next.kg))} kg</b> kaldı</span>${next.eta?`<span>tahmini <b>${toD(next.eta).toLocaleDateString("tr-TR",{day:"numeric",month:"long"})}</b></span>`:""}<span><b>%${Math.round(pr*100)}</b> yolda</span></div></div></div>`;
+function nextMsHtml(A){
+  const m=A.next,pr=A.pr;
+  if(!m) return `<div class="nextms"><div class="nmt">Tüm rozetler senin. Harika iş!</div></div>`;
+  const t=m.kind?m.name:m.goal?`Hedef kilo · ${kg(m.kg)} kg`:m.drop?`İlk ${m.drop} kilonu ver`:m.id[0]==="p"?`Vücut ağırlığının %${m.id.slice(1)}'i`:`${m.kg} kg'ın altı`;
+  return `<div class="nextms">${medal(m,74,pr)}<div style="min-width:0;flex:1;display:flex;flex-direction:column;gap:4px"><span class="eyebrow" style="color:var(--accent)">Sıradaki rozet</span>
+      <div class="nmt">${t}</div>
+      <div class="nchips"><span>${msLeft(m,A)}</span>${m.eta?`<span>tahmini <b>${toD(m.eta).toLocaleDateString("tr-TR",{day:"numeric",month:"long"})}</b></span>`:""}<span><b>%${Math.round(pr*100)}</b> yolda</span></div></div></div>`;
 }
 function vBasari(){
-  const M=milestones();
+  const A=badgeState(),{M,H,done}=A;
   const back=`<button type="button" class="backbtn" data-go="ozet">‹ Özet</button>`;
-  if(!M) return `<section>${back}<div class="card empty"><h2>Henüz rozet yok</h2><p class="muted" style="margin:0">İki tartı girdiğinde başarı rozetlerin burada görünmeye başlar.</p></div></section>`;
-  const done=M.L.filter(m=>m.done);
-  const title=m=>m.goal?`Hedef · ${kg(m.kg)} kg`:m.id[0]==="p"?`%${m.id.slice(1)} vücut ağırlığı`:`${m.kg} kg'ın altı`;
+  const cell=m=>`<div class="bcell${m.done?" won":""}">${medal(m,72)}<b>${msName(m)}</b><span>${m.done?fmtShort(m.done)+" kazanıldı":m.kind?`${m.cur}/${m.n} ${m.unit}`:m.eta?"tahmini "+fmtShort(m.eta):"yolda"}</span></div>`;
+  const sec=(t,note,L)=>`<div class="card"><div class="bsh"><h2>${t}</h2><span class="muted">${note}</span></div><div class="bgrid">${L.map(cell).join("")}</div></div>`;
   return `<section>${back}
-    <div class="card" style="display:flex;flex-direction:column;gap:14px"><div class="msh"><div><span class="eyebrow">Rozet koleksiyonu</span><div style="font-size:14px;margin-top:2px">${done.length} rozet kazandın, ${M.L.length-done.length} rozet yolda</div></div><div class="mscount"><b>${done.length}</b><span>/${M.L.length}</span></div></div>${nextMsHtml(M)}</div>
-    <div class="card"><div class="bgrid">${M.L.map(m=>`<div class="bcell${m.done?" won":""}">${medal(m,72)}<b>${title(m)}</b><span>${m.done?fmtShort(m.done)+" kazanıldı":m.eta?"tahmini "+fmtShort(m.eta):"yolda"}</span></div>`).join("")}</div></div>
+    <div class="card" style="display:flex;flex-direction:column;gap:14px"><div class="msh"><div><span class="eyebrow">Rozet koleksiyonu</span><div style="font-size:14px;margin-top:2px">${done.length} rozet kazandın, ${A.all.length-done.length} rozet yolda</div></div><div class="mscount"><b>${done.length}</b><span>/${A.all.length}</span></div></div>${nextMsHtml(A)}</div>
+    ${M?sec("Kilo","Tartıdaki eşikler",M.L):`<div class="card empty"><h2>Kilo rozetleri</h2><p class="muted" style="margin:0">İki tartı girdiğinde kilo rozetlerin burada görünmeye başlar.</p></div>`}
+    ${H.map(c=>sec(c.title,c.note,c.B)).join("")}
   </section>`;
 }
 function milestoneCard(){
@@ -2602,17 +2643,17 @@ function milestoneCard(){
 function checkCelebrate(){
   if(!loaded||tab!=="ozet"||$("#sheetRoot").firstChild||$("#celeb")||S.profile.noCelebrate) return;
   let seen=[];try{seen=JSON.parse(localStorage.getItem("hf-cel")||"[]")}catch(_){}
-  const M=milestones(); if(!M) return;
-  const done=M.L.filter(m=>m.done); if(!done.length) return;
+  const done=badgeState().done; if(!done.length) return;
   const P=S.profile;
-  if(!Array.isArray(P.celebrated)){const lastHit=[...done].sort((a,b)=>a.done<b.done?1:a.done>b.done?-1:a.kg-b.kg)[0];P.celebrated=done.filter(m=>m!==lastHit).map(m=>m.id);save()}
+  if(!Array.isArray(P.celebrated)){const lastHit=done[done.length-1];P.celebrated=done.filter(m=>m!==lastHit).map(m=>m.id);save()}
   const recent=addDays(today(),-7);
   const fresh=done.filter(m=>!P.celebrated.includes(m.id)&&!seen.includes(m.id));
   P.celebrated=[...new Set([...P.celebrated,...seen])];
   try{localStorage.setItem("hf-cel",JSON.stringify([...new Set([...seen,...done.map(x=>x.id)])]))}catch(_){}
   if(!fresh.length) return;
   if(!fresh.some(x=>x.done>=recent)){P.celebrated=[...new Set([...P.celebrated,...fresh.map(x=>x.id)])];save();return}
-  const m=fresh.sort((a,b)=>a.kg-b.kg)[0];
+  /* önce kilo rozeti (en düşük eşik), yoksa en büyük alışkanlık rozeti */
+  const m=fresh.sort((a,b)=>(a.kind?1:0)-(b.kind?1:0)||(a.kg||0)-(b.kg||0)||(b.n||0)-(a.n||0))[0];
   P.celebrated=[...new Set([...P.celebrated,...fresh.map(x=>x.id)])]; save();
   showCelebration(m);
 }
@@ -2625,14 +2666,16 @@ function askReview(){
   P.reviewAt=today(); save(); setTimeout(()=>{try{R.requestReview().catch(()=>{})}catch(_){}},700);
 }
 function showCelebration(m){
-  const title=m.goal?"Hedefine ulaştın!":m.id[0]==="p"?`Vücut ağırlığının %${m.id.slice(1)}'ini verdin`:`${m.kg} kg'ın altına indin`;
+  const HT={pr:n=>n===1?"Protein hedefini ilk kez tutturdun":`${n} gün protein hedefini tutturdun`,su:n=>n===1?"Su hedefine ilk kez ulaştın":`${n} gün su hedefine ulaştın`,
+    ad:n=>n===1?"Adım hedefine ilk kez ulaştın":`${n} gün adım hedefine ulaştın`,ta:n=>`${n} gün tartıldın`,ig:n=>`${n}. iğneni kaydettin`,tk:n=>`${n} gün tüm takviyelerini aldın`};
+  const title=m.kind?HT[m.kind](m.n):m.goal?"Hedefine ulaştın!":m.drop?`İlk ${m.drop} kilonu verdin`:m.id[0]==="p"?`Vücut ağırlığının %${m.id.slice(1)}'ini verdin`:`${m.kg} kg'ın altına indin`;
   const d=document.createElement("div");d.id="celeb";d.className="celeb";
   d.innerHTML=`<canvas id="confetti"></canvas><div class="cbox" role="dialog" aria-modal="true" aria-label="Tebrikler"><div class="cmedal">${medal(m,96)}</div><span class="eyebrow" style="color:var(--accent)">Yeni rozet</span><h2 style="font-size:24px;text-align:center">${title}</h2>
-    <p class="muted" style="margin:0;text-align:center">${m.s} eşiğini ${fmtD(m.done)} geçtin.</p>
-    <div style="display:flex;gap:8px;width:100%"><button class="btn ghost" id="cShare" style="flex:1">Paylaş</button><button class="btn" id="cOk" style="flex:1.4">Harika</button></div></div>`;
+    <p class="muted" style="margin:0;text-align:center">${m.kind?`Bu rozeti ${fmtD(m.done)} kazandın. Küçük adımlar birikiyor.`:`${m.s} eşiğini ${fmtD(m.done)} geçtin.`}</p>
+    <div style="display:flex;gap:8px;width:100%">${m.kind?"":`<button class="btn ghost" id="cShare" style="flex:1">Paylaş</button>`}<button class="btn" id="cOk" style="flex:1.4">Harika</button></div></div>`;
   document.body.appendChild(d);
   const close=()=>{d.remove()};
-  $("#cOk").addEventListener("click",()=>{close();askReview()});$("#cShare").addEventListener("click",()=>{close();openShare()});
+  $("#cOk").addEventListener("click",()=>{close();askReview()});if($("#cShare"))$("#cShare").addEventListener("click",()=>{close();openShare()});
   d.addEventListener("click",e=>{if(e.target===d||e.target.id==="confetti")close()});
   const box=d.querySelector(".cbox");if(box.animate)box.animate([{transform:"scale(.6)",opacity:0},{transform:"scale(1.04)",opacity:1,offset:.7},{transform:"none"}],{duration:520,easing:"cubic-bezier(.2,.8,.2,1)"});
   if(matchMedia("(prefers-reduced-motion: reduce)").matches) return;
