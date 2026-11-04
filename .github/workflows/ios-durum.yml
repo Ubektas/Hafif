@@ -15,6 +15,7 @@ jobs:
       ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
       ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
       ASC_KEY_P8: ${{ secrets.ASC_KEY_P8 }}
+      IMZA_DEPO_TOKEN: ${{ secrets.IMZA_DEPO_TOKEN }}
     steps:
       - uses: actions/checkout@v5
       - name: Durumu oku
@@ -29,9 +30,18 @@ jobs:
           pip -q install pyjwt cryptography requests
           KEY_PATH="$RUNNER_TEMP/k.p8" python3 araclar/ios-imza.py durum sonuc || true
           rm -f "$RUNNER_TEMP/k.p8"
+      - name: hafif-imza deposu erişimi
+        run: |
+          mkdir -p sonuc
+          { [ -n "$IMZA_DEPO_TOKEN" ] && echo "IMZA_DEPO_TOKEN: tanımlı" || echo "IMZA_DEPO_TOKEN: YOK"
+            if git ls-remote "https://x-access-token:${IMZA_DEPO_TOKEN}@github.com/Ubektas/hafif-imza.git" >/dev/null 2>e.txt; then echo "hafif-imza okuma: tamam"; else echo "hafif-imza okuma: HATA $(grep -vE 'x-access-token|github_pat_' e.txt | tr '\n' ' ')"; fi
+            code=$(curl -s -o /dev/null -w "%{http_code}" -H "Authorization: Bearer ${IMZA_DEPO_TOKEN}" https://api.github.com/repos/Ubektas/hafif-imza)
+            echo "API depo erişimi: $code"
+            curl -s -H "Authorization: Bearer ${IMZA_DEPO_TOKEN}" https://api.github.com/repos/Ubektas/hafif-imza | python3 -c "import json,sys;d=json.load(sys.stdin);print('izinler:',d.get('permissions'),'· gizli:',d.get('private'))" 2>/dev/null || true
+          } | tee sonuc/token.txt
       - name: ios-durum-sonuc dalına kaydet
         run: |
-          mkdir -p sonuc; date -u +"%Y-%m-%d %H:%M UTC" >> sonuc/durum.txt
+          cat sonuc/token.txt >> sonuc/durum.txt 2>/dev/null; mkdir -p sonuc; date -u +"%Y-%m-%d %H:%M UTC" >> sonuc/durum.txt
           cd sonuc && git init -q -b ios-durum-sonuc
           git -c user.name="github-actions" -c user.email="actions@github.com" add -A
           git -c user.name="github-actions" -c user.email="actions@github.com" commit -q -m "iOS durum"
