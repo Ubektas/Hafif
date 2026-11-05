@@ -1,0 +1,123 @@
+--- artifact.pre-kart.html	2026-11-05 14:03:27.047095820 +0000
++++ artifact.html	2026-11-05 14:04:37.668840612 +0000
+@@ -2588,6 +2588,14 @@
+   const goal=P.goalWeight; const pct=goal!=null&&a.kg>goal?Math.max(0,Math.min(100,(a.kg-b.kg)/(a.kg-goal)*100)):null;
+   return {w,a,b,days,lost:b.kg-a.kg,pctBody:(a.kg-b.kg)/a.kg*100,perWeek:(b.kg-a.kg)/days*7,fat,goal,pct,shots:s.length,totalDays:diffDays(a.date,today())};
+ }
++/* paylaşım kartlarının alt satırı: bunun bir uygulama olduğunu ve nerede bulunduğunu söyler */
++function appFoot(c,W,H,y,fg,sub,box,lc,right){
++  c.font=`700 30px ${FONT_B}`;const w1=c.measureText("Hafif").width;
++  rr(c,80,y-34,72,72,18);c.fillStyle=box;c.fill();leaf(c,96,y-18,1.7,lc);
++  c.textAlign="left";c.fillStyle=fg;c.fillText("Hafif",172,y-2);c.fillStyle=sub;c.font=`500 28px ${FONT_B}`;c.fillText(" · Kilo ve adım takibi",172+w1,y-2);
++  c.font=`500 25px ${FONT_B}`;c.fillText("Google Play ve App Store'da",172,y+32);
++  if(right){c.textAlign="right";c.fillText(right,W-80,y+32);c.textAlign="left"}
++}
+ function rr(c,x,y,w,h,r){c.beginPath();c.moveTo(x+r,y);c.arcTo(x+w,y,x+w,y+h,r);c.arcTo(x+w,y+h,x,y+h,r);c.arcTo(x,y+h,x,y,r);c.arcTo(x,y,x+w,y,r);c.closePath()}
+ const SHARE_TPLS=[["zumrut","Zümrüt"],["fis","Tartı fişi"],["mezura","Mezura"],["basamak","Basamak"],["afis","Afiş"]];
+ const FONT_D='"Outfit", system-ui, sans-serif', FONT_B='"Figtree", system-ui, sans-serif', FONT_M='"DM Mono", ui-monospace, monospace';
+@@ -2615,14 +2623,14 @@
+   const pts=sparkPts(D,0,760,W,160);pathPts(c,pts);c.lineTo(W,980);c.lineTo(0,980);c.closePath();g=c.createLinearGradient(0,740,0,980);g.addColorStop(0,"rgba(127,224,194,.42)");g.addColorStop(1,"rgba(127,224,194,0)");c.fillStyle=g;c.fill();
+   pathPts(c,pts);c.strokeStyle="#9FF0D6";c.lineWidth=6;c.lineJoin="round";c.shadowColor="rgba(159,240,214,.6)";c.shadowBlur=18;c.stroke();c.shadowBlur=0;
+   const lp=pts[pts.length-1];c.beginPath();c.arc(Math.min(W-14,lp[0]),lp[1],13,0,Math.PI*2);c.fillStyle="#FFF";c.fill();
+-  let y=1010;
++  let y=955;
+   if(D.pct!=null){c.font=`600 32px ${FONT_B}`;c.fillStyle="#FFF";c.fillText(`Hedefin ${pctTxt(D.pct)}`,80,y);
+     if(o.weights){c.textAlign="right";c.fillStyle="rgba(255,255,255,.6)";c.font=`500 30px ${FONT_M}`;c.fillText(`hedef ${kg(D.goal)} kg`,W-80,y);c.textAlign="left"}
+     rr(c,80,y+22,W-160,18,9);c.fillStyle="rgba(255,255,255,.12)";c.fill();g=c.createLinearGradient(80,0,W-80,0);g.addColorStop(0,"#5EE0B5");g.addColorStop(1,"#9FF0D6");rr(c,80,y+22,Math.max(18,(W-160)*D.pct/100),18,9);c.fillStyle=g;c.fill();y+=90}else y+=10;
+   const B=statList(D,o).slice(0,3),gap=20,bwid=(W-160-gap*(B.length-1))/B.length,bh=150;
+   B.forEach(([v,l],i)=>{const x=80+i*(bwid+gap);rr(c,x,y,bwid,bh,30);c.fillStyle="rgba(255,255,255,.07)";c.fill();c.strokeStyle="rgba(159,240,214,.22)";c.lineWidth=2;c.stroke();
+     c.fillStyle="#FFF";LS(c,"-2px");fitFont(c,v,bwid-48,700,64,FONT_D,36);c.fillText(v,x+26,y+82);LS(c,"0px");c.font=`500 28px ${FONT_B}`;c.fillStyle="rgba(255,255,255,.65)";c.fillText(l,x+26,y+124)});
+-  c.font=`500 26px ${FONT_B}`;c.fillStyle="rgba(255,255,255,.42)";c.fillText("Hafif ile takip ediliyor",80,H-42);c.textAlign="right";c.fillText(`${fmtShort(D.a.date)} – ${fmtShort(D.b.date)}`,W-80,H-42);c.textAlign="left";
++  appFoot(c,W,H,H-66,"#FFF","rgba(255,255,255,.55)","rgba(255,255,255,.10)","#9FF0D6",`${fmtShort(D.a.date)} – ${fmtShort(D.b.date)}`);
+ }
+ 
+ /* ---- Tartı fişi: termal kâğıt fiş, DM Mono ---- */
+@@ -2657,7 +2665,7 @@
+   // barkod: tartılardan türetilir
+   const bx=L+40,bwid=R-L-80;let bxx=bx;const seed=D.w.map(p=>Math.round(p.kg*10));let k=0;c.fillStyle=INK;
+   while(bxx<bx+bwid){const v=seed[k%seed.length]+k*7;const w=1+(v%4)*2;c.fillRect(bxx,y,w,92);bxx+=w+2+((v>>2)%3)*2;k++}
+-  y+=126;c.textAlign="center";c.font=`500 24px ${FONT_M}`;c.fillStyle=MU;LS(c,"3px");c.fillText("* HAFİF İLE TAKİP EDİLDİ *",W/2,y);LS(c,"0px");c.textAlign="left";
++  y+=126;c.textAlign="center";c.font=`500 24px ${FONT_M}`;c.fillStyle=MU;LS(c,"3px");c.fillText("* HAFİF · KİLO VE ADIM TAKİBİ *",W/2,y);LS(c,"0px");c.font=`500 24px ${FONT_M}`;c.fillText("Google Play ve App Store'da",W/2,y+38);c.textAlign="left";
+ }
+ 
+ /* ---- Mezura: kiloların üzerine yazıldığı sarı şerit metre ---- */
+@@ -2689,8 +2697,7 @@
+   const B=statList(D,o).slice(0,3);let x=80;const y=1150;
+   B.forEach(([v,l],i)=>{const cw=(W-160)/B.length;c.fillStyle="#FFF";fitFont(c,v,cw-30,700,58,FONT_D,34);c.fillText(v,x+i*cw,y);c.font=`500 26px ${FONT_B}`;c.fillStyle="rgba(255,255,255,.7)";c.fillText(l,x+i*cw,y+40);
+     if(i)c.fillStyle="rgba(255,255,255,.25)",c.fillRect(x+i*cw-22,y-52,2,100)});
+-  c.font=`500 24px ${FONT_B}`;c.fillStyle="rgba(255,255,255,.55)";c.fillText("Hafif ile takip ediliyor",80,H-46);
+-  if(D.pct!=null){c.textAlign="right";c.fillText(`hedefin ${pctTxt(D.pct)}`,W-80,H-46);c.textAlign="left"}
++  appFoot(c,W,H,H-66,"#FFF","rgba(255,255,255,.6)","rgba(255,255,255,.12)","#FFF",D.pct!=null?`hedefin ${pctTxt(D.pct)}`:"");
+ }
+ 
+ /* ---- Basamak: her kilo bir basamak ---- */
+@@ -2711,8 +2718,7 @@
+   c.fillStyle=G2;LS(c,"-8px");c.font=`700 190px ${FONT_D}`;const big=bigTxt(D);c.fillText(big,74,bot-40);const bw=c.measureText(big).width;LS(c,"0px");
+   c.font=`500 64px ${FONT_D}`;c.fillStyle=G1;c.fillText("kg",74+bw+10,bot-40);
+   c.font=`500 28px ${FONT_B}`;c.fillStyle="#46605A";c.fillText(`${D.days} günde${D.pct!=null?` · hedefin ${pctTxt(D.pct)}`:""}`,80,bot+2);
+-  leaf(c,80,H-104,1.6,G1);c.font=`700 30px ${FONT_D}`;c.fillStyle=G2;c.fillText("Hafif",126,H-64);
+-  c.textAlign="right";c.font=`500 26px ${FONT_B}`;c.fillStyle="#46605A";c.fillText(`${fmtShort(D.a.date)} – ${fmtShort(D.b.date)}`,W-80,H-64);c.textAlign="left";
++  appFoot(c,W,H,H-66,G2,"#46605A","rgba(11,59,51,.08)",G1,`${fmtShort(D.a.date)} – ${fmtShort(D.b.date)}`);
+ }
+ 
+ /* ---- Afiş: büyük rakam, ızgara, haftalık sütunlar ---- */
+@@ -2741,7 +2747,7 @@
+   c.font=`700 22px ${FONT_B}`;c.fillStyle="rgba(255,255,255,.75)";LS(c,"2px");c.fillText("HAFTA HAFTA",110,by+50);LS(c,"0px");
+   const base=by+80;ch.forEach((v,i)=>{const h=Math.abs(v)/mx*(bh-150),x=120+i*gw;c.fillStyle=v<=0?"#9FF0D6":RED;c.fillRect(x,v<=0?base:base-h,Math.max(6,gw*.62),Math.max(4,h))});
+   c.fillStyle="rgba(255,255,255,.4)";c.fillRect(110,base,W-220,2);
+-  c.font=`500 24px ${FONT_B}`;c.fillStyle="#56625E";c.fillText("Hafif ile takip ediliyor",80,H-48);c.textAlign="right";c.fillText(`${fmtShort(D.a.date)} – ${fmtShort(D.b.date)}`,W-80,H-48);c.textAlign="left";
++  c.fillStyle=PAPER;c.fillRect(0,H-116,W,116);appFoot(c,W,H,H-66,"#0B3B33","#56625E","rgba(11,59,51,.08)","#0E7C66",`${fmtShort(D.a.date)} – ${fmtShort(D.b.date)}`);
+ }
+ 
+ const TPL_FN={zumrut:tZumrut,fis:tFis,mezura:tMezura,basamak:tBasamak,afis:tAfis};
+@@ -2772,7 +2778,7 @@
+   const B=[["Haftada 1","tartı"],["Her gün","protein ve su"],[o.shots&&D.shots?"Haftada 1":"Haftada 3",o.shots&&D.shots?"iğne":"hareket"]],gap=20,bwid=(W-160-gap*2)/3,bh=150,y=1080;
+   B.forEach(([v,l],i)=>{const x=80+i*(bwid+gap);rr(c,x,y,bwid,bh,30);c.fillStyle="rgba(255,255,255,.07)";c.fill();c.strokeStyle="rgba(159,240,214,.22)";c.lineWidth=2;c.stroke();
+     c.fillStyle="#FFF";LS(c,"-1px");fitFont(c,v,bwid-48,700,52,FONT_D,32);c.fillText(v,x+26,y+80);LS(c,"0px");c.font=`500 28px ${FONT_B}`;c.fillStyle="rgba(255,255,255,.65)";c.fillText(l,x+26,y+122)});
+-  c.font=`500 26px ${FONT_B}`;c.fillStyle="rgba(255,255,255,.42)";c.fillText("Hafif ile takip ediliyor",80,H-42);c.textAlign="right";c.fillText(`başlangıç ${fmtShort(D.a.date)}`,W-80,H-42);c.textAlign="left";
++  appFoot(c,W,H,H-66,"#FFF","rgba(255,255,255,.55)","rgba(255,255,255,.10)","#9FF0D6",`başlangıç ${fmtShort(D.a.date)}`);
+ }
+ async function drawShare(tpl){
+   const D=shareData(); if(!D) return null; await shareFonts();
+@@ -2843,7 +2849,7 @@
+ }
+ const km1=n=>n.toLocaleString("tr-TR",{minimumFractionDigits:1,maximumFractionDigits:1});
+ function stBrand(c,x,y,col,txt){leaf(c,x,y-58,2.2,col);c.fillStyle=txt;c.font=`700 58px ${FONT_D}`;LS(c,"-2px");c.fillText("Hafif",x+66,y);LS(c,"0px")}
+-function stFoot(c,W,H,D,o,col,sub){c.font=`500 28px ${FONT_B}`;c.fillStyle=sub;c.fillText("Hafif ile takip ediliyor",80,H-60);c.textAlign="right";c.fillText(D.date,W-80,H-60);c.textAlign="left"}
++function stFoot(c,W,H,D,o,col,sub){appFoot(c,W,H,H-66,col,sub,col==="#FFF"?"rgba(255,255,255,.10)":"rgba(30,41,59,.08)",col,D.date)}
+ function stTrio(c,x,y,w,D,col,sub,box){const it=[[km1(D.E.km),"km"],[fmtN(D.E.kcal),"kcal"],[fmtN(D.E.min),"dk"]],gw=(w-40)/3;
+   it.forEach(([v,l],i)=>{const bx=x+i*(gw+20);if(box){rr(c,bx,y,gw,128,26);c.fillStyle=box;c.fill()}c.fillStyle=col;c.font=`700 56px ${FONT_D}`;c.fillText(v,bx+28,y+70);c.fillStyle=sub;c.font=`500 26px ${FONT_B}`;c.fillText(l+" · tahmini",bx+28,y+108)})}
+ /* 1 · Fotoğraf: kullanıcının kendi fotoğrafı, üstünde adım bilgileri (fotoğraf yalnızca bu ekranda bellekte durur) */
+@@ -2856,23 +2862,23 @@
+   let g=c.createLinearGradient(0,0,0,300);g.addColorStop(0,"rgba(0,0,0,.45)");g.addColorStop(1,"rgba(0,0,0,0)");c.fillStyle=g;c.fillRect(0,0,W,300);
+   g=c.createLinearGradient(0,H-620,0,H);g.addColorStop(0,"rgba(0,0,0,0)");g.addColorStop(1,"rgba(0,0,0,.78)");c.fillStyle=g;c.fillRect(0,H-620,W,620);
+   stBrand(c,80,150,"#FFF","#FFF");c.textAlign="right";c.font=`500 28px ${FONT_B}`;c.fillStyle="rgba(255,255,255,.85)";c.fillText(D.date,W-80,140);c.textAlign="left";
+-  c.shadowColor="rgba(0,0,0,.35)";c.shadowBlur=24;c.fillStyle="#FFF";fitFont(c,fmtN(D.n),720,700,210,FONT_D,100);LS(c,"-8px");c.fillText(fmtN(D.n),66,H-250);const tw=c.measureText(fmtN(D.n)).width;LS(c,"0px");
+-  c.font=`500 56px ${FONT_D}`;c.fillText("adım",66+tw+16,H-250);c.shadowBlur=0;
++  c.shadowColor="rgba(0,0,0,.35)";c.shadowBlur=24;c.fillStyle="#FFF";fitFont(c,fmtN(D.n),720,700,210,FONT_D,100);LS(c,"-8px");c.fillText(fmtN(D.n),66,H-330);const tw=c.measureText(fmtN(D.n)).width;LS(c,"0px");
++  c.font=`500 56px ${FONT_D}`;c.fillText("adım",66+tw+16,H-330);c.shadowBlur=0;
+   const it=[o.est?[km1(D.E.km),"km"]:null,o.est?[fmtN(D.E.min),"dk"]:null,o.goal?[`%${Math.round(D.pct)}`,"hedef"]:null].filter(Boolean);
+-  it.forEach(([v,l],i)=>{const x=80+i*260;c.fillStyle="#FFF";c.font=`700 54px ${FONT_D}`;c.fillText(v,x,H-140);c.fillStyle="rgba(255,255,255,.7)";c.font=`500 26px ${FONT_B}`;c.fillText(l,x,H-100)});
+-  c.font=`500 26px ${FONT_B}`;c.fillStyle="rgba(255,255,255,.6)";c.textAlign="right";c.fillText("Hafif ile takip ediliyor",W-80,H-100);c.textAlign="left";
++  it.forEach(([v,l],i)=>{const x=80+i*260;c.fillStyle="#FFF";c.font=`700 54px ${FONT_D}`;c.fillText(v,x,H-220);c.fillStyle="rgba(255,255,255,.7)";c.font=`500 26px ${FONT_B}`;c.fillText(l,x,H-180)});
++  appFoot(c,W,H,H-66,"#FFF","rgba(255,255,255,.7)","rgba(255,255,255,.14)","#FFF");
+ }
+ /* 2 · Pist: gece pisti, lacivert ve neon yeşil */
+ function tPist(c,W,H,D,o){
+   let g=c.createLinearGradient(0,0,W*.4,H);g.addColorStop(0,"#1B2A55");g.addColorStop(1,"#0A1128");c.fillStyle=g;c.fillRect(0,0,W,H);
+   const cx=W/2,cy=640;
+-  c.beginPath();c.ellipse(cx,cy,590,450,0,0,Math.PI*2);c.ellipse(cx,cy,360,220,0,0,Math.PI*2);c.fillStyle="rgba(120,140,200,.14)";c.fill("evenodd");
+-  for(let i=0;i<6;i++){c.beginPath();c.ellipse(cx,cy,590-i*46,450-i*46,0,0,Math.PI*2);c.strokeStyle=i===0?"rgba(255,255,255,.8)":"rgba(255,255,255,.22)";c.lineWidth=i===0?6:3;c.stroke()}
+-  c.beginPath();c.ellipse(cx,cy,350,210,0,0,Math.PI*2);c.fillStyle="#0C1430";c.fill();
+-  const f=Math.min(1,D.n/D.g);c.beginPath();c.ellipse(cx,cy,475,335,0,-Math.PI/2,-Math.PI/2+Math.PI*2*f);c.strokeStyle="#C8F542";c.lineWidth=20;c.lineCap="round";c.shadowColor="rgba(200,245,66,.6)";c.shadowBlur=24;c.stroke();c.shadowBlur=0;c.lineCap="butt";
++  c.beginPath();c.arc(cx,cy,450,0,Math.PI*2);c.arc(cx,cy,220,0,Math.PI*2);c.fillStyle="rgba(120,140,200,.14)";c.fill("evenodd");
++  for(let i=0;i<6;i++){c.beginPath();c.arc(cx,cy,450-i*46,0,Math.PI*2);c.strokeStyle=i===0?"rgba(255,255,255,.8)":"rgba(255,255,255,.22)";c.lineWidth=i===0?6:3;c.stroke()}
++  c.beginPath();c.arc(cx,cy,210,0,Math.PI*2);c.fillStyle="#0C1430";c.fill();
++  const f=Math.min(1,D.n/D.g);c.beginPath();c.arc(cx,cy,335,-Math.PI/2,-Math.PI/2+Math.PI*2*f);c.strokeStyle="#C8F542";c.lineWidth=20;c.lineCap="round";c.shadowColor="rgba(200,245,66,.6)";c.shadowBlur=24;c.stroke();c.shadowBlur=0;c.lineCap="butt";
+   stBrand(c,80,150,"#C8F542","#FFF");c.textAlign="center";
+   c.fillStyle="rgba(255,255,255,.7)";c.font=`600 28px ${FONT_B}`;LS(c,"6px");c.fillText("BUGÜN",cx,cy-80);LS(c,"0px");
+-  c.fillStyle="#FFF";fitFont(c,fmtN(D.n),600,700,170,FONT_D,90);LS(c,"-6px");c.fillText(fmtN(D.n),cx,cy+60);LS(c,"0px");
++  c.fillStyle="#FFF";fitFont(c,fmtN(D.n),370,700,150,FONT_D,80);LS(c,"-6px");c.fillText(fmtN(D.n),cx,cy+55);LS(c,"0px");
+   c.font=`500 40px ${FONT_B}`;c.fillStyle="#C8F542";c.fillText("adım",cx,cy+120);c.textAlign="left";
+   if(o.goal){c.font=`600 34px ${FONT_B}`;c.fillStyle="#FFF";c.fillText(D.n>=D.g?"Hedef tamam":`Hedefin ${pctTxt(D.pct)}`,80,1130);c.textAlign="right";c.fillStyle="rgba(255,255,255,.6)";c.font=`500 30px ${FONT_M}`;c.fillText(`hedef ${fmtN(D.g)}`,W-80,1130);c.textAlign="left"}
+   if(o.est){c.font=`600 34px ${FONT_B}`;c.fillStyle="rgba(255,255,255,.85)";c.fillText(`${km1(D.E.km)} km · ${fmtN(D.E.kcal)} kcal · ${fmtN(D.E.min)} dk`,80,o.goal?1190:1150)}
