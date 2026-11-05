@@ -2,6 +2,18 @@
 
 Play en fazla 500 karakter kabul eder. Aşağıdaki bloğu olduğu gibi yapıştır.
 
+## 2.0.3
+
+```
+<tr-TR>
+Yeni: alışkanlık rozetleri.
+• Protein, su ve adım hedefini tuttuğun günler için rozetler
+• Tartı, iğne ve takviye düzenine özel rozetler
+• İlk 1 kg ve ilk 3 kg rozetleri
+• Başarılar sayfası bölümlere ayrıldı; sıradaki rozet en yakın olan
+</tr-TR>
+```
+
 ## 2.0.2
 
 ```
