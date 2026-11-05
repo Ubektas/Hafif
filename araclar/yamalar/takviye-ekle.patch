@@ -1,0 +1,115 @@
+--- artifact.orig.html	2026-11-05 07:34:34.070820363 +0000
++++ artifact.html	2026-11-05 07:34:34.149957575 +0000
+@@ -1640,7 +1640,7 @@
+       </div>
+       ${actionsHtml()}
+       ${suppMini()}
+-      ${stepCard()}
++      ${stepCard()}${suppCta()}
+       ${penWarn()}${remCta()}
+       <button class="btn ghost" data-go="ayar">Hedefini ayarla</button></section>`;
+   }
+@@ -1652,7 +1652,7 @@
+       </div>
+       ${actionsHtml()}
+       ${suppMini()}
+-      ${stepCard()}
++      ${stepCard()}${suppCta()}
+       ${penWarn()}${remCta()}
+       ${s.length?`<div id="cycWrap" class="cycw" data-v="kadran">${cycleHtml("kadran")}</div>`:`<button class="btn ghost" data-go="ayar">Hedef ve ilaç bilgisini ayarla</button>`}</section>`;
+   }
+@@ -1686,7 +1686,7 @@
+     ${weekCard()}
+     ${coachHtml()}
+     ${nextShotRow()}
+-    ${HP()&&!(S.hc&&S.hc.on)&&!PV()?stepCard():""}
++    ${HP()&&!(S.hc&&S.hc.on)&&!PV()?stepCard():""}${suppCta()}
+     ${penWarn()}${remCta()}
+     ${msStrip()}
+   </section>`;
+@@ -2284,7 +2284,7 @@
+ function vGunluk(){
+   const sp=supps().length;
+   return `<section>${gunTiles()}<div class="card">${mealSec()}</div>${todayCard()}
+-    <div id="secSupp" class="gsupp">${sp?suppBody():`<div class="card empty"><h2>Takviyeler</h2><p class="muted" style="margin:0">Aldığın vitamin ve takviyeleri ekle; Hafif zamanında hatırlatsın.</p><button type="button" class="btn suppadd" id="suppEdit">Takviye ekle</button></div>`}</div></section>`;
++    <div id="secSupp" class="gsupp">${sp?suppBody():`<div class="card empty"><h2>Takviyeler</h2><p class="muted" style="margin:0">Aldığın vitamin ve takviyeleri ekle; Hafif zamanında hatırlatsın.</p><button type="button" class="btn suppadd" data-suppadd>Takviye ekle</button></div>`}</div></section>`;
+ }
+ function gunTiles(){
+   const r=dayRec(today()),pg=pGoal(),wg=wGoal(),L=dosesFor(today()),t=takenOn(today()),tn=L.filter(q=>t[q.key]).length,Lt=v=>(v/1000).toLocaleString("tr-TR",{maximumFractionDigits:1});
+@@ -3502,6 +3502,14 @@
+       <span class="smp">${L.map(q=>`<span class="${t[q.key]?"ok":""}">${pill(q.x,22)}</span>`).join("")}</span></span>
+     <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="var(--muted)" stroke-width="2" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg></button>`;
+ }
++/* ilk 7 gün, hiç takviye yokken Özet'te: takviye ekleme hatırlatıcısı */
++function suppCta(){
++  if(PV()||supps().length)return "";
++  const P=S.profile,w=sortedW(),since=P.since||(w[0]&&w[0].date);
++  if(!since||diffDays(since,today())>=7)return "";
++  return `<button type="button" class="card stcta" data-suppadd><span class="mi" style="background:var(--supp-soft);color:var(--supp)">${pill({shape:"caps",color:"#B8577A"},26)}</span><span style="flex:1;min-width:0"><b>Takviyelerini ekle</b><small>Vitamin ve takviyelerini ekle; Hafif zamanında hatırlatsın</small></span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="var(--muted)" stroke-width="2" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg></button>`;
++}
++$("#view").addEventListener("click",e=>{if(e.target.closest("[data-suppadd]"))openSuppEdit(true)});
+ function weekOf(d){const dt=toD(d),wd=(dt.getDay()+6)%7;const mon=addDays(d,-wd);return [...Array(7)].map((_,i)=>addDays(mon,i))}
+ function suppStreak(){let n=0,d=today();const t0=dayDone(d);if(t0.of&&t0.n<t0.of)d=addDays(d,-1);
+   for(let i=0;i<400;i++){const r=dayDone(d);if(!r.of){d=addDays(d,-1);continue}if(r.n<r.of)break;n++;d=addDays(d,-1)}return n}
+@@ -3534,10 +3542,11 @@
+ function weekTable(){
+   const L=supps(),days=[1,2,3,4,5,6,0];
+   if(!L.length)return "";
+-  return `<div class="card"><div style="margin-bottom:10px"><h2>Haftalık program</h2><span class="muted" style="font-size:12.5px">Hangi gün ne alıyorsun</span></div>
++  return `<div class="card"><div style="margin-bottom:10px"><h2>Haftalık Takviye Programı</h2><span class="muted" style="font-size:12.5px">Hangi gün ne alıyorsun</span></div>
+     <div style="overflow-x:auto"><table class="wtab"><thead><tr><th></th>${days.map(i=>`<th class="${toD(today()).getDay()===i?"tdy":""}" aria-label="${DAYN[i]}"><span class="dlong">${DAYN[i]}</span><span class="dshort" aria-hidden="true">${DAYN[i][0]}</span></th>`).join("")}</tr></thead><tbody>
+     ${L.map(x=>`<tr><td><span class="wtn"><span>${esc(x.name)}${slotsOf(x).length>1?` <small class="muted">×${slotsOf(x).length}</small>`:""}</span></span></td>${days.map(i=>`<td>${x.days.includes(i)?`<i style="background:${x.color}"></i>`:""}</td>`).join("")}</tr>`).join("")}
+-    </tbody></table></div></div>`;
++    </tbody></table></div>
++    <button type="button" class="btn suppadd" data-suppadd style="width:100%;margin-top:14px">+ Yeni takviye ekle</button></div>`;
+ }
+ function toggleSupp(id,force){
+   const d=suppDate||today(); if(d>today())return;
+@@ -3561,28 +3570,28 @@
+   const dd=e.target.closest("[data-sday]"); if(dd){suppDate=dd.dataset.sday===today()?null:dd.dataset.sday;ANIM=false;render();return}
+   if(e.target.closest("#suppEdit")){openSuppEdit();return}
+ });
+-function openSuppEdit(){
+-  const L=JSON.parse(JSON.stringify(supps())),T=sTimes();
++function openSuppEdit(add){
++  const L=JSON.parse(JSON.stringify(supps())),T=sTimes(),N=add?{id:uid(),name:"",slot:"sabah",days:[0,1,2,3,4,5,6],shape:"caps",color:"#3BA58A"}:null;if(N)L.push(N);
+   const SH=[["caps","Kapsül"],["tab","Tablet"],["soft","Yumuşak"],["oval","Oval"]];
+   const rowH=(x,i)=>`<div class="sedit" data-i="${i}">
+-      <div class="seh"><span class="spill" style="width:34px;height:34px">${pill(x,34)}</span><input class="se-name" value="${esc(x.name)}" placeholder="İlaç adı" aria-label="İlaç adı"><button type="button" class="ibtn se-del" aria-label="Sil"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M9 7V4.8c0-.4.4-.8.8-.8h4.4c.4 0 .8.4.8.8V7M6.5 7l.9 12.2c.1.9.8 1.8 1.8 1.8h5.6c1 0 1.7-.9 1.8-1.8L17.5 7"/></svg></button></div>
++      <div class="seh"><span class="spill" style="width:34px;height:34px">${pill(x,34)}</span><input class="se-name" value="${esc(x.name)}" placeholder="İlaç adı" aria-label="İlaç adı"><button type="button" class="ibtn se-del" aria-label="Sil"${add?" hidden":""}><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M9 7V4.8c0-.4.4-.8.8-.8h4.4c.4 0 .8.4.8.8V7M6.5 7l.9 12.2c.1.9.8 1.8 1.8 1.8h5.6c1 0 1.7-.9 1.8-1.8L17.5 7"/></svg></button></div>
+       <span class="muted" style="font-size:12.5px;margin:-2px 0 -4px">Ne zaman? Birden fazla seçebilirsin</span>
+       <div class="segs">${SLOTS_S.map(([k,n])=>`<button type="button" class="se-slot${slotsOf(x).includes(k)?" on":""}" data-v="${k}" aria-pressed="${slotsOf(x).includes(k)}">${n}</button>`).join("")}</div>
+       <div class="sdays">${[1,2,3,4,5,6,0].map(dn=>`<button type="button" class="se-day${x.days.includes(dn)?" on":""}" data-v="${dn}">${DAYN[dn]}</button>`).join("")}</div>
+       <div class="segs">${SH.map(([k,n])=>`<button type="button" class="se-shape${x.shape===k?" on":""}" data-v="${k}">${n}</button>`).join("")}<input type="color" class="se-color" value="${x.color}" aria-label="Renk"></div></div>`;
+-  $("#sheetRoot").innerHTML=`<div class="scrim"><div class="sheet" role="dialog" aria-modal="true" aria-label="Programı düzenle"><div class="grab"></div>
+-    <header><h2>Programı düzenle</h2><button class="del" data-x>Kapat</button></header>
++  $("#sheetRoot").innerHTML=`<div class="scrim"><div class="sheet" role="dialog" aria-modal="true" aria-label="${add?"Yeni takviye":"Programı düzenle"}"><div class="grab"></div>
++    <header><h2>${add?"Yeni takviye":"Programı düzenle"}</h2><button class="del" data-x>Kapat</button></header>
+     <div style="display:flex;flex-direction:column;gap:12px">
+-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">${SLOTS_S.map(([k,n])=>`<label>${n}${timeField("st-"+k,T[k])}</label>`).join("")}</div>
+-      <div id="seList" style="display:flex;flex-direction:column;gap:10px">${L.map(rowH).join("")}</div>
+-      <button type="button" class="btn ghost" id="seAdd">+ Yeni takviye</button>
+-      <button type="button" class="btn" id="seSave">Kaydet</button>
++      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px"${add?" hidden":""}>${SLOTS_S.map(([k,n])=>`<label>${n}${timeField("st-"+k,T[k])}</label>`).join("")}</div>
++      <div id="seList" style="display:flex;flex-direction:column;gap:10px">${add?rowH(N,L.length-1):L.map(rowH).join("")}</div>
++      <button type="button" class="btn ghost" id="seAdd"${add?" hidden":""}>+ Yeni takviye</button>
++      <button type="button" class="btn" id="seSave">${add?"Ekle":"Kaydet"}</button>
+     </div></div></div>`;
+   const root=$("#sheetRoot"),list=$("#seList");
+   root.querySelector(".scrim").addEventListener("click",e=>{if(e.target.classList.contains("scrim"))closeSheet()});
+   root.querySelector("[data-x]").addEventListener("click",closeSheet);
+   const sync=()=>{[...list.children].forEach(el=>{const i=+el.dataset.i,x=L[i];if(!x)return;x.name=el.querySelector(".se-name").value.trim();x.color=el.querySelector(".se-color").value;el.querySelector(".spill").innerHTML=pill(x,34)})};
+-  list.addEventListener("input",sync);
++  list.addEventListener("input",sync);if(add)setTimeout(()=>{const n=list.querySelector(".se-name");if(n)n.focus()},250);
+   list.addEventListener("click",e=>{const el=e.target.closest(".sedit");if(!el)return;const x=L[+el.dataset.i];
+     const b=e.target.closest("button");if(!b)return;
+     if(b.classList.contains("se-slot")){const cur=slotsOf(x),v=b.dataset.v;let nx=cur.includes(v)?cur.filter(q=>q!==v):[...cur,v];if(!nx.length){toast("En az bir vakit seç");return}
+@@ -3591,7 +3600,7 @@
+     else if(b.classList.contains("se-shape")){x.shape=b.dataset.v;el.querySelectorAll(".se-shape").forEach(z=>z.classList.toggle("on",z===b));el.querySelector(".spill").innerHTML=pill(x,34)}
+     else if(b.classList.contains("se-del")){if(!b.classList.contains("armed")){b.classList.add("armed");b.textContent="Sil?";return}L[+el.dataset.i]=null;el.remove()}});
+   $("#seAdd").addEventListener("click",()=>{const x={id:uid(),name:"",slot:"sabah",days:[0,1,2,3,4,5,6],shape:"caps",color:"#3BA58A"};L.push(x);list.insertAdjacentHTML("beforeend",rowH(x,L.length-1));const n=list.lastElementChild.querySelector(".se-name");n.focus()});
+-  $("#seSave").addEventListener("click",()=>{sync();const out=L.filter(x=>x&&x.name&&x.days.length);S.supps=out;S.suppTimes=Object.fromEntries(SLOTS_S.map(([k])=>[k,$("#st-"+k).value||SUPP_TIMES[k]]));save();closeSheet();toast("Program kaydedildi")});
++  $("#seSave").addEventListener("click",()=>{sync();if(N&&!N.name){toast("Takviyenin adını yaz");list.querySelector(".se-name").focus();return}const out=L.filter(x=>x&&x.name&&x.days.length);S.supps=out;S.suppTimes=Object.fromEntries(SLOTS_S.map(([k])=>[k,$("#st-"+k).value||SUPP_TIMES[k]]));save();closeSheet();toast(N?"Takviye eklendi":"Program kaydedildi");if(N)render()});
+ }
+ const ymd=t=>{const d=new Date(t);return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")};
+ /* ---------- döngü kartı tasarımları ---------- */
