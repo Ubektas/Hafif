@@ -876,6 +876,7 @@ button.mscount i{font-style:normal;font-size:22px;color:var(--muted);margin-left
 .obtos input{width:22px;height:22px;flex:none;margin:1px 0 0;accent-color:var(--accent)}
 .edit{cursor:pointer}
 .bkline{font-size:12.5px;border-radius:12px;padding:10px 12px;background:var(--sunk);color:var(--muted)}.bkline.warn{background:var(--warnbg);color:var(--warnfg)}
+.remst{font-size:12.5px;line-height:1.45;background:var(--sunk);border-radius:12px;padding:9px 12px}.remst b{color:var(--fg)}.remst.bad{color:var(--bad);background:color-mix(in oklab,var(--bad) 8%,transparent)}.remst .linkbtn{padding:0;font-size:12.5px;color:inherit}
 .remrow{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center}
 .remtime{display:flex;gap:8px;margin:-2px 0 6px}.remtime select,.remtime input{padding:9px 10px;font-size:14px}.remtime .dfield{padding:9px 10px;flex:1}.remtime .dfield .dfv{font-size:14px}
 .remcta{display:flex;align-items:center;gap:14px;padding:14px 16px}
@@ -3028,7 +3029,8 @@ function habits(){
     const hit=Object.keys(S.steps||{}).filter(d=>(S.steps[d]||0)>=g&&!keep.includes(d));if(hit.length){P.stepDays=[...keep,...hit].sort();ch=true}
     add("ad","Adım",`Günlük hedef ${fmtN(g)} adım`,[1,7,30,100],P.stepDays||[],n=>n===1?"İlk adım hedefi":`${n} gün adım hedefi`)}
   add("ta","Tartı","Kilo girdiğin her gün sayılır",[5,20,50,100],S.weights.map(x=>x.date),n=>`${n} gün tartı`);
-  if(SHOTS()||has("ig"))add("ig","İğne","Kaydettiğin her iğne sayılır",[4,12,26,52],S.shots.map(x=>x.date),n=>`${n} iğne`,"iğne");
+  /* iğne rozetleri kaldırıldı (kullanıcı kararı: iğne yapmak bir başarı değil); eski kayıtlar silinir */
+  Object.keys(won).forEach(id=>{if(id.startsWith("hig")){delete won[id];ch=true}});
   if((Array.isArray(S.supps)&&S.supps.length)||has("tk"))add("tk","Takviye","Günün tüm takviyeleri alındığında",[7,30,100],
     Object.keys(S.suppLog||{}).filter(d=>{const L=dosesFor(d),t=takenOn(d);return L.length&&L.every(q=>t[q.key])}),n=>`${n} gün tam takviye`);
   if(ch)save();
@@ -4466,7 +4468,7 @@ function remBuild(){
     const g=le?diffDays(le,d):null;add(6000,atOf(d,"20:00"),"Yedeğini al",g!=null?`Son yedek dosyan ${g} gün önce. Bir dakikada yeni bir yedek al.`:"Verilerini güvenceye al: Ayarlar'dan bir dakikada yedek dosyası al.","YEDEK",{tab:"ayar"})}
   return L;
 }
-let remT=null,remBusy=false,remTypes=false;
+let remT=null,remBusy=false,remTypes=false,REMST=null,remSig="";
 function remQueue(){if(!LN())return;clearTimeout(remT);remT=setTimeout(remSchedule,1200)}
 async function remSchedule(){
   const N=LN(); if(!N||remBusy) return; remBusy=true;
@@ -4479,11 +4481,23 @@ async function remSchedule(){
       {id:"TARTI",actions:[{id:"kilo",title:"Kilo gir",foreground:true}]},
       {id:"BILGI",actions:[{id:"tamam",title:"Tamam",foreground:false}]},
       {id:"YEDEK",actions:[{id:"yedek",title:"Yedek al",foreground:true}]}]})}
-    const pend=await N.getPending(); const old=((pend&&pend.notifications)||[]).filter(x=>x.id<9000);
-    if(old.length)await N.cancel({notifications:old.map(x=>({id:x.id}))});
-    if(remOn()){const L=remBuild();if(L.length)await N.schedule({notifications:L})}
-  }catch(e){console.warn("hatırlatıcı",e&&e.message)}
+    const pend=await N.getPending(); const old=((pend&&pend.notifications)||[]).filter(x=>+x.id<9000);
+    if(old.length)await N.cancel({notifications:old.map(x=>({id:+x.id}))});
+    const st={t:Date.now()};
+    if(remOn()){
+      /* izin telefona aittir, yedekle gelmez: yedek yüklenen telefonda hiç sorulmamışsa burada sorulur */
+      let p=await N.checkPermissions();if(p.display==="prompt"||p.display==="prompt-with-rationale")p=await N.requestPermissions();st.perm=p.display;
+      /* iOS en fazla 64 bekleyen bildirim tutar: en yakın 60'ı kurulur */
+      let L=remBuild().sort((a,b)=>a.schedule.at-b.schedule.at);if(IOS())L=L.slice(0,60);
+      if(st.perm==="granted"&&L.length)await N.schedule({notifications:L});
+      const q=await N.getPending(),mine=((q&&q.notifications)||[]).filter(x=>+x.id<9000);st.n=mine.length;st.want=L.length;
+      const nx=L.find(x=>mine.some(y=>+y.id===x.id));if(nx)st.next={at:+nx.schedule.at,title:nx.title}}
+    REMST=st;
+  }catch(e){console.warn("hatırlatıcı",e&&e.message);REMST={t:Date.now(),err:(e&&e.message)||String(e)}}
   remBusy=false;
+  const sig=JSON.stringify(Object.assign({},REMST,{t:0}));
+  if(sig!==remSig&&(tab==="ayar"||tab==="ozet")&&!$("#sheetRoot").firstChild&&!$("#onb")&&!$("#paywall"))try{render()}catch(_){}
+  remSig=sig;
 }
 async function remEnable(){
   const N=LN(); if(!N) return;
@@ -4497,15 +4511,27 @@ async function remEnable(){
   try{render()}catch(e){console.warn("hatırlatıcı çizimi",e)}
   toast("Hatırlatıcılar açıldı")
 }
+const remNoPerm=()=>remOn()&&REMST&&REMST.perm&&REMST.perm!=="granted";
 function remCta(){
+  if(LN()&&remNoPerm())return `<div class="card remcta"><span class="mi">${BELL}</span><span style="flex:1;min-width:0"><b>Hatırlatıcılar bu telefonda kapalı</b><small>Bildirim izni yok; hatırlatıcılar gelmiyor.</small></span><button type="button" class="btn" data-rem-on style="padding:10px 14px;font-size:14px">İzin ver</button></div>`;
   if(!LN()||remOn()||S.profile.remHide) return "";
   return `<div class="card remcta"><span class="mi">${BELL}</span><span style="flex:1;min-width:0"><b>Hatırlatıcıları aç</b><small>${SHOTS()?"İğne günü, takviyeler, su ve tartı; ":"Takviyeler, su ve tartı; "}zamanında, internetsiz.</small></span><button type="button" class="btn" data-rem-on style="padding:10px 14px;font-size:14px">Aç</button><button type="button" class="remx" data-rem-hide aria-label="Gizle">×</button></div>`;
+}
+function remStatus(){
+  const st=REMST,ayar=IOS()?"Ayarlar → Hafif → Bildirimler":"Ayarlar → Uygulamalar → Hafif → Bildirimler";
+  if(!st)return `<div class="remst muted">Hatırlatıcılar kuruluyor…</div>`;
+  if(st.err)return `<div class="remst bad"><b>Hatırlatıcılar kurulamadı.</b> ${esc(st.err)}</div>`;
+  if(remNoPerm())return `<div class="remst bad"><b>Bildirim izni kapalı.</b> ${ayar}'den aç ya da <button type="button" class="linkbtn" data-rem-on>izin ver</button>.</div>`;
+  const nx=st.next?new Date(st.next.at):null,dd=nx?diffDays(today(),ymd(nx)):0,gun=dd===0?"bugün":dd===1?"yarın":nx?nx.toLocaleDateString("tr-TR",{day:"numeric",month:"short",weekday:"short"}):"";
+  const hm=nx?String(nx.getHours()).padStart(2,"0")+":"+String(nx.getMinutes()).padStart(2,"0"):"";
+  return `<div class="remst muted">Bu telefonda <b>${st.n}</b> hatırlatıcı kurulu${nx?` · sıradaki: ${gun} ${hm}, ${esc(st.next.title)}`:""}${st.n<st.want&&!IOS()?` <span class="bad">(${st.want} bekleniyordu)</span>`:""}${IOS()?"":`<br>Gelmiyorsa: ${"Ayarlar → Uygulamalar → Hafif → Pil"} → <b>Kısıtlanmamış</b>.`}</div>`;
 }
 function remCard(){
   if(!LN()) return "";
   if(!remOn()) return `<div class="card" style="display:flex;flex-direction:column;gap:12px"><div><h2>Hatırlatıcılar</h2><span class="muted" style="font-size:12.5px">Bildirimler telefonunda zamanlanır, internet gerekmez.</span></div><button type="button" class="btn" data-rem-on>Hatırlatıcıları aç</button></div>`;
   const R=rem(),sw=(k,l,d)=>`<label class="sw"><span><b>${l}</b><small>${d}</small></span><input type="checkbox" data-rem="${k}" ${R[k]?"checked":""}><i></i></label>`;
   return `<div class="card" style="display:flex;flex-direction:column;gap:10px"><div class="remrow"><div><h2>Hatırlatıcılar</h2><span class="muted" style="font-size:12.5px">Saatler birkaç dakika oynayabilir</span></div><button type="button" class="linkbtn" data-rem-off>Tümünü kapat</button></div>
+    ${remStatus()}
     <div class="sws">${SHOTS()?sw("shot","İğne günü","iğne saatinde, doz ve bölge önerisiyle")+sw("shotEve","Bir gün önce","20:00'de hazırlık hatırlatması")+sw("shot2","Kaydedilmezse tekrar","iğne saatinden 3 saat sonra, iğneyi kaydetmediysen"):""}${sw("supp","Takviyeler","programındaki sabah, akşam ve gece saatlerinde")}
     <div class="remtime" id="remS2" ${R.supp?"":"hidden"}><span class="muted" style="font-size:12.5px;flex:1">Alınmazsa tekrar hatırlat</span><select data-rem-s2 aria-label="Takviye ikinci hatırlatma">${[[30,"30 dk sonra"],[60,"1 saat sonra"],[120,"2 saat sonra"],[0,"Kapalı"]].map(([v,l])=>`<option value="${v}" ${+R.supp2===v?"selected":""}>${l}</option>`).join("")}</select></div>${sw("water","Su","11:00, 15:00 ve 19:00'da, hedefin dolmadıysa")}${sw("prot","Protein","18:30'da, hedefin dolmadıysa")}${sw("weigh","Haftalık tartı","seçtiğin gün ve saatte")+sw("week","Pazartesi haftalık özet","pazartesi 09:30 · geçen haftan ve bu haftanın tek hedefi")}${SHOTS()?sw("pen","Kalem stoğu","kalemde son doz kalınca"):""}${sw("backup","Yedek hatırlatması","son yedek dosyan 30 günü geçince, pazar 20:00")}</div>
     <div class="remtime" ${R.weigh?"":"hidden"} id="remW"><select data-rem-day aria-label="Tartı günü">${[1,2,3,4,5,6,0].map(i=>`<option value="${i}" ${+R.weighDay===i?"selected":""}>${toD(lastDow(i)).toLocaleDateString("tr-TR",{weekday:"long"})}</option>`).join("")}</select>${timeField("",R.weighTime,{attrs:"data-rem-time",label:"Tartı saati"})}</div></div>`;
