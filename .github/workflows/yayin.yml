@@ -1,4 +1,4 @@
-name: Sürüm (Android + iOS)
+name: Play Store sürümü
 # "v1.0.0" gibi bir etiket gönderildiğinde ya da Actions sekmesinden elle başlatıldığında
 # imzalı AAB (Play Console'a yüklenecek) ve imzalı APK (telefona kurulacak) üretir,
 # ikisini de GitHub Releases sayfasına koyar.
@@ -70,10 +70,3 @@ jobs:
           gh release view "$ETIKET" >/dev/null 2>&1 && gh release delete "$ETIKET" -y --cleanup-tag=false
           gh release create "$ETIKET" cikti/* --target "$GITHUB_SHA" --title "Hafif $SURUM" \
             --notes "Play Console'a: hafif-$SURUM.aab · Telefona kurmak için: hafif-$SURUM.apk (sürüm kodu ${HAFIF_VERSION_CODE})"
-  ios:
-    needs: yayin
-    uses: ./.github/workflows/ios.yml
-    with:
-      surum: ${{ github.event.inputs.surum || github.ref_name }}
-      yayinla: true
-    secrets: inherit

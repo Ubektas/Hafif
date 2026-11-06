@@ -78,8 +78,6 @@ Her adım tek tek konuşulup karar veriliyor; onaylananlar Claude sürümüne i�
 - Web sitesi ve blog (ana sayfa ve ilk 4 yazı); yazıların kısa hâlleri uygulamada bağlama göre kart olarak
 - İngilizce (sonra Almanca) sürüm, lb/oz birimleri, ülke bazında abonelik fiyatları
 - iPhone sürümü (Apple Developer hesabı açılınca; ilk sürüm widget'sız)
-  - 2.0.4 ile iOS projesi (ios/) ve derleme iş akışı eklendi: sürüm etiketi Android'den sonra iOS'u da derler. Apple imzalama gizli değişkenleri girilince imzalı IPA üretip TestFlight'a yükler; girilmeden önce yalnızca imzasız doğrulama derlemesi yapar.
-  - Apple Sağlık izni (HealthKit) ve App Store aboneliği bağlandı. Kalan: arayüzde "Health Connect" yazan yerler iOS'ta "Apple Sağlık" olmalı; App Store Connect'te `hafif_plus` aboneliği; widget yok.
 
 ## Play Console'da yapılacaklar (kullanıcı)
 - Hesap doğrulaması → kapalı test (12 kişi, 14 gün) → üretim
