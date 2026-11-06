@@ -3028,7 +3028,9 @@ function milestones(){
   const T=trendInfo();
   for(const m of L){const hit=w.find(x=>x.kg<=m.kg+1e-9);m.done=hit?hit.date:null;
     if(!m.done&&T&&T.slope<-0.01)m.eta=addDays(T.date,Math.ceil((T.cur-m.kg)/-T.slope))}
-  return {L,start,cur:w[w.length-1].kg};
+  const mil=badgeMilat(),L2=L.filter(m=>!m.done||m.done>=mil);
+  if(!L2.length) return null;
+  return {L:L2,start,cur:w[w.length-1].kg};
 }
 const MPAL={em:["#C4F5E3","#2A9A7C","#0B3B33","#3CC39C","#0E7C66","#0A4A3D","#0B3B33","#15775F"],li:["#ECE4FF","#8D72E2","#46348F","#AF96F4","#7558D2","#4A3897","#46348F","#6C55C6"],go:["#FFF4CC","#DDAA3F","#86601A","#F7D774","#CC982F","#8C6418","#9E2F2F","#C24545"],off:["#FFFFFF","#E3EAE6","#C9D3CE","#F4F7F5","#ECF1EE","#E2E9E5","#D3DCD7","#E1E8E4"],
   pr:["#FFE9C2","#D9952F","#7A4B0C","#F2B65A","#C27A12","#7A4B0C","#8A5A10","#B5761A"],su:["#D8EEFB","#2E8BC0","#123E5C","#6BB8E3","#2E8BC0","#17507A","#17507A","#2775A6"],
@@ -3038,10 +3040,12 @@ const MPAL={em:["#C4F5E3","#2A9A7C","#0B3B33","#3CC39C","#0E7C66","#0A4A3D","#0B
 const HSUB={pr:"PROTEİN",su:"SU",ad:"ADIM",ta:"TARTI",ig:"İĞNE",tk:"TAKVİYE"};
 function habits(){
   const P=S.profile,won=P.badges&&typeof P.badges==="object"?P.badges:(P.badges={}),D=S.daily||{},out=[];let ch=false;
+  const mil=badgeMilat();
+  Object.keys(won).forEach(id=>{if(typeof won[id]==="string"&&won[id]<mil){delete won[id];ch=true}});
   const has=k=>Object.keys(won).some(id=>id.startsWith("h"+k));
   /* tiers: toplam gün (ya da tartı) sayısı; seri: üst üste gün sayısı. Seri rozetinin kimliği "h"+k+"s"+n */
   const add=(k,title,note,tiers,days,nm,unit="gün",seri=[],sn=null,cel=null)=>{
-    days=[...new Set(days)].sort();
+    days=[...new Set(days)].filter(d=>d>=mil).sort();
     const B=tiers.map(n=>{const id="h"+k+n,done=won[id]||days[n-1]||null;if(done&&!won[id]){won[id]=done;ch=true}
       return {id,kind:k,n,t:String(n),sub:HSUB[k],name:nm(n),cel:cel&&cel(n),cur:done?n:Math.min(n,days.length),done,unit}});
     /* en uzun seri ve her seri eşiğine ilk ulaşılan gün; süren seri bugün ya da dün biten seridir */
@@ -3071,6 +3075,8 @@ function habits(){
   if(ch)save();
   return out;
 }
+/* rozetlerde milat: Hafif'in bu kişide ilk açıldığı gün (yedekle taşınır). Öncesindeki kayıtlar (içe aktarılan geçmiş) rozet kazandırmaz */
+const badgeMilat=()=>{const P=S.profile;return P.since||P.disclaimer||today()};
 const msName=m=>m.kind?m.name:m.goal?`Hedef kilo · ${kg(m.kg)} kg`:m.drop?`İlk ${m.drop} kg`:m.id[0]==="p"?`%${m.id.slice(1)} vücut ağırlığı`:`${m.kg} kg'ın altı`;
 /* tüm rozetler: son kazanılan, ve tamamlanmaya en yakın olan "sıradaki" */
 function badgeState(){
