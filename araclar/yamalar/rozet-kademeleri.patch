@@ -1,0 +1,58 @@
+--- artifact.html
++++ artifact.html
+@@ -3059,25 +3059,35 @@
+ function habits(){
+   const P=S.profile,won=P.badges&&typeof P.badges==="object"?P.badges:(P.badges={}),D=S.daily||{},out=[];let ch=false;
+   const has=k=>Object.keys(won).some(id=>id.startsWith("h"+k));
+-  const add=(k,title,note,tiers,days,nm,unit="gün")=>{
+-    days=unit==="gün"?[...new Set(days)].sort():[...days].sort();
++  /* tiers: toplam gün (ya da tartı) sayısı; seri: üst üste gün sayısı. Seri rozetinin kimliği "h"+k+"s"+n */
++  const add=(k,title,note,tiers,days,nm,unit="gün",seri=[],sn=null,cel=null)=>{
++    days=[...new Set(days)].sort();
+     const B=tiers.map(n=>{const id="h"+k+n,done=won[id]||days[n-1]||null;if(done&&!won[id]){won[id]=done;ch=true}
+-      return {id,kind:k,n,t:String(n),sub:HSUB[k],name:nm(n),cur:done?n:Math.min(n,days.length),done,unit}});
++      return {id,kind:k,n,t:String(n),sub:HSUB[k],name:nm(n),cel:cel&&cel(n),cur:done?n:Math.min(n,days.length),done,unit}});
++    /* en uzun seri ve her seri eşiğine ilk ulaşılan gün; süren seri bugün ya da dün biten seridir */
++    let run=0,prev=null;const first={};
++    for(const d of days){run=prev&&diffDays(prev,d)===1?run+1:1;prev=d;seri.forEach(n=>{if(run>=n&&!first[n])first[n]=d})}
++    const live=prev&&diffDays(prev,today())<=1?run:0;
++    seri.forEach(n=>{const id="h"+k+"s"+n,done=won[id]||first[n]||null;if(done&&!won[id]){won[id]=done;ch=true}
++      B.push({id,kind:k,n,t:String(n),sub:"ÜST ÜSTE",name:sn(n),cel:`${n} gün üst üste ${{pr:"protein hedefini tutturdun",su:"su hedefine ulaştın",ad:"adım hedefine ulaştın",tk:"tüm takviyelerini aldın"}[k]}`,cur:done?n:Math.min(n,live),done,unit:"gün"})});
+     out.push({k,title,note,B});
+   };
++  const T6=[1,3,7,30,50,100],S2=[3,7];
+   const ds=Object.keys(D).filter(d=>d>=startCut());
+-  add("pr","Protein",`Günlük hedef ${pGoal()} g`,[1,7,30,100],ds.filter(d=>(D[d].p||0)>=pGoal()),n=>n===1?"İlk protein hedefi":`${n} gün protein hedefi`);
+-  add("su","Su",`Günlük hedef ${(wGoal()/1000).toLocaleString("tr-TR")} L`,[1,7,30,100],ds.filter(d=>(D[d].w||0)>=wGoal()),n=>n===1?"İlk su hedefi":`${n} gün su hedefi`);
++  add("pr","Protein",`Günlük hedef ${pGoal()} g`,T6,ds.filter(d=>(D[d].p||0)>=pGoal()),n=>n===1?"İlk protein hedefi":`${n} gün protein hedefi`,"gün",S2,n=>`${n} gün üst üste protein hedefi`);
++  add("su","Su",`Günlük hedef ${(wGoal()/1000).toLocaleString("tr-TR")} L`,T6,ds.filter(d=>(D[d].w||0)>=wGoal()),n=>n===1?"İlk su hedefi":`${n} gün su hedefi`,"gün",S2,n=>`${n} gün üst üste su hedefi`);
+   /* adım geçmişi 90 günde budanır; hedef tutan günler ayrıca saklanır ki 100 gün rozeti de mümkün olsun */
+   const real=HP()&&S.hc&&S.hc.on;
+   if(real||has("ad")){const keep=Array.isArray(P.stepDays)?P.stepDays:[],g=stepGoal();
+     const hit=Object.keys(S.steps||{}).filter(d=>(S.steps[d]||0)>=g&&!keep.includes(d));if(hit.length){P.stepDays=[...keep,...hit].sort();ch=true}
+-    add("ad","Adım",`Günlük hedef ${fmtN(g)} adım`,[1,7,30,100],P.stepDays||[],n=>n===1?"İlk adım hedefi":`${n} gün adım hedefi`)}
+-  add("ta","Tartı","Kilo girdiğin her gün sayılır",[5,20,50,100],S.weights.map(x=>x.date),n=>`${n} gün tartı`);
++    add("ad","Adım",`Günlük hedef ${fmtN(g)} adım`,T6,P.stepDays||[],n=>n===1?"İlk adım hedefi":`${n} gün adım hedefi`,"gün",S2,n=>`${n} gün üst üste adım hedefi`)}
++  /* tartı: aynı gün birden fazla tartı bir sayılır; eski 5/20 rozetleri listede yok */
++  ["hta5","hta20"].forEach(id=>{if(won[id]){delete won[id];ch=true}});
++  add("ta","Tartı","Kilo girdiğin her gün sayılır",[3,7,15,21,30,50,100],S.weights.map(x=>x.date),n=>`${n} tartı`,"tartı",[],null,n=>`${n}. tartını girdin`);
+   /* iğne rozetleri kaldırıldı (kullanıcı kararı: iğne yapmak bir başarı değil); eski kayıtlar silinir */
+   Object.keys(won).forEach(id=>{if(id.startsWith("hig")){delete won[id];ch=true}});
+-  if((Array.isArray(S.supps)&&S.supps.length)||has("tk"))add("tk","Takviye","Günün tüm takviyeleri alındığında",[7,30,100],
+-    Object.keys(S.suppLog||{}).filter(d=>{const L=dosesFor(d),t=takenOn(d);return L.length&&L.every(q=>t[q.key])}),n=>`${n} gün tam takviye`);
++  if((Array.isArray(S.supps)&&S.supps.length)||has("tk"))add("tk","Takviye","Günün tüm takviyeleri alındığında",T6,
++    Object.keys(S.suppLog||{}).filter(d=>{const L=dosesFor(d),t=takenOn(d);return L.length&&L.every(q=>t[q.key])}),n=>n===1?"İlk tam takviye günü":`${n} gün tam takviye`,"gün",S2,n=>`${n} gün üst üste tam takviye`);
+   if(ch)save();
+   return out;
+ }
+@@ -3177,8 +3187,8 @@
+ }
+ function showCelebration(m){
+   const HT={pr:n=>n===1?"Protein hedefini ilk kez tutturdun":`${n} gün protein hedefini tutturdun`,su:n=>n===1?"Su hedefine ilk kez ulaştın":`${n} gün su hedefine ulaştın`,
+-    ad:n=>n===1?"Adım hedefine ilk kez ulaştın":`${n} gün adım hedefine ulaştın`,ta:n=>`${n} gün tartıldın`,ig:n=>`${n}. iğneni kaydettin`,tk:n=>`${n} gün tüm takviyelerini aldın`};
+-  const title=m.kind?HT[m.kind](m.n):m.goal?"Hedefine ulaştın!":m.drop?`İlk ${m.drop} kilonu verdin`:m.id[0]==="p"?`Vücut ağırlığının %${m.id.slice(1)}'ini verdin`:`${m.kg} kg'ın altına indin`;
++    ad:n=>n===1?"Adım hedefine ilk kez ulaştın":`${n} gün adım hedefine ulaştın`,ta:n=>`${n} gün tartıldın`,ig:n=>`${n}. iğneni kaydettin`,tk:n=>n===1?"Tüm takviyelerini ilk kez eksiksiz aldın":`${n} gün tüm takviyelerini aldın`};
++  const title=m.cel?m.cel:m.kind?HT[m.kind](m.n):m.goal?"Hedefine ulaştın!":m.drop?`İlk ${m.drop} kilonu verdin`:m.id[0]==="p"?`Vücut ağırlığının %${m.id.slice(1)}'ini verdin`:`${m.kg} kg'ın altına indin`;
+   const d=document.createElement("div");d.id="celeb";d.className="celeb";
+   d.innerHTML=`<canvas id="confetti"></canvas><div class="cbox" role="dialog" aria-modal="true" aria-label="Tebrikler"><div class="cmedal">${medal(m,96)}</div><span class="eyebrow" style="color:var(--accent)">Yeni rozet</span><h2 style="font-size:24px;text-align:center">${title}</h2>
+     <p class="muted" style="margin:0;text-align:center">${m.kind?`Bu rozeti ${fmtD(m.done)} kazandın. Küçük adımlar birikiyor.`:`${m.s} eşiğini ${fmtD(m.done)} geçtin.`}</p>
