@@ -2,6 +2,18 @@
 
 Play en fazla 500 karakter kabul eder. Aşağıdaki bloğu olduğu gibi yapıştır.
 
+## 2.0.5
+
+```
+<tr-TR>
+Kilo ekranı yenilendi, hatırlatıcılar daha güvenilir.
+• Kilo grafiği en üstte; 1 ay / 3 ay / Tümü ve hedefe gidiş çizgisi
+• Hatırlatıcı izni kapalıysa Özet'te uyarı; Ayarlar'da hatırlatıcı durumu
+• Yeni rozet kademeleri: 1, 3, 7, 30, 50, 100 gün ve üst üste 3 ve 7 gün
+• Tartı rozetleri 3'ten 100 tartıya
+</tr-TR>
+```
+
 ## 2.0.4
 
 ```
