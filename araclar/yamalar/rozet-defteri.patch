@@ -1,4 +1,4 @@
---- artifact.onceki.html
+--- artifact.html
 +++ artifact.html
 @@ -783,6 +783,27 @@
  .bcell span{font-size:11px;color:var(--muted)}
