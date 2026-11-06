@@ -281,10 +281,8 @@ struct BugunGorunum: View {
                         ForEach(Array(satirlar.enumerated()), id: \.offset) { i, s in
                             HStack(spacing: 7 * u) {
                                 Halka(v: s.oran, renk: s.renk, iz: pal.trk, kalin: 4 * u).frame(width: 24 * u, height: 24 * u)
-                                HStack(alignment: .firstTextBaseline, spacing: 4 * u) {
-                                    Text(s.deger).font(Yazi.outfit(15 * u)).foregroundColor(pal.fg)
-                                    Text(s.ad).font(Yazi.orta(10.5 * u)).foregroundColor(pal.mu)
-                                }.tek()
+                                (Text(s.deger).font(Yazi.outfit(15 * u)).foregroundColor(pal.fg)
+                                    + Text("  " + s.ad).font(Yazi.orta(10.5 * u)).foregroundColor(pal.mu)).lineLimit(1).minimumScaleFactor(0.8)
                                 Spacer(minLength: 0)
                             }.olc("satir\(i)")
                         }
@@ -482,7 +480,8 @@ struct SuGorunum: View {
                     deger(w, wg, u)
                     Spacer(minLength: 6 * u)
                     HStack(alignment: .bottom, spacing: 12 * u) {
-                        Bardaklar(ml: w, hedef: wg, sutun: 10, renk: pal.su, u: u).olc("bardak")
+                        Bardaklar(ml: w, hedef: wg, sutun: 10, renk: pal.su, u: u).frame(maxWidth: 240 * u).olc("bardak")
+                        Spacer(minLength: 0)
                         SuDugme(pal: pal, u: u)
                     }
                 }
@@ -532,7 +531,7 @@ struct HafifKart: View {
         }
         let kilit = boy == .kilitDik || boy == .kilitYuvarlak || boy == .kilitSatir
         if kilit {
-            if onizleme { ic.coordinateSpace(name: "w").foregroundColor(.white) }
+            if onizleme { ic.coordinateSpace(name: "w").foregroundColor(.white).background(Color(white: 0.22)) }
             else if #available(iOS 17.0, *) { ic.containerBackground(for: .widget) { Color.clear } }
             else { ic }
         } else if onizleme {
