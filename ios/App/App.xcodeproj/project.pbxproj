@@ -7,18 +7,61 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		145535854B4F819F359DF5DA /* hafif_figtree_medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F032BDF2ED4AC29C9A08E93D /* hafif_figtree_medium.ttf */; };
+		1A895F7D62BC020C6A6062E4 /* HafifGorunum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89E173FE654B51277E7BBDCA /* HafifGorunum.swift */; };
+		21BA688FEB402F24B2DA3212 /* hafif_figtree_bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8463B5657CE04F55E74C6351 /* hafif_figtree_bold.ttf */; };
+		2E4C78509C6758F7F0F9E405 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 77FC81852091B38A5C6F76D6 /* Foundation.framework */; };
+		2EA0372D06E115A21F8A1DC6 /* HafifNiyet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AD1A9D16CD96BD5E3A833EF /* HafifNiyet.swift */; };
 		2FAD9763203C412B000D30F8 /* config.xml in Resources */ = {isa = PBXBuildFile; fileRef = 2FAD9762203C412B000D30F8 /* config.xml */; };
+		340B7D854B968FD7D74035A2 /* HafifVeri.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD5099D1F96925A02920E8A5 /* HafifVeri.swift */; };
 		50379B232058CBB4000EE86E /* capacitor.config.json in Resources */ = {isa = PBXBuildFile; fileRef = 50379B222058CBB4000EE86E /* capacitor.config.json */; };
 		504EC3081FED79650016851F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 504EC3071FED79650016851F /* AppDelegate.swift */; };
 		504EC30D1FED79650016851F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 504EC30B1FED79650016851F /* Main.storyboard */; };
 		504EC30F1FED79650016851F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 504EC30E1FED79650016851F /* Assets.xcassets */; };
 		504EC3121FED79650016851F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 504EC3101FED79650016851F /* LaunchScreen.storyboard */; };
 		50B271D11FEDC1A000F3C39B /* public in Resources */ = {isa = PBXBuildFile; fileRef = 50B271D01FEDC1A000F3C39B /* public */; };
+		70A4BEEBCE8E43E768AC5B7D /* hafif_outfit_bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A2EA93AD06C3E3ED0B1604BE /* hafif_outfit_bold.ttf */; };
+		74D5A19553F01EFA5FDE0FCC /* HafifWidget.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 6C2C55AD009E223A9A8E57D1 /* HafifWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		79209CC9499E612A9222ED5B /* HafifWidgetPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BFAEB3734C2C52783719DE0 /* HafifWidgetPlugin.swift */; };
+		7ABECFFCE2BCF76B67E602AA /* hafif_figtree_medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F032BDF2ED4AC29C9A08E93D /* hafif_figtree_medium.ttf */; };
+		7C6BF04E7A7E622D410827A3 /* HafifVeri.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD5099D1F96925A02920E8A5 /* HafifVeri.swift */; };
 		9582B6852FE996820072D4E8 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9582B6842FE996800072D4E8 /* SceneDelegate.swift */; };
 		A084ECDBA7D38E1E42DFC39D /* Pods_App.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF277DCFFFF123FFC6DF26C7 /* Pods_App.framework */; };
+		A8A19B08E4EDFAD5645B8E7C /* WidgetDeneme.swift in Sources */ = {isa = PBXBuildFile; fileRef = B049193B8D7ACBF2D20CC0A3 /* WidgetDeneme.swift */; };
+		C80C638721F820DB1DC413F5 /* HafifWidgetBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A6E5E92C1EDDF008EE7873 /* HafifWidgetBundle.swift */; };
+		EA4D2E9B853364A6B6A109BC /* HafifGorunum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89E173FE654B51277E7BBDCA /* HafifGorunum.swift */; };
+		F8F9FA64B0A36B492ECAB7EF /* hafif_outfit_bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A2EA93AD06C3E3ED0B1604BE /* hafif_outfit_bold.ttf */; };
+		FF176A49A142C7AEF89E8BFF /* hafif_figtree_bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8463B5657CE04F55E74C6351 /* hafif_figtree_bold.ttf */; };
+		FFA856565BFE5A2F61A847C5 /* HafifNiyet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AD1A9D16CD96BD5E3A833EF /* HafifNiyet.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		10F4FE2319B7462118025FCC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 504EC2FC1FED79650016851F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = AE6EE23978B85E82B0CA90FE;
+			remoteInfo = HafifWidget;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		414046A12EB8CFD193199289 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				74D5A19553F01EFA5FDE0FCC /* HafifWidget.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		03A6E5E92C1EDDF008EE7873 /* HafifWidgetBundle.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = HafifWidgetBundle.swift; sourceTree = "<group>"; };
+		076B579CD76EB7FB321227BE /* HafifWidget.entitlements */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.entitlements; path = HafifWidget.entitlements; sourceTree = "<group>"; };
 		2FAD9762203C412B000D30F8 /* config.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = config.xml; sourceTree = "<group>"; };
 		50379B222058CBB4000EE86E /* capacitor.config.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = capacitor.config.json; sourceTree = "<group>"; };
 		504EC3041FED79650016851F /* App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = App.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -28,9 +71,20 @@
 		504EC3111FED79650016851F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		504EC3131FED79650016851F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		50B271D01FEDC1A000F3C39B /* public */ = {isa = PBXFileReference; lastKnownFileType = folder; path = public; sourceTree = "<group>"; };
+		6AD1A9D16CD96BD5E3A833EF /* HafifNiyet.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = HafifNiyet.swift; sourceTree = "<group>"; };
+		6C2C55AD009E223A9A8E57D1 /* HafifWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = HafifWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		77FC81852091B38A5C6F76D6 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		8463B5657CE04F55E74C6351 /* hafif_figtree_bold.ttf */ = {isa = PBXFileReference; includeInIndex = 1; path = hafif_figtree_bold.ttf; sourceTree = "<group>"; };
+		89E173FE654B51277E7BBDCA /* HafifGorunum.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = HafifGorunum.swift; sourceTree = "<group>"; };
+		8AA5C9BC387D2046B84ED926 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9582B6842FE996800072D4E8 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		9BFAEB3734C2C52783719DE0 /* HafifWidgetPlugin.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = HafifWidgetPlugin.swift; sourceTree = "<group>"; };
+		A2EA93AD06C3E3ED0B1604BE /* hafif_outfit_bold.ttf */ = {isa = PBXFileReference; includeInIndex = 1; path = hafif_outfit_bold.ttf; sourceTree = "<group>"; };
 		AF277DCFFFF123FFC6DF26C7 /* Pods_App.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_App.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AF51FD2D460BCFE21FA515B2 /* Pods-App.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App.release.xcconfig"; path = "Pods/Target Support Files/Pods-App/Pods-App.release.xcconfig"; sourceTree = "<group>"; };
+		B049193B8D7ACBF2D20CC0A3 /* WidgetDeneme.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WidgetDeneme.swift; sourceTree = "<group>"; };
+		DD5099D1F96925A02920E8A5 /* HafifVeri.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = HafifVeri.swift; sourceTree = "<group>"; };
+		F032BDF2ED4AC29C9A08E93D /* hafif_figtree_medium.ttf */ = {isa = PBXFileReference; includeInIndex = 1; path = hafif_figtree_medium.ttf; sourceTree = "<group>"; };
 		FC68EB0AF532CFC21C3344DD /* Pods-App.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App.debug.xcconfig"; path = "Pods/Target Support Files/Pods-App/Pods-App.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -43,6 +97,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		DAE082D0AFA67CEAD059CF58 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2E4C78509C6758F7F0F9E405 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -50,6 +112,7 @@
 			isa = PBXGroup;
 			children = (
 				AF277DCFFFF123FFC6DF26C7 /* Pods_App.framework */,
+				FD705DE1F7CE20A88AFD8992 /* iOS */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -61,6 +124,7 @@
 				504EC3051FED79650016851F /* Products */,
 				7F8756D8B27F46E3366F6CEA /* Pods */,
 				27E2DDA53C4D2A4D1A88CE4A /* Frameworks */,
+				EECB4DF1EEC1E5C05200CBC6 /* HafifWidget */,
 			);
 			sourceTree = "<group>";
 		};
@@ -68,6 +132,7 @@
 			isa = PBXGroup;
 			children = (
 				504EC3041FED79650016851F /* App.app */,
+				6C2C55AD009E223A9A8E57D1 /* HafifWidget.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -84,6 +149,8 @@
 				504EC3131FED79650016851F /* Info.plist */,
 				2FAD9762203C412B000D30F8 /* config.xml */,
 				50B271D01FEDC1A000F3C39B /* public */,
+				9BFAEB3734C2C52783719DE0 /* HafifWidgetPlugin.swift */,
+				B049193B8D7ACBF2D20CC0A3 /* WidgetDeneme.swift */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -95,6 +162,31 @@
 				AF51FD2D460BCFE21FA515B2 /* Pods-App.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		EECB4DF1EEC1E5C05200CBC6 /* HafifWidget */ = {
+			isa = PBXGroup;
+			children = (
+				DD5099D1F96925A02920E8A5 /* HafifVeri.swift */,
+				89E173FE654B51277E7BBDCA /* HafifGorunum.swift */,
+				6AD1A9D16CD96BD5E3A833EF /* HafifNiyet.swift */,
+				03A6E5E92C1EDDF008EE7873 /* HafifWidgetBundle.swift */,
+				A2EA93AD06C3E3ED0B1604BE /* hafif_outfit_bold.ttf */,
+				8463B5657CE04F55E74C6351 /* hafif_figtree_bold.ttf */,
+				F032BDF2ED4AC29C9A08E93D /* hafif_figtree_medium.ttf */,
+				8AA5C9BC387D2046B84ED926 /* Info.plist */,
+				076B579CD76EB7FB321227BE /* HafifWidget.entitlements */,
+			);
+			name = HafifWidget;
+			path = HafifWidget;
+			sourceTree = "<group>";
+		};
+		FD705DE1F7CE20A88AFD8992 /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				77FC81852091B38A5C6F76D6 /* Foundation.framework */,
+			);
+			name = iOS;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -109,15 +201,34 @@
 				504EC3011FED79650016851F /* Frameworks */,
 				504EC3021FED79650016851F /* Resources */,
 				9592DBEFFC6D2A0C8D5DEB22 /* [CP] Embed Pods Frameworks */,
+				414046A12EB8CFD193199289 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				BD987737CBF1F6A8587FF994 /* PBXTargetDependency */,
 			);
 			name = App;
 			productName = App;
 			productReference = 504EC3041FED79650016851F /* App.app */;
 			productType = "com.apple.product-type.application";
+		};
+		AE6EE23978B85E82B0CA90FE /* HafifWidget */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4F23E9E3F19E97EF5C569FAB /* Build configuration list for PBXNativeTarget "HafifWidget" */;
+			buildPhases = (
+				4AB1B333A01A5BBC40CD17D4 /* Sources */,
+				DAE082D0AFA67CEAD059CF58 /* Frameworks */,
+				AD4A96E0756F3404BB42AF1D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = HafifWidget;
+			productName = HafifWidget;
+			productReference = 6C2C55AD009E223A9A8E57D1 /* HafifWidget.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -144,13 +255,12 @@
 				Base,
 			);
 			mainGroup = 504EC2FB1FED79650016851F;
-			packageReferences = (
-			);
 			productRefGroup = 504EC3051FED79650016851F /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
 				504EC3031FED79650016851F /* App */,
+				AE6EE23978B85E82B0CA90FE /* HafifWidget */,
 			);
 		};
 /* End PBXProject section */
@@ -166,6 +276,19 @@
 				50379B232058CBB4000EE86E /* capacitor.config.json in Resources */,
 				504EC30D1FED79650016851F /* Main.storyboard in Resources */,
 				2FAD9763203C412B000D30F8 /* config.xml in Resources */,
+				70A4BEEBCE8E43E768AC5B7D /* hafif_outfit_bold.ttf in Resources */,
+				FF176A49A142C7AEF89E8BFF /* hafif_figtree_bold.ttf in Resources */,
+				7ABECFFCE2BCF76B67E602AA /* hafif_figtree_medium.ttf in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AD4A96E0756F3404BB42AF1D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F8F9FA64B0A36B492ECAB7EF /* hafif_outfit_bold.ttf in Resources */,
+				21BA688FEB402F24B2DA3212 /* hafif_figtree_bold.ttf in Resources */,
+				145535854B4F819F359DF5DA /* hafif_figtree_medium.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -208,16 +331,41 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		4AB1B333A01A5BBC40CD17D4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7C6BF04E7A7E622D410827A3 /* HafifVeri.swift in Sources */,
+				1A895F7D62BC020C6A6062E4 /* HafifGorunum.swift in Sources */,
+				FFA856565BFE5A2F61A847C5 /* HafifNiyet.swift in Sources */,
+				C80C638721F820DB1DC413F5 /* HafifWidgetBundle.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		504EC3001FED79650016851F /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				504EC3081FED79650016851F /* AppDelegate.swift in Sources */,
 				9582B6852FE996820072D4E8 /* SceneDelegate.swift in Sources */,
+				340B7D854B968FD7D74035A2 /* HafifVeri.swift in Sources */,
+				EA4D2E9B853364A6B6A109BC /* HafifGorunum.swift in Sources */,
+				2EA0372D06E115A21F8A1DC6 /* HafifNiyet.swift in Sources */,
+				79209CC9499E612A9222ED5B /* HafifWidgetPlugin.swift in Sources */,
+				A8A19B08E4EDFAD5645B8E7C /* WidgetDeneme.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		BD987737CBF1F6A8587FF994 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = HafifWidget;
+			target = AE6EE23978B85E82B0CA90FE /* HafifWidget */;
+			targetProxy = 10F4FE2319B7462118025FCC /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		504EC30B1FED79650016851F /* Main.storyboard */ = {
@@ -239,6 +387,53 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		096E2ED6540B8879A8E57431 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = "";
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_ENTITLEMENTS = HafifWidget/HafifWidget.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = HafifWidget/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MARKETING_VERSION = 2.0.5;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ugurbektas.hafif.widget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		32B0C406EBBF0FC05734DA86 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = "";
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_ENTITLEMENTS = HafifWidget/HafifWidget.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = HafifWidget/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MARKETING_VERSION = 2.0.5;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ugurbektas.hafif.widget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
 		504EC3141FED79650016851F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -351,6 +546,7 @@
 			baseConfigurationReference = FC68EB0AF532CFC21C3344DD /* Pods-App.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = App/App.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				INFOPLIST_FILE = App/Info.plist;
@@ -358,7 +554,6 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MARKETING_VERSION = 2.0.5;
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\" \"-DDEBUG\"";
-				CODE_SIGN_ENTITLEMENTS = App/App.entitlements;
 				PRODUCT_BUNDLE_IDENTIFIER = com.ugurbektas.hafif;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
@@ -372,13 +567,13 @@
 			baseConfigurationReference = AF51FD2D460BCFE21FA515B2 /* Pods-App.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = App/App.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				INFOPLIST_FILE = App/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MARKETING_VERSION = 2.0.5;
-				CODE_SIGN_ENTITLEMENTS = App/App.entitlements;
 				PRODUCT_BUNDLE_IDENTIFIER = com.ugurbektas.hafif;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "";
@@ -390,6 +585,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		4F23E9E3F19E97EF5C569FAB /* Build configuration list for PBXNativeTarget "HafifWidget" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				32B0C406EBBF0FC05734DA86 /* Release */,
+				096E2ED6540B8879A8E57431 /* Debug */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		504EC2FF1FED79650016851F /* Build configuration list for PBXProject "App" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

@@ -1,0 +1,23 @@
+--- artifact.html
++++ artifact.html
+@@ -1385,6 +1385,10 @@
+   o.supp=Array.isArray(S.supps)?[...Array(7)].map((_,i)=>{const d=addDays(td,i),t=takenOn(d);return {d,s:SLOTS_S.map(([k,n])=>{const it=dosesFor(d).filter(q=>q.k===k);return it.length?{k,n,t:T[k],e:SE_[k],names:it.map(q=>q.x.name).join(" · "),done:it.filter(q=>t[q.key]).length,of:it.length}:null}).filter(Boolean)}}):[];
+   return o;
+ }
++/* iPhone: widget'tan uygulamayı açmadan eklenen su ortak alanda bekler; uygulama açılınca kayda eklenir */
++function wPending(){const W=WGP();if(!IOS()||!W||!W.pending||!loaded)return;W.pending().then(r=>{const L=(r&&r.items)||[];let n=0;
++  for(const x of L){if(x&&x.k==="w"&&+x.v>0){const d=/^\d{4}-\d\d-\d\d$/.test(x.d||"")?x.d:today(),rec=ensureDay(d);rec.w+=+x.v;rec.log.push([+x.t||Date.now(),"w",+x.v]);n++}}
++  if(n){save();render()}}).catch(()=>{})}
+ /* widget düğmeleri hafif://w/<eylem> bağlantısıyla uygulamayı açar */
+ function wLink(url){const m=/^hafif:\/\/w\/(.+)$/.exec(url||"");if(!m||$("#onb"))return;const [a,b]=m[1].split("/");
+   closePaywall();const go=t=>{tab=t;selPhase=null;ANIM=true;$("#sheetRoot").innerHTML="";render();window.scrollTo(0,0)};
+@@ -4536,7 +4540,8 @@
+   S.hc.last=Date.now(); hcBusy=false; save();
+   if(changed||tab==="adim"){if(!$("#sheetRoot").firstChild&&!$("#onb")&&(tab==="ozet"||tab==="adim"||tab==="kilo"))render()}
+ }
+-document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible"){syncHealth();remQueue()}});
++document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible"){syncHealth();remQueue();wPending()}});
++(function wpIlk(){if(loaded)wPending();else setTimeout(wpIlk,800)})();
+ 
+ /* ---------- hatırlatıcılar (yalnızca Android; telefon kendisi zamanlar) ---------- */
+ const LN=()=>window.Capacitor&&window.Capacitor.isNativePlatform&&window.Capacitor.isNativePlatform()&&window.Capacitor.Plugins&&window.Capacitor.Plugins.LocalNotifications||null;

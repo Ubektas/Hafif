@@ -7,7 +7,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        // Simülatör testi: widget'ları bütün boylarda çizip çakışmayı ölçer (yalnızca -hafifWidgetTest ile)
+        if ProcessInfo.processInfo.arguments.contains("-hafifWidgetTest"), #available(iOS 16.0, *) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) { WidgetDeneme.calistir() }
+        }
         return true
     }
 

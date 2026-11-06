@@ -57,6 +57,19 @@ jobs:
             k=$((k + 1))
           done
           xcrun simctl spawn "$DEV" log show --last 4m --predicate 'process == "App"' --style compact 2>/dev/null | tail -200 > ios-sonuclari/log.txt || true
+          echo "DEV=$DEV" >> "$GITHUB_ENV"
+      - name: Widget boyut kontrolü (her widget, bütün iPhone boylarında)
+        run: |
+          xcrun simctl terminate "$DEV" com.ugurbektas.hafif || true
+          xcrun simctl ui "$DEV" appearance light || true
+          xcrun simctl launch "$DEV" com.ugurbektas.hafif -hafifWidgetTest
+          C=$(xcrun simctl get_app_container "$DEV" com.ugurbektas.hafif data)
+          for i in $(seq 1 120); do [ -f "$C/Documents/widget-test/BITTI" ] && break; sleep 1; done
+          mkdir -p ios-sonuclari/widget-test
+          cp -R "$C/Documents/widget-test/." ios-sonuclari/widget-test/ 2>/dev/null || true
+          [ -f ios-sonuclari/widget-test/sonuc.json ] || { echo "::error::Widget boyut kontrolü sonuç üretmedi"; exit 1; }
+          cat ios-sonuclari/widget-test/sonuc.json | head -60
+          python3 -c "import json,sys;d=json.load(open('ios-sonuclari/widget-test/sonuc.json'));print('Widget çizimi:',d['toplam'],'· sorunlu:',d['hata']);sys.exit(1 if d['hata'] else 0)"
       - name: Sonuçları ios-sonuclari dalına kaydet
         if: always()
         run: |
