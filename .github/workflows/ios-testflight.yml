@@ -97,19 +97,30 @@ jobs:
           security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k hafif "$KC" >/dev/null
           security list-keychains -d user -s "$KC" $(security list-keychains -d user | tr -d '"')
           security find-identity -v -p codesigning "$KC"
-          UUID=$(python3 -c "import json;print(json.load(open('$I/ids.json'))['uuid'])")
-          NAME=$(python3 -c "import json;print(json.load(open('$I/ids.json'))['name'])")
-          for d in "$HOME/Library/MobileDevice/Provisioning Profiles" "$HOME/Library/Developer/Xcode/UserData/Provisioning Profiles"; do mkdir -p "$d"; cp "$I/profile.mobileprovision" "$d/$UUID.mobileprovision"; done
+          # uygulama ve widget profilleri
+          python3 - "$I/ids.json" <<'PY'
+          import json,os,shutil,sys
+          d=json.load(open(sys.argv[1]))
+          for p in d["profiller"]:
+              for k in [os.path.expanduser("~/Library/MobileDevice/Provisioning Profiles"),os.path.expanduser("~/Library/Developer/Xcode/UserData/Provisioning Profiles")]:
+                  os.makedirs(k,exist_ok=True); shutil.copy(p["file"],os.path.join(k,p["uuid"]+".mobileprovision"))
+          PY
+          NAME=$(python3 -c "import json;print(json.load(open('$I/ids.json'))['profiller'][0]['name'])")
+          WNAME=$(python3 -c "import json;print(json.load(open('$I/ids.json'))['profiller'][1]['name'])")
           echo "PROFILE_NAME=$NAME" >> "$GITHUB_ENV"
-          # yalnızca App hedefi elle imzalanır (Pods hedeflerine dokunulmaz)
-          python3 - "$NAME" "$APPLE_TEAM_ID" <<'PY'
+          echo "WIDGET_PROFILE_NAME=$WNAME" >> "$GITHUB_ENV"
+          # yalnızca App ve widget hedefleri elle imzalanır (Pods hedeflerine dokunulmaz)
+          python3 - "$NAME" "$WNAME" "$APPLE_TEAM_ID" <<'PY'
           import sys
-          p='ios/App/App.xcodeproj/project.pbxproj'; s=open(p).read(); name,team=sys.argv[1],sys.argv[2]
+          p='ios/App/App.xcodeproj/project.pbxproj'; s=open(p).read(); name,wname,team=sys.argv[1],sys.argv[2],sys.argv[3]
           blocks=s.split('buildSettings = {')
+          n=0
           for i,b in enumerate(blocks):
-              if 'PRODUCT_BUNDLE_IDENTIFIER = com.ugurbektas.hafif;' in b.split('};')[0]:
-                  blocks[i]=b.replace('CODE_SIGN_STYLE = Automatic;',f'CODE_SIGN_STYLE = Manual;\n\t\t\t\tCODE_SIGN_IDENTITY = "Apple Distribution";\n\t\t\t\tDEVELOPMENT_TEAM = {team};\n\t\t\t\tPROVISIONING_PROFILE_SPECIFIER = "{name}";',1)
-          open(p,'w').write('buildSettings = {'.join(blocks)); print('App hedefi elle imzaya ayarlandı')
+              head=b.split('};')[0]
+              for bid,pn in [('com.ugurbektas.hafif;',name),('com.ugurbektas.hafif.widget;',wname)]:
+                  if 'PRODUCT_BUNDLE_IDENTIFIER = '+bid in head:
+                      blocks[i]=b.replace('CODE_SIGN_STYLE = Automatic;',f'CODE_SIGN_STYLE = Manual;\n\t\t\t\tCODE_SIGN_IDENTITY = "Apple Distribution";\n\t\t\t\tDEVELOPMENT_TEAM = {team};\n\t\t\t\tPROVISIONING_PROFILE_SPECIFIER = "{pn}";',1); n+=1
+          open(p,'w').write('buildSettings = {'.join(blocks)); print('Elle imzaya ayarlanan yapılandırma:',n)
           PY
       - name: Arşivle (imzalı)
         run: |
@@ -133,7 +144,7 @@ jobs:
             <key>teamID</key><string>${APPLE_TEAM_ID}</string>
             <key>signingStyle</key><string>manual</string>
             <key>signingCertificate</key><string>Apple Distribution</string>
-            <key>provisioningProfiles</key><dict><key>com.ugurbektas.hafif</key><string>${PROFILE_NAME}</string></dict>
+            <key>provisioningProfiles</key><dict><key>com.ugurbektas.hafif</key><string>${PROFILE_NAME}</string><key>com.ugurbektas.hafif.widget</key><string>${WIDGET_PROFILE_NAME}</string></dict>
             <key>uploadSymbols</key><true/>
             <key>manageAppVersionAndBuildNumber</key><false/>
           </dict></plist>

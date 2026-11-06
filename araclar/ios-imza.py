@@ -94,24 +94,43 @@ def hazirla(out):
         print("Yeni kalıcı sertifika oluşturuldu:", cert["attributes"].get("name"), cert["id"])
     os.remove(os.path.join(out, "d.tar"))
 
-    # profil: aynı adla, bu sertifikayı içeren etkin profil varsa kullanılır; yoksa yenisi
-    name = "Hafif App Store"
-    prof = None
-    for x in call("GET", f"/profiles?filter[name]={requests.utils.quote(name)}&limit=20")["data"]:
-        certs = [y["id"] for y in call("GET", f"/profiles/{x['id']}/certificates")["data"]]
-        if x["attributes"].get("profileState") == "ACTIVE" and cert["id"] in certs and not prof:
-            prof = x
+    # profiller: uygulama ve widget için ayrı App Store profili. Aynı adla, bu sertifikayı içeren etkin profil varsa kullanılır; yoksa yenisi.
+    # App ID'nin yetenekleri değişince (ör. App Group eklenince) Apple eski profili geçersiz yapar; o zaman silinip yenisi oluşturulur.
+    profiller = []
+    for bnd, name in [(bundle, "Hafif App Store"), (bundle + ".widget", "Hafif Widget App Store")]:
+        if bnd != bundle:
+            bb = [x for x in call("GET", f"/bundleIds?filter[identifier]={bnd}&limit=5")["data"] if x["attributes"]["identifier"] == bnd]
+            if not bb:
+                print(f"::error::{bnd} için App ID yok. developer.apple.com → Identifiers'ta oluştur ve App Groups'u aç (group.com.ugurbektas.hafif).")
+                sys.exit(1)
+            b_id = bb[0]["id"]
         else:
-            call("DELETE", f"/profiles/{x['id']}", ok=(204, 404))
-    if not prof:
-        prof = call("POST", "/profiles", {"data": {"type": "profiles", "attributes": {"name": name, "profileType": "IOS_APP_STORE"},
-                                                   "relationships": {"bundleId": {"data": {"type": "bundleIds", "id": bid}},
-                                                                     "certificates": {"data": [{"type": "certificates", "id": cert["id"]}]}}}})["data"]
-        print("Profil oluşturuldu:", name)
-    else:
-        print("Mevcut profil kullanılıyor:", name)
-    open(os.path.join(out, "profile.mobileprovision"), "wb").write(base64.b64decode(prof["attributes"]["profileContent"]))
-    json.dump({"cert": cert["id"], "profile": prof["id"], "name": name, "uuid": prof["attributes"].get("uuid")}, open(os.path.join(out, "ids.json"), "w"))
+            b_id = bid
+        prof = None
+        for x in call("GET", f"/profiles?filter[name]={requests.utils.quote(name)}&limit=20")["data"]:
+            certs = [y["id"] for y in call("GET", f"/profiles/{x['id']}/certificates")["data"]]
+            if x["attributes"].get("profileState") == "ACTIVE" and cert["id"] in certs and not prof:
+                prof = x
+            else:
+                call("DELETE", f"/profiles/{x['id']}", ok=(204, 404))
+        if not prof:
+            prof = call("POST", "/profiles", {"data": {"type": "profiles", "attributes": {"name": name, "profileType": "IOS_APP_STORE"},
+                                                       "relationships": {"bundleId": {"data": {"type": "bundleIds", "id": b_id}},
+                                                                         "certificates": {"data": [{"type": "certificates", "id": cert["id"]}]}}}})["data"]
+            print("Profil oluşturuldu:", name)
+        else:
+            print("Mevcut profil kullanılıyor:", name)
+        icerik = base64.b64decode(prof["attributes"]["profileContent"])
+        dosya = os.path.join(out, ("profile" if bnd == bundle else "widget") + ".mobileprovision")
+        open(dosya, "wb").write(icerik)
+        # profilde App Group var mı (yoksa widget veriyi okuyamaz)
+        gr = "group.com.ugurbektas.hafif"
+        print(f"  {name}: App Group {'var ✓' if gr.encode() in icerik else 'YOK ✗'}")
+        if gr.encode() not in icerik:
+            print(f"::error::{bnd} App ID'sinde App Groups açık değil ya da {gr} seçili değil (developer.apple.com → Identifiers → {bnd} → App Groups → Configure).")
+            sys.exit(1)
+        profiller.append({"bundle": bnd, "name": name, "uuid": prof["attributes"].get("uuid"), "file": dosya})
+    json.dump({"cert": cert["id"], "profile": "", "name": profiller[0]["name"], "uuid": profiller[0]["uuid"], "profiller": profiller}, open(os.path.join(out, "ids.json"), "w"))
 
 
 def temizle(out):
