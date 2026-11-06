@@ -1142,11 +1142,12 @@ function trialEndCheck(){const P=S.profile;if(!NATIVE()||plusOwned||!P.onboarded
 const IAP=()=>window.CdvPurchase&&window.CdvPurchase.store||null;
 function iapInit(){
   const st=IAP();if(!st||st.__hf)return;st.__hf=1;const C=window.CdvPurchase;
-  st.register([{id:PLUS_ID,type:C.ProductType.PAID_SUBSCRIPTION,platform:C.Platform.GOOGLE_PLAY}]);
+  const PF=window.Capacitor&&window.Capacitor.getPlatform&&window.Capacitor.getPlatform()==="ios"?C.Platform.APPLE_APPSTORE:C.Platform.GOOGLE_PLAY;
+  st.register([{id:PLUS_ID,type:C.ProductType.PAID_SUBSCRIPTION,platform:PF}]);
   st.when().approved(t=>t.verify()).verified(r=>r.finish())
     .receiptUpdated(()=>{const o=!!st.owned(PLUS_ID);if(o!==plusOwned){plusOwned=o;try{localStorage.setItem("hf-plus",o?"1":"0")}catch(e){}if(o){closePaywall();toast("Hafif Plus açıldı. Teşekkürler!")}render()}})
     .productUpdated(()=>{if($("#paywall"))pwRefresh()});
-  st.initialize([C.Platform.GOOGLE_PLAY]).catch(()=>{});
+  st.initialize([PF]).catch(()=>{});
 }
 document.addEventListener("deviceready",iapInit,false);
 function pwOffer(k){const st=IAP();if(!st)return null;const pr=st.get(PLUS_ID);if(!pr||!pr.offers)return null;
