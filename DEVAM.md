@@ -71,6 +71,7 @@ Bu dosya, Hafif üzerinde çalışan yeni bir Claude oturumunun kaldığı yerde
   **Artifact bu değişikliklerle yeniden yayımlanmadı:** yeni oturumda artifact indirildikten sonra sırayla `araclar/yamalar/takviye-ekle.patch` ve `araclar/yamalar/paylasim-alt-satir.patch` ve `araclar/yamalar/ios-buyutme.patch` uygulanıp (`patch artifact.html < ...`) yayımlanmalı.
 - **5 Kasım · iPhone'da sayfa her yöne kayıyordu:** iOS, 16 px'ten küçük giriş kutusuna dokununca sayfayı büyütüp geri küçültmüyordu. Çözüm yalnızca iOS'ta: `html.ios` sınıfı, kutular en az 16 px, viewport'a `maximum-scale=1` (yama `ios-buyutme.patch`).
 - **5 Kasım · Android açılış ekranı bulanıktı:** Android 12+ açılışta uyarlanabilir ikonu büyütüyor; mipmap katmanları 192 px'ti (xxxhdpi 432 olmalı). Katmanlar `assets/icon-*.png`'den doğru boyutta yeniden üretildi; açılışa ayrı `drawable-nodpi/splash_icon.png` (1152 px, 640 px daire) ve `windowSplashScreenAnimatedIcon`. Test 51/51 + 6/6. iOS ikon/açılış zaten yüksek çözünürlüklü.
+- **6 Kasım · 2.0.4 derlemesi başlatıldı:** Android `yayin.yml` (ref `surum-2.0`, Release v2.0.4), iOS MARKETING_VERSION 2.0.4 + `ios/TESTFLIGHT` satırı. Sürüm notu `magaza/surum-notlari.md`. Not: bu oturum önce yanlışlıkla `main`'e yeni bir iOS projesi gönderdi; geri alındı (`main` = `cc8369d` içeriği). Çalışma dalı hâlâ `surum-2.0`.
 - **Kullanım sınırı:** Kullanıcı haftalık kullanımına dikkat ediyor; her büyük iş ayrı oturumda, görseller toplu ve az, küçük işlerde maket yok.
 
 ## Sıradaki işler (toplantı 2 kararları ve açık konular)

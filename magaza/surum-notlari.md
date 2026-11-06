@@ -2,6 +2,18 @@
 
 Play en fazla 500 karakter kabul eder. Aşağıdaki bloğu olduğu gibi yapıştır.
 
+## 2.0.4
+
+```
+<tr-TR>
+Takviye eklemek artık daha kolay.
+• Özet'te ilk hafta "Takviyelerini ekle" kartı
+• Haftalık Takviye Programı'nın altında "+ Yeni takviye ekle"
+• Paylaşım kartlarının altında Hafif imzası; adım kartındaki halka tam daire
+• Açılış ekranındaki logo artık net
+</tr-TR>
+```
+
 ## 2.0.3
 
 ```
