@@ -1,0 +1,33 @@
+{
+  "adimlar": [
+    {
+      "ad": "Yayın derlemesi testi başladı",
+      "sonuc": true
+    },
+    {
+      "ad": "Yayın derlemesi: bildirim izni kontrolü",
+      "sonuc": true,
+      "detay": "{\"display\":\"granted\"}"
+    },
+    {
+      "ad": "Yayın derlemesi: bildirim izni isteme",
+      "sonuc": true,
+      "detay": "{\"display\":\"granted\"}"
+    },
+    {
+      "ad": "Yayın derlemesi: bekleyen bildirimler",
+      "sonuc": true,
+      "detay": "{\"notifications\":[]}"
+    },
+    {
+      "ad": "Yayın derlemesi: dosya izni kontrolü",
+      "sonuc": true,
+      "detay": "{\"publicStorage\":\"granted\"}"
+    },
+    {
+      "ad": "Yayın derlemesi: İndirilenler klasörüne kaydetme",
+      "sonuc": true,
+      "detay": "{\"uri\":\"file:///storage/emulated/0/Download/hafif-test.pdf\"} · undefined"
+    }
+  ]
+}
