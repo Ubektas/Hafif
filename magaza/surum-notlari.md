@@ -2,6 +2,18 @@
 
 Play en fazla 500 karakter kabul eder. Aşağıdaki bloğu olduğu gibi yapıştır.
 
+## 2.0.6
+
+```
+<tr-TR>
+Rozetlerin artık bir defterde.
+• Başarılar'da kazandığın rozete dokun: defter sayfasına damga gibi basılır, kazandığın tarih yanında
+• Önceki / Sonraki ile ya da kaydırarak tüm rozetlerine göz at
+</tr-TR>
+```
+
+App Store (iPhone) için: "Ana ekran ve kilit ekranı widget'ları: Bugün, Sıradaki iğne, Kilo ve Su. Su widget'ından uygulamayı açmadan su ekle. Rozetlerin artık bir defterde."
+
 ## 2.0.5
 
 ```
