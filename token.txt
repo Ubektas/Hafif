@@ -1,0 +1,4 @@
+IMZA_DEPO_TOKEN: tanımlı
+hafif-imza okuma: tamam
+API depo erişimi: 200
+izinler: {'admin': True, 'maintain': True, 'push': True, 'triage': True, 'pull': True} · gizli: True

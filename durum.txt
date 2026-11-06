@@ -1,0 +1,14 @@
+Uygulama: Hafif (6830226671)
+Derleme 2.0.6 (13) · işlenme: VALID · süresi doldu: False · yüklendi: 2026-11-06T12:33 · iç test: IN_BETA_TESTING · şifreleme sorusu: False
+Derleme 2.0.5 (12) · işlenme: VALID · süresi doldu: False · yüklendi: 2026-11-06T06:28 · iç test: IN_BETA_TESTING · şifreleme sorusu: False
+Derleme 2.0.4 (11) · işlenme: VALID · süresi doldu: False · yüklendi: 2026-11-05T20:13 · iç test: IN_BETA_TESTING · şifreleme sorusu: False
+Derleme 2.0.3 (10) · işlenme: VALID · süresi doldu: False · yüklendi: 2026-11-04T22:26 · iç test: IN_BETA_TESTING · şifreleme sorusu: False
+Derleme 2.0.2 (9) · işlenme: VALID · süresi doldu: False · yüklendi: 2026-11-04T22:02 · iç test: IN_BETA_TESTING · şifreleme sorusu: False
+Derleme 2.0.2 (7) · işlenme: INVALID · süresi doldu: False · yüklendi: 2026-11-03T09:24 · iç test: PROCESSING · şifreleme sorusu: False
+Derleme 2.0.2 (6) · işlenme: VALID · süresi doldu: False · yüklendi: 2026-11-03T08:30 · iç test: IN_BETA_TESTING · şifreleme sorusu: False
+Test grupları: Hafif Test (iç)
+IMZA_DEPO_TOKEN: tanımlı
+hafif-imza okuma: tamam
+API depo erişimi: 200
+izinler: {'admin': True, 'maintain': True, 'push': True, 'triage': True, 'pull': True} · gizli: True
+2026-11-06 20:35 UTC
