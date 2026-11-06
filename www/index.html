@@ -1053,16 +1053,8 @@ details.dosed>summary{list-style:none;cursor:pointer;display:flex;justify-conten
 details.dosed>summary>span{display:flex;flex-direction:column}details.dosed>summary em{font:600 12.5px var(--f-body);font-style:normal;color:var(--shot);white-space:nowrap;padding-top:4px}
 details.dosed[open]>summary em{opacity:.6}.dosebody{display:flex;flex-direction:column;gap:8px;margin:4px 0 10px}
 /* Kilo: sade grafik, ayrıntılı grafikler, kaydırıp sil */
-.ksimple{display:flex;flex-direction:column;gap:8px}.ksh{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.ksh{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
 .kseg{display:flex;background:var(--sunk);border-radius:99px;padding:3px;flex:none}.kseg button{border:0;background:none;border-radius:99px;padding:6px 12px;font:600 12.5px var(--f-body);color:var(--muted);cursor:pointer}.kseg button[aria-checked="true"]{background:var(--surface);color:var(--head);box-shadow:var(--shadow)}
-.kchart{width:100%;height:120px;display:block}.kslab{display:flex;justify-content:space-between;gap:8px;font-size:11px;color:var(--muted)}
-details.moreg{display:flex;flex-direction:column;gap:12px}
-details.moreg>summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:12px;padding:14px 16px}details.moreg>summary::-webkit-details-marker{display:none}
-details.moreg>summary:active{transform:scale(.99)}
-.mgi{width:44px;height:44px;border-radius:14px;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center;flex:none}
-.mgt{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}.mgt b{font:700 15.5px var(--f-display);color:var(--head)}.mgt small{font-size:12.5px;color:var(--muted)}
-.mgo{display:flex;align-items:center;gap:4px;color:var(--accent);font:600 12.5px var(--f-body);flex:none;background:var(--accent-soft);border-radius:99px;padding:6px 10px 6px 12px}.mgo em{font-style:normal}.mgo svg{transition:transform .2s}
-.mgx{display:none}details.moreg[open] .mgx{display:inline}details.moreg[open] .mgc{display:none}details.moreg[open] .mgo svg{transform:rotate(180deg)}
 .swr{position:relative;overflow:hidden;transition:transform .2s}.swr>*:not(.swdel){transition:transform .2s;background:var(--surface)}
 .swr.open>*:not(.swdel){transform:translateX(-76px)}
 .swdel{position:absolute;right:0;top:0;bottom:0;width:72px;border:0;background:var(--bad);color:#fff;font:700 12.5px var(--f-body);border-radius:12px;opacity:0;pointer-events:none;transition:opacity .2s}
@@ -3760,18 +3752,20 @@ let chartMode=(()=>{try{return localStorage.getItem("dd-chart")||"egri"}catch(e)
 const MODES=[["egri","Eğri"],["igne","İğne"],["hafta","Haftalık"],["trend","Trend"],["ilac","İlaç"],["yag","Yağ"]];
 function chartCard(){
   const modes=MODES.filter(([k])=>SHOTS()||(k!=="igne"&&k!=="ilac")); if(!modes.some(([k])=>k===chartMode))chartMode="egri";
-  const sub={egri:SHOTS()?"Her tartı, iğne günleri işaretli":"Her tartı ve hedef çizgin",igne:"İki iğne arasında verilen kilo",hafta:"Haftalık ortalamaya göre değişim",trend:"7 günlük ortalama ve 4 haftalık tahmin",ilac:"Tahmini ilaç düzeyi ile kilo aynı grafikte",yag:"Vücut yağ oranı ve yağ kütlesi"}[chartMode];
+  let sub={egri:SHOTS()?"Her tartı, iğne günleri işaretli":"Her tartı ve hedef çizgin",igne:"İki iğne arasında verilen kilo",hafta:"Haftalık ortalamaya göre değişim",trend:"7 günlük ortalama ve 4 haftalık tahmin",ilac:"Tahmini ilaç düzeyi ile kilo aynı grafikte",yag:"Vücut yağ oranı ve yağ kütlesi"}[chartMode];
   let body, legend;
   if(chartMode==="igne"){body=chartBars(shotRows().filter(r=>r.loss!=null).map(r=>({label:fmtShort(r.date),v:r.loss,live:r.current})));legend=`<span class="b">Verilen kilo</span><span class="b live">Süren aralık</span>`}
   else if(chartMode==="hafta"){body=chartBars(weekly());legend=`<span class="b">Önceki haftaya göre</span>`}
   else if(chartMode==="trend"){body=chartTrend();legend=`<span class="dot">Tartı</span><span>7 günlük ortalama</span><span class="dash">Tahmin</span>`}
   else if(chartMode==="yag"){body=chartFat();legend=`<span class="fat">Yağ oranı %</span><span class="b">Yağ kütlesi, kg</span>`}
   else if(chartMode==="ilac"){body=chartDrugWeight();legend=`<span>Kilo (sol eksen)</span><span class="area">İlaç düzeyi, mg (sağ eksen)</span>`}
-  else {body=chart();legend=SHOTS()?`<span>Kilo</span><span class="sd">İğne günü</span>`:`<span>Kilo</span>`}
+  else {const c=chart();body=c.svg;legend=(SHOTS()?`<span>Kilo</span><span class="sd">İğne günü</span>`:`<span>Kilo</span>`)+(c.pj?`<span class="dash">Hedefe gidiş</span>`:"");
+    sub=`${c.n} tartı · ${sgn(c.dk)} kg`}
+  const rng=chartMode==="egri"?`<div class="kseg" role="radiogroup" aria-label="Aralık">${[["1a","1 ay"],["3a","3 ay"],["all","Tümü"]].map(([k,l])=>`<button type="button" role="radio" data-krange="${k}" aria-checked="${kRange===k}">${l}</button>`).join("")}</div>`:"";
   return `<div class="card" style="display:flex;flex-direction:column;gap:10px">
-    <div><h2>Kilo değişimi</h2><span class="muted" style="font-size:12.5px">${sub}</span></div>
+    <div class="ksh"><div><h2>Kilo değişimi</h2><span class="muted" style="font-size:12.5px">${sub}</span></div>${rng}</div>
     <div class="seg" role="tablist" style="grid-template-columns:repeat(${modes.length},1fr)">${modes.map(([k,l])=>`<button role="tab" aria-selected="${k===chartMode}" data-chart="${k}">${l}${k!=="egri"&&!PLUS()?`<span class="lk">${UI_I(UIC.kilit,10)}</span>`:""}</button>`).join("")}</div>
-    ${chartMode!=="egri"&&!PLUS()?plock(body+`<div class="legend">${legend}</div>`,"Bu grafik Hafif Plus'ta",{igne:"Her iki iğne arasında kaç kilo verdiğini gör.",hafta:"Haftadan haftaya değişimini gör.",trend:"Ortalamanı ve 4 haftalık tahminini gör.",ilac:"İlaç düzeyiyle kilonun ilişkisini gör.",yag:"Yağ oranı ve yağ kütlendeki değişimi gör."}[chartMode]):body+`<div class="legend">${legend}</div>`}</div>`;
+    ${chartMode!=="egri"&&!PLUS()?plock(body+`<div class="legend">${legend}</div>`,"Bu grafik Hafif Plus'ta",{igne:"Her iki iğne arasında kaç kilo verdiğini gör.",hafta:"Haftadan haftaya değişimini gör.",trend:"Ortalamanı ve 4 haftalık tahminini gör.",ilac:"İlaç düzeyiyle kilonun ilişkisini gör.",yag:"Yağ oranı ve yağ kütlendeki değişimi gör."}[chartMode]):body+`<div class="legend">${legend}</div>`}${chartMode==="egri"?etaLine(etaInfo()):""}</div>`;
 }
 function weekly(){
   const m=new Map();
@@ -3828,12 +3822,18 @@ function chartTrend(){
     <p class="muted" style="margin:0;font-size:12.5px">Son 14 günün hızı: haftada ${sgn(slope*7)} kg. Tahmin sadece bir yön göstergesidir.</p>`;
 }
 function chart(){
-  const w=sortedW(), s=sortedS();
+  const all=sortedW(), s=sortedS(), from=kRange==="1a"?addDays(today(),-30):kRange==="3a"?addDays(today(),-91):"0000";
+  const inR=all.filter(x=>x.date>=from), w=inR.length>1?inR:all.slice(-2);
   const W=340,H=180,L=34,R=8,T=12,B=24;
-  const d0=w[0].date, d1=[w[w.length-1].date,s.length?s[s.length-1].date:d0].sort().pop();
+  const d0=w[0].date, dl=[w[w.length-1].date,s.length?s[s.length-1].date:d0].sort().pop();
+  /* hedefe gidiş: G3 tahmini; çizgi grafiğin en fazla %40'ı kadar ileri uzar, varış tarihi kartın altında yazılı */
+  const E=etaInfo(),pj=E&&E.d&&E.days<=365&&S.profile.goalWeight!=null?E:null,Lw=w[w.length-1];
+  const sp0=Math.max(1,diffDays(d0,dl)),ext=pj?Math.min(pj.days,Math.max(7,Math.round(sp0*.4))):0;
+  const pkg=pj?Lw.kg-(Lw.kg-S.profile.goalWeight)*ext/pj.days:null,pd=pj?addDays(Lw.date,ext):null;
+  const d1=pd&&pd>dl?pd:dl;
   const span=Math.max(1,diffDays(d0,d1));
   let lo=Math.min(...w.map(x=>x.kg)), hi=Math.max(...w.map(x=>x.kg));
-  if(S.profile.goalWeight!=null&&S.profile.goalWeight>lo-3) lo=Math.min(lo,S.profile.goalWeight);
+  if(S.profile.goalWeight!=null&&(S.profile.goalWeight>lo-3||pj)) lo=Math.min(lo,pj?pkg:S.profile.goalWeight);
   lo=Math.floor(lo-0.5); hi=Math.ceil(hi+0.5); if(hi-lo<2)hi=lo+2;
   const x=d=>L+(W-L-R)*diffDays(d0,d)/span, y=v=>T+(H-T-B)*(hi-v)/(hi-lo);
   const step=Math.max(1,Math.ceil((hi-lo)/4));
@@ -3846,13 +3846,14 @@ function chart(){
   const path=pts.map((p,i)=>(i?"L":"M")+p[0].toFixed(1)+" "+p[1].toFixed(1)).join("");
   const area=path+`L${pts[pts.length-1][0]} ${H-B}L${pts[0][0]} ${H-B}Z`;
   const last=pts[pts.length-1];
+  const pjl=pj?`<path class="${A("fade")}" d="M${last[0].toFixed(1)} ${last[1].toFixed(1)}L${x(pd).toFixed(1)} ${y(pkg).toFixed(1)}" fill="none" stroke="var(--accent)" stroke-width="2" stroke-dasharray="2 6" stroke-linecap="round"/>${ext===pj.days?`<circle class="${A("fade")}" cx="${x(pd).toFixed(1)}" cy="${y(pkg).toFixed(1)}" r="3.5" fill="var(--surface)" stroke="var(--accent)" stroke-width="2"/>`:""}`:"";
   const sid=SCRUB.push({W,H,L,R,T,B,pick:vx=>{
     let best=null,bd=1e9; w.forEach((p,i)=>{const d=Math.abs(x(p.date)-vx);if(d<bd){bd=d;best=i}});
     const p=w[best], pr=w[best-1];
     return {x:x(p.date),y:y(p.kg),title:kg(p.kg)+" kg",sub:fmtD(p.date)+(pr?" · "+sgn(p.kg-pr.kg):"")};
   }})-1;
-  return `<svg class="chart" data-sid="${sid}" viewBox="0 0 ${W} ${H}" role="img" aria-label="Zaman içinde kilo">
-    ${g}${shots}
+  return {n:w.length,dk:Lw.kg-w[0].kg,pj,svg:`<svg class="chart" data-sid="${sid}" viewBox="0 0 ${W} ${H}" role="img" aria-label="Zaman içinde kilo">
+    ${g}${shots}${pjl}
     <defs><linearGradient id="${gid}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color:var(--accent);stop-opacity:.24"/><stop offset="1" style="stop-color:var(--accent);stop-opacity:0"/></linearGradient></defs>
     <path class="${A("fade")}" d="${area}" fill="url(#${gid})"/>
     <path class="${A("draw")}" pathLength="1" d="${path}" fill="none" stroke="var(--accent)" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"/>
@@ -3860,7 +3861,7 @@ function chart(){
     <circle class="${A("pop2")}" cx="${last[0]}" cy="${last[1]}" r="4.5" fill="var(--accent)" stroke="var(--surface)" stroke-width="2"/>
     <text x="${L}" y="${H-6}" font-size="10" fill="var(--muted)">${fmtShort(d0)}</text>
     <text x="${W-R}" y="${H-6}" font-size="10" fill="var(--muted)" text-anchor="end">${fmtShort(d1)}</text>
-  </svg>`;
+  </svg>`};
 }
 
 function shotList(limit){
@@ -3871,8 +3872,8 @@ function shotList(limit){
     ${r.current?`<span class="dchip">sürüyor</span>`:r.loss!=null?`<span class="dchip ${r.loss<0?"down":r.loss>0?"up":""}">${sgn(r.loss)}</span>`:`<span class="dchip">–</span>`}</button>`).join("")}</div>`;
 }
 
-let kRange=(()=>{try{return localStorage.getItem("hf-krange")||"3a"}catch(_){return "3a"}})(),moreG=false;
-/* Kilo sekmesi: sade kilo grafiği; hedef çizgisi, 3 ay / tümü */
+/* Kilo sekmesi: grafik kartı en üstte; Eğri'de 1 ay / 3 ay / tümü ve hedefe gidiş çizgisi */
+let kRange=(()=>{try{return localStorage.getItem("hf-krange")||"3a"}catch(_){return "3a"}})();
 /* G3 · hedef tarihi: son 4 haftadaki tartıların eğimiyle (doğrusal regresyon) tahmini varış; az veri, sabit ya da çok uzaksa tarih verilmez */
 function etaInfo(){
   const goal=S.profile.goalWeight,W=sortedW();if(goal==null||W.length<2)return null;const L=W[W.length-1];
@@ -3891,27 +3892,6 @@ function etaLine(e){if(!e)return "";
   if(e.flat)return `<div class="keta"><span>Son 4 haftada kilon yerinde sayıyor; bu çok normal. Hız gelince tahmin burada görünecek.</span></div>`;
   if(e.far)return `<div class="keta"><span>Son 4 haftada haftada ${sgn(e.wk)} kg. Bu hızla hedefin uzak; tahmin her tartıyla güncellenir.</span></div>`;
   return `<div class="keta"><span class="kel">Bu hızla hedefe</span><b>${e.txt}</b><span>son 4 haftada haftada ${sgn(e.wk)} kg · her tartıyla güncellenir</span></div>`}
-function kiloSimple(){
-  const all=sortedW(); if(!all.length) return "";
-  const from=kRange==="3a"?addDays(today(),-91):"0000",w=all.filter(x=>x.date>=from).length>1?all.filter(x=>x.date>=from):all.slice(-2);
-  const goal=S.profile.goalWeight,L=w[w.length-1],F=w[0];
-  const W=320,H=120,T=10,B=8,ks=w.map(x=>x.kg),lo=Math.min(...ks,goal!=null?goal:Infinity),hi=Math.max(...ks),pad=Math.max(.4,(hi-lo)*.08);
-  const E=etaInfo(),pj=E&&E.d&&E.days<=365?E:null;
-  const y0=lo-pad,y1=hi+pad,d0=F.date,sp=Math.max(1,diffDays(d0,pj?pj.d:L.date));
-  const X=x=>diffDays(d0,x.date)/sp*W,Y=v=>T+(H-T-B)*(1-(v-y0)/(y1-y0));
-  const line=w.length>1?w.map((x,i)=>(i?"L":"M")+X(x).toFixed(1)+" "+Y(x.kg).toFixed(1)).join(""):`M0 ${Y(L.kg)}L${W} ${Y(L.kg)}`;
-  const gy=goal!=null&&goal>=y0?Y(goal):null;
-  const lx=X(L).toFixed(1),ly=Y(L.kg).toFixed(1);
-  return `<div class="card ksimple"><div class="ksh"><div><h2>Kilo değişimi</h2><span class="muted" style="font-size:12.5px">${w.length} tartı · ${sgn(L.kg-F.kg)} kg</span></div>
-    <div class="kseg" role="radiogroup" aria-label="Aralık"><button type="button" role="radio" data-krange="3a" aria-checked="${kRange==="3a"}">3 ay</button><button type="button" role="radio" data-krange="all" aria-checked="${kRange==="all"}">Tümü</button></div></div>
-    <svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" class="kchart" role="img" aria-label="Kilo ${kg(F.kg)} kg'dan ${kg(L.kg)} kg'a">
-      <path d="${line}L${w.length>1?lx:W} ${H}L0 ${H}Z" fill="var(--accent-soft)"/>
-      ${pj?`<path d="M${lx} ${ly}L${W} ${Y(goal).toFixed(1)}" fill="none" stroke="var(--accent)" stroke-width="2" stroke-dasharray="2 6" stroke-linecap="round" vector-effect="non-scaling-stroke"/>`:""}
-      ${gy!=null?`<line x1="0" x2="${W}" y1="${gy}" y2="${gy}" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="4 5" opacity=".6" vector-effect="non-scaling-stroke"/>`:""}
-      <path d="${line}" fill="none" stroke="var(--accent)" stroke-width="2.6" stroke-linejoin="round" vector-effect="non-scaling-stroke"/></svg>
-    ${pj?`<div class="kslab"><span>${fmtShort(F.date)} · ${kg(F.kg)}</span><span>bugün ${kg(L.kg)}</span><span>hedef ${kg(goal)} · ${pj.sh}</span></div>`:`<div class="kslab"><span>${fmtShort(F.date)} · ${kg(F.kg)}</span>${gy!=null?`<span>hedef ${kg(goal)} ┄</span>`:""}<span>bugün ${kg(L.kg)}</span></div>`}
-    ${etaLine(E)}</div>`;
-}
 function vKilo(){
   const w=sortedW().reverse();
   if(!w.length) return `<section><div class="card empty"><h2>Henüz tartı yok</h2><p class="muted" style="margin:0">Haftada bir, aynı saatte tartılmak eğriyi en düzgün hâle getirir.</p></div><button class="btn" data-open="weight">Kilo gir</button></section>`;
@@ -3924,8 +3904,7 @@ function vKilo(){
         <div class="wsub">${[x.src==="hc"?"tartıdan":"",x.fat!=null?`%${String(x.fat).replace(".",",")} yağ`:"",x.mus!=null?`${kg(x.mus)} kg kas`:"",x.note?esc(x.note):""].filter(Boolean).join(" · ")}</div></div>
       ${d==null?`<span class="dchip">ilk</span>`:`<span class="dchip ${d<0?"down":d>0?"up":""}">${sgn(d)}</span>`}<button type="button" class="swdel" data-swdel="${x.id}" tabindex="-1">Sil</button></div>`};
   return `<section>
-    ${kiloSimple()}
-    ${w.length>1?`<details class="moreg"${moreG?" open":""}><summary class="card"><span class="mgi"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V9M10 19V5M16 19v-7M22 19H2"/></svg></span><span class="mgt"><b>Ayrıntılı grafikler</b><small>İğne aralıkları, haftalık değişim, trend, ilaç ve yağ grafikleri</small></span><span class="mgo"><em class="mgc">Aç</em><em class="mgx">Kapat</em><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg></span></summary>${chartCard()}</details>`:""}
+    ${chartCard()}
     ${maintCard()}
     ${compCard()}
     ${exCard()}
@@ -4060,7 +4039,7 @@ function openMeasSheet(){
 }
 function bindSwipe(){
   const v=$("#view");v.querySelectorAll("[data-krange]").forEach(b=>b.addEventListener("click",()=>{kRange=b.dataset.krange;try{localStorage.setItem("hf-krange",kRange)}catch(_){}render()}));
-  const mg=v.querySelector("details.moreg");if(mg)mg.addEventListener("toggle",()=>{moreG=mg.open});
+
   v.querySelectorAll(".swr").forEach(r=>{let x0=null,y0=null,moved=false;
     r.addEventListener("touchstart",e=>{x0=e.touches[0].clientX;y0=e.touches[0].clientY;moved=false},{passive:true});
     r.addEventListener("touchmove",e=>{if(x0==null)return;const dx=e.touches[0].clientX-x0,dy=e.touches[0].clientY-y0;if(Math.abs(dx)>12&&Math.abs(dx)>Math.abs(dy))moved=true},{passive:true});
