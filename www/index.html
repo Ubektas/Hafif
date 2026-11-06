@@ -782,6 +782,27 @@ button.mscount i{font-style:normal;font-size:22px;color:var(--muted);margin-left
 .bcell span{font-size:11px;color:var(--muted)}
 .bcell:not(.won){opacity:.45;filter:grayscale(.8)}
 .bcell.won span{color:var(--accent);font-weight:600}
+button.bcell{border:0;background:none;padding:0;font:inherit;color:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
+button.bcell:active .medal{transform:scale(.94)}button.bcell:focus-visible{outline:2px solid var(--accent);outline-offset:4px;border-radius:12px}
+/* rozet defteri: kazanılan rozete dokununca sayfaya damga gibi basılır */
+.defter{position:fixed;inset:0;z-index:55;background:rgba(5,29,24,.45);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;padding:calc(16px + env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) calc(16px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.dfpage{position:relative;width:100%;max-width:380px;background:var(--surface);border-radius:22px;overflow:hidden;display:flex;flex-direction:column;align-items:center;gap:8px;padding:0 20px 18px;box-shadow:0 30px 60px -20px rgba(5,29,24,.6);background-image:repeating-linear-gradient(to bottom,transparent 0 27px,var(--line) 27px 28px);background-position:0 58px;touch-action:pan-y}
+.dfh{align-self:stretch;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:14px 0 0;font-size:11px;letter-spacing:.1em;font-weight:700;color:var(--muted);text-transform:uppercase}
+.dfx{border:0;background:var(--sunk);color:var(--fg);width:32px;height:32px;border-radius:50%;font-size:18px;line-height:1;cursor:pointer;margin-left:auto}
+.dfslot{position:relative;width:170px;height:176px;display:grid;place-items:center;margin-top:6px}
+.dfring{position:absolute;left:14px;top:4px;width:142px;height:142px;border-radius:50%;border:2px solid var(--accent);opacity:0;pointer-events:none}
+.dfmed{position:relative;z-index:2}
+.dfstamp{position:absolute;right:-14px;bottom:10px;z-index:3;border:2px solid var(--accent);color:var(--accent);background:color-mix(in oklab,var(--surface) 55%,transparent);border-radius:8px;padding:4px 8px;font:700 12px/1.15 var(--f-display);letter-spacing:.06em;text-align:center;transform:rotate(-12deg);white-space:nowrap}
+.dfpage h2{font-size:22px;text-align:center;margin-top:2px}
+.dfpage p{margin:0;font-size:14px;color:var(--muted);text-align:center;line-height:1.45;max-width:30ch}
+.dfdays{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin-top:4px;min-height:24px}
+.dfdays i{width:24px;height:24px;border-radius:50%;border:1.5px solid var(--line);background:var(--surface);display:grid;place-items:center;font:700 11px var(--f-num);font-style:normal;color:var(--muted);transition:background .2s,border-color .2s,color .2s,transform .2s}
+.dfdays i.f{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);transform:scale(1.08)}
+.dfdays span{font-size:12.5px;font-weight:600;color:var(--accent);background:var(--accent-soft);border-radius:99px;padding:4px 10px}
+.dfnav{display:flex;gap:10px;margin-top:10px}
+.dfnav button{font:600 14px var(--f-body);border:1px solid var(--line);background:var(--surface);color:var(--fg);border-radius:99px;padding:8px 16px;cursor:pointer}
+.dfnav button:disabled{opacity:.35;cursor:default}
+@media (prefers-reduced-motion:reduce){.dfdays i{transition:none}}
 .kkpi{gap:10px}
 /* ilk kurulum */
 .onb{position:fixed;inset:0;z-index:40;overflow-y:auto;background-color:var(--bg);background-image:radial-gradient(140% 460px at 85% -140px,var(--glow) 0%,var(--bg) 72%);background-repeat:no-repeat}
@@ -3089,7 +3110,7 @@ function nextMsHtml(A){
 function vBasari(){
   const A=badgeState(),{M,H,done}=A;
   const back=`<button type="button" class="backbtn" data-go="ozet">‹ Özet</button>`;
-  const cell=m=>`<div class="bcell${m.done?" won":""}">${medal(m,72)}<b>${msName(m)}</b><span>${m.done?fmtShort(m.done)+" kazanıldı":m.kind?`${m.cur}/${m.n} ${m.unit}`:m.eta?"tahmini "+fmtShort(m.eta):"yolda"}</span></div>`;
+  const cell=m=>{const tg=m.done?"button":"div";return `<${tg}${m.done?` type="button" data-rozet="${m.id}" aria-label="${msName(m)} rozetini aç"`:""} class="bcell${m.done?" won":""}">${medal(m,72)}<b>${msName(m)}</b><span>${m.done?fmtShort(m.done)+" kazanıldı":m.kind?`${m.cur}/${m.n} ${m.unit}`:m.eta?"tahmini "+fmtShort(m.eta):"yolda"}</span></${tg}>`};
   const sec=(t,note,L)=>`<div class="card"><div class="bsh"><h2>${t}</h2><span class="muted">${note}</span></div><div class="bgrid">${L.map(cell).join("")}</div></div>`;
   return `<section>${back}
     <div class="card" style="display:flex;flex-direction:column;gap:14px"><div class="msh"><div><span class="eyebrow">Rozet koleksiyonu</span><div style="font-size:14px;margin-top:2px">${done.length} rozet kazandın, ${A.all.length-done.length} rozet yolda</div></div><div class="mscount"><b>${done.length}</b><span>/${A.all.length}</span></div></div>${nextMsHtml(A)}</div>
@@ -3140,10 +3161,51 @@ function askReview(){
   if(d.length<5||diffDays(d[0],today())<7) return;
   P.reviewAt=today(); P.reviewN=(P.reviewN||0)+1; save(); setTimeout(()=>{try{R.requestReview().catch(()=>{})}catch(_){}},700);
 }
-function showCelebration(m){
+function badgeTitle(m){
   const HT={pr:n=>n===1?"Protein hedefini ilk kez tutturdun":`${n} gün protein hedefini tutturdun`,su:n=>n===1?"Su hedefine ilk kez ulaştın":`${n} gün su hedefine ulaştın`,
     ad:n=>n===1?"Adım hedefine ilk kez ulaştın":`${n} gün adım hedefine ulaştın`,ta:n=>`${n} gün tartıldın`,ig:n=>`${n}. iğneni kaydettin`,tk:n=>n===1?"Tüm takviyelerini ilk kez eksiksiz aldın":`${n} gün tüm takviyelerini aldın`};
-  const title=m.cel?m.cel:m.kind?HT[m.kind](m.n):m.goal?"Hedefine ulaştın!":m.drop?`İlk ${m.drop} kilonu verdin`:m.id[0]==="p"?`Vücut ağırlığının %${m.id.slice(1)}'ini verdin`:`${m.kg} kg'ın altına indin`;
+  return m.cel?m.cel:m.kind?HT[m.kind](m.n):m.goal?"Hedefine ulaştın!":m.drop?`İlk ${m.drop} kilonu verdin`:m.id[0]==="p"?`Vücut ağırlığının %${m.id.slice(1)}'ini verdin`:`${m.kg} kg'ın altına indin`;
+}
+/* rozet defteri: Başarılar'da kazanılan rozete dokununca açılır; rozet sayfaya inip damga gibi basılır, ardından tarih damgası vurulur */
+function openDefter(id){
+  const L=badgeState().all.filter(m=>m.done);let i=L.findIndex(m=>m.id===id);if(i<0)return;
+  const RM=matchMedia("(prefers-reduced-motion: reduce)").matches,T=[];
+  const d=document.createElement("div");d.id="defter";d.className="defter";
+  d.innerHTML=`<div class="dfpage" role="dialog" aria-modal="true" aria-label="Rozet"><div class="dfh"><span>Hafif defteri</span><span id="dfPg"></span><button type="button" class="dfx" aria-label="Kapat">×</button></div>
+    <div class="dfslot"><div class="dfring"></div><div class="dfmed"></div><div class="dfstamp"></div></div>
+    <h2></h2><p></p><div class="dfdays"></div>
+    <div class="dfnav"><button type="button" data-dstep="-1">‹ Önceki</button><button type="button" data-dstep="1">Sonraki ›</button></div></div>`;
+  document.body.appendChild(d);
+  const pg=d.querySelector(".dfpage"),q=s=>pg.querySelector(s);
+  const close=()=>{T.forEach(clearTimeout);d.remove()};
+  const show=()=>{
+    T.forEach(clearTimeout);T.length=0;const m=L[i];
+    q("#dfPg").textContent=`Sayfa ${i+1}/${L.length}`;
+    q(".dfmed").innerHTML=medal(m,124);
+    q(".dfstamp").innerHTML=`${toD(m.done).toLocaleDateString("tr-TR",{day:"numeric",month:"short",year:"numeric"}).toLocaleUpperCase("tr-TR")}<br>KAZANILDI`;
+    q("h2").textContent=msName(m);
+    q("p").textContent=`${badgeTitle(m)}. ${toD(m.done).toLocaleDateString("tr-TR",{day:"numeric",month:"long",year:"numeric"})}`;
+    const dd=q(".dfdays");
+    dd.innerHTML=m.kind&&m.n<=7?Array.from({length:m.n},(_,k)=>`<i>${k+1}</i>`).join(""):`<span>${m.kind?`${m.n} ${m.unit} tamamlandı`:m.s}</span>`;
+    [...dd.querySelectorAll("i")].forEach((x,k)=>T.push(setTimeout(()=>x.classList.add("f"),RM?0:1150+k*110)));
+    q('[data-dstep="-1"]').disabled=i===0;q('[data-dstep="1"]').disabled=i===L.length-1;
+    if(RM||!pg.animate)return;
+    const med=q(".dfmed"),st=q(".dfstamp");
+    med.animate([{transform:"translateY(-140px) scale(1.5) rotate(-8deg)",opacity:0},{transform:"translateY(0) scale(1.5) rotate(-4deg)",opacity:1,offset:.55},{transform:"scale(.92,1.04)",offset:.78},{transform:"none"}],{duration:620,easing:"cubic-bezier(.3,.7,.3,1)"});
+    q(".dfring").animate([{opacity:0,transform:"scale(.7)"},{opacity:.55,transform:"scale(.9)",offset:.55},{opacity:0,transform:"scale(1.25)"}],{duration:900,delay:330,easing:"ease-out"});
+    st.animate([{opacity:0,transform:"rotate(-12deg) scale(1.8)"},{opacity:1,transform:"rotate(-12deg) scale(.95)",offset:.7},{opacity:1,transform:"rotate(-12deg)"}],{duration:300,delay:820,easing:"ease-in",fill:"backwards"});
+  };
+  const step=n=>{const j=i+n;if(j<0||j>=L.length)return;i=j;
+    if(!RM&&pg.animate)pg.animate([{transform:"none"},{transform:`translateX(${-n*30}px)`,opacity:.25},{transform:"none",opacity:1}],{duration:320,easing:"ease-out"});
+    T.push(setTimeout(show,RM?0:150))};
+  q(".dfx").addEventListener("click",close);
+  d.addEventListener("click",e=>{if(e.target===d)close();const b=e.target.closest("[data-dstep]");if(b)step(+b.dataset.dstep)});
+  let x0=null;pg.addEventListener("touchstart",e=>{x0=e.touches[0].clientX},{passive:true});
+  pg.addEventListener("touchend",e=>{if(x0==null)return;const dx=e.changedTouches[0].clientX-x0;x0=null;if(Math.abs(dx)>50)step(dx<0?1:-1)});
+  show();q(".dfx").focus({preventScroll:true});
+}
+function showCelebration(m){
+  const title=badgeTitle(m);
   const d=document.createElement("div");d.id="celeb";d.className="celeb";
   d.innerHTML=`<canvas id="confetti"></canvas><div class="cbox" role="dialog" aria-modal="true" aria-label="Tebrikler"><div class="cmedal">${medal(m,96)}</div><span class="eyebrow" style="color:var(--accent)">Yeni rozet</span><h2 style="font-size:24px;text-align:center">${title}</h2>
     <p class="muted" style="margin:0;text-align:center">${m.kind?`Bu rozeti ${fmtD(m.done)} kazandın. Küçük adımlar birikiyor.`:`${m.s} eşiğini ${fmtD(m.done)} geçtin.`}</p>
@@ -3489,6 +3551,7 @@ function suppCta(){
   return `<button type="button" class="card stcta" data-suppadd><span class="mi" style="background:var(--supp-soft);color:var(--supp)">${pill({shape:"caps",color:"#B8577A"},26)}</span><span style="flex:1;min-width:0"><b>Takviyelerini ekle</b><small>Vitamin ve takviyelerini ekle; Hafif zamanında hatırlatsın</small></span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="var(--muted)" stroke-width="2" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg></button>`;
 }
 $("#view").addEventListener("click",e=>{if(e.target.closest("[data-suppadd]"))openSuppEdit(true)});
+$("#view").addEventListener("click",e=>{const b=e.target.closest("[data-rozet]");if(b)openDefter(b.dataset.rozet)});
 function weekOf(d){const dt=toD(d),wd=(dt.getDay()+6)%7;const mon=addDays(d,-wd);return [...Array(7)].map((_,i)=>addDays(mon,i))}
 function suppStreak(){let n=0,d=today();const t0=dayDone(d);if(t0.of&&t0.n<t0.of)d=addDays(d,-1);
   for(let i=0;i<400;i++){const r=dayDone(d);if(!r.of){d=addDays(d,-1);continue}if(r.n<r.of)break;n++;d=addDays(d,-1)}return n}
