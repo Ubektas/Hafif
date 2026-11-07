@@ -2,6 +2,22 @@
 
 Play en fazla 500 karakter kabul eder. Aşağıdaki bloğu olduğu gibi yapıştır.
 
+## 2.0.8
+
+```
+<tr-TR>
+Önce / sonra paylaşımı ve daha fazlası.
+• Fotoğraflarım'dan önce / sonra görseli: 4 şablon, fotoğrafı sürükleyerek kadrajla, kiloları gizleyebilirsin
+• Protein ekle'de Protein tozu (1–60 g), yeni yiyecek simgeleri
+• Kalemde elindeki toplam dozu girebilirsin
+• Silinen takviyenin geçmiş kayıtları korunur
+• Vücut ölçülerinde bel ve bel/boy oranı
+• Rozet tarihi tahmini düzeltildi
+</tr-TR>
+```
+
+App Store (iPhone) için: "Yeni büyük Pano widget'ı (açık ve koyu): kilo yolun, bugünün ve sıradakiler tek yerde. Önce / sonra fotoğraf paylaşımı (4 şablon, sürükleyerek kadraj). Protein tozu, kalemde toplam doz, silinen takviyenin geçmişi korunur, bel/boy oranı."
+
 ## 2.0.7
 
 ```
