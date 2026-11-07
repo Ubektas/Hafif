@@ -3030,9 +3030,9 @@ function milestones(){
   const T=trendInfo(),Lw=w[w.length-1],sl=paceSlope()??(T?T.slope:0),maxD=(a,b)=>a>b?a:b;
   for(const m of L){const hit=w.find(x=>x.kg<=m.kg+1e-9);m.done=hit?hit.date:null;
     if(!m.done&&sl<-0.01)m.eta=maxD(addDays(today(),1),addDays(Lw.date,Math.ceil((Lw.kg-m.kg)/-sl)))}
-  const mil=badgeMilat(),L2=L.filter(m=>!m.done||m.done>=mil);
-  if(!L2.length) return null;
-  return {L:L2,start,cur:w[w.length-1].kg};
+  /* kilo rozetleri milattan muaf (kullanıcı kararı, 8 Kasım): Hafif'ten önce geçilen eşikler de kazanılmış sayılır, "Hafif'ten önce" notuyla, kutlamasız */
+  const mil=badgeMilat();L.forEach(m=>{m.pre=!!(m.done&&m.done<mil)});
+  return {L,start,cur:w[w.length-1].kg};
 }
 const MPAL={em:["#C4F5E3","#2A9A7C","#0B3B33","#3CC39C","#0E7C66","#0A4A3D","#0B3B33","#15775F"],li:["#ECE4FF","#8D72E2","#46348F","#AF96F4","#7558D2","#4A3897","#46348F","#6C55C6"],go:["#FFF4CC","#DDAA3F","#86601A","#F7D774","#CC982F","#8C6418","#9E2F2F","#C24545"],off:["#FFFFFF","#E3EAE6","#C9D3CE","#F4F7F5","#ECF1EE","#E2E9E5","#D3DCD7","#E1E8E4"],
   pr:["#FFE9C2","#D9952F","#7A4B0C","#F2B65A","#C27A12","#7A4B0C","#8A5A10","#B5761A"],su:["#D8EEFB","#2E8BC0","#123E5C","#6BB8E3","#2E8BC0","#17507A","#17507A","#2775A6"],
@@ -3122,7 +3122,7 @@ function nextMsHtml(A){
 function vBasari(){
   const A=badgeState(),{M,H,done}=A;
   const back=`<button type="button" class="backbtn" data-go="ozet">‹ Özet</button>`;
-  const cell=m=>{const tg=m.done?"button":"div";return `<${tg}${m.done?` type="button" data-rozet="${m.id}" aria-label="${msName(m)} rozetini aç"`:""} class="bcell${m.done?" won":""}">${medal(m,72)}<b>${msName(m)}</b><span>${m.done?fmtShort(m.done)+" kazanıldı":m.kind?`${m.cur}/${m.n} ${m.unit}`:m.eta?"tahmini "+fmtShort(m.eta):"yolda"}</span></${tg}>`};
+  const cell=m=>{const tg=m.done?"button":"div";return `<${tg}${m.done?` type="button" data-rozet="${m.id}" aria-label="${msName(m)} rozetini aç"`:""} class="bcell${m.done?" won":""}">${medal(m,72)}<b>${msName(m)}</b><span>${m.done?fmtShort(m.done)+(m.pre?" · Hafif'ten önce":" kazanıldı"):m.kind?`${m.cur}/${m.n} ${m.unit}`:m.eta?"tahmini "+fmtShort(m.eta):"yolda"}</span></${tg}>`};
   const sec=(t,note,L)=>`<div class="card"><div class="bsh"><h2>${t}</h2><span class="muted">${note}</span></div><div class="bgrid">${L.map(cell).join("")}</div></div>`;
   return `<section>${back}
     <div class="card" style="display:flex;flex-direction:column;gap:14px"><div class="msh"><div><span class="eyebrow">Rozet koleksiyonu</span><div style="font-size:14px;margin-top:2px">${done.length} rozet kazandın, ${A.all.length-done.length} rozet yolda</div></div><div class="mscount"><b>${done.length}</b><span>/${A.all.length}</span></div></div>${nextMsHtml(A)}</div>
@@ -3155,7 +3155,7 @@ function checkCelebrate(){
   const P=S.profile;
   if(!Array.isArray(P.celebrated)){const lastHit=done[done.length-1];P.celebrated=done.filter(m=>m!==lastHit).map(m=>m.id);save()}
   const recent=addDays(today(),-7);
-  const fresh=done.filter(m=>!P.celebrated.includes(m.id)&&!seen.includes(m.id));
+  const fresh=done.filter(m=>!m.pre&&!P.celebrated.includes(m.id)&&!seen.includes(m.id));
   P.celebrated=[...new Set([...P.celebrated,...seen])];
   try{localStorage.setItem("hf-cel",JSON.stringify([...new Set([...seen,...done.map(x=>x.id)])]))}catch(_){}
   if(!fresh.length) return;
