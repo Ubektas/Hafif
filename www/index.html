@@ -4196,17 +4196,18 @@ function penCard(){
   if(!SHOTS()) return "";
   const P=S.profile,size=P.penSize||4;
   if(P.penLeft==null) return `<div class="card pencard" style="display:flex;flex-direction:column;gap:10px"><div><h2>Kalemim</h2><span class="muted" style="font-size:12.5px">Kalemde kaç doz kaldığını takip et; bitmeden haber verelim, eczaneye zamanında uğra.</span></div>
-    <div class="penrow"><label style="flex:1;min-width:150px">Bir kalemde kaç doz var<select id="penSize">${[1,2,4,5,6,8].map(v=>`<option value="${v}" ${v===size?"selected":""}>${v} doz</option>`).join("")}</select></label><button type="button" class="btn ghost" id="penStart" style="align-self:flex-end">Takibi başlat</button></div></div>`;
+    <div class="penrow"><label style="flex:1;min-width:150px">Bir kalemde kaç doz var<select id="penSize">${[1,2,3,4,5,6,7,8].map(v=>`<option value="${v}" ${v===size?"selected":""}>${v} doz</option>`).join("")}</select></label><button type="button" class="btn ghost" id="penStart" style="align-self:flex-end">Takibi başlat</button></div></div>`;
   const left=P.penLeft,nx=pkState().next,dn=nx?toD(nx.date).toLocaleDateString("tr-TR",{weekday:"long"}):null;
   const ek={"Pazartesi":"'den","Salı":"'dan","Çarşamba":"'dan","Perşembe":"'den","Cuma":"'dan","Cumartesi":"'den","Pazar":"'dan"};
   const sub=left===0?"Kalemin bitti; yeni kalemi açınca aşağıdan işaretle.":left===1?"Son doz kaldı, eczaneye uğramayı unutma.":dn?`${dn}${ek[dn]||"'dan"} sonra ${left-1} doz`:"Her iğne kaydında bir doz düşer.";
   return `<div class="card pencard pens${left<=1?" warn":""}">
-    <div class="psh"><h2>Kalemim</h2><span><b>${left}</b> / ${size} doz</span></div>
-    <div class="pbars">${Array.from({length:size},(_,i)=>`<i class="${i<left?"on":""}"></i>`).join("")}</div>
+    <div class="psh"><h2>Kalemim</h2><span>${left>size?`elinde <b>${left}</b> doz`:`<b>${left}</b> / ${size} doz`}</span></div>
+    <div class="pbars">${Array.from({length:Math.min(Math.max(size,left),20)},(_,i)=>`<i class="${i<left?"on":""}"></i>`).join("")}</div>
     <span class="muted" style="font-size:12.5px">${sub}</span>
     <details class="penmore"${left<=1?" open":""}><summary>Kalemi yönet</summary>
-      <div class="penrow"><button type="button" class="btn shotbtn" id="penNew" style="flex:1">Yeni kalem açtım</button>
-        <div class="stepper" role="group" aria-label="Kalan dozu düzelt"><button type="button" data-pen="-1" aria-label="Bir azalt">−</button><div><b>${left}</b><span>doz</span></div><button type="button" data-pen="1" aria-label="Bir artır">+</button></div></div></details>
+      <div class="penrow">${left>size?`<span class="muted" style="flex:1;font-size:12.5px">Birden çok kalemin varsa elindeki toplam dozu yaz.</span>`:`<button type="button" class="btn shotbtn" id="penNew" style="flex:1">Yeni kalem açtım</button>`}
+        <div class="stepper" role="group" aria-label="Elindeki dozu düzelt"><button type="button" data-pen="-1" aria-label="Bir azalt">−</button><div><b>${left}</b><span>doz</span></div><button type="button" data-pen="1" aria-label="Bir artır">+</button></div></div>
+      <label style="display:flex;flex-direction:row;align-items:center;justify-content:space-between;gap:10px;margin-top:12px;font-size:14px;color:var(--fg)"><span>Bir kalemde kaç doz var</span><select id="penSize2" style="width:auto;flex:none;padding:8px 12px">${[1,2,3,4,5,6,7,8].map(v=>`<option value="${v}" ${v===size?"selected":""}>${v} doz</option>`).join("")}</select></label></details>
   </div>`;
 }
 function penWarn(){
@@ -4225,7 +4226,9 @@ function bindSe(){
 function bindPen(){
   const ps=$("#penStart");if(ps)ps.addEventListener("click",()=>{const v=+$("#penSize").value||4;S.profile.penSize=v;S.profile.penLeft=v;save();render();toast("Kalem takibi başladı")});
   const pn=$("#penNew");if(pn)pn.addEventListener("click",()=>{S.profile.penLeft=S.profile.penSize||4;save();render();toast("Yeni kalem: "+S.profile.penLeft+" doz")});
-  document.querySelectorAll("[data-pen]").forEach(b=>b.addEventListener("click",()=>{const P=S.profile;P.penLeft=Math.max(0,Math.min(P.penSize||4,P.penLeft+ +b.dataset.pen));save();render()}));
+  /* elindeki doz bir kalemden fazla olabilir (birden çok kalem): en fazla 40 */
+  document.querySelectorAll("[data-pen]").forEach(b=>b.addEventListener("click",()=>{const P=S.profile;P.penLeft=Math.max(0,Math.min(40,P.penLeft+ +b.dataset.pen));save();render();const d=document.querySelector("details.penmore");if(d)d.open=true}));
+  const ps2=$("#penSize2");if(ps2)ps2.addEventListener("change",()=>{S.profile.penSize=+ps2.value||4;save();render();const d=document.querySelector("details.penmore");if(d)d.open=true;toast("Bir kalem: "+S.profile.penSize+" doz")});
 }
 /* G6 · Doktorunun doz planı (Plus). S.profile.dplan={steps:[{d:"2,5",w:4},…],rem:true}; w=0 süresiz (son basamak).
    Hafif doz önermez: hangi basamakta olduğunu son iğnelerin dozundan sayar, sıradaki iğnenin dozunu plana göre hazırlar. */
