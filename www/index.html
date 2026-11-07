@@ -4106,12 +4106,16 @@ function measCard(){
   const m=sortedM();
   if(!m.length) return `<div class="card" style="display:flex;flex-direction:column;gap:10px"><div><h2>Vücut ölçüleri</h2><span class="muted" style="font-size:12.5px">Tartı yerinde saydığında bile santimler düşer. Ayda bir bel, kalça ve kol çevreni ölç.</span></div><button type="button" class="drow line" id="mAdd"><span>Ölçü ekle</span><i>›</i></button></div>`;
   const last=m[m.length-1],first=k=>{const x=m.find(y=>y[k]!=null);return x?x[k]:null},lastOf=k=>{for(let i=m.length-1;i>=0;i--)if(m[i][k]!=null)return m[i][k];return null};
-  const parts=MP.filter(([k])=>lastOf(k)!=null);let tot=0,has=false;
-  const cells=parts.map(([k,n])=>{const a=first(k),b=lastOf(k),d=a!=null&&b!=null&&m.length>1?b-a:null;if(d!=null){tot+=d;has=true}
+  const parts=MP.filter(([k])=>lastOf(k)!=null),dOf=k=>{const a=first(k),b=lastOf(k);return a!=null&&b!=null&&m.length>1?b-a:null};
+  /* öne çıkan kutu: bel (sağlık açısından en anlamlı ölçü; boy varsa bel/boy oranı), bel yoksa ölçülen bölge. Bölgeler toplanmaz. */
+  const fk=parts.find(([k])=>k==="bel")||parts.find(([k])=>dOf(k))||parts[0];
+  const hi=fk?(()=>{const [k,n]=fk,b=lastOf(k),d=dOf(k),h=S.profile.heightCm,wr=k==="bel"&&h?b/h:null;
+    return `<div class="mtotal"><b>${d?(d<0?"−":"+")+cm(Math.abs(d)):cm(b)} cm</b><span>${d?`${n.toLocaleLowerCase("tr-TR")} · ilk ölçümden bu yana`:`${n.toLocaleLowerCase("tr-TR")} · son ölçüm`}${wr?`<br>bel/boy ${wr.toLocaleString("tr-TR",{minimumFractionDigits:2,maximumFractionDigits:2})} · sağlıklı sınır 0,50`:""}</span></div>`})():"";
+  const cells=parts.map(([k,n])=>{const b=lastOf(k),d=dOf(k);
     return `<div><span>${n}</span><b>${cm(b)}<small>cm</small></b><em class="${d==null?"":d<0?"down":d>0?"up":""}">${d==null||!d?"—":(d<0?"−":"+")+cm(Math.abs(d))+" cm"}</em></div>`}).join("");
   return `<div class="card" style="display:flex;flex-direction:column;gap:12px">
     <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px"><div><h2>Vücut ölçüleri</h2><span class="muted" style="font-size:12.5px">Son ölçüm ${fmtD(last.date)}${m.length>1?" · ilk ölçüme göre":""}</span></div><button type="button" class="btn ghost" id="mAdd" style="padding:9px 14px;width:auto;flex:none">+ Ölçü</button></div>
-    ${has&&tot<0?`<div class="mtotal"><b>−${cm(-tot)} cm</b><span>${parts.length} bölgeden toplam<br>ilk ölçümden bu yana</span></div>`:""}
+    ${hi}
     <div class="mgrid">${cells}</div>
     <div class="mhist">${m.slice(-4).reverse().map(x=>`<div><b>${fmtD(x.date)}</b><span>${MP.filter(([k])=>x[k]!=null).map(([k,n])=>n+" "+cm(x[k])).join(" · ")}</span><button type="button" data-mdel="${x.id}" aria-label="Ölçümü sil">×</button></div>`).join("")}</div>
   </div>`;
@@ -4124,16 +4128,21 @@ function openMeasSheet(){
       <div class="two">${MP.map(([k,n])=>`<label>${n} (cm)<input id="m-${k}" inputmode="decimal" placeholder="${lastOf(k)!=null?cm(lastOf(k)):"–"}" autocomplete="off"></label>`).join("")}</div>
       <div><span class="flbl" style="display:block;margin-bottom:6px">Tarih</span><div class="fchips" id="mWhen" role="radiogroup"><button type="button" role="radio" data-d="${today()}" aria-checked="true">Bugün</button><button type="button" role="radio" data-d="${addDays(today(),-1)}" aria-checked="false">Dün</button><button type="button" role="radio" data-d="" aria-checked="false">Tarih seç…</button></div>${dateField("m-date",today(),{max:today(),box:"mDateBox",hidden:true})}</div>
       <p class="muted" style="margin:0;font-size:12.5px">Mezurayı tenine değecek ama sıkmayacak şekilde tut. Bel: göbek hizası; kalça: en geniş yer; kol ve uyluk: en kalın yer. Boş bıraktıkların kaydedilmez.</p>
-      <button class="btn" type="submit">Kaydet</button>
+      <div id="mWarn" class="seins" hidden></div>
+      <button class="btn" type="submit" id="mSave">Kaydet</button>
     </form></div></div>`;
-  const root=$("#sheetRoot");
+  const root=$("#sheetRoot");let mOk=null;
   root.querySelector(".scrim").addEventListener("click",e=>{if(e.target.classList.contains("scrim"))closeSheet()});
   root.querySelector("[data-x]").addEventListener("click",closeSheet);
   $("#mWhen").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;$("#mWhen").querySelectorAll("button").forEach(x=>x.setAttribute("aria-checked",x===b));
     if(b.dataset.d){$("#m-date").value=b.dataset.d;dfSync($("#m-date"));$("#mDateBox").hidden=true}else{$("#mDateBox").hidden=false;dfOpen($("#m-date"))}});
   $("#fM").addEventListener("submit",e=>{e.preventDefault();const r={id:uid(),date:$("#m-date").value||today()};let n=0;
     for(const [k] of MP){const v=num($("#m-"+k).value);if(v!=null&&v>=10&&v<=250){r[k]=v;n++}}
-    if(!n){toast("En az bir ölçü gir");return}S.meas=S.meas||[];S.meas.push(r);save();closeSheet();toast("Ölçüler kaydedildi")});
+    if(!n){toast("En az bir ölçü gir");return}
+    /* uç değer: önceki ölçüme göre 10 cm'den fazla fark varsa bir kez sor */
+    const odd=MP.filter(([k])=>r[k]!=null&&lastOf(k)!=null&&Math.abs(r[k]-lastOf(k))>10).map(([k,nm])=>`${nm} ${cm(lastOf(k))} → ${cm(r[k])} cm`),sig=JSON.stringify(MP.map(([k])=>r[k]??null));
+    if(odd.length&&mOk!==sig){mOk=sig;const w=$("#mWarn");w.innerHTML=`Doğru mu? ${odd.join(", ")}. Önceki ölçüme göre büyük bir fark. Doğruysa tekrar dokun.`;w.hidden=false;$("#mSave").textContent="Evet, kaydet";return}
+    S.meas=S.meas||[];S.meas.push(r);save();closeSheet();toast("Ölçüler kaydedildi")});
 }
 function bindSwipe(){
   const v=$("#view");v.querySelectorAll("[data-krange]").forEach(b=>b.addEventListener("click",()=>{kRange=b.dataset.krange;try{localStorage.setItem("hf-krange",kRange)}catch(_){}render()}));
