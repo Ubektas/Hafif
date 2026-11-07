@@ -12,6 +12,7 @@ enum WidgetDeneme {
     static let orta: [(CGFloat, CGFloat)] = [(292, 141), (321, 148), (338, 158), (360, 169), (364, 170)]
     static let dik: [(CGFloat, CGFloat)] = [(155, 66), (160, 72), (172, 76)]
     static let yuvarlak: [CGFloat] = [68, 72, 76]
+    static let buyuk: [(CGFloat, CGFloat)] = [(292, 311), (321, 324), (329, 345), (338, 354), (360, 379), (364, 382)]
 
     @MainActor static func calistir() {
         for f in ["hafif_outfit_bold", "hafif_figtree_bold", "hafif_figtree_medium"] {
@@ -21,11 +22,11 @@ enum WidgetDeneme {
         try? FileManager.default.removeItem(at: klasor)
         try? FileManager.default.createDirectory(at: klasor, withIntermediateDirectories: true)
         var hatalar: [String] = [], toplam = 0, olcumsuz = 0
-        let aileler: [(Tur, [Boy])] = [(.bugun, [.kucuk, .orta, .kilitDik]), (.igne, [.kucuk, .orta]), (.kilo, [.kucuk, .orta, .kilitDik]), (.su, [.kucuk, .orta, .kilitYuvarlak])]
+        let aileler: [(Tur, [Boy])] = [(.bugun, [.kucuk, .orta, .kilitDik]), (.igne, [.kucuk, .orta]), (.kilo, [.kucuk, .orta, .kilitDik]), (.su, [.kucuk, .orta, .kilitYuvarlak]), (.pano, [.buyuk]), (.panoKoyu, [.buyuk])]
         let veriler: [(String, WVeri?)] = [("normal", Ornek.normal), ("uzun", Ornek.uzun), ("bos", nil)]
         for (tur, boylar) in aileler {
             for boy in boylar {
-                let olculer: [(CGFloat, CGFloat)] = boy == .kucuk ? kucuk.map { ($0, $0) } : boy == .orta ? orta : boy == .kilitDik ? dik : yuvarlak.map { ($0, $0) }
+                let olculer: [(CGFloat, CGFloat)] = boy == .kucuk ? kucuk.map { ($0, $0) } : boy == .orta ? orta : boy == .buyuk ? buyuk : boy == .kilitDik ? dik : yuvarlak.map { ($0, $0) }
                 for (vad, v) in veriler {
                     for koyu in [false, true] {
                         for (w, h) in olculer {
@@ -33,7 +34,7 @@ enum WidgetDeneme {
                             OlcKayit.acik = true; OlcKayit.kutular = [:]
                             let e = HEntry(date: Date(), v: v)
                             let gor = HafifKart(tur: tur, e: e, boy: boy, koyu: koyu, onizleme: true)
-                                .frame(width: w, height: h).clipShape(RoundedRectangle(cornerRadius: boy == .kilitYuvarlak ? w / 2 : 22 * h / 158))
+                                .frame(width: w, height: h).clipShape(RoundedRectangle(cornerRadius: boy == .kilitYuvarlak ? w / 2 : boy == .buyuk ? 22 : 22 * h / 158))
                                 .background(koyu ? Color.black : Color(white: 0.85))
                                 .environment(\.colorScheme, koyu ? .dark : .light)
                             let r = ImageRenderer(content: gor); r.scale = 2
@@ -43,7 +44,7 @@ enum WidgetDeneme {
                             if !(vad == "bos" && koyu) { try? img.pngData()?.write(to: klasor.appendingPathComponent(ad + ".png")) }
                             // içerik alanı: kilit ekranında tüm kutu, ana ekranda kenar boşluğu düşülmüş alan
                             let kilit = boy == .kilitDik || boy == .kilitYuvarlak
-                            let pad = kilit ? 0 : 14 * h / 158
+                            let pad = kilit || boy == .buyuk ? 0 : 14 * h / 158
                             let alan = CGRect(x: 0, y: 0, width: w - 2 * pad, height: h - 2 * pad).insetBy(dx: -0.75, dy: -0.75)
                             let K = OlcKayit.kutular.filter { $0.value.width > 0.5 && $0.value.height > 0.5 }
                             if K.isEmpty && boy != .kilitYuvarlak { olcumsuz += 1 }

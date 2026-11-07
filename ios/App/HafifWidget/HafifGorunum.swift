@@ -4,13 +4,14 @@ import WidgetKit
 // MARK: - boy, renk, yazı
 
 /// Widget'ın çizildiği boy. Widget'ta WidgetFamily'den gelir; boyut kontrolünde doğrudan verilir.
-enum Boy: String, CaseIterable { case kucuk, orta, kilitDik, kilitYuvarlak, kilitSatir }
+enum Boy: String, CaseIterable { case kucuk, orta, buyuk, kilitDik, kilitYuvarlak, kilitSatir }
 
 @available(iOS 16.0, *)
 extension Boy {
     init(_ f: WidgetFamily) {
         switch f {
         case .systemMedium: self = .orta
+        case .systemLarge: self = .buyuk
         case .accessoryRectangular: self = .kilitDik
         case .accessoryCircular: self = .kilitYuvarlak
         case .accessoryInline: self = .kilitSatir
@@ -37,6 +38,9 @@ struct Pal {
     var igS: Color { r(0xE6EBF6, 0x1E2847) }
     var ki: Color { r(0x0E7C66, 0x4FD1A8) }
     var on: Color { r(0xFFFFFF, 0x0B1C19) }
+    var kiS: Color { r(0xE1F3EC, 0x103A30) }
+    var tk: Color { r(0xB8577A, 0xE28BAE) }
+    var tkS: Color { r(0xF7E8EE, 0x3A1C28) }
     static let mint = Color(red: 0x9F / 255, green: 0xF0 / 255, blue: 0xD6 / 255)
     static let kiloArka = LinearGradient(colors: [Color(red: 0x0F / 255, green: 0x4C / 255, blue: 0x41 / 255), Color(red: 0x07 / 255, green: 0x24 / 255, blue: 0x20 / 255)], startPoint: .topLeading, endPoint: .bottomTrailing)
 }
@@ -510,9 +514,170 @@ struct SuGorunum: View {
     }
 }
 
-// MARK: - dört widget'ın ortak kabı
+// MARK: - Pano (büyük): Android'deki Pano gibi kilo + bugün + sıradakiler
 
-enum Tur: String, CaseIterable { case bugun, igne, kilo, su }
+@available(iOS 16.0, *)
+struct PanoGorunum: View {
+    let v: WVeri?; let an: Date; let pal: Pal; let koyu: Bool
+    let ac = Color.white.opacity(0.66)
+    var ust: LinearGradient {
+        koyu ? LinearGradient(colors: [Color(red: 0x13 / 255, green: 0x35 / 255, blue: 0x2E / 255), Color(red: 0x0E / 255, green: 0x21 / 255, blue: 0x1C / 255)], startPoint: .topLeading, endPoint: .bottomTrailing)
+             : Pal.kiloArka
+    }
+    var body: some View {
+        GeometryReader { g in
+            let u = min(g.size.width / 338, g.size.height / 354)
+            VStack(spacing: 0) {
+                ustBolum(u).padding(.horizontal, 16 * u).padding(.top, 14 * u).padding(.bottom, 12 * u)
+                    .frame(width: g.size.width, height: g.size.height * 0.5, alignment: .top).background(ust)
+                altBolum(u).padding(.horizontal, 14 * u).padding(.top, 12 * u).padding(.bottom, 14 * u)
+                    .frame(width: g.size.width, height: g.size.height * 0.5, alignment: .top)
+            }
+        }.coordinateSpace(name: "w")
+    }
+
+    // üst: kilo, değişim, eğri, hedef
+    @ViewBuilder func ustBolum(_ u: CGFloat) -> some View {
+        let k = v?.w
+        VStack(alignment: .leading, spacing: 0) {
+            Baslik(simge: "leaf.fill", renk: Pal.mint, yazi: "Hafif", yaziRenk: Pal.mint, u: u,
+                   sag: AnyView(Text(Bicim.tarih(an)).font(Yazi.orta(11.5 * u)).foregroundColor(ac).tek()))
+            if let k = k {
+                Link(destination: URL(string: "hafif://w/tab/kilo")!) {
+                    VStack(alignment: .leading, spacing: 0) {
+                        HStack(alignment: .center, spacing: 8 * u) {
+                            HStack(alignment: .firstTextBaseline, spacing: 4 * u) {
+                                Text(Bicim.kg(k.cur)).font(Yazi.outfit(44 * u)).foregroundColor(.white)
+                                Text("kg").font(Yazi.bold(14 * u)).foregroundColor(ac)
+                            }.tek().olc("deger")
+                            Spacer(minLength: 4 * u)
+                            Hap(yazi: "\(Bicim.isaretli(k.change)) kg başından", on: Pal.mint, arka: Pal.mint.opacity(0.16), u: u).olc("hap")
+                        }.padding(.top, 6 * u)
+                        if let p = k.pts, p.count >= 2 {
+                            Egri(pts: p, renk: Pal.mint, dolgu: true).frame(maxWidth: .infinity, maxHeight: .infinity).padding(.vertical, 4 * u).olc("egri")
+                        } else { Spacer(minLength: 4 * u) }
+                        hedef(k, u)
+                    }
+                }
+            } else {
+                Spacer(minLength: 6 * u)
+                Text("İlk tartını gir").font(Yazi.outfit(22 * u)).foregroundColor(.white).tek().olc("bos")
+                Text("kilo yolun burada görünecek").font(Yazi.orta(12 * u)).foregroundColor(ac).tek().olc("bos2")
+                Spacer(minLength: 0)
+            }
+        }
+    }
+    @ViewBuilder func hedef(_ k: WVeri.Kilo, _ u: CGFloat) -> some View {
+        if let pct = k.pct, let l = k.left {
+            let yazi = l <= 0.05 ? "Hedefindesin" : "Hedefe \(Bicim.kg(l)) kg" + (eta(k).map { " · " + $0 } ?? "")
+            HStack(spacing: 10 * u) {
+                GeometryReader { g in
+                    ZStack(alignment: .leading) { Capsule().fill(Color.white.opacity(0.14)); Capsule().fill(Pal.mint).frame(width: g.size.width * min(1, max(0.03, pct / 100))) }
+                }.frame(height: 5 * u)
+                Text(yazi).font(Yazi.bold(11.5 * u)).foregroundColor(.white).tek().layoutPriority(1)
+            }.frame(height: 15 * u).olc("hedef")
+        } else {
+            Text(k.goal == nil ? "Hedef belirlenmedi" : "Hedefe ulaştın").font(Yazi.bold(11.5 * u)).foregroundColor(.white).tek().olc("hedef")
+        }
+    }
+    func eta(_ k: WVeri.Kilo) -> String? {
+        guard let l = k.left, l > 0, let pw = k.perWeek, pw < -0.05 else { return nil }
+        let hafta = l / -pw
+        guard hafta < 156, let d = Calendar.current.date(byAdding: .day, value: Int(hafta * 7), to: an) else { return nil }
+        return Bicim.ay(d, an)
+    }
+
+    // alt: üç halka ve iki kart
+    @ViewBuilder func altBolum(_ u: CGFloat) -> some View {
+        let d = v?.gun(an) ?? WVeri.Gun(w: 0, wg: 2500, p: 0, pg: 100, st: nil, sg: 7500)
+        let p = d.p ?? 0, pg = max(1, d.pg ?? 100), w = d.w ?? 0, wg = max(1, d.wg ?? 2500), sg = max(1, d.sg ?? 7500)
+        VStack(spacing: 10 * u) {
+            HStack(spacing: 0) {
+                Link(destination: URL(string: "hafif://w/protein")!) {
+                    halka(p / pg, pal.pro, "fork.knife", Bicim.sayi(p), "/ \(Bicim.sayi(pg)) g", u)
+                }.frame(maxWidth: .infinity).olc("halka0")
+                Group {
+                    if #available(iOS 17.0, *) {
+                        Button(intent: SuEkle()) { halka(w / wg, pal.su, "drop.fill", Bicim.litre(w), "/ \(Bicim.litre(wg)) L", u) }.buttonStyle(.plain)
+                    } else {
+                        Link(destination: URL(string: "hafif://w/water/250")!) { halka(w / wg, pal.su, "drop.fill", Bicim.litre(w), "/ \(Bicim.litre(wg)) L", u) }
+                    }
+                }.frame(maxWidth: .infinity).olc("halka1")
+                Link(destination: URL(string: "hafif://w/tab/adim")!) {
+                    halka((d.st ?? 0) / sg, pal.ad, "figure.walk", d.st.map { Bicim.sayi($0) } ?? "–", d.st == nil ? "bağla" : "adım", u)
+                }.frame(maxWidth: .infinity).olc("halka2")
+            }
+            HStack(spacing: 8 * u) {
+                kart1(u).olc("kart0")
+                kart2(u).olc("kart1")
+            }.frame(maxHeight: .infinity)
+        }
+    }
+    func halka(_ oran: Double, _ renk: Color, _ simge: String, _ deger: String, _ birim: String, _ u: CGFloat) -> some View {
+        VStack(spacing: 5 * u) {
+            ZStack(alignment: .bottomTrailing) {
+                ZStack {
+                    Halka(v: oran, renk: renk, iz: pal.trk, kalin: 6 * u)
+                    Image(systemName: simge).font(.system(size: 16 * u, weight: .semibold)).foregroundColor(renk)
+                }.frame(width: 54 * u, height: 54 * u)
+                Circle().fill(renk).frame(width: 20 * u, height: 20 * u)
+                    .overlay(Image(systemName: "plus").font(.system(size: 10 * u, weight: .bold)).foregroundColor(pal.on))
+                    .overlay(Circle().stroke(pal.bg, lineWidth: 2 * u)).offset(x: 4 * u, y: 2 * u)
+            }
+            (Text(deger).font(Yazi.outfit(14.5 * u)).foregroundColor(pal.fg) + Text(" " + birim).font(Yazi.orta(11 * u)).foregroundColor(pal.mu)).tek()
+        }
+    }
+    func kart(_ simge: String, _ renk: Color, _ arka: Color, _ baslik: String, _ alt: String, _ adres: String, _ u: CGFloat) -> some View {
+        Link(destination: URL(string: adres)!) {
+            HStack(spacing: 9 * u) {
+                Image(systemName: simge).font(.system(size: 17 * u, weight: .semibold)).foregroundColor(renk).frame(width: 22 * u)
+                VStack(alignment: .leading, spacing: 2 * u) {
+                    Text(baslik).font(Yazi.bold(13 * u)).foregroundColor(pal.fg).tek()
+                    Text(alt).font(Yazi.orta(11.5 * u)).foregroundColor(pal.mu).tek()
+                }
+                Spacer(minLength: 0)
+            }.padding(.horizontal, 11 * u).frame(maxWidth: .infinity, maxHeight: .infinity)
+                .background(RoundedRectangle(cornerRadius: 14 * u).fill(arka))
+        }
+    }
+    /// sol kart: sıradaki iğne; iğne kullanmayanda saate göre Ne yesem? önerisi
+    @ViewBuilder func kart1(_ u: CGFloat) -> some View {
+        if v?.shots == true, let n = v?.next {
+            let t = Date(timeIntervalSince1970: n.ts / 1000), f = Bicim.gunFarki(t, an)
+            let gun = f <= 0 ? "Bugün" : f == 1 ? "Yarın" : Bicim.gunAdi(t)
+            kart("syringe", pal.ig, pal.igS, "\(gun) \(Bicim.saat(t))", (n.site ?? "").isEmpty ? "sıradaki iğne" : n.site!, "hafif://w/tab/igne", u)
+        } else {
+            let s = Calendar.current.component(.hour, from: an)
+            let d = v?.gun(an), kalan = (d?.pg ?? 100) - (d?.p ?? 0)
+            if kalan >= 10, let m = v?.meals?[s < 11 ? "k" : s >= 21 ? "a" : "o"]?.first, let id = m.id, let ad = m.s {
+                kart("fork.knife", pal.pro, pal.proS, ad, "+\(Bicim.sayi(m.g ?? 0)) g protein", "hafif://w/meal/\(id)", u)
+            } else {
+                kart("fork.knife", pal.pro, pal.proS, "Ne yesem?", "öneriler Günlük'te", "hafif://w/tab/besin", u)
+            }
+        }
+    }
+    /// sağ kart: sıradaki takviye vakti; takviye yoksa hedefe kalan ya da tartı
+    @ViewBuilder func kart2(_ u: CGFloat) -> some View {
+        let bugun = WVeri.gunAdi(an), taze = v?.date == bugun
+        let L = v?.supp?.first(where: { $0.d == bugun })?.s ?? []
+        let of = L.reduce(0) { $0 + ($1.of ?? 0) }, done = taze ? L.reduce(0) { $0 + ($1.done ?? 0) } : 0
+        if of > 0 {
+            if let nx = L.first(where: { (taze ? ($0.done ?? 0) : 0) < ($0.of ?? 0) }) {
+                kart("pills.fill", pal.tk, pal.tkS, [nx.n, nx.t].compactMap { $0 }.joined(separator: " "), "\(Bicim.sayi(nx.of ?? 0)) takviye", "hafif://w/tab/takviye", u)
+            } else {
+                kart("pills.fill", pal.tk, pal.tkS, "Hepsi alındı", "bugün \(Bicim.sayi(done))/\(Bicim.sayi(of))", "hafif://w/tab/takviye", u)
+            }
+        } else if let k = v?.w, let l = k.left, k.pct != nil {
+            kart("flag.fill", pal.ki, pal.kiS, l <= 0.05 ? "Hedefindesin" : "\(Bicim.kg(max(0, l))) kg kaldı", "hedefe", "hafif://w/tab/basari", u)
+        } else {
+            kart("scalemass", pal.ki, pal.kiS, "Kilo gir", "bugünkü tartın", "hafif://w/weight", u)
+        }
+    }
+}
+
+// MARK: - widget'ların ortak kabı
+
+enum Tur: String, CaseIterable { case bugun, igne, kilo, su, pano, panoKoyu }
 
 @available(iOS 16.0, *)
 struct HafifKart: View {
@@ -520,13 +685,16 @@ struct HafifKart: View {
     /// true: boyut kontrolü / önizleme (arka plan ve kenar boşluğu elle çizilir)
     var onizleme = false
     var body: some View {
-        let pal = Pal(koyu: koyu)
+        // Pano'nun rengi telefonun temasına değil widget'ın türüne bağlı (iki ayrı widget)
+        let pal = Pal(koyu: tur == .pano ? false : tur == .panoKoyu ? true : koyu)
+        let pano = tur == .pano || tur == .panoKoyu
         let ic = Group {
             switch tur {
             case .bugun: BugunGorunum(v: e.v, an: e.date, boy: boy, pal: pal)
             case .igne: IgneGorunum(v: e.v, an: e.date, boy: boy, pal: pal)
             case .kilo: KiloGorunum(v: e.v, an: e.date, boy: boy)
             case .su: SuGorunum(v: e.v, an: e.date, boy: boy, pal: pal)
+            case .pano, .panoKoyu: PanoGorunum(v: e.v, an: e.date, pal: pal, koyu: tur == .panoKoyu)
             }
         }
         let kilit = boy == .kilitDik || boy == .kilitYuvarlak || boy == .kilitSatir
@@ -534,6 +702,11 @@ struct HafifKart: View {
             if onizleme { ic.coordinateSpace(name: "w").foregroundColor(.white).background(Color(white: 0.22)) }
             else if #available(iOS 17.0, *) { ic.containerBackground(for: .widget) { Color.clear } }
             else { ic }
+        } else if pano {
+            // Pano kenar boşluğunu kendisi bırakır (üst zümrüt bölüm kenara kadar uzanır)
+            if onizleme { ic.background(arka(pal)) }
+            else if #available(iOS 17.0, *) { ic.containerBackground(for: .widget) { arka(pal) } }
+            else { ic.background(arka(pal)) }
         } else if onizleme {
             GeometryReader { g in
                 ic.padding(14 * g.size.height / 158)
@@ -557,6 +730,7 @@ extension Tur {
         case .igne: return URL(string: "hafif://w/tab/igne")!
         case .kilo: return URL(string: "hafif://w/tab/kilo")!
         case .su: return URL(string: "hafif://w/tab/besin:su")!
+        case .pano, .panoKoyu: return URL(string: "hafif://w/tab/ozet")!
         }
     }
 }

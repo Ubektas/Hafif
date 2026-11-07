@@ -8,6 +8,8 @@ struct HafifWidgetBundle: WidgetBundle {
         IgneWidget()
         KiloWidget()
         SuWidget()
+        PanoWidget()
+        PanoKoyuWidget()
     }
 }
 
@@ -53,5 +55,33 @@ struct SuWidget: Widget {
             .configurationDisplayName("Su")
             .description("Bardaklar ve tek dokunuşla su.")
             .supportedFamilies([.systemSmall, .systemMedium, .accessoryCircular])
+    }
+}
+
+/// Büyük boy: kilo + bugün + sıradakiler (Android'deki Pano). İki renk iki ayrı widget.
+struct PanoWidget: Widget {
+    var body: some WidgetConfiguration {
+        StaticConfiguration(kind: "HafifPano", provider: HSaglayici()) { HafifGiris(tur: .pano, e: $0) }
+            .configurationDisplayName("Pano")
+            .description("Kilo yolun, bugünün ve sıradakiler tek yerde.")
+            .supportedFamilies([.systemLarge])
+            .kenarsiz()
+    }
+}
+
+struct PanoKoyuWidget: Widget {
+    var body: some WidgetConfiguration {
+        StaticConfiguration(kind: "HafifPanoKoyu", provider: HSaglayici()) { HafifGiris(tur: .panoKoyu, e: $0) }
+            .configurationDisplayName("Pano · Koyu")
+            .description("Kilo yolun, bugünün ve sıradakiler tek yerde; koyu renkte.")
+            .supportedFamilies([.systemLarge])
+            .kenarsiz()
+    }
+}
+
+extension WidgetConfiguration {
+    /// Pano kenar boşluğunu kendisi bırakır; iOS 17+'da sistemin boşluğu kapatılır
+    func kenarsiz() -> some WidgetConfiguration {
+        if #available(iOSApplicationExtension 17.0, *) { return self.contentMarginsDisabled() } else { return self }
     }
 }
