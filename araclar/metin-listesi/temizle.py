@@ -1,5 +1,13 @@
 import json,re
 raw=json.load(open("ham.json"))
+HCX={"HCN":("Health Connect","Apple Sağlık"),"ABL":("Health Connect'ten","Apple Sağlık'tan"),"DAT":("Health Connect'e","Apple Sağlık'a")}
+exp=[]
+for o in raw:
+    if "\u0003" in o["text"]:
+        for i,pl in enumerate(("Android","iPhone")):
+            q=dict(o);q["text"]=re.sub("\u0003(\\w+)\u0003",lambda m:HCX[m.group(1)][i],o["text"]);q["plat"]=pl;q["pid"]="hc"+str(o["line"])+o["text"][:20];exp.append(q)
+    else: exp.append(o)
+raw=exp
 PH=re.compile(r"«[^»]*»")
 def clean(t):
     t=PH.sub("«…»",t)
@@ -16,7 +24,7 @@ def ok(t):
         if not t in("bardak","ölçek","şişe","bar","adet","hafta","ay","yıl","saat","dk","kez","kapsül","tablet","damla","ölçü","tartı","giriş","görsel","sürüyor","büyük","küçük"): return False
     return True
 SEC=[(1,"Genel (sayfa iskeleti, alt sekmeler)"),(1129,"Genel (ortak metinler, yedek, kayıt)"),(1264,"Hafif Plus ödeme ekranı"),(1344,"Ana ekran widget'ı (uygulamanın gönderdiği yazılar)"),(1361,"Genel (Plus kartı, görünüm)"),(1444,"Özet › Koç kartları"),(1616,"Özet ekranı"),(1738,"Özet › Pazartesi haftalık özet"),(1818,"Ekleme pencereleri (+ menüsü, su, iştah, not)"),(1915,"İğneler › İlaç düzeyi ve evreler"),(2086,"Günlük › Protein ve su"),(2194,"Günlük › Ne yesem? (öğün önerileri)"),(2255,"Günlük › Protein ve su"),(2444,"Özet › Üst kart (kahraman kart, koruma dönemi)"),(2546,"Paylaşım › Kilo ilerleme kartları"),(2808,"Paylaşım › Adım kartları"),(2944,"Paylaşım › Hafif ekibine gönder"),(3005,"Başarılar (rozetler, kutlama)"),(3231,"Ayarlar › Verilerim (indir, yedek)"),(3296,"Doktor raporu (PDF)"),(3418,"Kilo › Vücut kompozisyonu"),(3508,"Günlük › Takviyeler"),(3651,"İğneler › Döngü kartı"),(3789,"Kilo ekranı (grafik, tartılar)"),(3998,"Kilo › Ölçüler ve fotoğraflar"),(4136,"İğneler › Yan etki ve iştah"),(4188,"İğneler › Kalem ve doz planı"),(4305,"İğneler ekranı"),(4328,"Ayarlar ekranı"),(4356,"Adımlar ekranı"),(4511,"Hatırlatıcılar (telefon bildirimleri)"),(4641,"İlk kurulum"),(4794,"Ekleme pencereleri (kilo, iğne, ölçü vb.)"),(4953,"Ayarlar › Değerleri düzenle")]
-FN={"vOzetMain":"Özet ekranı","coachCards":"Özet › Koç kartları","vAyar":"Ayarlar ekranı","themeCard":"Ayarlar ekranı","plusCard":"Ayarlar ekranı","dataCard":"Ayarlar › Verilerim (indir, yedek)","remCard":"Ayarlar › Hatırlatıcılar","remStatus":"Ayarlar › Hatırlatıcılar","bindRem":"Ayarlar › Hatırlatıcılar","remCta":"Özet ekranı","suppCta":"Özet ekranı","exCard":"Özet ekranı","musCard":"Kilo ekranı (grafik, tartılar)","nextShotRow":"Özet ekranı","todayRings":"Özet ekranı","items":"Özet ekranı","sub":"Özet ekranı","milestoneCard":"Özet ekranı","msStrip":"Özet ekranı","nx":"Özet ekranı","openQuick":"+ menüsü","it":"+ menüsü"}
+FN={"vOzetMain":"Özet ekranı","coachCards":"Özet › Koç kartları","vAyar":"Ayarlar ekranı","themeCard":"Ayarlar ekranı","plusCard":"Ayarlar ekranı","dataCard":"Ayarlar › Verilerim (indir, yedek)","remCard":"Ayarlar › Hatırlatıcılar","remStatus":"Ayarlar › Hatırlatıcılar","bindRem":"Ayarlar › Hatırlatıcılar","remCta":"Özet ekranı","suppCta":"Özet ekranı","exCard":"Özet ekranı","musCard":"Kilo ekranı (grafik, tartılar)","nextShotRow":"Özet ekranı","todayRings":"Özet ekranı","items":"Özet ekranı","sub":"Özet ekranı","milestoneCard":"Özet ekranı","msStrip":"Özet ekranı","nx":"Özet ekranı","openQuick":"+ menüsü","it":"+ menüsü","HCN":"Genel (ortak metinler, yedek, kayıt)","hcAbl":"Genel (ortak metinler, yedek, kayıt)","hcDat":"Genel (ortak metinler, yedek, kayıt)"}
 order=[]
 def screen(o):
     if o["fn"] in FN: return FN[o["fn"]]
@@ -39,10 +47,10 @@ for o in raw:
     o["ctx"]=o.get("ctx","")
     t=clean(o["text"])
     if not ok(t): continue
-    sc=screen(o);k=(sc,t)
+    sc=screen(o);k=(sc,t,o.get("plat",""))
     if k in seen: continue
     seen.add(k)
-    rows.append(dict(ekran=sc,tur=tur(o),metin=t,satir=o["line"],fn=o["fn"]))
+    rows.append(dict(ekran=sc,tur=tur(o),metin=t,satir=o["line"],fn=o["fn"],plat=o.get("plat",""),pid=o.get("pid","")))
 json.dump(rows,open("satirlar.json","w"),ensure_ascii=False)
 print(len(rows))
 import collections

@@ -1,10 +1,12 @@
 # Uygulama metinleri listesi (dil/hafif-metinler.xlsx)
 
-`www/index.html`'deki bütün kullanıcıya görünen yazıları ve Android/iPhone widget yazılarını Excel'e döker.
-Çalışma klasöründe (ör. geçici bir klasör) sırasıyla:
+Uygulamadaki bütün yazıları (uygulama içi, Ne yesem? önerileri, ipuçları, koç kartları, bildirimler,
+Android ve iPhone widget'ları, iPhone izin pencereleri) ekran, tür ve platformla Excel'e döker.
+Android/iPhone farkı `IOS()` koşullarından ve Health Connect / Apple Sağlık adlarından çıkarılır.
 
-    node cikar.js            # www/index.html → ham.json (acorn: /opt/node-tools/node_modules)
-    python3 temizle.py       # kod parçalarını ayıklar, ekranlara göre sınıflar → satirlar.json
-    python3 excel.py         # native.txt (widget/sistem yazıları) ile birlikte dil/hafif-metinler.xlsx
+Geçici bir klasörde, sırasıyla:
 
-`native.txt`, Java/Swift/strings.xml/Info.plist'ten tırnak içindeki Türkçe yazıların listesidir (satır: `dosya:satır<TAB>metin`).
+    node /home/user/Hafif/araclar/metin-listesi/cikar.js        # www/index.html → ham.json (acorn: /opt/node-tools/node_modules)
+    python3 /home/user/Hafif/araclar/metin-listesi/temizle.py   # → satirlar.json
+    (cd /home/user/Hafif && python3 araclar/metin-listesi/yerel.py "$OLDPWD/yerel.json")   # Java/Swift/strings.xml/Info.plist
+    python3 /home/user/Hafif/araclar/metin-listesi/excel.py /home/user/Hafif/dil/hafif-metinler.xlsx

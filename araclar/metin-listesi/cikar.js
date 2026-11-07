@@ -1,5 +1,5 @@
 const fs=require('fs');const acorn=require('/opt/node-tools/node_modules/acorn');const walk=require('/opt/node-tools/node_modules/acorn-walk');
-const html=fs.readFileSync('/home/user/Hafif/www/index.html','utf8');const lines=html.split('\n');
+const html=fs.readFileSync(process.argv[2]||'/home/user/Hafif/www/index.html','utf8');const lines=html.split('\n');
 const sStart=html.indexOf('<script>')+8,sEnd=html.indexOf('</script>',sStart);
 const src=html.slice(sStart,sEnd);const lineOff=html.slice(0,sStart).split('\n').length-1;
 const ast=acorn.parse(src,{ecmaVersion:'latest',locations:true});
@@ -25,7 +25,7 @@ function segs(s){const res=[];const attrs=[];
  } else if(natural(s)) res.push(['metin',s.replace(/\s+/g,' ').trim()]);
  for(const [a,v] of attrs)if(natural(v))res.push([a,v]);
  return res}
-function tplText(n){let s='';n.quasis.forEach((q,i)=>{s+=q.value.cooked??q.value.raw;if(i<n.expressions.length){const e=n.expressions[i];const code=src.slice(e.start,e.end);s+=(e.type==='TemplateLiteral'||/`/.test(code))?'\u0002':'«'+label(code)+'»'}});return s}
+function tplText(n){let s='';n.quasis.forEach((q,i)=>{if(false)return;s+=q.value.cooked??q.value.raw;if(i<n.expressions.length){const e=n.expressions[i];const code=src.slice(e.start,e.end);const hc={'HCN()':'\u0003HCN\u0003','hcAbl()':'\u0003ABL\u0003','hcDat()':'\u0003DAT\u0003'}[code.trim()];if(hc){s+=hc;return}s+=(e.type==='TemplateLiteral'||/`/.test(code))?'\u0002':'«'+label(code)+'»'}});return s}
 function label(code){code=code.replace(/\s+/g,' ');return code.length>28?code.slice(0,26)+'…':code}
 // enclosing function names
 const funcs=[];
@@ -39,12 +39,18 @@ walk.fullAncestor(ast,(node,anc)=>{
   if(p&&p.type==='BinaryExpression'&&/[=!]==?/.test(p.operator))return;
   if(p&&p.type==='SwitchCase')return;
   let ctx='';for(let i=anc.length-2;i>=0;i--){const a=anc[i];if(a.type==='CallExpression'&&a.callee.type==='Identifier'){const n=a.callee.name;if(n==='toast'){ctx='toast';break}if(n==='confirm'||n==='alert'){ctx='onay';break}}if(a.type==='CallExpression'&&a.callee.type==='MemberExpression'&&/schedule|notify/i.test(a.callee.property.name||'')){ctx='bildirim';break}}
+  let plat='',pid='';for(let i=anc.length-2;i>=0;i--){const a=anc[i],ch=anc[i+1];let test=null;
+   if(a.type==='ConditionalExpression'||a.type==='IfStatement')test=a.test;else if(a.type==='LogicalExpression')test=a.left;
+   if(!test||ch===test)continue;const ts=src.slice(test.start,test.end).replace(/[()\s]/g,'');
+   if(ts!=='IOS'&&ts!=='!IOS')continue;let ios;
+   if(a.type==='LogicalExpression')ios=(a.operator==='&&')===(ts==='IOS');else ios=(ch===a.consequent)===(ts==='IOS');
+   plat=ios?'iPhone':'Android';pid=String(a.start);break}
   let text=node.type==='Literal'?node.value:tplText(node);
   let fn='(genel)';for(let i=anc.length-1;i>=0;i--){const a=anc[i];
    if(a.type==='FunctionDeclaration'&&a.id){fn=a.id.name;break}
    if((a.type==='ArrowFunctionExpression'||a.type==='FunctionExpression')){const q=anc[i-1];if(q&&q.type==='VariableDeclarator'&&q.id.name){fn=q.id.name;break}if(q&&q.type==='Property'&&q.key){fn=(q.key.name||q.key.value);/* keep looking for outer named */ const outer=anc.slice(0,i-1).reverse().find(b=>b.type==='FunctionDeclaration'||b.type==='VariableDeclarator');if(outer){fn=(outer.id&&outer.id.name||'?')+'.'+fn}break}}
    if(a.type==='VariableDeclarator'&&a.id&&a.id.name&&i<anc.length-1){fn=a.id.name;break}}
-  for(const t of text.split('\u0002'))for(const [k,v] of segs(t))out.push({line:node.loc.start.line+lineOff,fn,kind:k,text:v,ctx});
+  for(const t of text.split('\u0002'))for(const [k,v] of segs(t))out.push({line:node.loc.start.line+lineOff,fn,kind:k,text:v,ctx,plat,pid});
  }});
 // static HTML (outside script)
 const before=html.slice(0,sStart);
