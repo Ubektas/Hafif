@@ -625,7 +625,8 @@ struct PanoGorunum: View {
                     .overlay(Circle().stroke(pal.bg, lineWidth: 2 * u)).offset(x: 4 * u, y: 2 * u)
             }
             (Text(deger).font(Yazi.outfit(14.5 * u)).foregroundColor(pal.fg) + Text(" " + birim).font(Yazi.orta(11 * u)).foregroundColor(pal.mu)).tek()
-        }
+                .frame(maxWidth: .infinity)
+        }.frame(maxWidth: .infinity)
     }
     func kart(_ simge: String, _ renk: Color, _ arka: Color, _ baslik: String, _ alt: String, _ adres: String, _ u: CGFloat) -> some View {
         Link(destination: URL(string: adres)!) {
