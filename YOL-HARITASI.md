@@ -105,6 +105,8 @@ Her adım tek tek konuşulup karar veriliyor; onaylananlar Claude sürümüne i�
 
 - **Alışkanlık rozetleri (5 Kasım, 2.0.3 adayı):** protein, su, adım, tartı, iğne, takviye için kademeli rozetler; ilk 1 ve 3 kg rozetleri; Başarılar sayfası bölümlere ayrıldı; Özet şeridinde sıradaki = tamamlanmaya en yakın rozet.
 
+- **Protein tozu (7 Kasım, 2.0.7 adayı):** Protein ekle'ye Protein tozu; 1–60 g arası seçim, çizim simge.
+
 ## Sırada (karar bekleyen / sonraki sürümler)
 - **Maliyet takibi (kullanıcı düşünecek):** "Yeni kalem açtım"da isteğe bağlı fiyat (son fiyat hazır, "Ücretsiz / SGK"); İğneler'de "Harcamam": bu ay, toplam, aylık ortalama, kilo başına, doz planına göre gelecek ay tahmini. Yemek harcamasındaki düşüş: açılışta "önce ayda ne harcıyordun / şimdi ne harcıyorsun" → fark ilk iğneden bugüne geriye dönük günlük hesap, net maliyet ve kilo başına net; "şimdi" tutarı istenince güncellenir. Geçmiş kalemler açılışta bir kez sorulur. Varsayılan kapalı, tutarları gizle seçeneği, paylaşım/rapor/mağazada yok; dil nötr ("yemek harcamandaki düşüş"). Açık: Plus mı, yemek kısmı ayrı açılıp kapansın mı.
 - Plus koç kartları: haftalık özet ve "gelecek haftanın tek hedefi", duraklama analizi (ölçü ve adım karşılaştırması)

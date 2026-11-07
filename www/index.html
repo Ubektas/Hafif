@@ -1341,7 +1341,7 @@ document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest
 const WGP=()=>NATIVE()&&window.Capacitor.Plugins&&window.Capacitor.Plugins.HafifWidget||null;
 let wgT=null;
 function widgetSync(){if(!WGP()||!FSP()||!loaded)return;clearTimeout(wgT);wgT=setTimeout(async()=>{try{await FSP().writeFile({path:"widget.json",directory:"DATA",encoding:"utf8",data:JSON.stringify(widgetData())});await WGP().refresh()}catch(_){}},900)}
-const FEM={yumurta:["🥚","Yumurta"],tavuk:["🍗","Tavuk"],et:["🥩","Et"],ton:["🐟","Ton"],yogurt:["🥛","Yoğurt"],peynir:["🧀","Peynir"],sut:["🥛","Süt"],shake:["🥤","Shake"],bar:["🍫","Bar"],psut:["🥛","Protein süt"],psutpro:["🥛","Pro süt"],mercimek:["🍲","Mercimek"]};
+const FEM={yumurta:["🥚","Yumurta"],tavuk:["🍗","Tavuk"],et:["🥩","Et"],ton:["🐟","Ton"],yogurt:["🥛","Yoğurt"],peynir:["🧀","Peynir"],sut:["🥛","Süt"],shake:["🥤","Shake"],toz:["🥄","Protein tozu"],bar:["🍫","Bar"],psut:["🥛","Protein süt"],psutpro:["🥛","Pro süt"],mercimek:["🍲","Mercimek"]};
 function widgetData(){
   const P=S.profile,now=Date.now(),td=today(),o={v:1,gen:now,date:td,shots:SHOTS(),plusUntil:plusOwned?4102444800000:toD(plusSince()).getTime()+TRIAL_DAYS*864e5};
   const ps=pkState();
@@ -2089,6 +2089,7 @@ const FOODS=[
  {k:"peynir",n:"Beyaz peynir",d:"50 g",g:7},
  {k:"sut",n:"Süt",d:"1 bardak",g:7},
  {k:"shake",n:"Protein shake",d:"1 ölçek",g:25},
+ {k:"toz",n:"Protein tozu",d:"1–60 g",pick:[1,60],u:"ölçek",q:"Ölçekteki protein miktarını seç"},
  {k:"bar",n:"Protein bar",d:"10–21 g",pick:[10,21],u:"bar",q:"Paketteki protein miktarını seç"},
  {k:"psut",n:"Protein süt",d:"15–52 g",pick:[15,52],u:"şişe",q:"Şişedeki protein miktarını seç"},
  {k:"mercimek",n:"Mercimek",d:"1 kase",g:12}
@@ -2102,13 +2103,14 @@ const ICON={
  peynir:'<path d="M4 10.5l9.5-4.5 6.5 4v7.5L10.5 22 4 18z" fill="#FFFDF4" stroke="#E2D9C2" stroke-width="1"/><path d="M4 10.5l6.5 3.8 9.5-4.3M10.5 14.3V22" stroke="#E2D9C2" stroke-width="1" fill="none"/>',
  sut:'<path d="M7 4.5h10l-1.3 15.2a1.5 1.5 0 0 1-1.5 1.3H9.8a1.5 1.5 0 0 1-1.5-1.3z" fill="#EEF4F8" stroke="#C9D5DD" stroke-width="1"/><path d="M7.6 9h8.8l-1.1 10.7a1 1 0 0 1-1 .9H9.7a1 1 0 0 1-1-.9z" fill="#FFFFFF"/><path d="M7.6 9c1.4.8 2.9.8 4.4 0s3-.8 4.4 0" stroke="#DCE5EB" stroke-width="1" fill="none"/>',
  shake:'<rect x="9" y="2.8" width="6" height="3" rx="1" fill="#3A2F5C"/><path d="M8 6.2h8l.8 3.2v10a2 2 0 0 1-2 2H9.2a2 2 0 0 1-2-2v-10z" fill="#8A6BD1"/><rect x="7.6" y="11" width="9.2" height="4.4" fill="#B9A4EC"/><path d="M8.6 7.8h6.8" stroke="#B9A4EC" stroke-width="1"/>',
+ toz:'<rect x="5.4" y="7" width="13.2" height="14" rx="2.2" fill="#3E4C58"/><rect x="4.6" y="3.8" width="14.8" height="4" rx="1.3" fill="#26313A"/><path d="M5.6 6.2h12.8" stroke="#4F5E6B" stroke-width=".8"/><rect x="5.4" y="10.4" width="13.2" height="6.8" fill="#E9A23B"/><path d="M8.6 13.2a2.4 2.4 0 0 0 4.8 0z" fill="#FFFFFF"/><path d="M13.2 13.2l3.4-1.6" stroke="#FFFFFF" stroke-width="1.2" stroke-linecap="round"/><path d="M9 13.2c.5-1 1.3-1.5 2-1.5s1.5.5 2 1.5z" fill="#F7E7CF"/><path d="M7.2 19.2h9.6" stroke="#56656F" stroke-width=".8" stroke-linecap="round"/>',
  mercimek:'<path d="M3.5 11.5h17a8.5 8 0 0 1-17 0z" fill="#E4ECF0" stroke="#C5D2DA" stroke-width="1"/><ellipse cx="12" cy="11.5" rx="8.5" ry="2.4" fill="#E0782F"/><g fill="#F6A65E"><circle cx="8.5" cy="11.2" r=".9"/><circle cx="12" cy="10.6" r=".9"/><circle cx="15" cy="11.4" r=".9"/><circle cx="10.4" cy="12.2" r=".8"/><circle cx="13.7" cy="12.3" r=".8"/></g>',
  bar:'<path d="M2.5 9.2l1.6-1.1v7.8l-1.6-1.1z" fill="#5A3B22"/><path d="M21.5 9.2l-1.6-1.1v7.8l1.6-1.1z" fill="#5A3B22"/><rect x="4" y="7.6" width="16" height="8.8" rx="1.6" fill="#6E4A2C"/><rect x="8" y="7.6" width="8" height="8.8" fill="#F0C75E"/><path d="M9.4 10.4h5.2M9.4 12h5.2M9.4 13.6h3.4" stroke="#6E4A2C" stroke-width="1" stroke-linecap="round"/>',
  psut:'<path d="M8.2 3h7.6v2.4l1.6 2.4v12.4a1.8 1.8 0 0 1-1.8 1.8H8.4a1.8 1.8 0 0 1-1.8-1.8V7.8l1.6-2.4z" fill="#FFFFFF" stroke="#C9D5DD" stroke-width="1"/><rect x="8.6" y="1.6" width="6.8" height="2.6" rx=".8" fill="#3A86C8"/><rect x="6.6" y="11" width="10.8" height="6" fill="#3A86C8"/><path d="M8.4 14h7.2" stroke="#FFFFFF" stroke-width="1.2" stroke-linecap="round"/>',
  psutpro:'<path d="M8.2 3h7.6v2.4l1.6 2.4v12.4a1.8 1.8 0 0 1-1.8 1.8H8.4a1.8 1.8 0 0 1-1.8-1.8V7.8l1.6-2.4z" fill="#FFFFFF" stroke="#C9D5DD" stroke-width="1"/><rect x="8.6" y="1.6" width="6.8" height="2.6" rx=".8" fill="#24346B"/><rect x="6.6" y="10.4" width="10.8" height="7.4" fill="#24346B"/><path d="M6.6 17.2h10.8" stroke="#E2B341" stroke-width="1.4"/><text x="12" y="15.4" text-anchor="middle" font-size="4.6" font-weight="800" fill="#E2B341" font-family="Figtree, sans-serif">PRO</text>',
  genel:'<circle cx="12" cy="12" r="7.5" fill="#F6D9A8" stroke="#E0B670" stroke-width="1"/><text x="12" y="15.2" text-anchor="middle" font-size="8.5" font-weight="700" fill="#8A5A10" font-family="Figtree, sans-serif">P</text>'
 };
-const FCOL={yumurta:"#F2C14E",tavuk:"#D98A3D",et:"#B8463A",ton:"#2C6E9B",yogurt:"#7DB7E0",peynir:"#E3D7B4",sut:"#BFD6E4",shake:"#8A6BD1",bar:"#6E4A2C",psut:"#4F8BE8",psutpro:"#1F5FBF",mercimek:"#E0782F",genel:"#E6B35A"};
+const FCOL={yumurta:"#F2C14E",tavuk:"#D98A3D",et:"#B8463A",ton:"#2C6E9B",yogurt:"#7DB7E0",peynir:"#E3D7B4",sut:"#BFD6E4",shake:"#8A6BD1",toz:"#5B6B78",bar:"#6E4A2C",psut:"#4F8BE8",psutpro:"#1F5FBF",mercimek:"#E0782F",genel:"#E6B35A"};
 /* arayüz çizgi simgeleri (emoji yerine; her telefonda aynı görünür) */
 const UI_I=(d,sz=18)=>`<svg viewBox="0 0 24 24" width="${sz}" height="${sz}" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${d}</svg>`;
 const UIC={igne:'<path d="M14 4l6 6M17 7l-9 9-3 1 1-3 9-9M6 18l-3 3M11 8l2 2M8 11l2 2"/>',grafik:'<path d="M4 19h16M5 15l5-5 4 3 6-7"/>',belge:'<path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5M10 13h6M10 17h6"/>',nabiz:'<path d="M3 12h4l3-7 4 14 3-7h4"/>',telefon:'<rect x="7" y="3" width="10" height="18" rx="2"/><path d="M11 18h2"/>',adim:'<path d="M8 3.5c1.8 0 2.8 1.9 2.8 4.6S9.8 12.5 8 12.5 5.2 10.8 5.2 8.1 6.2 3.5 8 3.5zM16 9.5c1.8 0 2.8 1.9 2.8 4.6s-1 4.4-2.8 4.4-2.8-1.7-2.8-4.4 1-4.6 2.8-4.6zM6.5 15.5h3M14.5 21h3"/>',tarti:'<rect x="3" y="4" width="18" height="16" rx="4"/><path d="M8 9a4 4 0 0 1 8 0"/>',damla:'<path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z"/>',alev:'<path d="M12 3c.8 3.6 5 5.2 5 10a5 5 0 0 1-10 0c0-2.6 1.4-4 2.2-6.2 1.6 1 2.6 2.6 2.6 4.4"/>',onay:'<circle cx="12" cy="12" r="9"/><path d="M8 12.5l3 3 5-6"/>',kilit:'<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>'};
@@ -2118,8 +2120,8 @@ const pGoal=()=>S.profile.proteinGoal||Math.round(((protSuggest()[0]||90)+(protS
 const wGoal=()=>S.profile.waterGoal||2500;
 function dayRec(d){S.daily=S.daily||{};return S.daily[d]||{p:0,w:0,log:[]}}
 function ensureDay(d){S.daily=S.daily||{};if(!S.daily[d])S.daily[d]={p:0,w:0,log:[]};return S.daily[d]}
-/* seçmeli yiyecekler (protein bar, protein süt): son seçilen gram hatırlanır */
-const PICK_DEF={bar:15,psut:26},pickKey=k=>k==="bar"?"hf-barg":"hf-pick-"+k;
+/* seçmeli yiyecekler (protein bar, protein süt, protein tozu): son seçilen gram hatırlanır */
+const PICK_DEF={bar:15,psut:26,toz:25},pickKey=k=>k==="bar"?"hf-barg":"hf-pick-"+k;
 const pickG=k=>{const f=FOODS.find(x=>x.k===k);let v=PICK_DEF[k]||(f&&f.pick?f.pick[0]:0);try{v=+localStorage.getItem(pickKey(k))||v}catch(e){}return f&&f.pick?Math.min(f.pick[1],Math.max(f.pick[0],v)):v};
 const fG=f=>f.pick?pickG(f.k):f.g;
 let wAmt=(()=>{try{return +localStorage.getItem("hf-wamt")||250}catch(e){return 250}})();
