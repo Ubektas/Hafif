@@ -606,7 +606,7 @@ struct PanoGorunum: View {
                 Link(destination: URL(string: "hafif://w/tab/adim")!) {
                     halka((d.st ?? 0) / sg, pal.ad, "figure.walk", d.st.map { Bicim.sayi($0) } ?? "–", d.st == nil ? "bağla" : "adım", u)
                 }.frame(maxWidth: .infinity).olc("halka2")
-            }
+            }.fixedSize(horizontal: false, vertical: true).layoutPriority(1)
             HStack(spacing: 8 * u) {
                 kart1(u).olc("kart0")
                 kart2(u).olc("kart1")
