@@ -1,0 +1,163 @@
+--- artifact.html
++++ artifact.html
+@@ -595,6 +595,9 @@
+ .phimg{display:block;width:100%;aspect-ratio:3/4;border:0;padding:0;border-radius:14px;overflow:hidden;background:var(--sunk);cursor:pointer}.phimg img{width:100%;height:100%;object-fit:cover;display:block}
+ .ph-a{background:linear-gradient(160deg,#C9D6D1,#9FB3AC)}.ph-b{background:linear-gradient(160deg,#CFE3DA,#8FC2B0)}
+ .phnext{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;aspect-ratio:3/4;border:1.5px dashed var(--line);border-radius:14px;padding:12px;color:var(--muted);font-size:12.5px;line-height:1.4}
++.baopen{display:flex;align-items:center;justify-content:center;gap:8px}
++.baadjs{display:grid;grid-template-columns:1fr 1fr;gap:10px}.baadj{display:flex;flex-direction:column;gap:6px;min-width:0}.baadj span{font-size:12.5px;color:var(--muted);font-weight:600}
++.baadj canvas{width:100%;max-width:150px;border-radius:12px;background:var(--sunk);touch-action:none;cursor:grab;display:block;margin:0 auto}
+ .phdiff{background:var(--accent-soft);color:var(--accent);font-weight:700;font-size:13px;padding:5px 10px;border-radius:99px}
+ .phth{display:flex;gap:8px;overflow-x:auto;padding:3px 3px 2px;scrollbar-width:none}.phth::-webkit-scrollbar{display:none}
+ .phth button{flex:none;width:58px;border:0;padding:0;background:none;cursor:pointer;display:flex;flex-direction:column;gap:3px;align-items:center;color:var(--muted)}.phth img{width:58px;height:78px;object-fit:cover;border-radius:10px;background:var(--sunk);display:block;outline:2px solid transparent;outline-offset:1px}.phth button.on img{outline-color:var(--accent)}.phth small{font-size:11px}
+@@ -4081,6 +4084,7 @@
+   return `<div class="card phcard">${head(`<button type="button" class="btn ghost" id="phAdd" style="padding:9px 14px;width:auto;flex:none">+ Fotoğraf</button>`)}
+     <div class="phcmp${B?"":" one"}">${cell(A,"Önce")}${B?cell(B,"Sonra"):`<div class="phnext">${CAM_I(22)}<span>Bir hafta sonra ikinci fotoğrafını ekle; fark burada yan yana görünür.</span></div>`}</div>
+     ${diff}
++    ${B?`<button type="button" class="btn baopen" id="baOpen"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V4M8 8l4-4 4 4"/><path d="M5 12v7a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-7"/></svg>Önce / sonra paylaş</button>`:""}
+     ${L.length>1?`<div><span class="flbl" style="display:block;margin-bottom:8px">Tüm fotoğraflar · ${L.length} <span>(dokun: aç, karşılaştırmaya koy)</span></span><div class="phth">${[...L].reverse().map(x=>`<button type="button" data-phopen="${x.id}" class="${x.id===A.id||(B&&x.id===B.id)?"on":""}" aria-label="${fmtD(x.date)}"><img data-pimg="${x.on}" alt=""><small>${toD(x.date).toLocaleDateString("tr-TR",{day:"numeric",month:"short"})}</small></button>`).join("")}</div></div>`:""}
+   </div>`;
+ }
+@@ -4088,9 +4092,142 @@
+ function bindPhotos(){
+   const a=$("#phAdd");if(a)a.addEventListener("click",openPhotoAdd);
+   document.querySelectorAll("[data-phopen]").forEach(b=>b.addEventListener("click",()=>openPhotoView(b.dataset.phopen)));
++  const ba=$("#baOpen");if(ba)ba.addEventListener("click",openBAShare);
+   document.querySelectorAll("[data-phside]").forEach(b=>b.addEventListener("click",()=>{phSide=b.dataset.phside;const y=scrollY;render();scrollTo(0,y)}));
+   hydratePhotos($("#view"));
+ }
++/* ---------- önce / sonra paylaşımı: iki fotoğraf, 4 şablon. Her fotoğrafın kadrajı (odak noktası ve yakınlık) sürükleyerek ayarlanır,
++   fotoğraf kaydına yazılır (x.fr[ön|yan] = [x, y, yakınlık]); görsel telefonda hazırlanır, fotoğraflar telefondan çıkmaz ---------- */
++const BA_TPLS=[["yan","Yan yana"],["zumrut","Zümrüt"],["polaroid","Polaroid"],["hikaye","Hikâye"]];
++let baOpt=(()=>{try{return Object.assign({tpl:"yan",kg:true},JSON.parse(localStorage.getItem("hf-ba")||"{}"))}catch(e){return {tpl:"yan",kg:true}}})();
++let baCanvas=null;const BAIMG={};
++const baSaveOpt=()=>{try{localStorage.setItem("hf-ba",JSON.stringify(baOpt))}catch(_){}};
++function phPair(){const L=photos();if(L.length<2)return null;const A=L.find(x=>x.id===phA)||L[0],B=L.find(x=>x.id===phB&&x.id!==A.id)||L[L.length-1];
++  if(A.id===B.id)return null;const side=A.yan&&B.yan?phSide:"on";return {A,B,side}}
++const baImg=k=>BAIMG[k]||(BAIMG[k]=photoURL(k).then(u=>new Promise((ok,no)=>{if(!u){no(new Error("foto"));return}const im=new Image();im.onload=()=>ok(im);im.onerror=no;im.src=u})));
++const baSize=t=>t==="hikaye"?[1080,1920]:[1080,1350];
++/* şablondaki iki fotoğraf çerçevesinin boyu (en/boy oranı için) */
++const BA_FR={yan:[471,786],zumrut:[474,804],polaroid:[504,696],hikaye:[1080,870]};
++const frOf=(x,side)=>{const f=x.fr&&x.fr[side];return Array.isArray(f)&&f.length===3?f:[.5,.5,1]};
++/* fotoğrafı çerçeveyi dolduracak şekilde çizer; odak noktası çerçevenin ortasına gelir, kenar boşluk kalmayacak biçimde sınırlanır */
++function drawCover(c,im,x,y,w,h,r,fr){
++  const [fx,fy,z]=fr,s=Math.max(w/im.width,h/im.height)*Math.max(1,z),dw=im.width*s,dh=im.height*s;
++  const ox=Math.min(x,Math.max(x+w-dw,x+w/2-fx*dw)),oy=Math.min(y,Math.max(y+h-dh,y+h/2-fy*dh));
++  c.save();if(r){rr(c,x,y,w,h,r);c.clip()}else{c.beginPath();c.rect(x,y,w,h);c.clip()}c.drawImage(im,ox,oy,dw,dh);c.restore();
++}
++function baData(P){const a=kgAt(P.A.date),b=kgAt(P.B.date),days=Math.abs(diffDays(P.A.date,P.B.date));
++  const has=baOpt.kg&&a!=null&&b!=null;const d=has?b-a:null;
++  return {days,a,b,has,diff:has?(d<0?"−":d>0?"+":"±")+kg(Math.abs(d))+" kg":null,da:longDate(P.A.date),db:longDate(P.B.date),sa:toD(P.A.date).toLocaleDateString("tr-TR",{day:"numeric",month:"short"}),sb:toD(P.B.date).toLocaleDateString("tr-TR",{day:"numeric",month:"short"})}}
++/* küçük alt imza: bunun bir uygulama olduğunu söyler */
++function baFoot(c,W,y,fg,sub,lc){c.font=`700 32px ${FONT_D}`;const t1="Hafif",t2=" · Google Play ve App Store'da";const w1=c.measureText(t1).width;c.font=`500 27px ${FONT_B}`;const w2=c.measureText(t2).width;
++  const x0=W/2-(w1+w2+44)/2;leaf(c,x0,y-28,1.45,lc,2.2);c.textAlign="left";c.font=`700 32px ${FONT_D}`;c.fillStyle=fg;c.fillText(t1,x0+44,y);c.font=`500 27px ${FONT_B}`;c.fillStyle=sub;c.fillText(t2,x0+44+w1,y)}
++function baPill(c,x,y,txt,bg,fg,font,px=22,h=54){c.font=font;const w=c.measureText(txt).width+px*2;rr(c,x,y,w,h,h/2);c.fillStyle=bg;c.fill();c.fillStyle=fg;c.textAlign="left";c.fillText(txt,x+px,y+h/2+11);return w}
++function tBaYan(c,W,H,D,ia,ib,fa,fb){
++  c.fillStyle="#F7F4EE";c.fillRect(0,0,W,H);
++  c.fillStyle="#0B3B33";c.textAlign="left";LS(c,"-1.5px");fitFont(c,D.has?`${D.days} günde ${D.diff}`:`${D.days} günlük değişim`,W-108,"700",66,FONT_D,40);c.fillText(D.has?`${D.days} günde ${D.diff}`:`${D.days} günlük değişim`,54,126);LS(c,"0px");
++  c.font=`500 34px ${FONT_B}`;c.fillStyle="#5F726C";c.fillText("Hafif ile ilerlemem",54,180);
++  const [w,h]=BA_FR.yan,y=228;
++  [[ia,fa,54,"ÖNCE",D.da,D.a],[ib,fb,54+w+30,"SONRA",D.db,D.b]].forEach(([im,fr,x,lb,dt,k])=>{
++    drawCover(c,im,x,y,w,h,42,fr);LS(c,"3px");baPill(c,x+24,y+24,lb,"rgba(255,255,255,.93)","#0B3B33",`700 28px ${FONT_B}`,22,56);LS(c,"0px");
++    c.fillStyle="#0B3B33";c.font=`700 40px ${FONT_B}`;c.fillText(dt,x+2,y+h+54);if(D.has){c.fillStyle="#5F726C";c.font=`500 34px ${FONT_B}`;c.fillText(kg(k)+" kg",x+2,y+h+98)}});
++  const by=y+h+(D.has?128:92);rr(c,54,by,W-108,124,40);c.fillStyle="#0E7C66";c.fill();
++  c.fillStyle="#fff";c.font=`700 70px ${FONT_D}`;LS(c,"-1px");c.fillText(D.has?D.diff:`${D.days} gün`,94,by+86);LS(c,"0px");
++  c.textAlign="right";c.font=`500 32px ${FONT_B}`;c.fillStyle="rgba(255,255,255,.88)";c.fillText(`${D.da} → ${D.db}`,W-94,by+(D.has?56:72));if(D.has)c.fillText(`${D.days} gün`,W-94,by+98);c.textAlign="left";
++  baFoot(c,W,H-34,"#0B3B33","#5F726C","#0E7C66");
++}
++function tBaZumrut(c,W,H,D,ia,ib,fa,fb){
++  let g=c.createLinearGradient(0,0,W*.55,H);g.addColorStop(0,"#0D4237");g.addColorStop(1,"#051D18");c.fillStyle=g;c.fillRect(0,0,W,H);
++  g=c.createRadialGradient(W*.92,-60,0,W*.92,-60,880);g.addColorStop(0,"rgba(42,160,128,.65)");g.addColorStop(1,"rgba(42,160,128,0)");c.fillStyle=g;c.fillRect(0,0,W,H);
++  c.textAlign="left";c.fillStyle="#9FF0D6";c.font=`700 30px ${FONT_B}`;LS(c,"6px");c.fillText("İLERLEMEM",56,104);LS(c,"-3px");
++  c.fillStyle="#fff";c.font=`700 112px ${FONT_D}`;c.fillText(D.has?D.diff:`${D.days} gün`,50,226);LS(c,"0px");
++  c.font=`500 38px ${FONT_B}`;c.fillStyle="rgba(255,255,255,.72)";c.fillText(D.has?`${D.days} günde · ${kg(D.a)} → ${kg(D.b)} kg`:`${D.da} → ${D.db}`,56,292);
++  const [w,h]=BA_FR.zumrut,y=344;
++  [[ia,fa,54,"Önce",D.sa],[ib,fb,54+w+24,"Sonra",D.sb]].forEach(([im,fr,x,lb,dt])=>{drawCover(c,im,x,y,w,h,34,fr);rr(c,x,y,w,h,34);c.strokeStyle="rgba(159,240,214,.4)";c.lineWidth=4;c.stroke();
++    c.fillStyle="#fff";c.font=`700 38px ${FONT_B}`;c.textAlign="left";c.fillText(lb,x+4,y+h+56);c.textAlign="right";c.fillStyle="rgba(255,255,255,.7)";c.font=`500 34px ${FONT_B}`;c.fillText(dt,x+w-4,y+h+56);c.textAlign="left"});
++  const cx=W/2,cy=y+h/2;c.save();c.shadowColor="rgba(0,0,0,.35)";c.shadowBlur=24;c.shadowOffsetY=8;c.beginPath();c.arc(cx,cy,50,0,7);c.fillStyle="#9FF0D6";c.fill();c.restore();
++  c.strokeStyle="#0B3B33";c.lineWidth=7;c.lineCap="round";c.lineJoin="round";c.beginPath();c.moveTo(cx-20,cy);c.lineTo(cx+20,cy);c.moveTo(cx+4,cy-16);c.lineTo(cx+20,cy);c.lineTo(cx+4,cy+16);c.stroke();
++  baFoot(c,W,H-40,"#fff","rgba(255,255,255,.6)","#9FF0D6");
++}
++function tBaPolaroid(c,W,H,D,ia,ib,fa,fb){
++  c.fillStyle="#EFE6D6";c.fillRect(0,0,W,H);
++  c.fillStyle="#3B2E22";c.textAlign="center";c.font=`700 46px ${FONT_D}`;LS(c,"8px");c.fillText("ÖNCE · SONRA",W/2,108);LS(c,"0px");c.textAlign="left";
++  const [w,h]=BA_FR.polaroid,P=27,PW=w+2*P,PH=h+P+104;
++  const pol=(im,fr,x,y,rot,dt)=>{c.save();c.translate(x+PW/2,y+PH/2);c.rotate(rot*Math.PI/180);c.translate(-PW/2,-PH/2);
++    c.save();c.shadowColor="rgba(60,40,20,.42)";c.shadowBlur=40;c.shadowOffsetY=22;c.fillStyle="#fff";c.fillRect(0,0,PW,PH);c.restore();
++    drawCover(c,im,P,P,w,h,0,fr);c.fillStyle="#3B2E22";c.textAlign="center";c.font=`italic 600 54px ${FONT_B}`;c.fillText(dt,PW/2,PH-34);c.textAlign="left";
++    c.fillStyle="rgba(255,236,170,.78)";c.fillRect(PW/2-84,-22,168,48);c.restore()};
++  pol(ia,fa,40,176,-5,D.da);pol(ib,fb,W-40-PW,226,4,D.db);
++  const t1=D.has?D.diff:`${D.days} gün`,t2=D.has?` · ${D.days} gün`:"";c.font=`700 70px ${FONT_D}`;const w1=c.measureText(t1).width;c.font=`500 38px ${FONT_B}`;const w2=c.measureText(t2).width;
++  const bw=w1+w2+100,bh=124;c.save();c.translate(W/2,1128);c.rotate(-3*Math.PI/180);rr(c,-bw/2,-bh/2,bw,bh,bh/2);c.fillStyle="#0E7C66";c.fill();
++  c.fillStyle="#fff";c.font=`700 70px ${FONT_D}`;c.fillText(t1,-bw/2+50,25);c.font=`500 38px ${FONT_B}`;c.fillStyle="rgba(255,255,255,.88)";c.fillText(t2,-bw/2+50+w1,25);c.restore();
++  baFoot(c,W,H-40,"#3B2E22","#7A6A55","#0E7C66");
++}
++function tBaHikaye(c,W,H,D,ia,ib,fa,fb){
++  c.fillStyle="#0B3B33";c.fillRect(0,0,W,H);const [w,h]=BA_FR.hikaye;
++  drawCover(c,ia,0,0,w,h,0,fa);drawCover(c,ib,0,H-h,w,h,0,fb);
++  let g=c.createLinearGradient(0,H-260,0,H);g.addColorStop(0,"rgba(5,29,24,0)");g.addColorStop(1,"rgba(5,29,24,.85)");c.fillStyle=g;c.fillRect(0,H-260,W,260);
++  c.fillStyle="#0B3B33";c.fillRect(0,h,W,H-2*h);c.fillStyle="#9FF0D6";c.fillRect(0,h+12,W,H-2*h-24);
++  LS(c,"4px");baPill(c,42,42,`ÖNCE · ${D.da.toLocaleUpperCase("tr-TR")}`,"rgba(11,59,51,.85)","#9FF0D6",`700 30px ${FONT_B}`,26,62);
++  baPill(c,42,H-h+42,`SONRA · ${D.db.toLocaleUpperCase("tr-TR")}`,"rgba(11,59,51,.85)","#9FF0D6",`700 30px ${FONT_B}`,26,62);LS(c,"0px");
++  const t1=D.has?D.diff:`${D.days} gün`;c.font=`700 100px ${FONT_D}`;const w1=c.measureText(t1).width;c.font=`600 36px ${FONT_B}`;
++  const l1=D.has?`${D.days} günde`:D.da,l2=D.has?`${kg(D.a)} → ${kg(D.b)} kg`:`→ ${D.db}`,w2=Math.max(c.measureText(l1).width,c.measureText(l2).width),x0=W/2-(w1+40+w2)/2,my=H/2;
++  c.fillStyle="#0B3B33";c.textAlign="left";c.font=`700 100px ${FONT_D}`;LS(c,"-2px");c.fillText(t1,x0,my+36);LS(c,"0px");c.font=`600 36px ${FONT_B}`;c.fillText(l1,x0+w1+40,my-6);c.fillText(l2,x0+w1+40,my+40);
++  baFoot(c,W,H-56,"#fff","rgba(255,255,255,.78)","#9FF0D6");
++}
++const BA_FN={yan:tBaYan,zumrut:tBaZumrut,polaroid:tBaPolaroid,hikaye:tBaHikaye};
++async function drawBA(tpl){const P=phPair();if(!P)return null;await shareFonts();
++  const [ia,ib]=await Promise.all([baImg(P.A[P.side]),baImg(P.B[P.side])]);const t=tpl||baOpt.tpl,[W,H]=baSize(t),cv=document.createElement("canvas");cv.width=W;cv.height=H;
++  const c=cv.getContext("2d");c.textBaseline="alphabetic";(BA_FN[t]||tBaYan)(c,W,H,baData(P),ia,ib,frOf(P.A,P.side),frOf(P.B,P.side));return cv}
++async function renderBA(thumbs){const img=$("#baImg");if(!img)return;img.style.opacity=.4;
++  try{baCanvas=await drawBA()}catch(e){baCanvas=null}
++  if(!baCanvas){$("#baHint").textContent="Fotoğraflar okunamadı.";$("#baSave").disabled=true;return}
++  img.style.aspectRatio=baOpt.tpl==="hikaye"?"1080/1920":"1080/1350";img.style.maxWidth=baOpt.tpl==="hikaye"?"230px":"300px";img.src=baCanvas.toDataURL("image/jpeg",.9);img.style.opacity=1;
++  if(thumbs)for(const [k] of BA_TPLS){const cv=k===baOpt.tpl?baCanvas:await drawBA(k);if(!cv)continue;const t=document.createElement("canvas");t.width=152;t.height=190;
++    const x=t.getContext("2d"),sc=Math.max(152/cv.width,190/cv.height);x.drawImage(cv,(152-cv.width*sc)/2,(190-cv.height*sc)/2,cv.width*sc,cv.height*sc);
++    const im=document.querySelector(`[data-batpl="${k}"] img`);if(im)im.src=t.toDataURL("image/jpeg",.85)}
++}
++/* kadraj: şablondaki çerçeve oranında küçük önizleme; parmakla sürükle, kaydırıcıyla yakınlaştır */
++function baAdjHtml(P){const [fw,fh]=BA_FR[baOpt.tpl];return [["A","Önce",P.A],["B","Sonra",P.B]].map(([k,n,x])=>`<div class="baadj"><span>${n} · ${fmtD(x.date)}</span>
++  <canvas data-baadj="${k}" style="aspect-ratio:${fw}/${fh}" aria-label="${n} fotoğrafının kadrajı: sürükleyerek kaydır"></canvas>
++  <input type="range" class="pr" data-bazoom="${k}" min="1" max="3" step="0.05" value="${frOf(x,P.side)[2]}" aria-label="${n} fotoğrafını yakınlaştır"></div>`).join("")}
++async function bindBAAdj(){const P=phPair();if(!P)return;const box=$("#baAdj");if(!box)return;box.innerHTML=baAdjHtml(P);
++  for(const [k,x] of [["A",P.A],["B",P.B]]){const cv=box.querySelector(`[data-baadj="${k}"]`),zr=box.querySelector(`[data-bazoom="${k}"]`);let im;try{im=await baImg(x[P.side])}catch(_){continue}
++    const fr=()=>{x.fr=x.fr||{};if(!x.fr[P.side])x.fr[P.side]=[.5,.5,1];return x.fr[P.side]};
++    const draw=()=>{const r=cv.getBoundingClientRect(),dpr=Math.min(2,window.devicePixelRatio||1);cv.width=Math.round(r.width*dpr);cv.height=Math.round(r.height*dpr);
++      const c=cv.getContext("2d");drawCover(c,im,0,0,cv.width,cv.height,0,frOf(x,P.side))};
++    const commit=()=>{save();clearTimeout(baT);baT=setTimeout(()=>renderBA(false),60)};
++    draw();zr.value=frOf(x,P.side)[2];
++    let st=null;
++    cv.addEventListener("pointerdown",e=>{cv.setPointerCapture(e.pointerId);st={x:e.clientX,y:e.clientY,f:[...frOf(x,P.side)]}});
++    cv.addEventListener("pointermove",e=>{if(!st)return;const r=cv.getBoundingClientRect(),[fx,fy,z]=st.f,s=Math.max(r.width/im.width,r.height/im.height)*z;
++      const f=fr();f[0]=Math.min(1,Math.max(0,fx-(e.clientX-st.x)/(im.width*s)));f[1]=Math.min(1,Math.max(0,fy-(e.clientY-st.y)/(im.height*s)));draw()});
++    const up=()=>{if(st){st=null;commit()}};cv.addEventListener("pointerup",up);cv.addEventListener("pointercancel",up);
++    cv.addEventListener("dblclick",()=>{const f=fr();f[0]=.5;f[1]=.5;f[2]=1;zr.value=1;draw();commit()});
++    zr.addEventListener("input",()=>{fr()[2]=+zr.value;draw()});zr.addEventListener("change",commit)}
++}
++let baT=null;
++async function openBAShare(){const P=phPair();if(!P)return;
++  const sw=(k,l,d)=>`<label class="sw"><span><b>${l}</b><small>${d}</small></span><input type="checkbox" id="ba-${k}" ${baOpt[k]?"checked":""}><i></i></label>`;
++  $("#sheetRoot").innerHTML=`<div class="scrim" data-close><div class="sheet" role="dialog" aria-modal="true" aria-label="Önce / sonra paylaş"><div class="grab"></div>
++    <header><h2>Önce / sonra paylaş</h2><button class="del" data-x>Kapat</button></header>
++    <div style="display:flex;flex-direction:column;gap:14px">
++      <img id="baImg" class="shimg" alt="Önce / sonra görselinin önizlemesi">
++      <div class="tpls" role="radiogroup" aria-label="Şablon">${BA_TPLS.map(([k,n])=>`<button type="button" class="tpl" role="radio" data-batpl="${k}" aria-checked="${k===baOpt.tpl}"><img alt=""><span>${n}</span></button>`).join("")}</div>
++      <div><span class="flbl" style="display:block;margin-bottom:8px">Kadraj <span>(sürükleyerek kaydır, çift dokun: ortala)</span></span><div class="baadjs" id="baAdj"></div></div>
++      <div class="sws">${sw("kg","Kilo değerleri","kilolar ve verilen kilo; kapalıyken yalnızca tarih ve gün")}</div>
++      <button class="btn" id="baSave" type="button">Görseli kaydet / paylaş</button>
++      <p class="muted" id="baHint" style="margin:0;font-size:12.5px;text-align:center">Görsel telefonunda hazırlanır; fotoğrafların bir yere yüklenmez. Paylaşım menüsünden WhatsApp'ı, Instagram'ı ya da galeriye kaydetmeyi seçebilirsin.</p>
++    </div></div></div>`;
++  const root=$("#sheetRoot");
++  root.querySelector(".scrim").addEventListener("click",e=>{if(e.target.classList.contains("scrim"))closeSheet()});
++  root.querySelector("[data-x]").addEventListener("click",closeSheet);
++  $("#ba-kg").addEventListener("change",e=>{baOpt.kg=e.target.checked;baSaveOpt();renderBA(true)});
++  root.querySelectorAll("[data-batpl]").forEach(b=>b.addEventListener("click",async()=>{baOpt.tpl=b.dataset.batpl;baSaveOpt();root.querySelectorAll("[data-batpl]").forEach(x=>x.setAttribute("aria-checked",x===b));await renderBA(false);bindBAAdj()}));
++  $("#baSave").addEventListener("click",async()=>{if(!baCanvas)return;const btn=$("#baSave");btn.disabled=true;
++    try{const blob=await new Promise(r=>baCanvas.toBlob(r,"image/jpeg",.92));const res=await dlSave(`hafif-once-sonra-${today()}.jpg`,blob);if(res&&res.status==="saved")toast("Görsel hazır")}
++    catch(e){const m=dlMsg(e);if(m)$("#baHint").textContent=m}finally{btn.disabled=false}});
++  await renderBA(true);bindBAAdj();
++}
+ function openPhotoAdd(){
+   if(!PLUS()){openPaywall("foto");return}
+   const yest=addDays(today(),-1);let fOn=null,fYan=null;
