@@ -1,0 +1,54 @@
+--- artifact.html
++++ artifact.html
+@@ -3551,14 +3551,25 @@
+  {id:"mgnight",name:"Magnesium Night",slot:"gece",days:[0,1,2,3,4,5,6],shape:"caps",color:"#7A52D6"}];
+ const SUPP_TIMES={sabah:"07:30",ogle:"13:00",aksam:"19:00",gece:"22:30"};
+ let suppDate=null;
+-function supps(){if(!Array.isArray(S.supps)){S.supps=JSON.parse(JSON.stringify(DEF_SUPPS));S.suppTimes={...SUPP_TIMES}}return S.supps}
++function suppsAll(){if(!Array.isArray(S.supps)){S.supps=JSON.parse(JSON.stringify(DEF_SUPPS));S.suppTimes={...SUPP_TIMES}}suppMigrate();return S.supps}
++/* takviye geçmişi: her takviyenin başlangıcı (from) ve silinince bitişi (to) tutulur; silinen takviye geçmiş günlerde görünmeye devam eder,
++   yeni eklenen takviye eklenmeden önceki günlerde "alınmadı" sayılmaz. Programda ve hatırlatmalarda yalnızca etkin takviyeler. */
++function supps(){return suppsAll().filter(x=>!x.to)}
++function suppMigrate(){if(S.suppMig)return;S.suppMig=1;const L=S.supps,first={},last={},slots={};
++  for(const [d,t] of Object.entries(S.suppLog||{}))for(const key of Object.keys(t)){const [id,sl]=String(key).split("@");if(!first[id]||d<first[id])first[id]=d;if(!last[id]||d>last[id])last[id]=d;if(sl)(slots[id]=slots[id]||new Set()).add(sl)}
++  for(const x of L)if(!x.from)x.from=first[x.id]||today();
++  /* daha önce silinmiş (kaydı kalmış ama listede olmayan) takviyeler: geçmiş günleri bozulmasın diye arşive geri alınır */
++  let n=0;for(const id of Object.keys(first))if(!L.some(x=>x.id===id)){n++;const sl=slots[id]?[...slots[id]]:[];
++    const days=[...new Set(Object.entries(S.suppLog||{}).filter(([d,t])=>Object.keys(t).some(k=>k.split("@")[0]===id)).map(([d])=>toD(d).getDay()))];
++    L.push({id,name:"Silinen takviye"+(n>1?" "+n:""),slot:"sabah",slots:sl.length?["sabah",...sl.filter(q=>q!=="sabah")]:undefined,days,shape:"caps",color:"#9AA8A2",from:first[id],to:addDays(last[id],1)})}
++}
+ const sTimes=()=>Object.assign({},SUPP_TIMES,S.suppTimes||{});
+-function suppsFor(d){const wd=toD(d).getDay();return supps().filter(x=>x.days.includes(wd))}
++function suppsFor(d){const wd=toD(d).getDay();return suppsAll().filter(x=>x.days.includes(wd)&&(!x.from||d>=x.from)&&(!x.to||d<x.to))}
+ /* bir takviye günde birkaç vakitte alınabilir: her vakit ayrı bir "doz"; ilk vaktin kaydı eski kayıtlarla uyumlu kalsın diye yalnızca kimlikle tutulur */
+ const slotsOf=x=>Array.isArray(x.slots)&&x.slots.length?SLOTS_S.map(z=>z[0]).filter(k=>x.slots.includes(k)):[x.slot||"sabah"];
+ const doseKey=(x,k)=>k===slotsOf(x)[0]?x.id:x.id+"@"+k;
+ function dosesFor(d){return suppsFor(d).flatMap(x=>slotsOf(x).map(k=>({x,k,key:doseKey(x,k)})))}
+-const suppOfKey=key=>supps().find(z=>z.id===String(key).split("@")[0]);
++const suppOfKey=key=>suppsAll().find(z=>z.id===String(key).split("@")[0]);
+ const timesTxt=x=>{const n=slotsOf(x).length;return n>1?`günde ${n} kez`:""};
+ function takenOn(d){S.suppLog=S.suppLog||{};return S.suppLog[d]||{}}
+ function dayDone(d){const L=dosesFor(d),t=takenOn(d);return {n:L.filter(q=>t[q.key]).length,of:L.length}}
+@@ -3656,7 +3667,7 @@
+   if(e.target.closest("#suppEdit")){openSuppEdit();return}
+ });
+ function openSuppEdit(add){
+-  const L=JSON.parse(JSON.stringify(supps())),T=sTimes(),N=add?{id:uid(),name:"",slot:"sabah",days:[0,1,2,3,4,5,6],shape:"caps",color:"#3BA58A"}:null;if(N)L.push(N);
++  const L=JSON.parse(JSON.stringify(supps())),T=sTimes(),N=add?{id:uid(),from:today(),name:"",slot:"sabah",days:[0,1,2,3,4,5,6],shape:"caps",color:"#3BA58A"}:null;if(N)L.push(N);
+   const SH=[["caps","Kapsül"],["tab","Tablet"],["soft","Yumuşak"],["oval","Oval"]];
+   const rowH=(x,i)=>`<div class="sedit" data-i="${i}">
+       <div class="seh"><span class="spill" style="width:34px;height:34px">${pill(x,34)}</span><input class="se-name" value="${esc(x.name)}" placeholder="İlaç adı" aria-label="İlaç adı"><button type="button" class="ibtn se-del" aria-label="Sil"${add?" hidden":""}><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M9 7V4.8c0-.4.4-.8.8-.8h4.4c.4 0 .8.4.8.8V7M6.5 7l.9 12.2c.1.9.8 1.8 1.8 1.8h5.6c1 0 1.7-.9 1.8-1.8L17.5 7"/></svg></button></div>
+@@ -3684,8 +3695,11 @@
+     else if(b.classList.contains("se-day")){const v=+b.dataset.v;x.days=x.days.includes(v)?x.days.filter(q=>q!==v):[...x.days,v];b.classList.toggle("on")}
+     else if(b.classList.contains("se-shape")){x.shape=b.dataset.v;el.querySelectorAll(".se-shape").forEach(z=>z.classList.toggle("on",z===b));el.querySelector(".spill").innerHTML=pill(x,34)}
+     else if(b.classList.contains("se-del")){if(!b.classList.contains("armed")){b.classList.add("armed");b.textContent="Sil?";return}L[+el.dataset.i]=null;el.remove()}});
+-  $("#seAdd").addEventListener("click",()=>{const x={id:uid(),name:"",slot:"sabah",days:[0,1,2,3,4,5,6],shape:"caps",color:"#3BA58A"};L.push(x);list.insertAdjacentHTML("beforeend",rowH(x,L.length-1));const n=list.lastElementChild.querySelector(".se-name");n.focus()});
+-  $("#seSave").addEventListener("click",()=>{sync();if(N&&!N.name){toast("Takviyenin adını yaz");list.querySelector(".se-name").focus();return}const out=L.filter(x=>x&&x.name&&x.days.length);S.supps=out;S.suppTimes=Object.fromEntries(SLOTS_S.map(([k])=>[k,$("#st-"+k).value||SUPP_TIMES[k]]));save();closeSheet();toast(N?"Takviye eklendi":"Program kaydedildi");if(N)render()});
++  $("#seAdd").addEventListener("click",()=>{const x={id:uid(),from:today(),name:"",slot:"sabah",days:[0,1,2,3,4,5,6],shape:"caps",color:"#3BA58A"};L.push(x);list.insertAdjacentHTML("beforeend",rowH(x,L.length-1));const n=list.lastElementChild.querySelector(".se-name");n.focus()});
++  $("#seSave").addEventListener("click",()=>{sync();if(N&&!N.name){toast("Takviyenin adını yaz");list.querySelector(".se-name").focus();return}const out=L.filter(x=>x&&x.name&&x.days.length);
++    /* silinenler arşive: bugün alındıysa bugün de sayılır, yoksa bugünden itibaren yok */
++    const td=today(),tk=takenOn(td),gone=suppsAll().filter(x=>!x.to&&!out.some(y=>y.id===x.id)).map(x=>({...x,to:Object.keys(tk).some(k=>k.split("@")[0]===x.id)?addDays(td,1):td}));
++    S.supps=[...suppsAll().filter(x=>x.to),...gone,...out];S.suppTimes=Object.fromEntries(SLOTS_S.map(([k])=>[k,$("#st-"+k).value||SUPP_TIMES[k]]));save();closeSheet();toast(N?"Takviye eklendi":"Program kaydedildi");if(N)render()});
+ }
+ const ymd=t=>{const d=new Date(t);return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")};
+ /* ---------- döngü kartı tasarımları ---------- */
