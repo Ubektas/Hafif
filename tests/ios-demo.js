@@ -7,7 +7,7 @@
     var td = ago(0), t0 = new Date(td + 'T00:00:00').getTime();
     var S = {
       profile: { drug: '', startWeight: 96.2, goalWeight: 82, heightCm: 176, intervalDays: 7, onboarded: true, disclaimer: ago(1), since: ago(1),
-        proteinGoal: 110, waterGoal: 2500, stepGoal: 7500, theme: 'sys', sex: 'm', age: 41 },
+        proteinGoal: 110, waterGoal: 2500, stepGoal: 7500, theme: 'sys', sex: 'm', age: 41, noCelebrate: true },
       weights: [], shots: [], daily: {}, steps: {}
     };
     var kg = [96.2, 95.6, 95.1, 94.8, 94.1, 93.7, 93.2, 92.9, 92.3, 91.9, 91.6, 91.0, 90.7, 90.2, 89.8, 89.5, 89.1, 88.6];
