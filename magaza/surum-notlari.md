@@ -2,6 +2,19 @@
 
 Play en fazla 500 karakter kabul eder. Aşağıdaki bloğu olduğu gibi yapıştır.
 
+## 2.0.7
+
+```
+<tr-TR>
+Rozetlerin artık bir defterde.
+• Başarılar'da kazandığın rozete dokun: defter sayfasına damga gibi basılır, kazandığın tarih yanında
+• Önceki / Sonraki ile ya da kaydırarak tüm rozetlerine göz at
+• Rozetler artık yalnızca Hafif'i kullanmaya başladığın günden sonraki kayıtlarla kazanılır
+</tr-TR>
+```
+
+App Store (iPhone) için: "Rozetler artık yalnızca Hafif'i kullanmaya başladığın günden sonraki kayıtlarla kazanılır; içe aktarılan geçmiş veri rozet yağdırmaz."
+
 ## 2.0.6
 
 ```

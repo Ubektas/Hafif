@@ -10,7 +10,7 @@ on:
   push:
     tags: ['ios-v*']
     # etiket gönderilemeyen ortamlar için: bu dosya değişince (ör. içine yeni bir satır) derleme başlar
-    branches: [surum-2.0]
+    branches: [surum-2.0, claude/hafifin-2-0-7-builds-xp16pk]
     paths: ['ios/TESTFLIGHT']
   workflow_dispatch:
 
