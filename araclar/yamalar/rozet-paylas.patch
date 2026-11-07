@@ -1,0 +1,140 @@
+--- artifact.html
++++ artifact.html
+@@ -810,6 +810,7 @@
+ .dfnav{display:flex;gap:10px;margin-top:10px}
+ .dfnav button{font:600 14px var(--f-body);border:1px solid var(--line);background:var(--surface);color:var(--fg);border-radius:99px;padding:8px 16px;cursor:pointer}
+ .dfnav button:disabled{opacity:.35;cursor:default}
++.dfnav [data-dshare]{background:var(--accent);border-color:var(--accent);color:#fff}
+ @media (prefers-reduced-motion:reduce){.dfdays i{transition:none}}
+ .kkpi{gap:10px}
+ /* ilk kurulum */
+@@ -3231,7 +3232,7 @@
+   d.innerHTML=`<div class="dfpage" role="dialog" aria-modal="true" aria-label="Rozet"><div class="dfh"><span>Hafif defteri</span><span id="dfPg"></span><button type="button" class="dfx" aria-label="Kapat">×</button></div>
+     <div class="dfslot"><div class="dfring"></div><div class="dfmed"></div><div class="dfstamp"></div></div>
+     <h2></h2><p></p><div class="dfdays"></div>
+-    <div class="dfnav"><button type="button" data-dstep="-1">‹ Önceki</button><button type="button" data-dstep="1">Sonraki ›</button></div></div>`;
++    <div class="dfnav"><button type="button" data-dstep="-1">‹ Önceki</button><button type="button" data-dshare>Paylaş</button><button type="button" data-dstep="1">Sonraki ›</button></div></div>`;
+   document.body.appendChild(d);
+   const pg=d.querySelector(".dfpage"),q=s=>pg.querySelector(s);
+   const close=()=>{T.forEach(clearTimeout);d.remove()};
+@@ -3239,7 +3240,7 @@
+     T.forEach(clearTimeout);T.length=0;const m=L[i];
+     q("#dfPg").textContent=`Sayfa ${i+1}/${L.length}`;
+     q(".dfmed").innerHTML=medal(m,124);
+-    q(".dfstamp").innerHTML=`${toD(m.done).toLocaleDateString("tr-TR",{day:"numeric",month:"short",year:"numeric"}).toLocaleUpperCase("tr-TR")}<br>KAZANILDI`;
++    q(".dfstamp").innerHTML=m.pre?`HAFİF'TEN ÖNCE<br>${toD(m.done).toLocaleDateString("tr-TR",{day:"numeric",month:"short",year:"numeric"}).toLocaleUpperCase("tr-TR")}`:`${toD(m.done).toLocaleDateString("tr-TR",{day:"numeric",month:"short",year:"numeric"}).toLocaleUpperCase("tr-TR")}<br>KAZANILDI`;
+     q("h2").textContent=msName(m);
+     q("p").textContent=`${badgeTitle(m)}. ${toD(m.done).toLocaleDateString("tr-TR",{day:"numeric",month:"long",year:"numeric"})}`;
+     const dd=q(".dfdays");
+@@ -3256,20 +3257,108 @@
+     if(!RM&&pg.animate)pg.animate([{transform:"none"},{transform:`translateX(${-n*30}px)`,opacity:.25},{transform:"none",opacity:1}],{duration:320,easing:"ease-out"});
+     T.push(setTimeout(show,RM?0:150))};
+   q(".dfx").addEventListener("click",close);
+-  d.addEventListener("click",e=>{if(e.target===d)close();const b=e.target.closest("[data-dstep]");if(b)step(+b.dataset.dstep)});
++  d.addEventListener("click",e=>{if(e.target===d)close();if(e.target.closest("[data-dshare]")){const m=L[i];close();openRzShare(m);return}const b=e.target.closest("[data-dstep]");if(b)step(+b.dataset.dstep)});
+   let x0=null;pg.addEventListener("touchstart",e=>{x0=e.touches[0].clientX},{passive:true});
+   pg.addEventListener("touchend",e=>{if(x0==null)return;const dx=e.changedTouches[0].clientX-x0;x0=null;if(Math.abs(dx)>50)step(dx<0?1:-1)});
+   show();q(".dfx").focus({preventScroll:true});
+ }
++/* ---------- rozet paylaşımı: kutlamadan ve Hafif defterinden; 3 şablon (Defter, Madalya, Hikâye) ---------- */
++const RZ_TPLS=[["defter","Defter"],["madalya","Madalya"],["hikaye","Hikâye"]];
++let rzOpt=(()=>{try{return Object.assign({tpl:"defter",kg:true},JSON.parse(localStorage.getItem("hf-rz")||"{}"))}catch(e){return {tpl:"defter",kg:true}}})();
++let rzCanvas=null;
++/* madalyanın kendisi (yazısız) SVG'den çizilir; yazılar uygulamanın yazı tipiyle tuvalde yazılır */
++function medalImg(m){return new Promise((ok,no)=>{const defs=(medalDefs().match(/<defs>[\s\S]*<\/defs>/)||[""])[0];
++  const svg=medal(m,72).replace(/<text[\s\S]*?<\/text>/g,"").replace(/<svg[^>]*>/,`<svg xmlns="http://www.w3.org/2000/svg" width="720" height="880" viewBox="0 0 72 88">${defs}`);
++  const im=new Image();im.onload=()=>ok(im);im.onerror=no;im.src="data:image/svg+xml;charset=utf-8,"+encodeURIComponent(svg)})}
++function drawMedal(c,im,m,cx,top,w){const h=w*88/72,s=w/72;c.drawImage(im,cx-w/2,top,w,h);
++  const main=m.goal?"★":String(m.t),sub=m.kind?m.sub:m.goal?"HEDEF":m.u?"KG":"VÜCUT";c.fillStyle="#FFFFFF";c.textAlign="center";
++  c.font=`700 ${(m.goal?20:main.length>3?15:18)*s}px ${FONT_D}`;LS(c,`${-.5*s}px`);c.fillText(main,cx,top+(m.goal?42:40)*s);
++  c.globalAlpha=.8;c.font=`700 ${6.5*s}px ${FONT_B}`;LS(c,`${1*s}px`);c.fillText(sub,cx,top+(m.goal?53:51)*s);c.globalAlpha=1;LS(c,"0px");c.textAlign="left"}
++/* kutlama başlığını birinci tekil kişiye çevirir: "verdin" → "verdim" */
++const rzTitle=m=>badgeTitle(m).replace(/ağırlığının/g,"ağırlığımın").replace(/hedefini/g,"hedefimi").replace(/[Hh]edefine/g,x=>x[0]+"edefime").replace(/kilonu/g,"kilomu").replace(/takviyelerini/g,"takviyelerimi").replace(/tartını/g,"tartımı").replace(/iğneni/g,"iğnemi")
++  .replace(/verdin/g,"verdim").replace(/ulaştın/g,"ulaştım").replace(/tutturdun/g,"tutturdum").replace(/girdin/g,"girdim").replace(/aldın/g,"aldım").replace(/indin/g,"indim").replace(/tartıldın/g,"tartıldım").replace(/kaydettin/g,"kaydettim");
++function rzData(m){const M=milestones(),w=sortedW(),at=m.done?kgAt(m.done):null;
++  const dt=toD(m.done).toLocaleDateString("tr-TR",{day:"numeric",month:"long",year:"numeric"});
++  const kgLine=!m.kind&&rzOpt.kg&&M&&at!=null?`${kg(M.start)} → ${kg(at)} kg`:null;
++  return {title:rzTitle(m),name:msName(m),dt,pre:!!m.pre,stamp:(m.pre?"HAFİF'TEN ÖNCE":toD(m.done).toLocaleDateString("tr-TR",{day:"numeric",month:"short",year:"numeric"}).toLocaleUpperCase("tr-TR")),
++    stamp2:m.pre?toD(m.done).toLocaleDateString("tr-TR",{day:"numeric",month:"short",year:"numeric"}).toLocaleUpperCase("tr-TR"):"KAZANILDI",kgLine,c:MPAL[mKind(m)]}}
++function wrapTxt(c,t,max){const W=t.split(" "),L=[];let cur="";for(const x of W){const n=cur?cur+" "+x:x;if(c.measureText(n).width>max&&cur){L.push(cur);cur=x}else cur=n}if(cur)L.push(cur);return L}
++function rzStamp(c,x,y,rot,l1,l2,col){c.save();c.translate(x,y);c.rotate(rot*Math.PI/180);c.font=`700 40px ${FONT_D}`;LS(c,"3px");const w=Math.max(c.measureText(l1).width,c.measureText(l2).width)+56;
++  rr(c,-w/2,-62,w,124,18);c.lineWidth=7;c.strokeStyle=col;c.stroke();c.fillStyle=col;c.textAlign="center";c.fillText(l1,0,-10);c.fillText(l2,0,40);LS(c,"0px");c.restore();c.textAlign="left"}
++function rzConfetti(c,W,H,n,cols,seed){let s=seed;const r=()=>{s=(s*16807)%2147483647;return s/2147483647};for(let i=0;i<n;i++){c.save();c.translate(r()*W,r()*H);c.rotate(r()*6.3);c.globalAlpha=.55+r()*.4;c.fillStyle=cols[i%cols.length];c.fillRect(-7,-11,14,22*(.4+r()*.6));c.restore()}c.globalAlpha=1}
++function tRzDefter(c,W,H,m,D,im){
++  c.fillStyle="#FBF8F1";c.fillRect(0,0,W,H);c.strokeStyle="#E7E1D4";c.lineWidth=2;for(let y=150;y<H-120;y+=66){c.beginPath();c.moveTo(0,y);c.lineTo(W,y);c.stroke()}
++  c.strokeStyle="#EBB9B3";c.lineWidth=3;c.beginPath();c.moveTo(118,0);c.lineTo(118,H);c.stroke();
++  c.fillStyle="#5F726C";c.font=`700 28px ${FONT_B}`;LS(c,"6px");c.fillText("HAFİF DEFTERİ",150,100);LS(c,"0px");c.textAlign="right";c.font=`500 28px ${FONT_B}`;c.fillText(D.dt,W-70,100);c.textAlign="left";
++  c.save();c.shadowColor="rgba(11,59,51,.28)";c.shadowBlur=40;c.shadowOffsetY=18;drawMedal(c,im,m,W/2,190,400);c.restore();drawMedal(c,im,m,W/2,190,400);
++  rzStamp(c,W/2+230,720,-12,D.stamp,D.stamp2,"#0E7C66");
++  c.fillStyle="#0B3B33";c.textAlign="center";c.font=`700 64px ${FONT_D}`;LS(c,"-1px");const L=wrapTxt(c,D.title,W-260);L.forEach((t,i)=>c.fillText(t,W/2,920+i*76));LS(c,"0px");
++  let y=920+L.length*76+20;if(D.kgLine){c.font=`600 40px ${FONT_B}`;c.fillStyle="#0E7C66";c.fillText(D.kgLine,W/2,y+20);y+=70}
++  c.textAlign="left";baFoot(c,W,H-48,"#0B3B33","#5F726C","#0E7C66");
++}
++function tRzMadalya(c,W,H,m,D,im){const k=D.c;
++  let g=c.createLinearGradient(0,0,W*.4,H);g.addColorStop(0,k[4]);g.addColorStop(1,k[2]);c.fillStyle=g;c.fillRect(0,0,W,H);
++  g=c.createRadialGradient(W/2,560,0,W/2,560,620);g.addColorStop(0,"rgba(255,255,255,.28)");g.addColorStop(1,"rgba(255,255,255,0)");c.fillStyle=g;c.fillRect(0,0,W,H);
++  rzConfetti(c,W,640,46,["#FFFFFF",k[0],k[3],"#F2C14E"],(m.id.length*97+7)%2147483647||7);
++  c.fillStyle="rgba(255,255,255,.85)";c.textAlign="center";c.font=`700 30px ${FONT_B}`;LS(c,"8px");c.fillText(D.pre?"ROZET":"YENİ ROZET",W/2,120);LS(c,"0px");
++  c.save();c.shadowColor="rgba(0,0,0,.35)";c.shadowBlur=50;c.shadowOffsetY=24;drawMedal(c,im,m,W/2,180,430);c.restore();drawMedal(c,im,m,W/2,180,430);
++  c.fillStyle="#FFFFFF";c.textAlign="center";c.font=`700 68px ${FONT_D}`;LS(c,"-1px");const L=wrapTxt(c,D.title,W-180);L.forEach((t,i)=>c.fillText(t,W/2,840+i*80));LS(c,"0px");
++  let y=840+L.length*80+10;c.font=`500 36px ${FONT_B}`;c.fillStyle="rgba(255,255,255,.82)";c.fillText((D.pre?"Hafif'ten önce · ":"")+D.dt,W/2,y+20);y+=66;
++  if(D.kgLine){c.font=`700 40px ${FONT_B}`;c.fillStyle="#FFFFFF";c.fillText(D.kgLine,W/2,y+16)}
++  c.textAlign="left";baFoot(c,W,H-48,"#FFFFFF","rgba(255,255,255,.75)","#FFFFFF");
++}
++function tRzHikaye(c,W,H,m,D,im){
++  let g=c.createLinearGradient(0,0,W*.5,H);g.addColorStop(0,"#0D4237");g.addColorStop(1,"#051D18");c.fillStyle=g;c.fillRect(0,0,W,H);
++  g=c.createRadialGradient(W/2,760,0,W/2,760,760);g.addColorStop(0,"rgba(42,160,128,.55)");g.addColorStop(1,"rgba(42,160,128,0)");c.fillStyle=g;c.fillRect(0,0,W,H);
++  rzConfetti(c,W,1000,70,["#5EE0B5","#9FF0D6","#F2C14E","#FF8E66","#B9A0FF"],(m.id.length*131+11)%2147483647||11);
++  c.textAlign="center";c.fillStyle="#9FF0D6";c.font=`700 34px ${FONT_B}`;LS(c,"9px");c.fillText(D.pre?"ROZET":"YENİ ROZET",W/2,330);LS(c,"0px");
++  c.save();c.shadowColor="rgba(0,0,0,.4)";c.shadowBlur=60;c.shadowOffsetY=28;drawMedal(c,im,m,W/2,400,540);c.restore();drawMedal(c,im,m,W/2,400,540);
++  c.textAlign="center";c.fillStyle="#FFFFFF";c.font=`700 80px ${FONT_D}`;LS(c,"-1.5px");const L=wrapTxt(c,D.title,W-160);L.forEach((t,i)=>c.fillText(t,W/2,1200+i*94));LS(c,"0px");
++  let y=1200+L.length*94+16;c.font=`500 40px ${FONT_B}`;c.fillStyle="rgba(255,255,255,.75)";c.fillText((D.pre?"Hafif'ten önce · ":"")+D.dt,W/2,y+20);y+=80;
++  if(D.kgLine){const t=D.kgLine;c.font=`700 44px ${FONT_B}`;const w=c.measureText(t).width+80;rr(c,W/2-w/2,y-20,w,90,45);c.fillStyle="rgba(159,240,214,.16)";c.fill();c.fillStyle="#9FF0D6";c.fillText(t,W/2,y+40)}
++  c.textAlign="left";baFoot(c,W,H-90,"#FFFFFF","rgba(255,255,255,.7)","#9FF0D6");
++}
++const RZ_FN={defter:tRzDefter,madalya:tRzMadalya,hikaye:tRzHikaye};
++async function drawRz(m,tpl){await shareFonts();const im=await medalImg(m),t=tpl||rzOpt.tpl,[W,H]=t==="hikaye"?[1080,1920]:[1080,1350];
++  const cv=document.createElement("canvas");cv.width=W;cv.height=H;const c=cv.getContext("2d");c.textBaseline="alphabetic";(RZ_FN[t]||tRzDefter)(c,W,H,m,rzData(m),im);return cv}
++async function renderRz(m,thumbs){const img=$("#rzImg");if(!img)return;img.style.opacity=.4;
++  try{rzCanvas=await drawRz(m)}catch(e){rzCanvas=null;$("#rzHint").textContent="Görsel hazırlanamadı.";return}
++  img.style.aspectRatio=rzOpt.tpl==="hikaye"?"1080/1920":"1080/1350";img.style.maxWidth=rzOpt.tpl==="hikaye"?"230px":"300px";img.src=rzCanvas.toDataURL("image/png");img.style.opacity=1;
++  if(thumbs)for(const [k] of RZ_TPLS){const cv=k===rzOpt.tpl?rzCanvas:await drawRz(m,k);const t=document.createElement("canvas");t.width=152;t.height=190;
++    const x=t.getContext("2d"),sc=Math.max(152/cv.width,190/cv.height);x.drawImage(cv,(152-cv.width*sc)/2,(190-cv.height*sc)/2,cv.width*sc,cv.height*sc);
++    const im=document.querySelector(`[data-rztpl="${k}"] img`);if(im)im.src=t.toDataURL("image/jpeg",.85)}}
++async function openRzShare(m){if(!m||!m.done)return;
++  const kilo=!m.kind;
++  $("#sheetRoot").innerHTML=`<div class="scrim" data-close><div class="sheet" role="dialog" aria-modal="true" aria-label="Rozetini paylaş"><div class="grab"></div>
++    <header><h2>Rozetini paylaş</h2><button class="del" data-x>Kapat</button></header>
++    <div style="display:flex;flex-direction:column;gap:14px">
++      <img id="rzImg" class="shimg" alt="Rozet görselinin önizlemesi">
++      <div class="tpls" role="radiogroup" aria-label="Şablon">${RZ_TPLS.map(([k,n])=>`<button type="button" class="tpl" role="radio" data-rztpl="${k}" aria-checked="${k===rzOpt.tpl}"><img alt=""><span>${n}</span></button>`).join("")}</div>
++      ${kilo?`<div class="sws"><label class="sw"><span><b>Kilo değerleri</b><small>başlangıç ve o günkü kilo</small></span><input type="checkbox" id="rz-kg" ${rzOpt.kg?"checked":""}><i></i></label></div>`:""}
++      <button class="btn" id="rzSave" type="button">Görseli kaydet / paylaş</button>
++      <button class="btn ghost" id="rzAll" type="button">Tüm ilerleme kartını paylaş</button>
++      <p class="muted" id="rzHint" style="margin:0;font-size:12.5px;text-align:center">Telefonunun paylaşım menüsü açılır; WhatsApp'ı, Instagram'ı ya da galeriye kaydetmeyi seçebilirsin.</p>
++    </div></div></div>`;
++  const root=$("#sheetRoot");
++  root.querySelector(".scrim").addEventListener("click",e=>{if(e.target.classList.contains("scrim"))closeSheet()});
++  root.querySelector("[data-x]").addEventListener("click",closeSheet);
++  if(kilo)$("#rz-kg").addEventListener("change",e=>{rzOpt.kg=e.target.checked;try{localStorage.setItem("hf-rz",JSON.stringify(rzOpt))}catch(_){}renderRz(m,true)});
++  root.querySelectorAll("[data-rztpl]").forEach(b=>b.addEventListener("click",()=>{rzOpt.tpl=b.dataset.rztpl;try{localStorage.setItem("hf-rz",JSON.stringify(rzOpt))}catch(_){}root.querySelectorAll("[data-rztpl]").forEach(x=>x.setAttribute("aria-checked",x===b));renderRz(m,false)}));
++  $("#rzAll").addEventListener("click",()=>{closeSheet();openShare()});
++  $("#rzSave").addEventListener("click",async()=>{if(!rzCanvas)return;const btn=$("#rzSave");btn.disabled=true;
++    try{const blob=await new Promise(r=>rzCanvas.toBlob(r,"image/png"));const res=await dlSave(`hafif-rozet-${today()}.png`,blob);if(res&&res.status==="saved")toast("Görsel hazır")}
++    catch(e){const msg=dlMsg(e);if(msg)$("#rzHint").textContent=msg}finally{btn.disabled=false}});
++  await renderRz(m,true);
++}
+ function showCelebration(m){
+   const title=badgeTitle(m);
+   const d=document.createElement("div");d.id="celeb";d.className="celeb";
+   d.innerHTML=`<canvas id="confetti"></canvas><div class="cbox" role="dialog" aria-modal="true" aria-label="Tebrikler"><div class="cmedal">${medal(m,96)}</div><span class="eyebrow" style="color:var(--accent)">Yeni rozet</span><h2 style="font-size:24px;text-align:center">${title}</h2>
+     <p class="muted" style="margin:0;text-align:center">${m.kind?`Bu rozeti ${fmtD(m.done)} kazandın. Küçük adımlar birikiyor.`:`${m.s} eşiğini ${fmtD(m.done)} geçtin.`}</p>
+-    <div style="display:flex;gap:8px;width:100%">${m.kind?"":`<button class="btn ghost" id="cShare" style="flex:1">Paylaş</button>`}<button class="btn" id="cOk" style="flex:1.4">Harika</button></div></div>`;
++    <div style="display:flex;gap:8px;width:100%"><button class="btn ghost" id="cShare" style="flex:1">Paylaş</button><button class="btn" id="cOk" style="flex:1.4">Harika</button></div></div>`;
+   document.body.appendChild(d);
+   const close=()=>{d.remove()};
+-  $("#cOk").addEventListener("click",()=>{close();askReview()});if($("#cShare"))$("#cShare").addEventListener("click",()=>{close();openShare()});
++  $("#cOk").addEventListener("click",()=>{close();askReview()});if($("#cShare"))$("#cShare").addEventListener("click",()=>{close();openRzShare(m)});
+   d.addEventListener("click",e=>{if(e.target===d||e.target.id==="confetti")close()});
+   const box=d.querySelector(".cbox");if(box.animate)box.animate([{transform:"scale(.6)",opacity:0},{transform:"scale(1.04)",opacity:1,offset:.7},{transform:"none"}],{duration:520,easing:"cubic-bezier(.2,.8,.2,1)"});
+   if(matchMedia("(prefers-reduced-motion: reduce)").matches) return;
