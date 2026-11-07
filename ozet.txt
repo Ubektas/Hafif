@@ -1,0 +1,25 @@
+** ARCHIVE SUCCEEDED **
+** EXPORT SUCCEEDED **
+UPLOAD SUCCEEDED with no errors
+Delivery UUID: 56f69e55-8147-4399-9de4-b6df2fa4035d
+No errors uploading archive at '/Users/runner/work/_temp/out/App.ipa'.
+Xcode 26.3
+Build version 17C529
+Anahtar biçimi: BEGIN/END True · gövde uzunluğu 200 (ES256 anahtarında genelde 200)
+Key ID uzunluğu: 10 · Issuer ID uzunluğu: 36 · Team ID uzunluğu: 10
+Anahtar okunabiliyor ✓
+
+[notice] A new release of pip is available: 26.2.2 -> 26.3
+[notice] To update, run: /Users/runner/work/_temp/v/bin/python3.15 -m pip install --upgrade pip
+App ID yetenekleri: IN_APP_PURCHASE, APP_GROUPS, HEALTHKIT
+Kalıcı sertifika kullanılıyor: Apple Distribution: ugut BEKTAŞ NFLV34QSXQ · bitiş 2027-11-05
+Mevcut profil kullanılıyor: Hafif App Store
+  Hafif App Store: App Group var ✓
+Mevcut profil kullanılıyor: Hafif Widget App Store
+  Hafif Widget App Store: App Group var ✓
+1 identity imported.
+  1) 1E4573302BA54A1BF1C3C6DEF341E58E9F0E51F6 "Apple Distribution: ugut BEKTAŞ (N427S8667Q)"
+     1 valid identities found
+Elle imzaya ayarlanan yapılandırma: 4
+Sertifika ve profil korunuyor
+4d19ae7 · çalışma 14 · derleme 15
