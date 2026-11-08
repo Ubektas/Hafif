@@ -23,7 +23,7 @@ enum WidgetDeneme {
         try? FileManager.default.createDirectory(at: klasor, withIntermediateDirectories: true)
         var hatalar: [String] = [], toplam = 0, olcumsuz = 0
         let aileler: [(Tur, [Boy])] = [(.bugun, [.kucuk, .orta, .kilitDik]), (.igne, [.kucuk, .orta]), (.kilo, [.kucuk, .orta, .kilitDik]), (.su, [.kucuk, .orta, .kilitYuvarlak]), (.pano, [.buyuk]), (.panoKoyu, [.buyuk])]
-        let veriler: [(String, WVeri?)] = [("normal", Ornek.normal), ("uzun", Ornek.uzun), ("bos", nil)]
+        let veriler: [(String, WVeri?)] = [("normal", Ornek.normal), ("uzun", Ornek.uzun), ("ignesiz", Ornek.ignesiz), ("bos", nil)]
         for (tur, boylar) in aileler {
             for boy in boylar {
                 let olculer: [(CGFloat, CGFloat)] = boy == .kucuk ? kucuk.map { ($0, $0) } : boy == .orta ? orta : boy == .buyuk ? buyuk : boy == .kilitDik ? dik : yuvarlak.map { ($0, $0) }

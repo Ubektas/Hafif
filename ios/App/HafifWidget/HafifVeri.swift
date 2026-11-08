@@ -80,6 +80,8 @@ enum Ornek {
               meals: ["k": [.init(id: "menemen", s: "Menemen", g: 19)], "o": [.init(id: "tavuk", s: "Izgara tavuk", g: 35)], "a": [.init(id: "mercimek", s: "Mercimek çorbası", g: 12)]],
               supp: [.init(d: WVeri.gunAdi(Date()), s: [.init(n: "Sabah", t: "07:30", done: 1, of: 1), .init(n: "Akşam", t: "19:00", done: 0, of: 2)])])
     }
+    /// iğne kullanmayan: sıradaki iğne yok, Pano'da iğne kartı yerine Ne yesem? önerisi
+    static var ignesiz: WVeri { var v = normal; v.shots = false; v.next = nil; return v }
     static var uzun: WVeri {
         WVeri(date: WVeri.gunAdi(Date()), shots: true, next: .init(ts: an(12, 21, 45), dose: "12,5", site: "uyluk (sağ)"),
               day: .init(w: 3250, wg: 4000, p: 118, pg: 160, st: 14820, sg: 12000),
