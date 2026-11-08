@@ -45,7 +45,7 @@ jobs:
       - uses: actions/setup-node@v5
         with:
           node-version: 22
-      - run: npm ci
+      - run: npm ci --ignore-scripts  # sharp (görsel aracı) kurulumu macOS makinesinde zaman aşımına uğruyor; iOS için gerekmiyor
       - run: npx cap sync ios
       - name: CocoaPods
         run: cd ios/App && pod install
