@@ -1,0 +1,49 @@
+--- artifact.html
++++ artifact.html
+@@ -1560,9 +1560,11 @@
+     const lm=sortedM().filter(m=>m.bel!=null||m.kalca!=null).pop(),mOk=lm&&diffDays(lm.date,td)<=30;
+     const exN=D7.filter(d=>S.ex&&S.ex[d]).length,lsS=SHOTS()?sortedS().pop():null,shOk=lsS&&diffDays(lsS.date,td)<=(P.intervalDays||7)+1;
+     /* durum listesi (işaretlenecek kutu değil); geride olan satır, düzeltilecek yere götürür */
+-    const chk=[[pn>=5,`Protein ${pn}/7 gün hedefte`,"go:besin"],[wa>=wg7*.9,`Su ortalaman ${(wa/1000).toFixed(1).replace(".",",")} L`,"go:besin"],
+-      [mOk,mOk?`Son ölçü ${diffDays(lm.date,td)} gün önce`:"Bu ay ölçü almadın","meas"],[exN>=exGoal(),`Direnç egzersizi ${exN}/${exGoal()} gün`]];
+-    if(SHOTS()&&lsS)chk.push([shOk,shOk?"İğnelerin zamanında":"İğnen gecikmiş görünüyor"]);
++    const chk=[[pn>=5,pn?`Bu hafta protein hedefini ${pn} gün tamamladın`:"Bu hafta protein hedefini hiç tamamlamadın","go:besin"],
++      [wa>=wg7*.9,`Bu hafta su ortalaman ${(wa/1000).toLocaleString("tr-TR",{minimumFractionDigits:1,maximumFractionDigits:1})} litre`,"go:besin"],
++      [mOk,mOk?(diffDays(lm.date,td)?`Son ölçünü ${diffDays(lm.date,td)} gün önce girdin`:"Ölçünü bugün girdin"):"Bu ay hiç ölçü girişi yapmadın","meas"],
++      [exN>=exGoal(),exN?`Bu hafta ${exN} gün direnç egzersizi yaptın`:"Bu hafta hiç direnç egzersizi yapmadın"]];
++    if(SHOTS()&&lsS)chk.push([shOk,shOk?"Bu hafta iğneni zamanında yaptın":"Bu haftaki iğnen gecikmiş görünüyor"]);
+     out.push({id:"plato",c:"accent",ic:"grafik",k:"Duraklama",t:`Tartı ${PL.days} gündür ${kg(PL.kg)} kg civarında.`,
+       b:`Normal; kilo verirken vücut ara ara su tutar, sonra tartı birden düşer.${PL.ev?" "+PL.ev:""}`,chk,
+       a:mOk?[["Eğrime bak","go:kilo"]]:[["Ölçü ekle","meas"],["Eğrime bak","go:kilo"]],
+@@ -1745,7 +1747,7 @@
+   const L=["Pzt","Sal","Çar","Per","Cum","Cmt","Paz"];
+   const m=sortedW().filter(x=>x.mus!=null),mus=m.length?`Kas kütlen: <b>${kg(m[m.length-1].mus)} kg</b>${m.length>1?` (${sgn(m[m.length-1].mus-m[0].mus)})`:""}`:"";
+   return `<div class="card excard" id="exCard">
+-    <div class="exh"><div><h2>Kas koruma</h2><span class="muted" style="font-size:12.5px">Haftada ${g} gün direnç egzersizi${st?` · <b style="color:var(--shot)">${st} haftadır hedefte</b>`:""}</span></div><span class="exn${done>=g?" ok":""}">${done}/${g}</span></div>
++    <div class="exh"><div><h2>Kas koruma</h2><span class="muted" style="font-size:12.5px">Haftada ${g} gün direnç egzersizi${st?` · <b style="color:var(--shot)">${st} haftadır hedefini tutturuyorsun</b>`:""}</span></div><span class="exn${done>=g?" ok":""}">${done}/${g}</span></div>
+     <div class="exdays">${W.map((d,i)=>`<button type="button" data-exd="${d}" class="${S.ex&&S.ex[d]?"on":""}${d===td?" td":""}" ${d>td?"disabled":""} aria-pressed="${!!(S.ex&&S.ex[d])}" aria-label="${L[i]}">${L[i]}</button>`).join("")}</div>
+     ${tdy?`<div class="exdone">${UI_I(UIC.onay,20)}<span>Bugün yapıldı${tdy.m?` · ${tdy.m} dk`:""}</span><div class="exmin">${[15,20,30,45,60].map(v=>`<button type="button" data-exm="${v}" aria-pressed="${tdy.m===v}">${v}</button>`).join("")}<small>dk</small></div></div>`
+       :`<button type="button" class="btn exbtn" id="exToday">${DUMB_I(20)} Bugün direnç egzersizi yaptım</button>`}
+@@ -1809,8 +1811,11 @@
+   let goal=null;
+   if(!inW.length&&W.length)goal={t:"Bu hafta en az bir kez tartıl",s:"Haftalık değişimi ancak tartıyla görebiliriz."};
+   else if(rows.length){const r=[...rows].map(x=>x.goal?Object.assign({},x,{raw:x.met,met:Math.min(7,Math.round(x.met/x.goal*7))}):x).sort((a,b)=>a.met-b.met)[0];
+-    if(r.k==="ex"&&r.met<6)goal={t:`Egzersiz: bu hafta ${r.goal} gün`,s:`Geçen hafta ${r.raw}/${r.goal}. Kası korumak için 20–30 dk yeter.`};else{
+-    const n=Math.max(r.met+1,3);goal=r.met>=6?{t:"Ritmi koru",s:`Geçen hafta en zayıf alanın bile ${r.met}/7. Aynen devam.`}:{t:`${r.n}: 7 günün ${n}'${WK_EK[n]} hedefte`,s:r.met>=2?`Geçen hafta ${r.met}/7. Tek bir gün fazlası yeter.`:`Geçen hafta ${r.met}/7. Küçük başla, ritim gelir.`}}}
++    /* hedefler tam cümleyle: "Bu hafta 3 gün su hedefini tamamla" */
++    const HF={p:["protein hedefini tamamla","tamamladın","hiç tamamlamadın"],w:["su hedefini tamamla","tamamladın","hiç tamamlamadın"],st:["adım hedefini tamamla","tamamladın","hiç tamamlamadın"],sp:["takviyelerinin hepsini al","hepsini aldın","hiçbir gün hepsini almadın"]};
++    if(r.k==="ex"&&r.met<6)goal={t:`Bu hafta ${r.goal} gün direnç egzersizi yap`,s:`${r.raw?`Geçen hafta ${r.raw} gün yaptın`:"Geçen hafta hiç yapmadın"}. Kası korumak için 20–30 dakika yeter.`};else{
++    const n=Math.max(r.met+1,3),h=HF[r.k]||[`${r.n.toLocaleLowerCase("tr-TR")} hedefini tamamla`,"tamamladın","hiç tamamlamadın"];
++    goal=r.met>=6?{t:"Ritmi koru",s:`Geçen hafta en zayıf alanında bile ${r.met} gün hedefini tutturdun. Aynen devam.`}:{t:`Bu hafta ${n} gün ${h[0]}`,s:`${r.met?`Geçen hafta ${r.met} gün ${h[1]}`:`Geçen hafta ${h[2]}`}. ${r.met>=2?"Bir gün fazlası yeter.":"Küçük başla, ritim gelir."}`}}}
+   const has=inW.length||rows.length||sh.length;
+   return {mon,sun,days,dkg,tot,rows,sh,goal,has,key:mon};
+ }
+@@ -2955,7 +2960,7 @@
+     c.textAlign="center";c.fillStyle=i===6?"#FFF":"rgba(255,255,255,.6)";c.font=`${i===6?700:500} 28px ${FONT_B}`;c.fillText(x.l,bx+bw/2,bot+50);
+     if(x===D.best&&x.n>0){c.font=`700 26px ${FONT_B}`;c.fillStyle="#9FF0D6";c.fillText(fmtN(x.n),bx+bw/2,bot-h-18)}c.textAlign="left"});
+   if(o.goal){const gy=bot-(bot-top)*D.g/mx;c.setLineDash([14,12]);c.strokeStyle="rgba(255,255,255,.4)";c.lineWidth=4;c.beginPath();c.moveTo(70,gy);c.lineTo(W-70,gy);c.stroke();c.setLineDash([]);c.font=`600 24px ${FONT_B}`;c.fillStyle="rgba(255,255,255,.75)";c.textAlign="right";c.fillText(`hedef ${fmtN(D.g)}`,W-80,gy-14);c.textAlign="left"}
+-  if(D.streak>=2){rr(c,80,1150,W-160,96,30);c.fillStyle="rgba(255,255,255,.08)";c.fill();c.font=`700 34px ${FONT_D}`;c.fillStyle="#9FF0D6";c.fillText(`${D.streak} gündür hedefte`,116,1211)}
++  if(D.streak>=2){rr(c,80,1150,W-160,96,30);c.fillStyle="rgba(255,255,255,.08)";c.fill();c.font=`700 34px ${FONT_D}`;c.fillStyle="#9FF0D6";c.fillText(`${D.streak} gündür adım hedefimi tutturuyorum`,116,1211)}
+   stFoot(c,W,H,D,o,"#FFF","rgba(255,255,255,.45)");
+ }
+ const ST_FN={foto:tFoto,pist:tPist,rota:tRota,halka:tHalka,hafta:tHafta};
