@@ -2,6 +2,19 @@
 
 Play en fazla 500 karakter kabul eder. Aşağıdaki bloğu olduğu gibi yapıştır.
 
+## 2.0.9
+
+```
+<tr-TR>
+Rozetlerini paylaş, eski iğnelerini ekle.
+• Rozet kazanınca ya da Hafif defterinden rozetini paylaş: 3 şablon
+• Hafif'ten önce geçtiğin kilo eşikleri de rozet olarak görünür
+• Tedavinin ortasında başladıysan önceki iğnelerini ekle; ilaç düzeyi tahmini doğru hesaplanır
+</tr-TR>
+```
+
+App Store (iPhone) için: "Rozetlerini paylaş (3 şablon). Hafif'ten önce geçtiğin kilo eşikleri de rozet olarak görünür. Önceki iğnelerini ekleyerek ilaç düzeyi tahminini doğru hesaplat."
+
 ## 2.0.8
 
 ```
