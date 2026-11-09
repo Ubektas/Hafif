@@ -92,6 +92,10 @@ header.top{display:flex;align-items:flex-end;justify-content:space-between;gap:1
 .coach-ch b{color:var(--c)}
 .coach-chk{display:flex;flex-direction:column;gap:7px;margin-top:12px}.coach-chk span{display:flex;align-items:center;gap:9px;font-size:13.5px;color:var(--muted)}.coach-chk span.ok{color:var(--fg)}
 .coach-chk i{width:18px;height:18px;border-radius:50%;border:1.5px solid var(--line);display:grid;place-items:center;flex:none;box-sizing:border-box;font-style:normal}.coach-chk span.ok i{background:var(--c);border-color:var(--c);color:#fff}.coach-chk i svg{width:10px;height:10px}
+.coach-chk em{font:600 11px var(--f-body);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-style:normal;margin-bottom:-1px}
+.coach-chk .no i{border:0;background:var(--warnbg);color:var(--warnfg);font:800 11px var(--f-body)}
+.coach-chk button.no{display:flex;align-items:center;gap:9px;font:500 13.5px var(--f-body);color:var(--fg);background:none;border:0;padding:0;text-align:left;cursor:pointer}
+.coach-chk button.no b{margin-left:auto;color:var(--c);font-size:17px;line-height:1;padding-left:8px}
 .coach-dots{display:flex;gap:5px;margin-top:12px}.coach-dots span{flex:1;text-align:center;font-size:11px;color:var(--muted)}
 .coach-dots i{display:block;height:22px;border-radius:8px;background:var(--sunk);margin-bottom:4px}.coach-dots i.ok{background:var(--c)}.coach-dots .t i{box-shadow:inset 0 0 0 2px var(--c)}
 .coach-bar{height:8px;border-radius:6px;background:var(--sunk);margin-top:12px;overflow:hidden}.coach-bar i{display:block;height:100%;background:var(--c);border-radius:6px}
@@ -1510,8 +1514,9 @@ function coachCards(){
     const pn=D7.filter(d=>(dayRec(d).p||0)>=pGoal()).length,wa=D7.reduce((a,d)=>a+(dayRec(d).w||0),0)/7;
     const lm=sortedM().filter(m=>m.bel!=null||m.kalca!=null).pop(),mOk=lm&&diffDays(lm.date,td)<=30;
     const exN=D7.filter(d=>S.ex&&S.ex[d]).length,lsS=SHOTS()?sortedS().pop():null,shOk=lsS&&diffDays(lsS.date,td)<=(P.intervalDays||7)+1;
-    const chk=[[pn>=5,`Protein ${pn}/7 gün hedefte`],[wa>=wg7*.9,`Su ortalaman ${(wa/1000).toFixed(1).replace(".",",")} L`],
-      [mOk,mOk?`Son ölçü ${diffDays(lm.date,td)} gün önce`:"Bu ay ölçü almadın"],[exN>=exGoal(),`Direnç egzersizi ${exN}/${exGoal()} gün`]];
+    /* durum listesi (işaretlenecek kutu değil); geride olan satır, düzeltilecek yere götürür */
+    const chk=[[pn>=5,`Protein ${pn}/7 gün hedefte`,"go:besin"],[wa>=wg7*.9,`Su ortalaman ${(wa/1000).toFixed(1).replace(".",",")} L`,"go:besin"],
+      [mOk,mOk?`Son ölçü ${diffDays(lm.date,td)} gün önce`:"Bu ay ölçü almadın","meas"],[exN>=exGoal(),`Direnç egzersizi ${exN}/${exGoal()} gün`]];
     if(SHOTS()&&lsS)chk.push([shOk,shOk?"İğnelerin zamanında":"İğnen gecikmiş görünüyor"]);
     out.push({id:"plato",c:"accent",ic:"grafik",k:"Duraklama",t:`Tartı ${PL.days} gündür ${kg(PL.kg)} kg civarında.`,
       b:`Normal; kilo verirken vücut ara ara su tutar, sonra tartı birden düşer.${PL.ev?" "+PL.ev:""}`,chk,
@@ -1594,7 +1599,7 @@ function coachHtml(card){
     <h3>${esc(c.t)}</h3>${c.b?`<p>${c.b}</p>`:""}
     ${c.l?`<ul>${c.l.map(t=>`<li>${esc(t)}</li>`).join("")}</ul>`:""}
     ${c.ch&&c.ch.length?`<div class="coach-ch">${c.ch.map(([e,n,g,k])=>`<button type="button" data-coach-act="prot:${k}">${icon(k,18)}${esc(n)} <b>+${g} g</b></button>`).join("")}</div>`:""}
-    ${c.chk?`<div class="coach-chk">${c.chk.map(([ok,t])=>`<span class="${ok?"ok":""}"><i>${ok?DZ_CHK:""}</i>${esc(t)}</span>`).join("")}</div>`:""}
+    ${c.chk?`<div class="coach-chk"><em>Son 7 gün</em>${c.chk.map(([ok,t,a])=>!ok&&a?`<button type="button" class="no" data-coach-act="${a}"><i>!</i>${esc(t)}<b>›</b></button>`:`<span class="${ok?"ok":"no"}"><i>${ok?DZ_CHK:"!"}</i>${esc(t)}</span>`).join("")}</div>`:""}
     ${c.dots?`<div class="coach-dots">${c.dots.map(([n,ok,t])=>`<span${t?' class="t"':""}><i${ok?' class="ok"':""}></i>${n}</span>`).join("")}</div>`:""}
     ${c.bar!=null?`<div class="coach-bar"><i style="width:${Math.round(c.bar*100)}%"></i></div>`:""}
     ${c.a&&c.a.length?`<div class="coach-a">${c.a.map(([t,a],i)=>`<button type="button" class="${i?"g":""}" data-coach-act="${a}">${esc(t)}</button>`).join("")}</div>`:""}
