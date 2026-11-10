@@ -676,22 +676,80 @@ struct PanoGorunum: View {
     }
 }
 
-// MARK: - Plus kilidi (Android'deki kilitli widget'ın karşılığı)
+// MARK: - Plus kilidi: marka kimliği (uygulama simgesinin zemini ve yaprağı), bulanıklık yok
+
+/// Uygulama simgesindeki yaprak, 24 birimlik çizim alanında (simgeyle aynı çizgiler)
+@available(iOS 16.0, *)
+struct Yaprak: Shape {
+    let ox: CGFloat; let oy: CGFloat; let sc: CGFloat
+    func path(in rect: CGRect) -> Path {
+        var p = Path()
+        p.move(to: CGPoint(x: 20, y: 4)); p.addCurve(to: CGPoint(x: 5, y: 17), control1: CGPoint(x: 11, y: 4), control2: CGPoint(x: 5, y: 9)); p.addLine(to: CGPoint(x: 5, y: 20))
+        p.move(to: CGPoint(x: 20, y: 4)); p.addCurve(to: CGPoint(x: 7, y: 18), control1: CGPoint(x: 20, y: 13), control2: CGPoint(x: 15, y: 18))
+        p.move(to: CGPoint(x: 9, y: 15)); p.addLine(to: CGPoint(x: 15, y: 9))
+        return p.applying(CGAffineTransform(a: sc, b: 0, c: 0, d: sc, tx: ox, ty: oy))
+    }
+}
 
 @available(iOS 16.0, *)
-struct PlusKilit: View {
+struct PlusZemin: View {
     let boy: Boy
+    static func rgb(_ h: UInt32) -> Color { Color(red: Double((h >> 16) & 255) / 255, green: Double((h >> 8) & 255) / 255, blue: Double(h & 255) / 255) }
     var body: some View {
-        let u: CGFloat = boy == .kucuk ? 0.85 : 1
-        VStack(spacing: 6 * u) {
-            Text("✦ HAFİF PLUS").font(Yazi.bold(10.5 * u)).kerning(1.2).foregroundColor(Pal.mint).tek()
-            Text("Widget'lar Plus'ta").font(Yazi.outfit(16 * u)).foregroundColor(.white).tek()
-            Text("Aç").font(Yazi.bold(12 * u)).foregroundColor(Color(red: 0x0B / 255, green: 0x3B / 255, blue: 0x33 / 255))
-                .padding(.horizontal, 16 * u).padding(.vertical, 6 * u).background(Capsule().fill(Pal.mint))
+        GeometryReader { g in
+            let W = g.size.width, H = g.size.height
+            // yaprağın yeri ve boyu (taslaktaki gibi kenardan taşar)
+            let L: (CGFloat, CGFloat, CGFloat) = boy == .buyuk ? (-10 * W / 364, -30 * W / 364, 13 * W / 364)
+                : boy == .orta ? (-30 * H / 170, -46 * H / 170, 9.4 * H / 170) : (-14 * W / 170, -22 * W / 170, 5.6 * W / 170)
+            let ox = L.0, oy = L.1, sc = L.2
+            ZStack {
+                LinearGradient(colors: [PlusZemin.rgb(0x16634F), PlusZemin.rgb(0x0C3E33), PlusZemin.rgb(0x0A2E27)], startPoint: .topLeading, endPoint: .bottomTrailing)
+                RadialGradient(colors: [PlusZemin.rgb(0x22916F).opacity(0.85), .clear], center: UnitPoint(x: 0.85, y: 0), startRadius: 0, endRadius: max(W, H) * 0.7)
+                Path { p in p.move(to: CGPoint(x: 0, y: H * 0.62)); p.addLine(to: CGPoint(x: W, y: H * 0.42)); p.addLine(to: CGPoint(x: W, y: H)); p.addLine(to: CGPoint(x: 0, y: H)); p.closeSubpath() }
+                    .fill(Color.black.opacity(0.14))
+                Yaprak(ox: ox, oy: oy, sc: sc)
+                    .stroke(LinearGradient(colors: [PlusZemin.rgb(0xF4FFFB), PlusZemin.rgb(0x6FE0B8)],
+                                           startPoint: UnitPoint(x: (ox + 5 * sc) / W, y: (oy + 4 * sc) / H), endPoint: UnitPoint(x: (ox + 20 * sc) / W, y: (oy + 20 * sc) / H)),
+                            style: StrokeStyle(lineWidth: 1.9 * sc, lineCap: .round, lineJoin: .round))
+            }
         }
-        .padding(.horizontal, 14 * u).padding(.vertical, 12 * u)
-        .background(RoundedRectangle(cornerRadius: 16 * u).fill(Color(red: 0x07 / 255, green: 0x24 / 255, blue: 0x20 / 255).opacity(0.86)))
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+}
+
+@available(iOS 16.0, *)
+struct PlusMetin: View {
+    let boy: Boy
+    func marka(_ s: CGFloat) -> some View {
+        (Text("Hafif ").foregroundColor(.white) + Text("Plus").foregroundColor(Pal.mint)).font(Yazi.outfit(s)).tek()
+    }
+    func dugme(_ s: CGFloat) -> some View {
+        Text("Plus'a geç").font(Yazi.bold(s)).foregroundColor(PlusZemin.rgb(0x0B3B33)).tek()
+            .padding(.horizontal, s * 1.2).padding(.vertical, s * 0.6).background(Capsule().fill(Color.white)).fixedSize()
+    }
+    var alt: some View { Text("Abone olunca açılır").font(Yazi.orta(boy == .buyuk ? 13 : 11.5)).foregroundColor(.white.opacity(0.72)).tek() }
+    var body: some View {
+        switch boy {
+        case .buyuk:
+            VStack(spacing: 0) {
+                Spacer(minLength: 0)
+                HStack(alignment: .bottom, spacing: 10) {
+                    VStack(alignment: .leading, spacing: 5) { marka(27).olc("kilitMarka"); alt.olc("kilitAlt") }
+                    Spacer(minLength: 0)
+                    dugme(14).olc("kilitDugme")
+                }
+            }.frame(maxWidth: .infinity, maxHeight: .infinity)
+        case .orta:
+            HStack(spacing: 0) {
+                Spacer(minLength: 0)
+                VStack(alignment: .leading, spacing: 6) { marka(20).olc("kilitMarka"); alt.olc("kilitAlt"); dugme(13).olc("kilitDugme") }.frame(width: 140, alignment: .leading)
+            }.frame(maxWidth: .infinity, maxHeight: .infinity)
+        default:
+            VStack(alignment: .trailing, spacing: 7) {
+                Spacer(minLength: 0)
+                marka(17).olc("kilitMarka")
+                dugme(12).olc("kilitDugme")
+            }.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .trailing)
+        }
     }
 }
 
@@ -726,11 +784,11 @@ struct HafifKart: View {
             else if #available(iOS 17.0, *) { k.containerBackground(for: .widget) { Color.clear } }
             else { k }
         } else if plusYok {
-            let kat = ic.blur(radius: 9).allowsHitTesting(false).overlay(PlusKilit(boy: boy))
-            if pano { if onizleme { kat.background(arka(pal)) } else if #available(iOS 17.0, *) { kat.containerBackground(for: .widget) { arka(pal) } } else { kat.background(arka(pal)) } }
-            else if onizleme { GeometryReader { g in kat.padding(14 * g.size.height / 158).background(arka(pal)) } }
-            else if #available(iOS 17.0, *) { kat.containerBackground(for: .widget) { arka(pal) } }
-            else { kat.padding(14).background(arka(pal)) }
+            // marka kimliği: uygulama simgesinin zemini ve kocaman yaprak (arka plan), önde "Hafif Plus" ve "Plus'a geç"
+            let met = PlusMetin(boy: boy)
+            if onizleme { GeometryReader { g in met.coordinateSpace(name: "w").padding(boy == .buyuk ? 16 : 14 * g.size.height / 158).frame(width: g.size.width, height: g.size.height).background(PlusZemin(boy: boy)) } }
+            else if #available(iOS 17.0, *) { met.padding(pano ? 16 : 0).containerBackground(for: .widget) { PlusZemin(boy: boy) } }
+            else { met.padding(boy == .buyuk ? 16 : 14).background(PlusZemin(boy: boy)) }
         } else if kilit {
             if onizleme { ic.coordinateSpace(name: "w").foregroundColor(.white).background(Color(white: 0.22)) }
             else if #available(iOS 17.0, *) { ic.containerBackground(for: .widget) { Color.clear } }

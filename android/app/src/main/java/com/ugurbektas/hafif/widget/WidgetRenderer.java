@@ -896,27 +896,94 @@ final class WidgetRenderer {
     private void glyphC(String k, float cx, float cy, float w, int col) { glyph(k, cx - w / 2, cy - w * 0.4f, w, col); }
 
     // ---------- Plus kilidi ----------
+    /** Plus yokken: marka kimliği (uygulama simgesinin zemini ve kocaman yaprak), "Hafif Plus" ve "Plus'a geç". iPhone'daki kilitli widget'la aynı. */
     private Bitmap locked(Bitmap src, float s) {
-        int bw = Math.max(1, src.getWidth() / 10), bh = Math.max(1, src.getHeight() / 10);
-        Bitmap small = Bitmap.createScaledBitmap(src, bw, bh, true);
-        Bitmap blur = Bitmap.createScaledBitmap(small, src.getWidth(), src.getHeight(), true);
         Bitmap out = Bitmap.createBitmap(src.getWidth(), src.getHeight(), Bitmap.Config.ARGB_8888);
         c = new Canvas(out);
         c.scale(s, s);
-        bg();
-        Paint ip = new Paint(Paint.FILTER_BITMAP_FLAG);
-        ip.setAlpha(90);
+        Path clip = new Path();
+        clip.addRoundRect(new RectF(0, 0, W, H), 24, 24, Path.Direction.CW);
+        c.clipPath(clip);
+        p.setStyle(Paint.Style.FILL);
+        p.setShader(new LinearGradient(0, 0, W, H, new int[]{0xFF16634F, 0xFF0C3E33, 0xFF0A2E27}, new float[]{0, .55f, 1}, Shader.TileMode.CLAMP));
+        c.drawRect(0, 0, W, H, p);
+        p.setShader(new RadialGradient(W * .85f, 0, Math.max(W, H) * .7f, 0xD922916F, 0x0022916F, Shader.TileMode.CLAMP));
+        c.drawRect(0, 0, W, H, p);
+        p.setShader(null);
+        Path band = new Path();
+        band.moveTo(0, H * .62f); band.lineTo(W, H * .42f); band.lineTo(W, H); band.lineTo(0, H); band.close();
+        p.setColor(0x24000000);
+        c.drawPath(band, p);
+        boolean wide = W / H > 1.6f, big = !wide && H > 240;
+        float ox, oy, sc;
+        if (big) { ox = -10 * W / 364; oy = -30 * W / 364; sc = 13 * W / 364; }
+        else if (wide) { ox = -30 * H / 170; oy = -46 * H / 170; sc = 9.4f * H / 170; }
+        else { ox = -14 * W / 170; oy = -22 * W / 170; sc = 5.6f * W / 170; }
+        Path leaf = new Path();
+        leaf.moveTo(20, 4); leaf.cubicTo(11, 4, 5, 9, 5, 17); leaf.lineTo(5, 20);
+        leaf.moveTo(20, 4); leaf.cubicTo(20, 13, 15, 18, 7, 18);
+        leaf.moveTo(9, 15); leaf.lineTo(15, 9);
         c.save();
-        c.scale(1 / s, 1 / s);
-        c.drawBitmap(blur, 0, 0, ip);
+        c.translate(ox, oy);
+        c.scale(sc, sc);
+        Paint lp = new Paint(Paint.ANTI_ALIAS_FLAG);
+        lp.setStyle(Paint.Style.STROKE);
+        lp.setStrokeWidth(1.9f);
+        lp.setStrokeCap(Paint.Cap.ROUND);
+        lp.setStrokeJoin(Paint.Join.ROUND);
+        lp.setShader(new LinearGradient(5, 4, 20, 20, 0xFFF4FFFB, 0xFF6FE0B8, Shader.TileMode.CLAMP));
+        c.drawPath(leaf, lp);
         c.restore();
-        float cy = H / 2;
-        center("✦ HAFİF PLUS", cy - 14, 10.5f, fb, AC, 1.3f);
-        center("Widget'lar Plus'ta", cy + 5, 13, db, FG);
-        float bw2 = 72, bx = W / 2 - bw2 / 2;
-        rrect(bx, cy + 15, bw2, 26, 13, BTN);
-        textC("Aç", W / 2, cy + 32.5f, 12, fb, BTNF);
+        // yazı ve düğme
+        if (big) {
+            float y = H - 24;
+            float bw = btn(W - 22, y, 14.5f, true);
+            mark(22, y - 22, 27, false);
+            text("Abone olunca açılır", 22, y - 2, 13, fm, ZM, W - 44 - bw - 10);
+        } else if (wide) {
+            float x = Math.max(W * .55f, W - 160), cy = H / 2;
+            boolean low = H < 110;
+            mark(x, low ? cy - 4 : cy - 14, low ? 16 : 20, false);
+            if (!low) text("Abone olunca açılır", x, cy + 4, 11.5f, fm, ZM, W - x - 12);
+            btnL(x, low ? cy + 6 : cy + 14, low ? 11.5f : 13);
+        } else {
+            float y = H - 14;
+            btn(W - 14, y, 12, true);
+            mark(W - 14, y - 38, 17, true);
+        }
         return out;
+    }
+
+    /** "Hafif Plus": Plus nane yeşili. right=true ise x sağ kenar */
+    private void mark(float x, float y, float size, boolean right) {
+        tp.setTypeface(db);
+        tp.setTextSize(size);
+        tp.setLetterSpacing(-0.02f);
+        float w1 = tp.measureText("Hafif "), w2 = tp.measureText("Plus"), x0 = right ? x - w1 - w2 : x;
+        tp.setTextAlign(Paint.Align.LEFT);
+        tp.setColor(WHITE);
+        c.drawText("Hafif ", x0, y, tp);
+        tp.setColor(MINT);
+        c.drawText("Plus", x0 + w1, y, tp);
+        tp.setLetterSpacing(0);
+    }
+
+    /** beyaz "Plus'a geç" hapı; alt kenarı y, sağ kenarı xr. Genişliği döner. */
+    private float btn(float xr, float yb, float size, boolean right) {
+        tp.setTypeface(fb);
+        tp.setTextSize(size);
+        float tw = tp.measureText("Plus'a geç"), bw = tw + size * 2.4f, bh = size * 2.3f;
+        rrect(xr - bw, yb - bh, bw, bh, bh / 2, WHITE);
+        textC("Plus'a geç", xr - bw / 2, yb - bh / 2 + size * .36f, size, fb, EM);
+        return bw;
+    }
+
+    /** sola yaslı düğme; üst kenarı y */
+    private void btnL(float x, float y, float size) {
+        tp.setTypeface(fb);
+        tp.setTextSize(size);
+        float tw = tp.measureText("Plus'a geç"), bw = tw + size * 2.4f, bh = size * 2.3f;
+        btn(x + bw, y + bh, size, true);
     }
 
     // ---------- çizim yardımcıları ----------
