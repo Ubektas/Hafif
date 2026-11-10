@@ -696,22 +696,36 @@ struct PlusZemin: View {
     let boy: Boy
     static func rgb(_ h: UInt32) -> Color { Color(red: Double((h >> 16) & 255) / 255, green: Double((h >> 8) & 255) / 255, blue: Double(h & 255) / 255) }
     var body: some View {
-        GeometryReader { g in
-            let W = g.size.width, H = g.size.height
-            // yaprağın yeri ve boyu (taslaktaki gibi kenardan taşar)
-            let L: (CGFloat, CGFloat, CGFloat) = boy == .buyuk ? (-10 * W / 364, -30 * W / 364, 13 * W / 364)
-                : boy == .orta ? (-30 * H / 170, -46 * H / 170, 9.4 * H / 170) : (-14 * W / 170, -22 * W / 170, 5.6 * W / 170)
-            let ox = L.0, oy = L.1, sc = L.2
-            ZStack {
-                LinearGradient(colors: [PlusZemin.rgb(0x16634F), PlusZemin.rgb(0x0C3E33), PlusZemin.rgb(0x0A2E27)], startPoint: .topLeading, endPoint: .bottomTrailing)
-                RadialGradient(colors: [PlusZemin.rgb(0x22916F).opacity(0.85), .clear], center: UnitPoint(x: 0.85, y: 0), startRadius: 0, endRadius: max(W, H) * 0.7)
-                Path { p in p.move(to: CGPoint(x: 0, y: H * 0.62)); p.addLine(to: CGPoint(x: W, y: H * 0.42)); p.addLine(to: CGPoint(x: W, y: H)); p.addLine(to: CGPoint(x: 0, y: H)); p.closeSubpath() }
-                    .fill(Color.black.opacity(0.14))
-                Yaprak(ox: ox, oy: oy, sc: sc)
-                    .stroke(LinearGradient(colors: [PlusZemin.rgb(0xF4FFFB), PlusZemin.rgb(0x6FE0B8)],
-                                           startPoint: UnitPoint(x: (ox + 5 * sc) / W, y: (oy + 4 * sc) / H), endPoint: UnitPoint(x: (ox + 20 * sc) / W, y: (oy + 20 * sc) / H)),
-                            style: StrokeStyle(lineWidth: 1.9 * sc, lineCap: .round, lineJoin: .round))
-            }
+        GeometryReader { g in PlusZeminIc(boy: boy, W: g.size.width, H: g.size.height) }
+    }
+}
+
+/// Zemin ve yaprak; hesaplar derleyiciyi yormasın diye ayrı ve adım adım
+@available(iOS 16.0, *)
+struct PlusZeminIc: View {
+    let boy: Boy; let W: CGFloat; let H: CGFloat
+    /// yaprağın yeri ve boyu (taslaktaki gibi kenardan taşar)
+    var ox: CGFloat { switch boy { case .buyuk: return -10 * W / 364; case .orta: return -30 * H / 170; default: return -14 * W / 170 } }
+    var oy: CGFloat { switch boy { case .buyuk: return -30 * W / 364; case .orta: return -46 * H / 170; default: return -22 * W / 170 } }
+    var sc: CGFloat { switch boy { case .buyuk: return 13 * W / 364; case .orta: return 9.4 * H / 170; default: return 5.6 * W / 170 } }
+    var bant: Path {
+        var p = Path()
+        p.move(to: CGPoint(x: 0, y: H * 0.62)); p.addLine(to: CGPoint(x: W, y: H * 0.42)); p.addLine(to: CGPoint(x: W, y: H)); p.addLine(to: CGPoint(x: 0, y: H)); p.closeSubpath()
+        return p
+    }
+    var cizgi: LinearGradient {
+        let a: UnitPoint = UnitPoint(x: (ox + 5 * sc) / W, y: (oy + 4 * sc) / H)
+        let b: UnitPoint = UnitPoint(x: (ox + 20 * sc) / W, y: (oy + 20 * sc) / H)
+        return LinearGradient(colors: [PlusZemin.rgb(0xF4FFFB), PlusZemin.rgb(0x6FE0B8)], startPoint: a, endPoint: b)
+    }
+    var body: some View {
+        let r: CGFloat = max(W, H) * 0.7
+        let lw: CGFloat = 1.9 * sc
+        return ZStack {
+            LinearGradient(colors: [PlusZemin.rgb(0x16634F), PlusZemin.rgb(0x0C3E33), PlusZemin.rgb(0x0A2E27)], startPoint: .topLeading, endPoint: .bottomTrailing)
+            RadialGradient(colors: [PlusZemin.rgb(0x22916F).opacity(0.85), Color.clear], center: UnitPoint(x: 0.85, y: 0), startRadius: 0, endRadius: r)
+            bant.fill(Color.black.opacity(0.14))
+            Yaprak(ox: ox, oy: oy, sc: sc).stroke(cizgi, style: StrokeStyle(lineWidth: lw, lineCap: .round, lineJoin: .round))
         }
     }
 }
