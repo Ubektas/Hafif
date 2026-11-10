@@ -676,6 +676,25 @@ struct PanoGorunum: View {
     }
 }
 
+// MARK: - Plus kilidi (Android'deki kilitli widget'ın karşılığı)
+
+@available(iOS 16.0, *)
+struct PlusKilit: View {
+    let boy: Boy
+    var body: some View {
+        let u: CGFloat = boy == .kucuk ? 0.85 : 1
+        VStack(spacing: 6 * u) {
+            Text("✦ HAFİF PLUS").font(Yazi.bold(10.5 * u)).kerning(1.2).foregroundColor(Pal.mint).tek()
+            Text("Widget'lar Plus'ta").font(Yazi.outfit(16 * u)).foregroundColor(.white).tek()
+            Text("Aç").font(Yazi.bold(12 * u)).foregroundColor(Color(red: 0x0B / 255, green: 0x3B / 255, blue: 0x33 / 255))
+                .padding(.horizontal, 16 * u).padding(.vertical, 6 * u).background(Capsule().fill(Pal.mint))
+        }
+        .padding(.horizontal, 14 * u).padding(.vertical, 12 * u)
+        .background(RoundedRectangle(cornerRadius: 16 * u).fill(Color(red: 0x07 / 255, green: 0x24 / 255, blue: 0x20 / 255).opacity(0.86)))
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+}
+
 // MARK: - widget'ların ortak kabı
 
 enum Tur: String, CaseIterable { case bugun, igne, kilo, su, pano, panoKoyu }
@@ -699,7 +718,20 @@ struct HafifKart: View {
             }
         }
         let kilit = boy == .kilitDik || boy == .kilitYuvarlak || boy == .kilitSatir
-        if kilit {
+        // Plus yoksa (deneme bitti): ana ekranda bulanık + "Widget'lar Plus'ta", kilit ekranında kısa not
+        let plusYok = (e.v?.plusUntil).map { Date(timeIntervalSince1970: $0 / 1000) <= e.date } ?? false
+        if plusYok && kilit {
+            let k = Label(boy == .kilitYuvarlak ? "Plus" : "Hafif Plus'ta", systemImage: "lock.fill").font(Yazi.bold(boy == .kilitYuvarlak ? 10 : 12)).tek().olc("kilit")
+            if onizleme { k.coordinateSpace(name: "w").foregroundColor(.white).frame(maxWidth: .infinity, maxHeight: .infinity).background(Color(white: 0.22)) }
+            else if #available(iOS 17.0, *) { k.containerBackground(for: .widget) { Color.clear } }
+            else { k }
+        } else if plusYok {
+            let kat = ic.blur(radius: 9).allowsHitTesting(false).overlay(PlusKilit(boy: boy))
+            if pano { if onizleme { kat.background(arka(pal)) } else if #available(iOS 17.0, *) { kat.containerBackground(for: .widget) { arka(pal) } } else { kat.background(arka(pal)) } }
+            else if onizleme { GeometryReader { g in kat.padding(14 * g.size.height / 158).background(arka(pal)) } }
+            else if #available(iOS 17.0, *) { kat.containerBackground(for: .widget) { arka(pal) } }
+            else { kat.padding(14).background(arka(pal)) }
+        } else if kilit {
             if onizleme { ic.coordinateSpace(name: "w").foregroundColor(.white).background(Color(white: 0.22)) }
             else if #available(iOS 17.0, *) { ic.containerBackground(for: .widget) { Color.clear } }
             else { ic }

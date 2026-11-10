@@ -18,7 +18,8 @@ struct HafifGiris: View {
     @Environment(\.widgetFamily) var aile
     @Environment(\.colorScheme) var tema
     var body: some View {
-        HafifKart(tur: tur, e: e, boy: Boy(aile), koyu: tema == .dark).widgetURL(tur.adres)
+        HafifKart(tur: tur, e: e, boy: Boy(aile), koyu: tema == .dark)
+            .widgetURL((e.v?.plusUntil).map { Date(timeIntervalSince1970: $0 / 1000) <= e.date } ?? false ? URL(string: "hafif://w/plus")! : tur.adres)
     }
 }
 

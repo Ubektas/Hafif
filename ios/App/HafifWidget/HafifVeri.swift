@@ -25,6 +25,8 @@ struct WVeri: Codable {
     struct TGun: Codable { var d: String?; var s: [Vakit]? }
     var meals: [String: [Yemek]]? = nil
     var supp: [TGun]? = nil
+    /// Plus (ya da deneme) bitiş anı, ms. Geçtiyse widget'lar kilitli (Android'deki gibi). Yoksa açık sayılır.
+    var plusUntil: Double? = nil
 
     static func oku() -> WVeri? {
         guard let u = HafifOrtak.dosya, let d = try? Data(contentsOf: u) else { return nil }
@@ -62,6 +64,8 @@ struct HSaglayici: TimelineProvider {
         var e = [HEntry(date: now, v: v), HEntry(date: gece.addingTimeInterval(5), v: v)]
         // iğne günü geçince sayaç değişsin
         if let ts = v?.next?.ts { let t = Date(timeIntervalSince1970: ts / 1000); if t > now && t < gece { e.insert(HEntry(date: t.addingTimeInterval(60), v: v), at: 1) } }
+        // deneme bugün bitiyorsa o anda kilitlensin
+        if let pu = v?.plusUntil { let t = Date(timeIntervalSince1970: pu / 1000); if t > now && t < gece { e.append(HEntry(date: t.addingTimeInterval(5), v: v)); e.sort { $0.date < $1.date } } }
         completion(Timeline(entries: e, policy: .after(gece.addingTimeInterval(60))))
     }
 }
@@ -81,6 +85,8 @@ enum Ornek {
               supp: [.init(d: WVeri.gunAdi(Date()), s: [.init(n: "Sabah", t: "07:30", done: 1, of: 1), .init(n: "Akşam", t: "19:00", done: 0, of: 2)])])
     }
     /// iğne kullanmayan: sıradaki iğne yok, Pano'da iğne kartı yerine Ne yesem? önerisi
+    /// Plus/deneme bitmiş: widget kilitli görünür
+    static var kilitli: WVeri { var v = normal; v.plusUntil = (Date().timeIntervalSince1970 - 86400) * 1000; return v }
     static var ignesiz: WVeri { var v = normal; v.shots = false; v.next = nil; return v }
     static var uzun: WVeri {
         WVeri(date: WVeri.gunAdi(Date()), shots: true, next: .init(ts: an(12, 21, 45), dose: "12,5", site: "uyluk (sağ)"),
