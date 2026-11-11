@@ -1,0 +1,23 @@
+--- artifact.html
++++ artifact.html
+@@ -1404,7 +1404,10 @@
+   for(const x of L){if(x&&x.k==="w"&&+x.v>0){const d=/^\d{4}-\d\d-\d\d$/.test(x.d||"")?x.d:today(),rec=ensureDay(d);rec.w+=+x.v;rec.log.push([+x.t||Date.now(),"w",+x.v]);n++}}
+   if(n){save();render()}}).catch(()=>{})}
+ /* widget düğmeleri hafif://w/<eylem> bağlantısıyla uygulamayı açar */
+-function wLink(url){const m=/^hafif:\/\/w\/(.+)$/.exec(url||"");if(!m||$("#onb"))return;const [a,b]=m[1].split("/");
++/* Kapalıyken widget'tan açılınca aynı bağlantı iki yoldan gelir (önce appUrlOpen, ~1 sn sonra getLaunchUrl).
++   getLaunchUrl'den gelen, az önce işlenmişse yok sayılır; yoksa ekran zıplar ve su iki kez eklenir. Widget'a bilerek art arda basmak etkilenmez. */
++let wLast={u:"",t:0};
++function wLink(url){const m=/^hafif:\/\/w\/(.+)$/.exec(url||"");if(!m||$("#onb"))return;wLast={u:url,t:Date.now()};const [a,b]=m[1].split("/");
+   closePaywall();const go=t=>{tab=t;selPhase=null;ANIM=true;$("#sheetRoot").innerHTML="";render();window.scrollTo(0,0)};
+   if(a==="tab"){go(b||"ozet");return}
+   if(a==="water"){const v=+b||250,r=ensureDay(today());r.w+=v;r.log.push([Date.now(),"w",v]);save();go("besin");toast(`+${v} ml su eklendi`);return}
+@@ -1416,7 +1419,7 @@
+ }
+ if(NATIVE()&&window.Capacitor.Plugins&&window.Capacitor.Plugins.App){
+   try{window.Capacitor.addListener("App","appUrlOpen",e=>wLink(e&&e.url))}catch(_){}
+-  try{window.Capacitor.Plugins.App.getLaunchUrl().then(r=>{const u=r&&r.url;let seen=null;try{seen=sessionStorage.getItem("hf-lu")}catch(_){}if(u&&seen!==u){try{sessionStorage.setItem("hf-lu",u)}catch(_){}setTimeout(()=>wLink(u),1200)}}).catch(()=>{})}catch(_){}
++  try{window.Capacitor.Plugins.App.getLaunchUrl().then(r=>{const u=r&&r.url;let seen=null;try{seen=sessionStorage.getItem("hf-lu")}catch(_){}if(u&&seen!==u){try{sessionStorage.setItem("hf-lu",u)}catch(_){}setTimeout(()=>{if(!(wLast.u===u&&Date.now()-wLast.t<15000))wLink(u)},1200)}}).catch(()=>{})}catch(_){}
+ }
+ const plock=(html,title,sub)=>`<div class="plock"><div class="pbl" aria-hidden="true">${html}</div><div class="pov"><b>${title}</b><span>${sub}</span><button type="button" class="plusbtn" data-plus>✦ Plus'a geç</button></div></div>`;
+ function plusCard(){
