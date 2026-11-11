@@ -5,3 +5,6 @@ android/app/build/
 /kaynak/
 koc-sonuclari/
 __pycache__/
+
+# iPhone tanıtım betiğinin ara çıktısı (her çalıştırmada yeniden üretilir)
+magaza/ios/ham/
