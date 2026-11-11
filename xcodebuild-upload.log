@@ -1,0 +1,9 @@
+Running altool at path '/Applications/Xcode_26.3.app/Contents/SharedFrameworks/ContentDelivery.framework/Resources/altool'...
+
+2026-11-11 23:47:56.313  INFO: [ContentDelivery.Uploader.6000022B4040] 
+==========================================
+UPLOAD SUCCEEDED with no errors
+Delivery UUID: 79254b13-796b-4289-8ba6-5e85bff871df
+Transferred 4252067 bytes in 0.057 seconds (74.0MB/s, 591.687Mbps)
+==========================================
+No errors uploading archive at '/Users/runner/work/_temp/out/App.ipa'.
