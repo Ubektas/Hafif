@@ -6,7 +6,7 @@ Uygulamadaki kod hazır. Ürünü ve planları Play Console'da **tam olarak bu k
 |---|---|
 | Ürün kimliği (Product ID) | `hafif_plus` |
 | Temel plan 1 | `aylik`: 1 ay, otomatik yenilenen, **99,99 ₺** |
-| Temel plan 2 | `uc-aylik`: 3 ay, otomatik yenilenen, **229,99 ₺** |
+| Temel plan 2 | `uc-aylik`: 3 ay, otomatik yenilenen, **249,99 ₺** |
 | Temel plan 3 | `yillik`: 1 yıl, otomatik yenilenen, **499,99 ₺** |
 | (İsteğe bağlı, şimdilik açma) Deneme teklifi | `yillik` planına teklif: `deneme`, 7 gün ücretsiz; uygulama zaten ilk 7 günü ücretsiz veriyor (bkz. 3. adım) |
 
@@ -32,7 +32,7 @@ Aboneliğin içinde → **Temel plan ekle** (üç kez)
 - Ek süre (grace period): 7 gün (önerilen)
 - Hesap askıya alma: varsayılan
 - Abonelikte değişiklik: **Planlar arasında geçişe izin ver**
-- **Fiyatlar → Fiyatları ayarla:** Türkiye için 99,99 / 229,99 / 499,99 TRY gir. Diğer ülkeler için Play'in önerdiği dönüştürmeyi kabul edebilirsin.
+- **Fiyatlar → Fiyatları ayarla:** Türkiye için 99,99 / 249,99 / 499,99 TRY (3 aylıkta Apple'da 229,99 basamağı olmadığı için iki mağazada da 249,99) gir. Diğer ülkeler için Play'in önerdiği dönüştürmeyi kabul edebilirsin.
 - Her planı kaydettikten sonra **Etkinleştir**'e bas.
 
 ## 3. (İsteğe bağlı) 7 gün ücretsiz deneme
@@ -72,7 +72,7 @@ TL fiyatını otomatik çevirmek Avrupa'da çok ucuz kalır (99,99 ₺ ≈ 2,5 �
 
 | Ülke | Aylık (`aylik`) | 3 aylık (`uc-aylik`) | Yıllık (`yillik`) |
 |---|---|---|---|
-| Türkiye (temel) | 99,99 ₺ | 229,99 ₺ | 499,99 ₺ |
+| Türkiye (temel) | 99,99 ₺ | 249,99 ₺ | 499,99 ₺ |
 | Euro bölgesi (DE, NL, AT, BE, FR) | 4,99 € | 11,99 € | 34,99 € |
 | Kıbrıs | 2,99 € | 6,99 € | 19,99 € |
 | İsviçre | 5,00 CHF | 12,00 CHF | 36,00 CHF |
@@ -82,7 +82,7 @@ TL fiyatını otomatik çevirmek Avrupa'da çok ucuz kalır (99,99 ₺ ≈ 2,5 �
 | Azerbaycan | Play'in önerisini kabul et | | |
 | ABD | $4.99 | $11.99 | $34.99 |
 
-Euro bölgesinde ödeme ekranında 3 aylık plan "%20 tasarruf", yıllık plan "%42 tasarruf" yazar (uygulama bunu kendisi hesaplar). Türkiye'deki oranlar %23 ve %58; yıllık planı daha cazip yapmak istersen yıllık fiyatı 29,99 €'ya indir (%50).
+Euro bölgesinde ödeme ekranında 3 aylık plan "%20 tasarruf", yıllık plan "%42 tasarruf" yazar (uygulama bunu kendisi hesaplar). Türkiye'deki oranlar %17 ve %58; yıllık planı daha cazip yapmak istersen yıllık fiyatı 29,99 €'ya indir (%50).
 
 **Eline geçen (Almanya örneği, aylık 4,99 €):** %19 KDV düşülünce 4,19 €, %15 komisyon düşülünce yaklaşık **3,56 €**. AB'de KDV'yi Google ve Apple kendileri öder; senin ayrıca AB KDV kaydı yapman gerekmez.
 

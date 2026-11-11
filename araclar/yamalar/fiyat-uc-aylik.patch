@@ -1,0 +1,11 @@
+--- artifact.html
++++ artifact.html
+@@ -1290,7 +1290,7 @@
+ /* ---------- views ---------- */
+ /* ---------- Hafif Plus (Google Play aboneliği; satın alma doğrudan telefon ile Google Play arasında) ---------- */
+ const PLUS_ID="hafif_plus";
+-const PLANS=[{k:"aylik",n:"Aylık",p:"99,99 ₺",m:"/ ay",sub:"her ay yenilenir",mo:1},{k:"uc-aylik",n:"3 aylık",p:"229,99 ₺",m:"76,66 ₺ / ay",sub:"%23 tasarruf",mo:3},{k:"yillik",n:"Yıllık",p:"499,99 ₺",m:"41,67 ₺ / ay",sub:"%58 tasarruf",mo:12,best:true}];
++const PLANS=[{k:"aylik",n:"Aylık",p:"99,99 ₺",m:"/ ay",sub:"her ay yenilenir",mo:1},{k:"uc-aylik",n:"3 aylık",p:"249,99 ₺",m:"83,33 ₺ / ay",sub:"%17 tasarruf",mo:3},{k:"yillik",n:"Yıllık",p:"499,99 ₺",m:"41,67 ₺ / ay",sub:"%58 tasarruf",mo:12,best:true}];
+ const NATIVE=()=>!!(window.Capacitor&&window.Capacitor.isNativePlatform&&window.Capacitor.isNativePlatform());
+ /* iPhone: adımlar ve tartı Apple Sağlık'tan, abonelik App Store'dan */
+ const IOS=()=>!!(window.Capacitor&&window.Capacitor.getPlatform&&window.Capacitor.getPlatform()==="ios");

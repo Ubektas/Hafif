@@ -33,7 +33,7 @@
   var ph = function (p, m, b) { return { price: p, priceMicros: m, currency: 'TRY', billingPeriod: b, paymentMode: 'PayAsYouGo' }; };
   var offers = [
     { id: 'hafif_plus@aylik', canPurchase: true, pricingPhases: [ph('₺99,99', 99990000, 'P1M')], order: buy },
-    { id: 'hafif_plus@uc-aylik', canPurchase: true, pricingPhases: [ph('₺229,99', 229990000, 'P3M')], order: buy },
+    { id: 'hafif_plus@uc-aylik', canPurchase: true, pricingPhases: [ph('₺249,99', 249990000, 'P3M')], order: buy },
     { id: 'hafif_plus@yillik', canPurchase: true, pricingPhases: [ph('₺499,99', 499990000, 'P1Y')], order: buy },
     { id: 'hafif_plus@yillik@deneme', canPurchase: true, pricingPhases: [{ price: 'Ücretsiz', priceMicros: 0, billingPeriod: 'P7D', paymentMode: 'FreeTrial' }, ph('₺499,99', 499990000, 'P1Y')], order: buy }
   ];
