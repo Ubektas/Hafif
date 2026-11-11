@@ -2,6 +2,20 @@
 
 Play en fazla 500 karakter kabul eder. Aşağıdaki bloğu olduğu gibi yapıştır.
 
+## 2.0.10
+
+```
+<tr-TR>
+Daha okunur bir Hafif.
+• Günlük'te son 7 gün: her günün protein ve su değeri tek bakışta
+• Duraklama kartında son 7 günün özeti; geride kalanlara tek dokunuşla git
+• Koç ve haftalık özetteki cümleler daha açık
+• Yenilenen Hafif Plus widget görünümü
+</tr-TR>
+```
+
+App Store (iPhone) için: "Günlük'te son 7 günün protein ve su değerleri tek bakışta. Duraklama kartında son 7 günün özeti. Daha açık cümleler. Plus olmadan widget'lar artık Hafif Plus görünümüyle kilitlenir."
+
 ## 2.0.9
 
 ```
