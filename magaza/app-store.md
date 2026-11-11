@@ -85,7 +85,7 @@ VERİLERİN SENİN
 
 HAFİF PLUS
 Temel takip her zaman ücretsiz. Plus ile: ilerleme fotoğrafları, doz planı ve artış hatırlatmaları, tahmini ilaç düzeyi ve evre ipuçları, yan etki ve iştah analizi, detaylı kilo grafikleri, doktor raporu (PDF) ve widget'lar.
-İlk 7 gün ücretsiz. Aylık, 3 aylık ya da yıllık otomatik yenilenen abonelik. Ödeme, satın almayı onayladığında Apple hesabından alınır. Abonelik, dönem bitmeden en az 24 saat önce iptal edilmezse otomatik yenilenir; yenileme ücreti dönem bitmeden önceki 24 saat içinde alınır. Ücretsiz denemenin kullanılmayan kısmı, abonelik satın alındığında geçersiz olur. Aboneliğini iPhone'un Ayarlar → [adın] → Abonelikler bölümünden yönetebilir ve iptal edebilirsin.
+Her yeni kullanıcıya ilk 7 gün Plus açık; ödeme bilgisi istenmez. Sonrası için aylık, 3 aylık ya da yıllık otomatik yenilenen abonelik. Ödeme, satın almayı onayladığında Apple hesabından alınır. Abonelik, dönem bitmeden en az 24 saat önce iptal edilmezse otomatik yenilenir; yenileme ücreti dönem bitmeden önceki 24 saat içinde alınır. Aboneliğini iPhone'un Ayarlar → [adın] → Abonelikler bölümünden yönetebilir ve iptal edebilirsin.
 Kullanım koşulları: https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
 Gizlilik: https://ubektas.github.io/hafif-gizlilik/
 
@@ -124,7 +124,7 @@ Hafif is a personal tracker for weight, protein, water, steps, supplements and (
 - First launch: accept the disclaimer, then choose whether you use weekly injections. Tap "Hayır, kullanmıyorum" (No) to see the app without injection features, or "Evet, kullanıyorum" (Yes) to see injection logging.
 - The app does NOT recommend, calculate or change any medication dose. Users enter the plan their doctor gave them; the app only reminds them of it. The "estimated level" chart is an informational curve from the user's own logs and is clearly labeled as an estimate, not medical advice. A medical disclaimer must be accepted on first launch.
 - HealthKit: read-only access to steps, body mass and body fat percentage, used only to show progress on the device. Nothing is written to Health; HealthKit data is never shared or used for advertising. Access is requested only when the user taps "Apple Sağlık'a bağlan" in Settings or on the Steps screen.
-- Hafif Plus (auto-renewable subscriptions hafif_plus_aylik / hafif_plus_uc_aylik / hafif_plus_yillik, 1-week free trial): every new user gets 7 days of Plus. The paywall opens from the Hafif Plus card at the top of Settings (gear icon). It shows price, period, Terms of Use (Apple EULA), Privacy Policy and "Satın alımları geri yükle" (Restore Purchases).
+- Hafif Plus (auto-renewable subscriptions hafif_plus_aylik / hafif_plus_uc_aylik / hafif_plus_yillik): every new user gets 7 days of Plus inside the app, without any payment information; there is no App Store introductory offer. The paywall opens from the Hafif Plus card at the top of Settings (gear icon). It shows price, period, Terms of Use (Apple EULA), Privacy Policy and "Satın alımları geri yükle" (Restore Purchases).
 - The app UI is Turkish only.
 ```
 
