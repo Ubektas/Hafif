@@ -1,0 +1,34 @@
+--- artifact.html
++++ artifact.html
+@@ -1314,8 +1314,13 @@
+   st.when().approved(t=>t.verify()).verified(r=>r.finish())
+     .receiptUpdated(()=>{const o=plusOwnedNow(st);if(o!==plusOwned){plusOwned=o;try{localStorage.setItem("hf-plus",o?"1":"0")}catch(e){}if(o){closePaywall();toast("Hafif Plus açıldı. Teşekkürler!")}render()}})
+     .productUpdated(()=>{if($("#paywall"))pwRefresh()});
+-  st.initialize([PF]).catch(()=>{});
++  /* tanılama: mağazanın döndürdüğü son hata, ödeme ekranında ürünler yoksa küçük satırda gösterilir */
++  if(st.error)st.error(e=>{if(e)iapDiag=[e.code,e.message].filter(Boolean).join(" ")});
++  st.initialize([PF]).then(er=>{if(er&&er.length)iapDiag=er.map(x=>[x.code,x.message].filter(Boolean).join(" ")).join("; ")}).catch(e=>{iapDiag=String((e&&e.message)||e)});
+ }
++let iapDiag="";
++function iapDetail(){const st=IAP();if(!st)return "mağaza eklentisi yok";const ids=IOS()?Object.values(IOS_IDS):[PLUS_ID];
++  const n=ids.filter(id=>{const p=st.get(id);return p&&p.offers&&p.offers.length}).length;return `${n}/${ids.length} ürün yüklendi`+(iapDiag?` · ${iapDiag}`:"")}
+ document.addEventListener("deviceready",iapInit,false);
+ function pwOffer(k){const st=IAP();if(!st)return null;
+   if(IOS()){const p=st.get(IOS_IDS[k]);if(!p||!p.offers||!p.offers.length)return null;return p.offers.find(o=>o.pricingPhases[0]&&o.pricingPhases[0].paymentMode==="FreeTrial"&&o.canPurchase!==false)||p.offers[0]}
+@@ -1340,6 +1345,7 @@
+ function closePaywall(){const w=$("#paywall");if(w)w.remove()}
+ function openPaywall(src){
+   closePaywall();if(plusOwned&&NATIVE())return;iapInit(); /* ücretsiz dönemde de açılır: kullanıcı abonelik seçeneklerini görebilsin */
++  {const st=IAP();if(st&&st.update&&!pwOffer(pwSel))st.update().catch(()=>{})} /* uygulama açıkken ürünler yayına girdiyse yeniden çek */
+   const d=document.createElement("div");d.id="paywall";d.setAttribute("role","dialog");d.setAttribute("aria-modal","true");d.setAttribute("aria-label","Hafif Plus");
+   const c=pwCta();
+   d.innerHTML=`<div class="pwtop"><button type="button" class="pwx" id="pwX" aria-label="Kapat">✕</button><span class="pwk">✦ Hafif Plus</span><h1>Kilo vermenin<br>en hafif yolu.</h1><p>${src==="trialEnd"?"7 günlük ücretsiz Plus dönemin bitti. Vücuttaki ilaç düzeyi, tüm grafikler ve doktor raporu için devam et.":"İlaç düzeyi, tüm grafikler, doktor raporu ve yan etki analizi tek abonelikte."}</p></div>
+@@ -1362,7 +1368,7 @@
+   $("#pwX").addEventListener("click",closePaywall);
+   $("#pwBuy").addEventListener("click",async()=>{const m=$("#pwMsg");m.textContent="";
+     if(!NATIVE()){toast("Satın alma Android uygulamasında yapılır");return}
+-    const o=pwOffer(pwSel);if(!o){m.textContent=`Abonelik bilgisi ${IOS()?"App Store'dan":"Google Play'den"} alınamadı. İnternet bağlantını kontrol edip tekrar dene.`;return}
++    const o=pwOffer(pwSel);if(!o){m.textContent=`Abonelik seçenekleri şu an ${IOS()?"App Store'dan":"Google Play'den"} yüklenemedi. Biraz sonra tekrar dene. (${iapDetail()})`;const st=IAP();if(st&&st.update)st.update().catch(()=>{});return}
+     const b=$("#pwBuy");b.disabled=true;try{const err=await o.order();if(err&&err.code!==window.CdvPurchase.ErrorCode.PAYMENT_CANCELLED)m.textContent="Satın alma tamamlanamadı: "+(err.message||"bilinmeyen hata")}catch(e){m.textContent="Satın alma başlatılamadı."}b.disabled=false});
+   $("#pwRestore").addEventListener("click",async()=>{const st=IAP();if(!st){toast(NATIVE()?(IOS()?"App Store'a bağlanılamadı":"Google Play'e bağlanılamadı"):"Bu görünümde satın alma yok");return}await st.restorePurchases().catch(()=>{});toast(plusOwnedNow(st)?"Hafif Plus geri yüklendi":"Bu hesapta etkin bir Hafif Plus aboneliği bulunamadı")});
+   $("#pwManage").addEventListener("click",()=>{const st=IAP();if(st&&st.manageSubscriptions)st.manageSubscriptions().catch(()=>{});else window.open("https://play.google.com/store/account/subscriptions","_blank")});
