@@ -1,0 +1,33 @@
+--- artifact.html
++++ artifact.html
+@@ -1297,7 +1297,10 @@
+ /* iPhone: 16 px'ten küçük kutuya dokununca sayfa büyüyüp her yöne kayıyordu; büyütme kapalı, kutular en az 16 px */
+ if(IOS()){document.documentElement.classList.add("ios");const vm=document.querySelector('meta[name=viewport]');if(vm&&!/maximum-scale/.test(vm.content))vm.content+=",maximum-scale=1"}
+ const HCN=()=>IOS()?"Apple Sağlık":"Health Connect",hcAbl=()=>IOS()?"Apple Sağlık'tan":"Health Connect'ten",hcDat=()=>IOS()?"Apple Sağlık'a":"Health Connect'e";
+-let plusOwned=(()=>{try{return localStorage.getItem("hf-plus")==="1"}catch(e){return false}})();
++/* iPhone: eklenti sunucusuz makbuzda aboneliği yalnızca satın alma anında "sahip" sayar; uygulama arka plana gidip makbuz yenilenince düşer.
++   Bu yüzden onaylanan her işlemde bitiş tarihi (alım + süre + 3 gün pay) telefonda tutulur; yenilemeler yeni işlem olarak gelip süreyi uzatır. */
++const plusUntilLocal=()=>{try{return +localStorage.getItem("hf-plus-until")||0}catch(e){return 0}};
++let plusOwned=(()=>{try{return localStorage.getItem("hf-plus")==="1"||(IOS()&&Date.now()<plusUntilLocal())}catch(e){return false}})();
+ /* ilk 7 gün Plus özellikleri herkese açık (ödeme bilgisi istenmez) */
+ const TRIAL_DAYS=7;
+ function plusSince(){const P=S.profile;if(!P.since)P.since=P.disclaimer||today();return P.since}
+@@ -1307,11 +1310,16 @@
+ const IAP=()=>window.CdvPurchase&&window.CdvPurchase.store||null;
+ /* App Store'da her süre ayrı ürün (aynı abonelik grubunda); Google Play'de tek ürün, üç temel plan */
+ const IOS_IDS={aylik:"hafif_plus_aylik","uc-aylik":"hafif_plus_uc_aylik",yillik:"hafif_plus_yillik"};
+-const plusOwnedNow=st=>IOS()?Object.values(IOS_IDS).some(id=>st.owned(id)):!!st.owned(PLUS_ID);
++const plusOwnedNow=st=>IOS()?(Object.values(IOS_IDS).some(id=>st.owned(id))||Date.now()<plusUntilLocal()):!!st.owned(PLUS_ID);
++const IOS_AY={hafif_plus_aylik:1,hafif_plus_uc_aylik:3,hafif_plus_yillik:12};
++function plusNote(t){if(!IOS()||!t)return;const id=((t.products||[])[0]||{}).id,m=IOS_AY[id];if(!m)return;
++  const b=t.purchaseDate?new Date(t.purchaseDate):new Date();if(isNaN(b))return;const u=new Date(b);u.setMonth(u.getMonth()+m);const v=u.getTime()+3*864e5;
++  if(v>plusUntilLocal()){try{localStorage.setItem("hf-plus-until",String(v))}catch(e){}}}
+ function iapInit(){
+   const st=IAP();if(!st||st.__hf)return;st.__hf=1;const C=window.CdvPurchase,PF=IOS()?C.Platform.APPLE_APPSTORE:C.Platform.GOOGLE_PLAY;
+   st.register(IOS()?Object.values(IOS_IDS).map(id=>({id,type:C.ProductType.PAID_SUBSCRIPTION,platform:PF})):[{id:PLUS_ID,type:C.ProductType.PAID_SUBSCRIPTION,platform:PF}]);
+-  st.when().approved(t=>t.verify()).verified(r=>r.finish())
++  {const w=st.when();if(w.finished)w.finished(t=>plusNote(t))} /* eklenti sürümünde yoksa atla */
++  st.when().approved(t=>{plusNote(t);t.verify()}).verified(r=>r.finish())
+     .receiptUpdated(()=>{const o=plusOwnedNow(st);if(o!==plusOwned){plusOwned=o;try{localStorage.setItem("hf-plus",o?"1":"0")}catch(e){}if(o){closePaywall();toast("Hafif Plus açıldı. Teşekkürler!")}render()}})
+     .productUpdated(()=>{if($("#paywall"))pwRefresh()});
+   /* tanılama: mağazanın döndürdüğü son hata, ödeme ekranında ürünler yoksa küçük satırda gösterilir */

@@ -2,6 +2,19 @@
 
 Play en fazla 500 karakter kabul eder. Aşağıdaki bloğu olduğu gibi yapıştır.
 
+## 2.0.12
+
+```
+<tr-TR>
+Hafif Plus aboneliği daha sağlam.
+• Plus'a geçtikten sonra uygulama arka plana gidince Plus kapanmıyor
+• Uygulama kapalıyken widget'tan su eklenince artık bir kez ekleniyor
+• Widget'tan Hafif Plus açılırken ekran zıplamıyor
+</tr-TR>
+```
+
+App Store (iPhone) için: "Plus'a geçtikten sonra Plus özellikleri ve widget'lar açık kalıyor. Uygulama kapalıyken widget'tan eklenen su artık bir kez kaydediliyor."
+
 ## 2.0.11
 
 ```
