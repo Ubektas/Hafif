@@ -551,9 +551,11 @@ input:focus{background:var(--surface);border-color:var(--accent);outline:none}
 .sring{position:relative;width:84px;height:84px;flex:none}.sring>div{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
 .sring b{font:700 20px var(--f-display);color:var(--head);letter-spacing:-.02em}.sring span{font-size:11px;color:var(--muted)}
 .week2{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
-.wk2{display:flex;flex-direction:column;gap:6px}.wk2r{display:grid;grid-template-columns:52px 1fr;gap:8px;align-items:end}
-.wk2l{font:600 11px var(--f-body);padding-bottom:2px}.wk2b{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;height:34px;align-items:end}.wk2b i{display:block;border-radius:5px;min-height:3px}
-.wk2d{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;text-align:center;font-size:11px;color:var(--muted)}.wk2d .on{color:var(--fg);font-weight:700}
+.wk2{display:flex;flex-direction:column;gap:5px}.wk2r{display:grid;grid-template-columns:52px 1fr;gap:6px;align-items:center}
+.wk2l{font:600 12px var(--f-body);align-self:center}.wk2b{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}.wk2b i{display:grid;place-items:center;height:38px;border-radius:10px;font:700 13px var(--f-display);font-style:normal;color:var(--fg);letter-spacing:-.01em;font-variant-numeric:tabular-nums}.wk2b i.ok{color:#fff}
+:root[data-hf="dark"] .wk2b i.ok{color:#0B1C19}
+.wk2n{margin:4px 0 0;font-size:12.5px;color:var(--muted)}.wk2n b{color:var(--fg)}
+.wk2d{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;text-align:center;font-size:11px;color:var(--muted)}.wk2d .on{color:var(--fg);font-weight:700}
 .wd{border:0;background:none;border-radius:14px;padding:8px 0 7px;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;font:inherit;color:var(--fg)}
 .wd span{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}.wd b{font:700 16px var(--f-display)}
 .wd i{width:22px;height:4px;border-radius:4px;background:linear-gradient(90deg,var(--supp) calc(var(--f)*100%),var(--line) 0)}
@@ -2196,10 +2198,13 @@ function plateHtml(popTs){
     </svg>${icons}${!items.length?`<div class="pempty">Tabak boş</div>`:""}${extra>0?`<div class="pmore">+${extra}</div>`:""}`;
 }
 function weekHtml(){
-  /* protein ve su için iki ayrı satır: her gün bir çubuk, hedefe ulaşan gün tam renk */
-  const D=[...Array(7)].map((_,k)=>{const i=6-k,d=addDays(today(),-i),r=dayRec(d);return {i,d,p:Math.min(100,r.p/pGoal()*100),w:Math.min(100,r.w/wGoal()*100)}});
-  const row=(k,lbl,col)=>`<div class="wk2r"><span class="wk2l" style="color:${col}">${lbl}</span><div class="wk2b">${D.map(x=>`<i style="height:${Math.max(6,x[k])}%;background:${x[k]>=100?col:`color-mix(in oklab,${col} 40%,var(--surface))`}"></i>`).join("")}</div></div>`;
-  return `${row("p","Protein","var(--protein)")}${row("w","Su","var(--water)")}<div class="wk2r"><span></span><div class="wk2d">${D.map(x=>`<span class="${x.i===0?"on":""}">${x.i===0?"Bugün":toD(x.d).toLocaleDateString("tr-TR",{weekday:"short"}).slice(0,3)}</span>`).join("")}</div></div>`;
+  /* protein ve su: her gün değeri yazan bir kutucuk; renk hedefe yaklaştıkça koyulaşır, tam renk = hedef tamam (kullanıcı kararı, 11 Kasım) */
+  const pg=pGoal(),wg=wGoal(),Lt=v=>(v/1000).toLocaleString("tr-TR",{maximumFractionDigits:1});
+  const D=[...Array(7)].map((_,k)=>{const i=6-k,d=addDays(today(),-i),r=dayRec(d);return {i,d,p:r.p||0,w:r.w||0}});
+  const cell=(v,g,col,txt)=>{const ok=v>=g,f=Math.min(1,v/g);return `<i class="${ok?"ok":""}" style="background:${ok?col:`color-mix(in oklab,${col} ${Math.round(12+f*40)}%,var(--surface))`}">${txt}</i>`};
+  const row=(k,lbl,col,g,fmt)=>`<div class="wk2r"><span class="wk2l" style="color:${col}">${lbl}</span><div class="wk2b">${D.map(x=>cell(x[k],g,col,fmt(x[k]))).join("")}</div></div>`;
+  return `${row("p","Protein","var(--protein)",pg,v=>Math.round(v))}${row("w","Su","var(--water)",wg,Lt)}<div class="wk2r"><span></span><div class="wk2d">${D.map(x=>`<span class="${x.i===0?"on":""}">${x.i===0?"Bugün":toD(x.d).toLocaleDateString("tr-TR",{weekday:"short"}).slice(0,3)}</span>`).join("")}</div></div>
+    <p class="wk2n">Protein gram, su litre. Hedef: <b>${pg} g</b> · <b>${Lt(wg)} L</b></p>`;
 }
 function undoText(){const r=dayRec(today()),l=r.log[r.log.length-1];if(!l)return "";if(l[1]==="w")return `Son girişi geri al (+${l[2]} ml su)`;const f=foodOf(l[3]);return `Son girişi geri al (${f?f.n+", ":""}+${l[2]} g protein)`}
 /* Türk mutfağından öğün önerileri: kalan proteine, saate ve iştaha göre 3 öneri. Değerler tipik bir porsiyon için yaklaşık.
