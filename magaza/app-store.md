@@ -2,7 +2,9 @@
 
 Play metinlerinden (`aciklama.md`) uyarlandı. Farklar: Health Connect yerine Apple Sağlık, Android yedeklemesi yerine iCloud, widget'lar iPhone'daki gibi, abonelik koşulları açıklamanın sonunda (Apple 3.1.2 bunu istiyor). İlaç ya da marka adı (ör. kalem markaları) hiçbir alanda yok.
 
-Görseller: `magaza/ios/01…07-*.png` (1320×2868, 6,9" iPhone). Betik: `node magaza/kaynak/aso/ios-tanitim.js`.
+Görseller (1320×2868, 6,9" iPhone; Apple en fazla 10 kabul eder):
+- `magaza/ios-2/01…08-*.png`: Play'deki çizim tarzının aynısı (betik `magaza/kaynak/aso/ios-tanitim-2.js`). Ana set bu.
+- `magaza/ios/01…07-*.png`: gerçek uygulama ekranlı set (betik `magaza/kaynak/aso/ios-tanitim.js`). Apple 2.3.3 "ekran görüntüsü uygulamayı kullanırken göstermeli" der; çizim setinin sonuna bunlardan ikisini (01-hepsi-bir-arada, 05-hizli-kayit) eklemek ret riskini azaltır.
 
 ---
 

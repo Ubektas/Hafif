@@ -147,7 +147,9 @@ const s08 = head(`
 <div class="tr"><div class="card"><span class="e">🙅</span><span><b>Hesap yok</b><small>Kayıt olmadan başla</small></span></div><div class="card"><span class="e">🚫</span><span><b>Reklam yok</b><small>Takip de yok</small></span></div>
 <div class="card"><span class="e">📴</span><span><b>İnternetsiz</b><small>Her şey telefonunda</small></span></div><div class="card"><span class="e">📲</span><span><b>Yedekle, taşı</b><small>Yeni telefona geçer</small></span></div></div>` + end;
 
-(async () => {
+// iPhone sürümü (ios-tanitim-2.js) sayfaları buradan alır; doğrudan çalıştırınca Play görselleri üretilir.
+module.exports = { s02, s03, s04, s05, s06, s07, s08 };
+if (require.main === module) (async () => {
   fs.copyFileSync(path.join(ROOT, 'magaza/aso-alternatif/K-sozler-liste.png'), path.join(OUT, '01-neler-yapar.png'));
   const b = await chromium.launch(); const p = await b.newPage({ viewport: { width: 1080, height: 1920 } });
   for (const [ad, html] of [['02-ne-yesem', s02], ['03-igne-doz', s03], ['04-koc', s04], ['05-kilo-yolu', s05], ['06-her-gun', s06], ['07-ilerleme', s07], ['08-rapor-gizlilik', s08]]) {

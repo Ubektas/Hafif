@@ -224,7 +224,9 @@ h1{margin:50px 0 0;font:700 104px/1.0 Outfit;letter-spacing:-.04em}h1 em{font-st
 <div class="trust"><span>Hesap yok</span><span>Reklam yok</span><span>Veri telefonunda</span></div>
 </div></body></html>`;
 
-(async () => {
+// iPhone sürümü (ios-tanitim-2.js) sayfaları buradan alır; doğrudan çalıştırınca Play görselleri üretilir.
+module.exports = { Kk };
+if (require.main === module) (async () => {
   const b = await chromium.launch(); const p = await b.newPage({ viewport: { width: 1080, height: 1920 } });
   for (const [ad, html] of [['D-mozaik', D], ['E-bir-gun', E], ['F-sozler', F], ['G-mozaik-premium', G], ['H-kapak', Hh], ['I-emoji-zumrut', I], ['J-emoji-acik', J], ['K-sozler-liste', Kk]]) {
     const f = path.join(OUT, `_${ad}.html`); fs.writeFileSync(f, html);
