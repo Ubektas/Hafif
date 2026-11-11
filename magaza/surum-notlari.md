@@ -2,6 +2,19 @@
 
 Play en fazla 500 karakter kabul eder. Aşağıdaki bloğu olduğu gibi yapıştır.
 
+## 2.0.11
+
+```
+<tr-TR>
+Daha sorunsuz widget'lar.
+• Uygulama kapalıyken widget'tan su eklenince artık bir kez ekleniyor
+• Widget'tan Hafif Plus açılırken ekran zıplamıyor
+• Abonelik seçenekleri yüklenemediğinde daha açık bir mesaj
+</tr-TR>
+```
+
+App Store (iPhone) için: "Uygulama kapalıyken widget'tan eklenen su artık bir kez kaydediliyor; widget'tan Hafif Plus açılırken ekran zıplamıyor. Abonelik seçenekleri yüklenemediğinde daha açık bir mesaj."
+
 ## 2.0.10
 
 ```
