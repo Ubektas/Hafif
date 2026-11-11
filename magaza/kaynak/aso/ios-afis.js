@@ -22,9 +22,10 @@ ${css}</style></head><body><div class="s">${govde}</div></body></html>`;
 const baslik = `<div class="lg">${leaf}Hafif</div><h1>Kilo verirken<br><em>ihtiyacın olan<br>her şey.</em></h1>`;
 const tr = `<div class="tr"><span>Hesap yok</span><span>Reklam yok</span><span>Veri telefonunda</span></div>`;
 const AFIS = [
-  // Header 3840×1646 = 1024×439 × 3,75
-  ['header-3840x1646', 3840, 1646, html(1024, 439, 3.75, `<div class="l">${baslik}</div>${tr}<div style="position:absolute;right:70px;top:40px">${plate(270)}</div>${chips}`,
-    '.l{position:absolute;left:64px;top:46px}.tr{left:64px;bottom:40px}.plate{position:relative;display:block}.chips{right:36px;bottom:36px}')],
+  // Header 3840×1646 = 1024×439 × 3,75. Apple telefonda iki yandan ~%15 kırpar, üstüne geri/paylaş düğmeleri ve Dynamic Island gelir:
+  // içerik ortadaki ~%64'te (x 185–839) ve üstten 100 px aşağıda tutulur; kenarlar yalnızca zemin.
+  ['header-3840x1646', 3840, 1646, html(1024, 439, 3.75, `<div class="l">${baslik}</div>${tr}<div style="position:absolute;right:190px;top:104px">${plate(240)}</div>`,
+    '.l{position:absolute;left:190px;top:104px}.lg{font-size:28px}.lg svg{width:32px;height:32px}h1{margin-top:18px;font-size:50px}.tr{left:190px;bottom:38px}.tr span{font-size:15px;padding:7px 13px}.plate{position:relative;display:block}')],
   // Search Results 1920×1280 = 960×640 × 2
   ['arama-1920x1280', 1920, 1280, html(960, 640, 2, `<div class="l">${baslik}</div>${tr}<div style="position:absolute;right:56px;top:70px">${plate(330)}</div>${chips}`,
     '.l{position:absolute;left:60px;top:70px}h1{font-size:60px}.tr{left:60px;bottom:56px}.plate{position:relative;display:block}.chips{right:46px;bottom:48px}')],
