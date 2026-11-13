@@ -8,3 +8,4 @@ __pycache__/
 
 # iPhone tanıtım betiğinin ara çıktısı (her çalıştırmada yeniden üretilir)
 magaza/ios/ham/
+magaza/instagram-3/ham/
