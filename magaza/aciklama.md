@@ -3,11 +3,11 @@
 ## Uygulama adı (en fazla 30 karakter)
 Hafif: Kilo ve İğne Takibi
 
-## Kısa açıklama (en fazla 80 karakter)
-Kilo, haftalık iğne, protein ve su takibi. Hesap yok, veri telefonunda.
+## Kısa açıklama (en fazla 80 karakter · 68)
+GLP-1 iğne, kilo, protein ve su takibi. Hesap yok, veri telefonunda.
 
-## Tam açıklama (en fazla 4000 karakter · 2.0, 3970 karakter)
-Hafif, kilo verme yolculuğunu sade ve motive edici bir şekilde takip etmen için tasarlandı. Kilo takibi, haftalık iğne takibi, protein ve su, takviyeler, vücut ölçüleri ve adımların tek bir yerde; ilerlemeni anlaşılır grafiklerle görürsün. Hesap yok, veriler yalnızca telefonunda.
+## Tam açıklama (en fazla 4000 karakter · 16 Kasım, GLP-1 eklendi, 3926 karakter)
+Hafif, GLP-1 tedavisinde ya da kendi yönteminle kilo verirken her şeyi tek yerde takip etmen için tasarlandı: kilo takibi, haftalık iğne takibi, protein ve su, takviyeler, vücut ölçüleri ve adımlar. İlerlemeni anlaşılır grafiklerle görürsün. Hesap yok, veriler yalnızca telefonunda.
 
 HEPSİ TEK EKRANDA
 • Verdiğin kilo, hedefin, bugünkü protein ve su, adımların ve sıradaki iğnen tek bakışta
@@ -23,19 +23,19 @@ KİLO, HEDEF TARİHİ VE VÜCUT ÖLÇÜLERİ
 • Başlangıçtan bugüne değişimi, haftalık hızını ve bu hızla hedefe varacağın ayı gör
 • Bel, kalça, göğüs, kol, uyluk ve boyun ölçülerini kaydet; tartı yerinde saysa da santimleri izle
 • Kas kütlesi ve yağ oranı; akıllı tartın Health Connect'e yazıyorsa ölçümlerin kendiliğinden gelir
-• Her pazartesi haftanın özeti: kilo, protein, su, adım ve bu hafta için tek bir hedef
+• Her pazartesi haftanın özeti ve bu hafta için tek bir hedef
 
 KAS KORUMA
-• Haftalık direnç egzersizi hedefi; yaptığın günleri ve süreyi tek dokunuşla işaretle
+• GLP-1 kullanırken kası korumak için haftalık direnç egzersizi hedefi ve yeterli protein
 
 NE YESEM?
 • Kalan proteinine, saate ve iştahına göre Türk mutfağından öğün önerileri; dokun, protein eklensin
 
-HAFTALIK İĞNE TAKİBİ (isteğe bağlı)
-• Her iğneyi tarih, saat, doz ve bölgeyle kaydet; sıradaki bölge önerisini al
+GLP-1 İĞNE TAKİBİ (isteğe bağlı)
+• Haftalık iğneni tarih, saat, doz ve bölgeyle kaydet; sıradaki bölge önerisini al
 • Haftalık döngünün hangi evresinde olduğunu ve evreye uygun ipuçlarını gör
 • Doz planım: doktorunun planını bir kez gir; artış haftasını ve yeni kalem zamanını Hafif hatırlatsın
-• Kalem stoğu: kalemde kaç doz kaldığını izle, bitmeden haber al
+• Kalem stoğu: elinde kaç doz kaldığını izle, bitmeden haber al
 
 YAN ETKİ VE İŞTAH GÜNLÜĞÜ
 • Bulantı, kabızlık, reflü, yorgunluk ve diğer belirtileri şiddetiyle tek dokunuşla kaydet
@@ -46,14 +46,12 @@ YAN ETKİ VE İŞTAH GÜNLÜĞÜ
 • Fotoğraflar galeride görünmez, telefonundan çıkmaz
 
 DOKTOR İÇİN RAPOR
-• Kilo grafiği, doz geçmişi, yan etkiler, ölçüler ve beslenme özeti tek bir PDF'te
-• Kontrole giderken telefonundan paylaş ya da yazdır
+• Kilo grafiği, doz geçmişi, yan etkiler, ölçüler ve beslenme özeti tek bir PDF'te; kontrole giderken paylaş ya da yazdır
 
 HEDEFE ULAŞINCA: KORUMA DÖNEMİ
 • Hedefinin çevresinde bir koruma aralığı; dışına çıkarsan nazikçe haber verir
-• Doktorunla konuşmak için not al
 
-PROTEİN VE SU
+PROTEİN VE SU TAKİBİ
 • Yediklerin protein hedefini renkli bloklarla doldurur; sık yediklerin tek dokunuşta
 • Su içme hatırlatıcı ve tek dokunuşla su ekleme; son 7 günü gör
 
@@ -61,15 +59,15 @@ TAKVİYELER
 • Sabah, öğle, akşam ve gece için kendi programını kur; takviye hatırlatıcı zamanında haber verir
 
 HATIRLATICILAR
-• İğne günü, doz artışı, takviyeler, su, protein, haftalık tartı, kalem stoğu ve yedek hatırlatmaları
+• İğne günü, doz artışı, takviyeler, su, protein, haftalık tartı ve kalem stoğu
 • Bildirimden tek dokunuşla kaydet: "+250 ml", "Hepsini aldım" gibi
 
 ADIM SAYAR
-• Health Connect'ten ya da telefonunun kendi sayacından günlük ve saatlik adımların; hedef, mesafe, kalori, yürüyüş
+• Health Connect'ten ya da telefonunun kendi sayacından günlük adımların; hedef, mesafe, kalori
 
 ROZETLER, WIDGET'LAR, KOYU TEMA
-• Ara hedeflere ulaştıkça rozet kazan; ilerlemeni şık bir görselle paylaş
-• 11 ana ekran widget'ı
+• Ara hedeflere ulaştıkça rozet kazan; ilerlemeni ve rozetlerini şık bir görselle paylaş
+• 12 ana ekran widget'ı ve büyük Pano; uygulamayı açmadan su ekle
 • Telefonunun ayarını izleyen koyu tema
 
 VERİLERİN SENİN
