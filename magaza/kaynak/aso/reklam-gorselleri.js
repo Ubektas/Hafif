@@ -14,17 +14,20 @@ const plate = d => `<div class="plate" style="width:${d}px;height:${d}px;box-sha
 
 // her tasarım: başlık, alt yazı, görsel parçası
 const TAS = {
-  'her-sey': { h: 'Kilo verirken<br><em>ihtiyacın olan<br>her şey.</em>', sub: 'Kilo, protein, su ve adım tek ekranda.',
-    alt: s => `<div class="chips">${['⚖️', '🥚', '💧', '👟', '📋'].map(e => `<span class="c e" style="width:${s}px;height:${s}px;font-size:${s * .55}px;border-radius:${s * .3}px">${e}</span>`).join('')}</div>` },
+  'her-sey': { h: 'Kilo verirken<br><em>ihtiyacın olan<br>her şey.</em>', hk: 'Kilo verirken ihtiyacın<br><em>olan her şey.</em>', sub: 'Kilo, iğne günü, protein, su, adım ve doktor raporu tek uygulamada.', grid: true,
+    alt: s => `<div class="grid" style="gap:${s * .12}px;grid-template-columns:repeat(3,${s * 1.45}px)">${[
+      ['⚖️', 'Kilo', '−7,2 kg', '#E3F4EE'], ['🗓️', 'İğne günü', 'Pazar', '#E6EBF5'], ['🥚', 'Protein', '74 / 110 g', '#FBF0DC'],
+      ['💧', 'Su', '1,8 L', '#E1F0FB'], ['👟', 'Adım', '6.240', '#FBE6EC'], ['📋', 'Doktor raporu', 'PDF', '#EFEAF8']
+    ].map(([e, a, v, bg]) => `<div class="tile" style="padding:${s * .17}px ${s * .19}px;border-radius:${s * .26}px;gap:${s * .05}px"><span class="e ti" style="background:${bg};width:${s * .5}px;height:${s * .5}px;border-radius:${s * .16}px;font-size:${s * .3}px">${e}</span><small style="font-size:${s * .15}px">${a}</small><b style="font-size:${s * .23}px">${v}</b></div>`).join('')}</div>` },
   'ne-yesem': { h: 'Akşam ne yesem?<br><em>Hafif söylesin.</em>', sub: 'Kalan proteinine göre Türk mutfağından.',
     alt: s => `<div class="card" style="padding:${s * .28}px ${s * .36}px;gap:${s * .3}px;border-radius:${s * .45}px"><span class="e ci" style="font-size:${s * .6}px;width:${s}px;height:${s}px;border-radius:${s * .3}px">🍗</span><div><b style="font-size:${s * .42}px">Tavuk şiş ve bulgur</b><small style="font-size:${s * .28}px">+38 g protein · akşam için</small></div></div>` }
 };
 
 const html = (t, boy) => {
   const [W, H] = BOY[boy], y = boy === 'yatay';
-  const hs = y ? 60 : boy === 'kare' ? 92 : 100, pd = y ? 64 : 90;
+  const hs = y ? 60 : boy === 'kare' ? 84 : 100, pd = y ? 64 : 90;
   const lay = y
-    ? `.l{position:absolute;left:${pd}px;top:56px;width:560px}.r{position:absolute;right:56px;top:0;bottom:0;width:470px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:34px}`
+    ? `.l{position:absolute;left:${pd}px;top:56px;width:${t.grid ? 470 : 560}px}.r{position:absolute;right:${t.grid ? 44 : 56}px;top:0;bottom:0;width:${t.grid ? 590 : 470}px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:34px}`
     : `.l{position:absolute;left:${pd}px;right:${pd}px;top:${pd}px}.r{position:absolute;left:0;right:0;bottom:${boy === 'kare' ? 70 : 100}px;display:flex;flex-direction:column;align-items:center;gap:${boy === 'kare' ? 40 : 56}px}`;
   const pl = y ? 330 : boy === 'kare' ? 430 : 560, cs = y ? 74 : boy === 'kare' ? 100 : 116;
   return `<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="file://${ROOT}/www/fonts/fonts.css"><style>
@@ -37,10 +40,12 @@ h1{margin:${y ? 26 : 40}px 0 0;font:700 ${hs}px/1.03 Outfit;letter-spacing:-.035
 .plate{position:relative;border-radius:50%;background:#fff;flex:none}.plate i{position:absolute}
 .chips{display:flex;gap:${y ? 10 : 16}px}.c{background:${K};display:grid;place-items:center;box-shadow:0 16px 30px -16px rgba(0,0,0,.6)}
 .card{display:flex;align-items:center;background:#fff;color:#0B2420;box-shadow:0 30px 60px -30px rgba(0,0,0,.6)}
+.grid{display:grid;grid-template-columns:repeat(3,1fr)}.tile{background:#fff;color:#0B2420;display:flex;flex-direction:column;box-shadow:0 24px 50px -28px rgba(0,0,0,.6)}
+.ti{display:grid;place-items:center}.tile small{font-family:Figtree;font-weight:600;color:#5F726C;margin-top:6px}.tile small,.tile b{white-space:nowrap}.tile b{font-family:Outfit;font-weight:700;letter-spacing:-.01em}
 .ci{background:#FBF0DC;display:grid;place-items:center;flex:none}.card b{display:block;font-family:Outfit;font-weight:700;letter-spacing:-.01em}.card small{font-family:Figtree;font-weight:500;color:#5F726C}
 ${lay}</style></head><body><div class="s">
-<div class="l"><div class="lg">${leaf(y ? 40 : 50)}Hafif</div><h1>${t.h}</h1><div class="sub">${t.sub}</div></div>
-<div class="r">${plate(pl)}${t.alt(cs)}</div></div></body></html>`;
+<div class="l"><div class="lg">${leaf(y ? 40 : 50)}Hafif</div><h1>${boy === 'kare' && t.hk ? t.hk : t.h}</h1><div class="sub">${t.sub}</div></div>
+<div class="r">${t.grid ? t.alt(y ? 122 : boy === 'kare' ? 210 : 235) : plate(pl) + t.alt(cs)}</div></div></body></html>`;
 };
 
 (async () => {
