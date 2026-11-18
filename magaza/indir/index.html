@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Hafif'i indir</title>
+<meta name="description" content="Hafif: kilo, haftalık iğne, protein, su ve adım takibi. Google Play ve App Store'da.">
+<meta name="theme-color" content="#0B3B33">
+<style>
+:root{--z:#0B3B33;--n:#9FF0D6;--k:#F4F1EA}
+*{box-sizing:border-box}html,body{margin:0;height:100%}
+body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:radial-gradient(70% 50% at 100% 0%,#1F8A70 0%,transparent 65%),var(--z);color:#fff;display:flex;align-items:center;justify-content:center;padding:24px}
+main{max-width:420px;width:100%;text-align:center}
+.lg{display:inline-flex;align-items:center;gap:10px;font-weight:700;font-size:28px}
+h1{margin:28px 0 10px;font-size:34px;line-height:1.1;letter-spacing:-.02em}h1 em{font-style:normal;color:var(--n)}
+p{margin:0 0 28px;color:rgba(255,255,255,.75);font-size:17px;line-height:1.45}
+a.b{display:flex;align-items:center;justify-content:center;gap:10px;margin:12px 0;padding:16px;border-radius:16px;background:var(--k);color:var(--z);font-weight:700;font-size:18px;text-decoration:none}
+a.b:active{transform:scale(.98)}
+small{display:block;margin-top:22px;color:rgba(255,255,255,.55);font-size:13px}
+</style>
+</head>
+<body>
+<main>
+<div class="lg"><svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="#9FF0D6" stroke-width="1.8" stroke-linecap="round"><path d="M20 4C11 4 5 9 5 17v3"/><path d="M20 4c0 9-5 14-13 14"/></svg>Hafif</div>
+<h1>Kilo verirken<br><em>ihtiyacın olan her şey.</em></h1>
+<p>Kilo, haftalık iğne, protein, su ve adım tek uygulamada. Hesap yok, veriler telefonunda.</p>
+<a class="b" id="ios" href="https://apps.apple.com/tr/app/id6830226671">App Store'dan indir</a>
+<a class="b" id="and" href="https://play.google.com/store/apps/details?id=com.ugurbektas.hafif">Google Play'den indir</a>
+<small>İlk 7 gün tüm Plus özellikleri ücretsiz.</small>
+</main>
+<script>
+// Kaynak etiketi: ?k=instagram gibi. Play'e UTM, App Store'a kampanya (ct) olarak geçer.
+(function () {
+  var k = (new URLSearchParams(location.search).get('k') || 'indir').replace(/[^a-z0-9_-]/gi, '').slice(0, 40);
+  var play = 'https://play.google.com/store/apps/details?id=com.ugurbektas.hafif&referrer=' + encodeURIComponent('utm_source=' + k + '&utm_medium=indir&utm_campaign=lansman');
+  var ios = 'https://apps.apple.com/tr/app/id6830226671?ct=' + k;
+  document.getElementById('and').href = play; document.getElementById('ios').href = ios;
+  var ua = navigator.userAgent || '';
+  var iOS = /iPhone|iPad|iPod/i.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  if (iOS) location.replace(ios); else if (/Android/i.test(ua)) location.replace(play);
+})();
+</script>
+</body>
+</html>
