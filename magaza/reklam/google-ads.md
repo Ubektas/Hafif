@@ -8,10 +8,19 @@ Başlangıç: 16 Kasım 2026, ~21:47.
 | Gün | Bütçe | Harcama | Tıklama | Yükleme | Yükleme başı | Not |
 |---|---|---|---|---|---|---|
 | 16–17 Kas | ₺100 | ₺199,81 | 57 | 16 | ₺12,49 | 17 Kas ~18:00'de günlük bütçe doldu, akşam reklamsız |
-| 18 Kas | ₺150 → ₺200 | ₺191,80 | ~116 | 33 | ₺5,81 | ~07:00'de ilk ₺250 kart çekimi geçmedi, ~1 saat durdu |
-| **Toplam** | | **₺391,61** | | **49** | **₺7,99** | |
+| 18 Kas | ₺150 → ₺200 | ₺202,25 | 128 | 34 | ₺5,95 | ~07:00'de ilk ₺250 kart çekimi geçmedi, ~1 saat durdu |
+| **Toplam** | | **₺402,06** | **185** | **50** | **₺8,04** | 19 Kas 00:03 itibarıyla; TO %5,28, dönşüm oranı %15,15 |
 
 Not: Google Ads rakamları birkaç gün içinde düzeltilebilir (geçersiz trafik ayıklaması, geç gelen dönüşümler).
+18 Kas satırı, 19 Kas 00:03'teki kümülatif tablodan 16–17 Kas çıkarılarak hesaplandı; 23:00 saati sonradan biraz değişebilir.
+
+## Erişim (16–18 Kas)
+
+| Tekil kullanıcı | Ort. sıklık | Gösterim | BGBM | Tekil kullanıcı başına |
+|---|---|---|---|---|
+| ~2.180 | 1,57 | 3.410 | ₺115 | ₺0,18 |
+
+Reklamı gören kişilerin ~%2,2'si yükledi. Sıklık 4–5'i geçerse yeni öğe (görsel/metin) eklenmeli.
 
 ## Olaylar ve kararlar
 
