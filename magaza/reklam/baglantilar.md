@@ -22,3 +22,14 @@ Play paket adı: `com.ugurbektas.hafif`
 - Talep Yaratma, teklif: tıklamaları en üst düzeye çıkar, ₺100/gün, bitiş 27 Kas, Türkiye/Türkçe, cihaz: mobil + iOS.
 - Görseller: `her-sey-*` ve `ne-yesem-*` (dikey 1200x1500, kare 1200x1200, yatay 1200x628; `claude/gifted-keller-p80qcv` dalında `magaza/reklam/`).
 - Değerlendirme 27–28 Kas: App Store indirme başı ≤ ₺30 → devam; üstü ya da indirme yok → kapat.
+
+### Yayında (19 Kas 2026)
+- Kampanya: **Hafif - iOS - Talep Yaratma - TR** · reklam grubu **iPhone - Genel**
+- Hedef: Web sitesi trafiği (dönüşüm hedefi "Sayfa görüntüleme" zorunlu olduğu için formalite); teklif: **tıklama sayısını en üst düzeye çıkarma**; gelişmiş dönüşümler ve görüntüleme dönüşümleri kapalı.
+- Bütçe **₺162/gün** (Talep Yaratma asgarisi), 19–27 Kas (~₺1.300 toplam; 8.000 TL promosyona sayılır).
+- Konum Türkiye, dil Türkçe; cihaz **yalnızca cep telefonu + iOS** (uygulama iOS 15+ istiyor); kanallar: tüm Google kanalları, Görüntülü Reklam Ağı **hariç**; optimize hedefleme açık, kitle yok.
+- Reklam: tek resim, 6 görsel (`ne-yesem-*`, `her-sey-*`), logo `ikon-512.png`, CTA "İndirin", işletme adı Hafif.
+  - Başlıklar: Hafif artık iPhone'da · İğne, kilo ve protein takibi · Akşam ne yesem? Hafif söylesin · Hesap yok, veri telefonunda · Haftalık iğneni unutma
+  - Açıklamalar: App Store'da ücretsiz… · Seni suçlamayan bir koç… · Kalan proteinine göre Türk mutfağından… · Hesap yok, reklam yok… · Haftalık hızını ve hedefe kalan yolu…
+- Öğe optimizasyonu kapalı (otomatik görsel/video üretimi yok); Google'ın önerdiği 3 video (yatay/kare/dikey, 13 sn) elle seçilip ayrı video reklam olarak eklendi.
+- Google tahmini: 1.900–4.100 tıklama, 74–120 bin gösterim.
