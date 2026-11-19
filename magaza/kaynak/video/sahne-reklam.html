@@ -100,11 +100,11 @@ const C = {
   bildirim: { z: ['#E3F2EC', '#BFE3D6', '#F2FAF6'], ana: '#1F8A70', yazi: '#0B3B33', acik: '#DDF1E9' },
   takviye: { z: ['#F2EEFC', '#D8CDF5', '#F9F7FE'], ana: '#7B5BD0', yazi: '#3A2378', acik: '#EEE9FB' }
 };
-// Reklam (Meta/Instagram) sürümü: iğne, doz, yan etki sahneleri ve kelimeleri yok; ~32 sn, dikey.
+// Reklam (Meta/Instagram) sürümü, 2.0 ekranları (reklam-ekran/, surum-2.0'dan): iğne, doz, yan etki sahneleri ve kelimeleri yok; ~32 sn, dikey.
 const S = [
   { tip: 'giris', d: 2.6, r: 'koyu' },
-  { d: 3.8, r: 'kilo', ic: 'kilo', et: 'Kilo takibi', h: ['Her tartıda', 'ilerlemeni gör.'], sub: 'Verdiğin kiloyu, haftalık ortalamanı ve hedefe kalan yolu gör; ara hedeflere ulaştıkça rozet kazan.', img: '05-kilo.png', call: ['Son 7 günde', -0.5, ' kg', 1], cx: 'sol' },
-  { d: 3.8, r: 'kilo', ic: 'koc', et: 'Kişisel koç', h: ['Seni tanıyan', 'bir koç.'], sub: 'Kayıtlarına bakar, doğru anda tek bir öneri verir. Hepsi telefonunda hesaplanır.', img: '16-koc.png', call: ['Kayıtlarına göre', 'Sana özel öneri'], cx: 'sol', altCall: 1 },
+  { d: 3.8, r: 'kilo', ic: 'kilo', et: 'Kilo takibi', h: ['Her tartıda', 'ilerlemeni gör.'], sub: 'Verdiğin kiloyu, haftalık ortalamanı ve hedefe kalan yolu gör; ara hedeflere ulaştıkça rozet kazan.', img: '05-kilo.png', call: ['Başlangıçtan bu yana', -7.2, ' kg', 1], cx: 'sol' },
+  { d: 3.8, r: 'rozet', ic: 'rozet', et: 'Rozetler', h: ['Her hedefte', 'bir rozet.'], sub: 'Ara hedeflere ulaştıkça rozet kazan; ilerlemen hep görünür olsun.', img: '04-rozetler.png', call: ['Yeni rozet', '%5 vücut ağırlığı'], cx: 'sol', altCall: 1 },
   { d: 3.4, r: 'kilo', ic: 'rapor', et: 'Kontrol raporu', h: ['Kontrole', 'hazır git.'], sub: 'Kilon, vücut ölçülerin ve günlük kayıtların tek PDF raporda.', img: '13-olculer.png', call: ['Bel çevresi', -9, ' cm', 0], cx: 'sol' },
   { d: 3.4, r: 'adim', ic: 'adim', et: 'Adım sayar', h: ['Her adım', 'sayılır.'], sub: 'Adımını, mesafeni ve yürüyüş süreni tek ekranda gör.', img: '10-adimlar.png', call: ['Bugün', 6240, ' adım', 0], cx: 'sol' },
   { d: 3.6, r: 'su', ic: 'su', et: 'Su ve protein', h: ['Protein ve su', 'tek ekranda.'], sub: 'Kalori saymadan protein hedefini tamamla, suyunu tek dokunuşla kaydet.', img: '07-protein-su.png', call: ['Bugün su', 1750, ' ml', 0], cx: 'sol' },
@@ -134,7 +134,7 @@ S.forEach((s, i) => {
       <h1><span>${s.h[0]}</span><span style="color:${c.ana}">${s.h[1]}</span></h1><p class="sub" style="color:${c.yazi}B3">${s.sub}</p></div>
       ${s.tip === 'gizlilik' ? `<div class="gz">${[['kisi', 'Hesap yok', 'Kayıt olmadan hemen başla.'], ['reklam', 'Reklam ve takip yok', 'Verilerin hiçbir sunucuya gitmez.'], ['wifi', 'İnternetsiz çalışır', 'Her şey telefonunda saklanır.'], ['yedek', 'Yedekle, taşı', "Excel'e aktar, yeni telefonuna yükle."]].map(([k, a, b]) => `<div><i style="background:${c.acik};color:${c.ana}">${IC[k]}</i><span><b>${a}</b><span>${b}</span></span></div>`).join('')}</div>`
       : s.tip === 'bildirim' ? `<div class="tel"><div class="scr"><div class="kilit"><div class="ks">08:00</div><div class="kt">Cuma, 23 Ekim</div><div class="ky">${BILD.map(b => `<div class="bd"><div class="bh"><img src="../ikon.png"><b>Hafif</b> · ${b[0]}</div><div class="bb">${b[1]}</div><p>${b[2]}</p><div class="ba">${b[3].map(x => `<span style="color:${b[4]}">${x}</span>`).join('')}</div></div>`).join('')}</div></div></div><div class="cam"></div></div>`
-      : `<div class="tel"><div class="scr"><div class="bar"><span>14:20</span><span>●●●</span></div><img src="../../ekran/${s.img}"></div><div class="cam"></div></div>
+      : `<div class="tel"><div class="scr"><div class="bar"><span>14:20</span><span>●●●</span></div><img src="reklam-ekran/${s.img}"></div><div class="cam"></div></div>
          <div class="call${s.altCall ? ' alt' : ''}" style="left:${s.cx === 'sol' ? 1030 : 1500}px;top:760px;color:${c.yazi}"><span class="ci" style="background:${c.acik};color:${c.ana}">${IC[s.ic]}</span><div><small>${s.call[0]}</small><b class="cv"></b></div></div>`}`;
   }
   st.appendChild(el); s.el = el;
