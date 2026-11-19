@@ -67,6 +67,8 @@ Sabah 06–11 harcamanın yarısını alıyor ama en pahalı dilim (08:00 ₺20,
   - İlk denemede "Server encountered an error" (kod `6c462b97-9379-42cf-b95c-427639aac6d5_1795062862249.208B370`), ikinci denemede oluştu.
   - Plan: 3–4 gün bekle; hiç yükleme yoksa Max CPI 0,60 $; 23 Kas'ta Google ile karşılaştır.
   - **19 Kas 07:32: 100 $ Apple Ads Basic promosyon kredisi** hesaba tanımlandı (koşullar e-postada * ile). Aylık bütçe 100 $ olduğu için bu ayın harcaması krediden düşer.
+  - **19 Kas ~13:30: Max CPI 0,40 $ → 1,16 $** (Apple önerisi; kredi bedava olduğu için gerçek maliyeti görmek için). Aylık bütçe 100 $ sabit.
+  - ⚠️ Aylık bütçe **1 Aralık'ta yenilenir**; kredi bittiyse karttan ödenir. 30 Kas'ta devam/pause kararı.
 - Reklam önizlemesinde geliştirici adı **"ugut BEKTAS"** görünüyor (Apple'daki ad düzeltmesi bekliyor).
 - Not: iOS'ta SDK eklenmeyecek ("Data Not Collected"); Google/Meta iOS uygulama kampanyası yok.
 
