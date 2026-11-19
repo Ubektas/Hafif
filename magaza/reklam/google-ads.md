@@ -59,6 +59,19 @@ Akşam 17–23, yüklemelerin ~%48'ini getirdi. Tek günlük veri; en az bir haf
 - [ ] Play Console ↔ Google Ads bağlantısı: Plus aboneliklerini dönüşüm olarak saymak
 - [ ] Mastercard ••7634'te internet ve yurt dışı işlemleri kalıcı açık olsun (otomatik ödeme)
 
+## Apple Ads (iOS)
+
+- **Advanced – "Hafif - Arama - TR"** (18 Kas 23:09'dan beri): Search Results, Türkiye, günlük 4,40 $, dokunma teklifi 0,10 $ (öneri 1,16 $), 25 geniş anahtar kelime, Search Match açık. 19 Kas sabahına kadar 0 gösterim → duraklatılacak.
+- **Basic** (19 Kas 2026'dan beri): Türkiye, Max CPI **0,40 $** (öneri 1,16 $), aylık bütçe **100 $**. Sadece yükleme başına ödeme.
+  - İlk denemede "Server encountered an error" (kod `6c462b97-9379-42cf-b95c-427639aac6d5_1795062862249.208B370`), ikinci denemede oluştu.
+  - Plan: 3–4 gün bekle; hiç yükleme yoksa Max CPI 0,60 $; 23 Kas'ta Google ile karşılaştır.
+- Reklam önizlemesinde geliştirici adı **"ugut BEKTAS"** görünüyor (Apple'daki ad düzeltmesi bekliyor).
+- Not: iOS'ta SDK eklenmeyecek ("Data Not Collected"); Google/Meta iOS uygulama kampanyası yok.
+
+## Google Ads promosyonu
+
+8.000 TL: 15 Ocak 2027'ye kadar 8.000 TL + KDV harcanırsa 8.000 TL kredi. ₺200/gün ile hedef tutuyor; ₺135/günün altına inilirse kaçar.
+
 ## Referans
 
 - Play Store: https://play.google.com/store/apps/details?id=com.ugurbektas.hafif
