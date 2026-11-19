@@ -7,12 +7,13 @@ Başlangıç: 16 Kasım 2026, ~21:47.
 
 | Gün | Bütçe | Harcama | Tıklama | Yükleme | Yükleme başı | Not |
 |---|---|---|---|---|---|---|
-| 16–17 Kas | ₺100 | ₺199,81 | 57 | 16 | ₺12,49 | 17 Kas ~18:00'de günlük bütçe doldu, akşam reklamsız |
-| 18 Kas | ₺150 → ₺200 | ₺202,25 | 128 | 35 | ₺5,78 | ~07:00'de ilk ₺250 kart çekimi geçmedi, ~1 saat durdu |
-| **Toplam** | | **₺402,06** | **185** | **51** | **₺7,88** | 19 Kas itibarıyla; 18 Kas 2.327 gösterim; TO %5,28, dönşüm oranı %15,15 |
+| 16–17 Kas | ₺100 | ₺199,82 | 57 | 16 | ₺12,49 | 16 Kas gece gösterim yok; 17 Kas 04:00–17:59 arası yayın, ~18:00'de günlük bütçe doldu |
+| 18 Kas | ₺150 → ₺200 | ₺202,25 | 128 | 36 | ₺5,62 | ~07:00'de ilk ₺250 kart çekimi geçmedi, ~1 saat durdu |
+| 19 Kas (10:59'a kadar) | ₺200 | ₺217,36 | — | 24 | ₺9,06 | Bütçeyi sabah aştı (₺400'e kadar izinli); 07:00'de yine neredeyse sıfır harcama (2. ödeme eşiği?) |
+| **Toplam** | | **₺619,43** | | **76** | **₺8,15** | saatlik rapora göre (16–19 Kas 10:59) |
 
 Not: Google Ads rakamları birkaç gün içinde düzeltilebilir (geçersiz trafik ayıklaması, geç gelen dönüşümler).
-18 Kas satırı, 19 Kas 00:03'teki kümülatif tablodan 16–17 Kas çıkarılarak hesaplandı; 23:00 saati sonradan biraz değişebilir.
+Günlük satırlar `saatlik/` raporlarından (`node magaza/reklam/analiz.js`). Tıklama sayısı saatlik raporda yok.
 
 ## Erişim (16–18 Kas)
 
@@ -40,16 +41,16 @@ Dosyayı `saatlik/YYYY-AA-GG.csv` olarak kaydet, özet için:
 node magaza/reklam/analiz.js
 ```
 
-### 18 Kasım saat blokları
+### Saat blokları (17–19 Kas, 19 Kas 10:59'a kadar)
 
-| Blok | Harcama | Yükleme | Yükleme başı |
-|---|---|---|---|
-| Gece 00–05 | ₺30,04 | 3 | ₺10,01 |
-| Sabah 06–11 | ₺43,83 | 5 | ₺8,77 |
-| Öğleden sonra 12–16 | ₺36,33 | 9 | ₺4,04 |
-| Akşam 17–23 | ₺81,61 | 16 | ₺5,10 |
+| Blok | Harcama | Yükleme | Yükleme başı | Harcama payı | Yükleme payı |
+|---|---|---|---|---|---|
+| Gece 00–05 | ₺142,09 | 16 | ₺8,88 | %23 | %21 |
+| Sabah 06–11 | ₺283,25 | 22 | ₺12,88 | %46 | %29 |
+| Öğleden sonra 12–16 | ₺89,94 | 17 | ₺5,29 | %15 | %22 |
+| Akşam 17–23 | ₺104,15 | 21 | ₺4,96 | %17 | %28 |
 
-Akşam 17–23, yüklemelerin ~%48'ini getirdi. Tek günlük veri; en az bir haftalık raporla doğrulanmalı.
+Sabah 06–11 harcamanın yarısını alıyor ama en pahalı dilim (08:00 ₺20, 10:00 ₺15). Öğleden sonra ve akşam ~₺5. Uygulama kampanyasında saat ayarı yok; bütçe akşama kalmalı.
 
 ## Yapılacaklar
 
