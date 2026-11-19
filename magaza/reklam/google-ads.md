@@ -72,7 +72,7 @@ Sabah 06–11 harcamanın yarısını alıyor ama en pahalı dilim (08:00 ₺20,
   - **19 Kas 07:32: 100 $ Apple Ads Basic promosyon kredisi** hesaba tanımlandı (koşullar e-postada * ile). Aylık bütçe 100 $ olduğu için bu ayın harcaması krediden düşer.
   - **19 Kas ~13:30: Max CPI 0,40 $ → 1,16 $** (Apple önerisi; kredi bedava olduğu için gerçek maliyeti görmek için). Aylık bütçe 100 $ sabit.
   - ⚠️ Aylık bütçe **1 Aralık'ta yenilenir**; kredi bittiyse karttan ödenir. 30 Kas'ta devam/pause kararı.
-- **App Store Connect Analytics, 18 Kas (yayının ilk günü, reklamsız):** 15 ilk indirme, 55 gösterim, 27 ürün sayfası görüntüleme (sayfadan indirmeye ~%56). Apple Ads o gün 0 gösterim → hepsi organik.
+- **App Store Connect Analytics, 18 Kas (yayının ilk günü, reklamsız):** 15 ilk indirme, 55 gösterim, 27 ürün sayfası görüntüleme (sayfadan indirmeye ~%56). Apple Ads o gün 0 gösterim. Kullanıcıya göre çoğu eş-dost indirmesi → gerçek organik/mağaza dönüşüm ölçüsü değil.
 - Reklam önizlemesinde geliştirici adı **"ugut BEKTAS"** görünüyor (Apple'daki ad düzeltmesi bekliyor).
 - Not: iOS'ta SDK eklenmeyecek ("Data Not Collected"); Google/Meta iOS uygulama kampanyası yok.
 
