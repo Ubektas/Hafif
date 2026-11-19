@@ -30,7 +30,10 @@ Reklamı gören kişilerin ~%2,2'si yükledi. Sıklık 4–5'i geçerse yeni ö�
 - **17 Kas** – Durum "Uygun (Sınırlı)": *Kişiselleştirilmiş reklamlarda sağlık*. Kalıcı kısıt; itiraz edilmez, kitle hedeflemesi kullanılamaz.
 - **18 Kas ~07:00** – Ödeme eşiği (₺250) aşıldı, otomatik çekim geçmedi → "Reklamlarınız yayınlanmıyor". Elle ödeme yapıldı, ~08:00'de yeniden yayında.
 - **18 Kas gün içi** – Bütçe ₺150 → ₺200.
-- **Karar:** 22–23 Kasım'a kadar (öğrenme dönemi) ayarlara dokunulmayacak.
+- **19 Kas ~11:00** – Bütçe ₺200 sabah 11:00'e kadar harcandı (09:00 ₺54, 10:00 ₺40), ₺217'de durdu. Ödeme sorunu yok: Google ödeme eşiğini ₺250 → ₺500'e çıkardı (bakiye ₺394,93; sonraki çekim ₺500'de ya da 1 Ara).
+- **19 Kas ~13:45** – Bütçe ₺200 → ₺250 → **₺300**; teklif **Hedef EBM (tCPI) ₺10** açıldı. Gerekçe: 3 gündür bütçe pahalı sabah saatlerinde bitiyor (06–11 yükleme başı ~₺13), akşam (~₺5) aç kalıyor. Yeni öğrenme 2–3 gün.
+  - 21–22 Kas değerlendirme: günlük yükleme %30+ düştüyse (≤20/gün) hedef ₺12; harcama bütçenin çok altındaysa ₺11–12; ₺10 civarı ve akşamlar doluysa dokunma.
+- ~~Karar: 22–23 Kasım'a kadar ayarlara dokunulmayacak.~~ (19 Kas'ta tCPI ile değişti)
 
 ## Saatlik raporlar
 
