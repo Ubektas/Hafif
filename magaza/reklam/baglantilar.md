@@ -33,3 +33,8 @@ Play paket adı: `com.ugurbektas.hafif`
   - Açıklamalar: App Store'da ücretsiz… · Seni suçlamayan bir koç… · Kalan proteinine göre Türk mutfağından… · Hesap yok, reklam yok… · Haftalık hızını ve hedefe kalan yolu…
 - Öğe optimizasyonu kapalı (otomatik görsel/video üretimi yok); Google'ın önerdiği 3 video (yatay/kare/dikey, 13 sn) elle seçilip ayrı video reklam olarak eklendi.
 - Google tahmini: 1.900–4.100 tıklama, 74–120 bin gösterim.
+
+### Sonuçlar
+| Gün | Gösterim | Tıklama | Maliyet | TBM | App Store indirme (`google-ios`) | İndirme başı |
+|---|---|---|---|---|---|---|
+| 19 Kas (ödeme düzelince ~18:00–20:00) | 8.190 | 183 | ₺162,34 | ₺0,89 | (bekleniyor) | — |
