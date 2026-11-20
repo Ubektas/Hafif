@@ -10,7 +10,7 @@ Başlangıç: 16 Kasım 2026, ~21:47.
 | 16–17 Kas | ₺100 | ₺199,82 | 57 | 16 | ₺12,49 | 16 Kas gece gösterim yok; 17 Kas 04:00–17:59 arası yayın, ~18:00'de günlük bütçe doldu |
 | 18 Kas | ₺150 → ₺200 | ₺202,25 | 128 | 36 | ₺5,62 | ~07:00'de ilk ₺250 kart çekimi geçmedi, ~1 saat durdu |
 | 19 Kas (akşam, kampanya raporu) | ₺200 → ₺300, tCPI ₺10 (~13:45) | ₺308,19 | 112 | 27 | ₺11,41 | 11:00'e kadar ₺217/24 yükleme; tCPI sonrası +₺91, +3 yükleme (geç gelen dönüşümler eklenebilir). Ham rapor: `gunluk/2026-11-19-kampanya.csv` |
-| 20 Kas (14:00'e kadar) | ₺300, tCPI ₺10 | ₺161,31 | 69 | 17 | ₺9,49 | tCPI 2. gün: gece ~₺14, 07–13 arası ~₺6–7. Ham: `saatlik/2026-11-20.csv` |
+| 20 Kas | ₺300, tCPI ₺10 | ~₺250 (kesinleşecek) | — | 30 | ~₺8,5 | tCPI 2. gün: gece ~₺23, gündüz/akşam ₺4–9. 100. yükleme bu gün |
 | **Toplam** | | **₺619,43** | | **76** | **₺8,15** | saatlik rapora göre (16–19 Kas 10:59) |
 
 Not: Google Ads rakamları birkaç gün içinde düzeltilebilir (geçersiz trafik ayıklaması, geç gelen dönüşümler).
