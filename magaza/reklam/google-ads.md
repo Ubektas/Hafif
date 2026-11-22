@@ -57,6 +57,14 @@ node magaza/reklam/analiz.js
 
 Sabah 06–11 harcamanın yarısını alıyor ama en pahalı dilim (08:00 ₺20, 10:00 ₺15). Öğleden sonra ve akşam ~₺5. Uygulama kampanyasında saat ayarı yok; bütçe akşama kalmalı.
 
+## Mağaza adı değişikliği (22 Kas)
+
+- Yeni ad (iki mağaza): **Hafif: GLP-1 ve Kilo Takibi**. Önceki: "Hafif: Kilo ve İğne Takibi".
+- Play: ad + kısa açıklama güncellendi, incelemeye gönderildi.
+- App Store: tanıtım metni hemen güncellendi; ad, alt başlık ("İğne günü, doz, protein ve su"), anahtar kelimeler ve açıklama 2.0.13 (derleme 21) ile gönderildi → Waiting for Review.
+- Ölçüm: 1–2 hafta sonra Play Console "Google Play keşfetme" edinmeleri (öncesi ~2/gün) ve Apple Ads TTR (öncesi %2,8).
+- Google iOS Talep Yaratma: ~₺460'a en fazla birkaç indirme → duraklatma kararı.
+
 ## Yapılacaklar
 
 - [ ] 22–23 Kas: 7 günlük değerlendirme (yükleme başı, günlük hacim, saat dağılımı)
