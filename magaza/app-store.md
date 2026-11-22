@@ -8,20 +8,22 @@ Görseller (1320×2868, 6,9" iPhone; Apple en fazla 10 kabul eder):
 
 ---
 
-## Ad (en fazla 30 karakter)
-Hafif: Kilo ve İğne Takibi
+## Ad (en fazla 30 karakter · 27 · 22 Kasım)
+Hafif: GLP-1 ve Kilo Takibi
 
-## Alt başlık (en fazla 30 karakter)
-Protein, su, adım ve koç
+## Alt başlık (en fazla 30 karakter · 29)
+İğne günü, doz, protein ve su
 
 ## Tanıtım metni (en fazla 170 karakter, inceleme olmadan değiştirilebilir)
-Kilon, iğnen, protein ve suyun tek yerde. Kişisel koç doğru anda tek bir öneri verir. Hesap yok, reklam yok; verilerin yalnızca telefonunda.
+GLP-1 tedavinde iğne günün, kilon, protein ve suyun tek yerde. Seni tanıyan koç doğru anda tek bir öneri verir. Hesap yok; verilerin yalnızca telefonunda.
 
-## Anahtar kelimeler (en fazla 100 bayt; virgülle, boşluksuz)
-kilo,diyet,protein,su,adım,glp1,enjeksiyon,doz,kalem,takip,zayıflama,ölçü,vücut,yağ,koç
+## Anahtar kelimeler (en fazla 100 bayt; virgülle, boşluksuz · 97 bayt)
+zayıflama,diyet,adım,enjeksiyon,ölçü,vücut,koç,tartı,takviye,yan etki,hatırlatıcı,glp1
+
+(Ad ve alt başlıktaki kelimeler (hafif, glp-1, kilo, takibi, iğne, günü, doz, protein, su) tekrar yazılmadı; Apple onları zaten sayıyor.)
 
 ## Açıklama (en fazla 4000 karakter)
-Hafif, kilo verme yolculuğunu sade ve motive edici bir şekilde takip etmen için tasarlandı. Kilo, haftalık iğne, protein ve su, takviyeler, vücut ölçüleri ve adımların tek bir yerde; ilerlemeni anlaşılır grafiklerle görürsün. Hesap yok, veriler yalnızca telefonunda.
+Hafif, GLP-1 tedavisinde ya da kendi yönteminle kilo verirken her şeyi tek yerde takip etmen için tasarlandı: kilo takibi, haftalık iğne takibi, protein ve su, takviyeler, vücut ölçüleri ve adımlar. İlerlemeni anlaşılır grafiklerle görürsün. Hesap yok, veriler yalnızca telefonunda.
 
 HEPSİ TEK EKRANDA
 • Verdiğin kilo, hedefin, bugünkü protein ve su, adımların ve sıradaki iğnen tek bakışta
@@ -45,7 +47,7 @@ NE YESEM?
 KAS KORUMA
 • Haftalık direnç egzersizi hedefi; yaptığın günleri tek dokunuşla işaretle
 
-HAFTALIK İĞNE TAKİBİ (isteğe bağlı)
+GLP-1 İĞNE TAKİBİ (isteğe bağlı)
 • Her iğneyi tarih, saat, doz ve bölgeyle kaydet; sıradaki bölge önerisini al
 • Haftalık döngünün hangi evresinde olduğunu ve evreye uygun ipuçlarını gör
 • Doz planım: doktorunun planını bir kez gir; artış haftasını ve yeni kalem zamanını Hafif hatırlatsın

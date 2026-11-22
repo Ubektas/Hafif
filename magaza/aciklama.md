@@ -1,10 +1,12 @@
 # Hafif – Play Store mağaza metinleri
 
-## Uygulama adı (en fazla 30 karakter)
-Hafif: Kilo ve İğne Takibi
+## Uygulama adı (en fazla 30 karakter · 27 · 22 Kasım)
+Hafif: GLP-1 ve Kilo Takibi
 
-## Kısa açıklama (en fazla 80 karakter · 68)
-GLP-1 iğne, kilo, protein ve su takibi. Hesap yok, veri telefonunda.
+(Önceki: "Hafif: Kilo ve İğne Takibi". Gerekçe: rakipler "GLP-1 & Kilo Takibi" adıyla organik indirme alıyor; Play keşfetmeden günde ~2 indirme geliyordu. "Kilo Takibi" tam ifadesi korunuyor; Apple Ads'te en iyi kelime "kilo takibi".)
+
+## Kısa açıklama (en fazla 80 karakter · 79)
+GLP-1 iğne günü, doz, yan etki, kilo ve protein takibi; seni tanıyan bir koçla.
 
 ## Tam açıklama (en fazla 4000 karakter · 16 Kasım, GLP-1 eklendi, 3926 karakter)
 Hafif, GLP-1 tedavisinde ya da kendi yönteminle kilo verirken her şeyi tek yerde takip etmen için tasarlandı: kilo takibi, haftalık iğne takibi, protein ve su, takviyeler, vücut ölçüleri ve adımlar. İlerlemeni anlaşılır grafiklerle görürsün. Hesap yok, veriler yalnızca telefonunda.
