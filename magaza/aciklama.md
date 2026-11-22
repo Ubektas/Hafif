@@ -1,64 +1,76 @@
 # Hafif – Play Store mağaza metinleri
 
-## Uygulama adı (en fazla 30 karakter)
-Hafif: Kilo ve İğne Takibi
+## Uygulama adı (en fazla 30 karakter · 27 · 22 Kasım)
+Hafif: GLP-1 ve Kilo Takibi
 
-## Kısa açıklama (en fazla 80 karakter)
-Kilo, iğne, protein ve su takibi; seni tanıyan kişisel bir koçla.
+(Önceki: "Hafif: Kilo ve İğne Takibi". Gerekçe: rakipler "GLP-1 & Kilo Takibi" adıyla organik indirme alıyor; Play keşfetmeden günde ~2 indirme geliyordu. "Kilo Takibi" tam ifadesi korunuyor; Apple Ads'te en iyi kelime "kilo takibi".)
 
-## Tam açıklama (en fazla 4000 karakter)
-Hafif, kilo verme yolculuğunu sade ve motive edici bir şekilde takip etmen için tasarlandı. Tartılarını, adımlarını, haftalık iğnelerini, yan etkilerini, protein ve suyunu, takviyelerini tek bir yerde tutar; ilerlemeni anlaşılır grafiklerle gösterir.
+## Kısa açıklama (en fazla 80 karakter · 79)
+GLP-1 iğne günü, doz, yan etki, kilo ve protein takibi; seni tanıyan bir koçla.
+
+## Tam açıklama (en fazla 4000 karakter · 16 Kasım, GLP-1 eklendi, 3926 karakter)
+Hafif, GLP-1 tedavisinde ya da kendi yönteminle kilo verirken her şeyi tek yerde takip etmen için tasarlandı: kilo takibi, haftalık iğne takibi, protein ve su, takviyeler, vücut ölçüleri ve adımlar. İlerlemeni anlaşılır grafiklerle görürsün. Hesap yok, veriler yalnızca telefonunda.
+
+HEPSİ TEK EKRANDA
+• Verdiğin kilo, hedefin, bugünkü protein ve su, adımların ve sıradaki iğnen tek bakışta
+• + düğmesiyle saniyeler içinde kayıt: kilo, iğne, protein, su, ölçü, fotoğraf, egzersiz
 
 KİŞİSEL KOÇ
 • Kayıtlarına bakar, doğru anda tek bir öneri verir: protein açığın, su serin, iğne günün, tartıdaki günlük oynama
 • Bulantının senin döngünde hangi günlerde yoğunlaştığını öğrenir, ona göre konuşur
-• Asla suçlamaz; birkaç gün ara verdiysen "kaldığın yerden devam" der
-• Hepsi telefonunda hesaplanır; hiçbir veri dışarı çıkmaz
+• Tartı birkaç gün yerinde sayınca nedenini anlatır, kontrol listesiyle yol gösterir
+• Asla suçlamaz; ara verdiysen "kaldığın yerden devam" der
 
-KİLO, ÖLÇÜLER VE VÜCUT KOMPOZİSYONU
-• Tartılarını saniyeler içinde kaydet; yağ oranı ve not ekle, yanlış girdiğini dokunarak düzelt
-• Başlangıçtan bugüne değişimi, haftalık hızını ve hedefe kalan yolu gör
+KİLO, HEDEF TARİHİ VE VÜCUT ÖLÇÜLERİ
+• Başlangıçtan bugüne değişimi, haftalık hızını ve bu hızla hedefe varacağın ayı gör
 • Bel, kalça, göğüs, kol, uyluk ve boyun ölçülerini kaydet; tartı yerinde saysa da santimleri izle
-• Akıllı tartın Health Connect'e yazıyorsa ölçümlerin kendiliğinden gelir
+• Kas kütlesi ve yağ oranı; akıllı tartın Health Connect'e yazıyorsa ölçümlerin kendiliğinden gelir
+• Her pazartesi haftanın özeti ve bu hafta için tek bir hedef
 
-ADIM SAYAR
-• Health Connect ile günlük ve saatlik adımlarını gör
-• Adım hedefi, tahmini mesafe, kalori ve yürüyüş süresi
+KAS KORUMA
+• GLP-1 kullanırken kası korumak için haftalık direnç egzersizi hedefi ve yeterli protein
 
-HAFTALIK İĞNE TAKİBİ (isteğe bağlı)
-• Her iğneyi tarih, saat, doz ve bölgeyle kaydet; sıradaki bölge önerisini al
+NE YESEM?
+• Kalan proteinine, saate ve iştahına göre Türk mutfağından öğün önerileri; dokun, protein eklensin
+
+GLP-1 İĞNE TAKİBİ (isteğe bağlı)
+• Haftalık iğneni tarih, saat, doz ve bölgeyle kaydet; sıradaki bölge önerisini al
 • Haftalık döngünün hangi evresinde olduğunu ve evreye uygun ipuçlarını gör
-• Doz başına verdiğin kiloyu incele
-• Kalem stoğu: kalemde kaç doz kaldığını izle, bitmeden haber al
+• Doz planım: doktorunun planını bir kez gir; artış haftasını ve yeni kalem zamanını Hafif hatırlatsın
+• Kalem stoğu: elinde kaç doz kaldığını izle, bitmeden haber al
 
-YAN ETKİ GÜNLÜĞÜ
+YAN ETKİ VE İŞTAH GÜNLÜĞÜ
 • Bulantı, kabızlık, reflü, yorgunluk ve diğer belirtileri şiddetiyle tek dokunuşla kaydet
-• Yan etkilerinin iğneden sonraki hangi günlerde yoğunlaştığını gör
+• İştahını ve yemeği ne sıklıkla düşündüğünü kaydet; iğneden sonraki günlere göre örüntünü gör
+
+İLERLEME FOTOĞRAFLARI
+• Haftada bir fotoğraf çek, iki tarihi yan yana koy; kilo ve bel farkını gör
+• Fotoğraflar galeride görünmez, telefonundan çıkmaz
 
 DOKTOR İÇİN RAPOR
-• Kilo grafiği, doz geçmişi, yan etkiler, ölçüler ve beslenme özeti tek bir PDF'te
-• Kontrole giderken telefonundan paylaş ya da yazdır
+• Kilo grafiği, doz geçmişi, yan etkiler, ölçüler ve beslenme özeti tek bir PDF'te; kontrole giderken paylaş ya da yazdır
 
-PROTEİN VE SU
+HEDEFE ULAŞINCA: KORUMA DÖNEMİ
+• Hedefinin çevresinde bir koruma aralığı; dışına çıkarsan nazikçe haber verir
+
+PROTEİN VE SU TAKİBİ
 • Yediklerin protein hedefini renkli bloklarla doldurur; sık yediklerin tek dokunuşta
-• Miktarı seç, tek dokunuşla suyunu ekle; son 7 günü gör
+• Su içme hatırlatıcı ve tek dokunuşla su ekleme; son 7 günü gör
 
 TAKVİYELER
-• Sabah, öğle, akşam ve gece için kendi programını kur; aynı takviyeyi günde birkaç kez ekleyebilirsin
+• Sabah, öğle, akşam ve gece için kendi programını kur; takviye hatırlatıcı zamanında haber verir
 
 HATIRLATICILAR
-• İğne günü, takviyeler, su, protein, haftalık tartı, kalem stoğu ve yedek hatırlatmaları
+• İğne günü, doz artışı, takviyeler, su, protein, haftalık tartı ve kalem stoğu
 • Bildirimden tek dokunuşla kaydet: "+250 ml", "Hepsini aldım" gibi
 
-ROZETLER VE PAYLAŞIM
-• Ara hedeflere ulaştıkça rozet kazan; ilerlemeni şık bir görselle paylaş
+ADIM SAYAR
+• Health Connect'ten ya da telefonunun kendi sayacından günlük adımların; hedef, mesafe, kalori
 
-ANA EKRAN WIDGET'LARI
-• 10 farklı widget: sıradaki iğne, döngü, kilo grafiği, hedef, su, protein, adım, takviyeler
-• Uygulamayı açmadan "+250 ml su" ya da "Hepsini aldım"
-
-KOYU TEMA
-• Telefonunun ayarını izler ya da Açık / Koyu olarak sen seç
+ROZETLER, WIDGET'LAR, KOYU TEMA
+• Ara hedeflere ulaştıkça rozet kazan; ilerlemeni ve rozetlerini şık bir görselle paylaş
+• 12 ana ekran widget'ı ve büyük Pano; uygulamayı açmadan su ekle
+• Telefonunun ayarını izleyen koyu tema
 
 VERİLERİN SENİN
 • Hesap yok; tüm veriler yalnızca telefonunda saklanır
@@ -66,9 +78,9 @@ VERİLERİN SENİN
 • Android yedeklemesiyle yeni telefonuna taşınır; Excel'e aktar, yedek dosyası al
 
 HAFİF PLUS
-Temel takip her zaman ücretsiz. Plus ile: tahmini ilaç düzeyi ve evre önerileri, yan etki analizi, detaylı kilo grafikleri, doktor raporu (PDF) ve ana ekran widget'ları. İlk 7 gün Plus herkese açık; aylık, 3 aylık ya da yıllık abonelikle devam edebilirsin.
+Temel takip her zaman ücretsiz. Plus ile: ilerleme fotoğrafları, doz planı ve artış hatırlatmaları, tahmini ilaç düzeyi ve evre önerileri, yan etki ve iştah analizi, detaylı kilo grafikleri, doktor raporu (PDF) ve ana ekran widget'ları. İlk 7 gün Plus herkese açık; aylık, 3 aylık ya da yıllık abonelikle devam edebilirsin.
 
-Önemli: Hafif bir kişisel takip aracıdır; tıbbi bir cihaz değildir ve tıbbi tavsiye vermez. İlaç kullanımın, dozun ve hedeflerin konusunda her zaman doktoruna danış.
+Önemli: Hafif bir kişisel takip aracıdır; tıbbi bir cihaz değildir, doz önermez ve tıbbi tavsiye vermez. İlaç kullanımın, dozun ve hedeflerin konusunda her zaman doktoruna danış.
 
 ## Kategori önerisi
 Sağlık ve Fitness
