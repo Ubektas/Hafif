@@ -38,3 +38,7 @@ Play paket adı: `com.ugurbektas.hafif`
 | Gün | Gösterim | Tıklama | Maliyet | TBM | App Store indirme (`google-ios`) | İndirme başı |
 |---|---|---|---|---|---|---|
 | 19 Kas (ödeme düzelince ~18:00–20:00) | 8.190 | 183 | ₺162,34 | ₺0,89 | (bekleniyor) | — |
+| 20 Kas | — | 327+ | ₺132+ | ~₺0,40 | App Store günü 2 indirme (tümü) | — |
+| 21 Kas | 15.400 | 666 | ₺167,92 | ₺0,25 | App Store günü 8 indirme; Apple Ads 7 günde 7 yükleme → Google payı ~0–3 | ≥ ₺56 |
+
+**Karar (22 Kas):** ~₺460 / ~1.170 tıklama → en fazla birkaç indirme. Tıklamalar çoğunlukla Gmail açma / yanlış dokunma. Kampanya duraklatılır; iPhone için Apple Ads Advanced + ASO (GLP-1) ile devam.
