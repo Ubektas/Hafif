@@ -12,7 +12,10 @@ Başlangıç: 16 Kasım 2026, ~21:47.
 | 19 Kas (akşam, kampanya raporu) | ₺200 → ₺300, tCPI ₺10 (~13:45) | ₺308,19 | 112 | 27 | ₺11,41 | 11:00'e kadar ₺217/24 yükleme; tCPI sonrası +₺91, +3 yükleme (geç gelen dönüşümler eklenebilir). Ham rapor: `gunluk/2026-11-19-kampanya.csv` |
 | 20 Kas | ₺300, tCPI ₺10 | ₺315,75 | 225 | 45 | ₺7,02 | Kesin. tCPI 2. gün: gece ~₺23, gündüz/akşam ₺4–9. 100. yükleme bu gün |
 | 21 Kas (Cmt) | ₺300, tCPI ₺10 | ₺326,28 | 145 | **50** | **₺6,53** | En iyi gün; harcama güne dengeli yayıldı (13:00'te ₺95) |
-| **Toplam (17–21 Kas)** | | **₺1.351,39** | | **176** | **₺7,68** | 22 Kas'tan itibaren ayrı satır |
+| **Toplam (17–21 Kas)** | | **₺1.351,39** | | **176** | **₺7,68** | |
+| 22 Kas (Paz) | ₺300, tCPI ₺10 | ₺344,29 | 182 | 50 | ₺6,89 | Kesin |
+| 23 Kas (Pzt, akşam) | ₺300, tCPI ₺10 | ₺246,11 | 152 | 38 | ₺6,48 | Sabah yavaş (12:00'de 8), öğleden sonra toparladı; kesinleşecek |
+| **Toplam (17–23 Kas)** | | **~₺1.942** | | **~264** | **~₺7,36** | |
 
 Not: Google Ads rakamları birkaç gün içinde düzeltilebilir (geçersiz trafik ayıklaması, geç gelen dönüşümler).
 Günlük satırlar `saatlik/` raporlarından (`node magaza/reklam/analiz.js`). Tıklama sayısı saatlik raporda yok.
