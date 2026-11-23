@@ -57,6 +57,12 @@ node magaza/reklam/analiz.js
 
 Sabah 06–11 harcamanın yarısını alıyor ama en pahalı dilim (08:00 ₺20, 10:00 ₺15). Öğleden sonra ve akşam ~₺5. Uygulama kampanyasında saat ayarı yok; bütçe akşama kalmalı.
 
+## Abonelik durumu (23 Kas)
+
+- App Store 19 Kas Plus satışı ($10,03 / net $5,56) kullanıcının arkadaşı → **gerçek (yabancı) ücretli abone henüz 0**, iki platformda da.
+- Ücretsiz 7 gün Plus uygulama içinde veriliyor (App Store/Play deneme teklifi değil) → mağazalar denemeleri saymaz; sadece satın almalar görünür.
+- İlk reklam kullanıcılarının denemesi: Android 17 Kas → **24 Kas**'tan itibaren biter. Takip: Play Console Siparişler (gerçek sipariş "Test:" yazmaz), App Store Connect Paid Plans.
+
 ## Mağaza adı değişikliği (22 Kas)
 
 - Yeni ad (iki mağaza): **Hafif: GLP-1 ve Kilo Takibi**. Önceki: "Hafif: Kilo ve İğne Takibi".
