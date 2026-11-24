@@ -2,6 +2,14 @@
 
 Play en fazla 500 karakter kabul eder. Aşağıdaki bloğu olduğu gibi yapıştır.
 
+## 2.0.14 (Black Friday; iOS'ta da aynı not)
+
+```
+<tr-TR>
+Küçük iyileştirmeler ve Black Friday fırsatı.
+</tr-TR>
+```
+
 ## 2.0.12
 
 ```

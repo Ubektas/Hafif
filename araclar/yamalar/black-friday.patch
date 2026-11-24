@@ -1,0 +1,154 @@
+--- artifact.html
++++ artifact.html
+@@ -273,6 +273,14 @@
+ .pwcta{border:0;border-radius:18px;padding:16px;font:700 16.5px var(--f-body);color:#fff;background:linear-gradient(160deg,var(--emerald-1),var(--emerald-2));box-shadow:0 12px 24px -12px rgba(11,59,51,.6);cursor:pointer}
+ .pwcta:disabled{opacity:.6}
+ .pwfine{font-size:11px;color:var(--muted);text-align:center;line-height:1.45;margin:0}
++/* Black Friday bandı ve ödeme ekranı etiketi */
++.bfband{display:flex;align-items:center;gap:12px;padding:14px 10px 14px 16px;cursor:pointer;border:0;color:#fff;background:radial-gradient(120% 120% at 100% 0%,#1F8A70 0%,transparent 55%),linear-gradient(160deg,#0B3B33,#062520)}
++:root[data-hf="dark"] .bfband{box-shadow:inset 0 0 0 1px rgba(159,240,214,.2),var(--shadow)}
++.bfband .bfi{flex:none;width:40px;height:40px;border-radius:13px;background:rgba(159,240,214,.14);color:var(--mint);display:grid;place-items:center}
++.bfband .bft{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}.bfband .bft b{font:700 15.5px/1.25 var(--f-display);letter-spacing:-.01em}.bfband .bft small{font-size:12.5px;color:rgba(255,255,255,.75)}
++.bfband .bfx{flex:none;align-self:flex-start;border:0;background:none;color:rgba(255,255,255,.7);font-size:22px;line-height:1;padding:2px 6px;cursor:pointer}
++#paywall .bfetk{display:table;margin:0 0 10px;font:700 12px var(--f-body);letter-spacing:.02em;color:#0B3B33;background:var(--mint);border-radius:99px;padding:4px 10px}
++.pwp .pr .bfold{display:block;font:500 12.5px var(--f-num);color:var(--muted);text-decoration:line-through}
+ .pwl{display:flex;justify-content:center;flex-wrap:wrap;gap:6px 16px}.pwl button,.pwl a{border:0;background:none;font:500 12.5px var(--f-body);color:var(--muted);text-decoration:underline;cursor:pointer;padding:2px}
+ .plcard{display:flex;align-items:center;gap:14px;background:radial-gradient(120% 120% at 100% 0%,#1F8A70 0%,transparent 55%),linear-gradient(160deg,#0B3B33,#062520);color:#fff;border-radius:22px;padding:18px;cursor:pointer;border:0;text-align:left;width:100%;font:inherit}
+ .plcard b{display:block;font:700 18px var(--f-display)}.plcard small{display:block;color:rgba(255,255,255,.75);font-size:12.5px;margin-top:2px}
+@@ -1291,6 +1299,10 @@
+ /* ---------- Hafif Plus (Google Play aboneliği; satın alma doğrudan telefon ile Google Play arasında) ---------- */
+ const PLUS_ID="hafif_plus";
+ const PLANS=[{k:"aylik",n:"Aylık",p:"99,99 ₺",m:"/ ay",sub:"her ay yenilenir",mo:1},{k:"uc-aylik",n:"3 aylık",p:"249,99 ₺",m:"83,33 ₺ / ay",sub:"%17 tasarruf",mo:3},{k:"yillik",n:"Yıllık",p:"499,99 ₺",m:"41,67 ₺ / ay",sub:"%58 tasarruf",mo:12,best:true}];
++/* ---------- Black Friday 2026: yıllık Plus %40 (499,99 → 299,99 ₺). İndirim mağazadaki fiyatta; uygulama yalnızca bant, etiket ve bildirim gösterir.
++   Telefonun yerel saatiyle 27 Kasım 00:00 – 30 Kasım 23:59; süre dışında hiçbir şey görünmez, 1 Aralık'tan sonra güncelleme gerekmez. Plus abonelerine gösterilmez. */
++const BF={bas:new Date(2026,10,27,0,0,0,0).getTime(),bit:new Date(2026,10,30,23,59,59,999).getTime(),eski:499.99,eskiTx:"499,99 ₺"};
++function bfAktif(){const t=Date.now();return t>=BF.bas&&t<=BF.bit}
+ const NATIVE=()=>!!(window.Capacitor&&window.Capacitor.isNativePlatform&&window.Capacitor.isNativePlatform());
+ /* iPhone: adımlar ve tartı Apple Sağlık'tan, abonelik App Store'dan */
+ const IOS=()=>!!(window.Capacitor&&window.Capacitor.getPlatform&&window.Capacitor.getPlatform()==="ios");
+@@ -1308,6 +1320,10 @@
+ function PLUS(){return NATIVE()?(plusOwned||trialLeft()>0):!S.profile.pvFree}
+ function trialEndCheck(){const P=S.profile;if(!NATIVE()||plusOwned||!P.onboarded||trialLeft()>0||P.trialEndSeen)return;P.trialEndSeen=today();save();setTimeout(()=>{if(!$("#onb")&&!$("#celeb"))openPaywall("trialEnd")},1800)}
+ const IAP=()=>window.CdvPurchase&&window.CdvPurchase.store||null;
++const bfGoster=()=>bfAktif()&&!plusOwned;
++const BF_I=`<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.6 13.4l-7.2 7.2a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8z"/><circle cx="7.5" cy="7.5" r="1.5"/></svg>`;
++function bfBand(){let x="";try{x=localStorage.getItem("hf-bf-x")||""}catch(e){}if(!bfGoster()||x===today())return "";
++  return `<div class="card bfband" data-bf aria-label="Black Friday: Plus yıllık %40 indirimli · 30 Kasım'a kadar"><span class="bfi">${BF_I}</span><span class="bft"><b>Black Friday: Plus yıllık %40 indirimli</b><small>30 Kasım'a kadar</small></span><button type="button" class="bfx" data-bfx aria-label="Bugün gizle">×</button></div>`}
+ /* App Store'da her süre ayrı ürün (aynı abonelik grubunda); Google Play'de tek ürün, üç temel plan */
+ const IOS_IDS={aylik:"hafif_plus_aylik","uc-aylik":"hafif_plus_uc_aylik",yillik:"hafif_plus_yillik"};
+ const plusOwnedNow=st=>IOS()?(Object.values(IOS_IDS).some(id=>st.owned(id))||Date.now()<plusUntilLocal()):!!st.owned(PLUS_ID);
+@@ -1320,7 +1336,7 @@
+   st.register(IOS()?Object.values(IOS_IDS).map(id=>({id,type:C.ProductType.PAID_SUBSCRIPTION,platform:PF})):[{id:PLUS_ID,type:C.ProductType.PAID_SUBSCRIPTION,platform:PF}]);
+   {const w=st.when();if(w.finished)w.finished(t=>plusNote(t))} /* eklenti sürümünde yoksa atla */
+   st.when().approved(t=>{plusNote(t);t.verify()}).verified(r=>r.finish())
+-    .receiptUpdated(()=>{const o=plusOwnedNow(st);if(o!==plusOwned){plusOwned=o;try{localStorage.setItem("hf-plus",o?"1":"0")}catch(e){}if(o){closePaywall();toast("Hafif Plus açıldı. Teşekkürler!")}render()}})
++    .receiptUpdated(()=>{const o=plusOwnedNow(st);if(o!==plusOwned){plusOwned=o;try{localStorage.setItem("hf-plus",o?"1":"0")}catch(e){}if(o){closePaywall();toast("Hafif Plus açıldı. Teşekkürler!");bfBildirim()}render()}})
+     .productUpdated(()=>{if($("#paywall"))pwRefresh()});
+   /* tanılama: mağazanın döndürdüğü son hata, ödeme ekranında ürünler yoksa küçük satırda gösterilir */
+   if(st.error)st.error(e=>{if(e)iapDiag=[e.code,e.message].filter(Boolean).join(" ")});
+@@ -1344,7 +1360,8 @@
+   return PLANS.map(P=>{const o=pwOffer(P.k),last=o&&o.pricingPhases[o.pricingPhases.length-1],price=last?last.price:P.p,tr=pwTrial(o),sub=pwSave(P,last);
+     let per=P.m;if(last&&P.mo>1&&last.priceMicros)per=(last.priceMicros/1e6/P.mo).toLocaleString("tr-TR",{style:"currency",currency:last.currency||"TRY"})+" / ay";
+     const bdg=P.best?`EN AVANTAJLI${tr?" · "+tr.toLocaleUpperCase("tr-TR"):""}`:tr?tr.toLocaleUpperCase("tr-TR"):"";
+-    return `<button type="button" class="pwp" role="radio" data-pw="${P.k}" aria-checked="${P.k===pwSel}">${bdg?`<span class="bdg">${bdg}</span>`:""}<span class="rd"></span><span><b>${P.n}</b><small>${sub}</small></span><span class="pr"><b>${price}</b><small>${per}</small></span></button>`}).join("");
++    const old=P.k==="yillik"&&bfGoster()&&last&&last.priceMicros&&(last.currency||"TRY")==="TRY"&&last.priceMicros/1e6<BF.eski-0.005;
++    return `<button type="button" class="pwp" role="radio" data-pw="${P.k}" aria-checked="${P.k===pwSel}">${bdg?`<span class="bdg">${bdg}</span>`:""}<span class="rd"></span><span><b>${P.n}</b><small>${sub}</small></span><span class="pr">${old?`<s class="bfold">${BF.eskiTx}</s>`:""}<b>${price}</b><small>${per}</small></span></button>`}).join("");
+ }
+ function pwCta(){const o=pwOffer(pwSel),tr=pwTrial(o),P=PLANS.find(x=>x.k===pwSel),last=o&&o.pricingPhases[o.pricingPhases.length-1];
+   return {btn:tr?tr.charAt(0).toLocaleUpperCase("tr-TR")+tr.slice(1)+" dene":"Hafif Plus'a geç",fine:`${tr?`Deneme bitince ${last?last.price:P.p} alınır. `:""}Abonelik, iptal edilmedikçe ${P.mo===1?"her ay":P.mo===3?"3 ayda bir":"yılda bir"} ${IOS()?"Apple hesabından otomatik yenilenir. İstediğin zaman Ayarlar → Apple Kimliği → Abonelikler'den iptal edebilirsin.":"Google Play hesabından otomatik yenilenir. İstediğin zaman Google Play → Abonelikler'den iptal edebilirsin."}`}}
+@@ -1352,11 +1369,11 @@
+ function bindPw(){document.querySelectorAll("[data-pw]").forEach(b=>b.addEventListener("click",()=>{pwSel=b.dataset.pw;pwRefresh()}))}
+ function closePaywall(){const w=$("#paywall");if(w)w.remove()}
+ function openPaywall(src){
+-  closePaywall();if(plusOwned&&NATIVE())return;iapInit(); /* ücretsiz dönemde de açılır: kullanıcı abonelik seçeneklerini görebilsin */
++  closePaywall();if(plusOwned&&NATIVE())return;iapInit();if(bfGoster()||src==="bf")pwSel="yillik"; /* ücretsiz dönemde de açılır: kullanıcı abonelik seçeneklerini görebilsin */
+   {const st=IAP();if(st&&st.update&&!pwOffer(pwSel))st.update().catch(()=>{})} /* uygulama açıkken ürünler yayına girdiyse yeniden çek */
+   const d=document.createElement("div");d.id="paywall";d.setAttribute("role","dialog");d.setAttribute("aria-modal","true");d.setAttribute("aria-label","Hafif Plus");
+   const c=pwCta();
+-  d.innerHTML=`<div class="pwtop"><button type="button" class="pwx" id="pwX" aria-label="Kapat">✕</button><span class="pwk">✦ Hafif Plus</span><h1>Kilo vermenin<br>en hafif yolu.</h1><p>${src==="trialEnd"?"7 günlük ücretsiz Plus dönemin bitti. Vücuttaki ilaç düzeyi, tüm grafikler ve doktor raporu için devam et.":"İlaç düzeyi, tüm grafikler, doktor raporu ve yan etki analizi tek abonelikte."}</p></div>
++  d.innerHTML=`<div class="pwtop"><button type="button" class="pwx" id="pwX" aria-label="Kapat">✕</button>${bfGoster()?`<span class="bfetk">Black Friday · %40</span>`:""}<span class="pwk">✦ Hafif Plus</span><h1>Kilo vermenin<br>en hafif yolu.</h1><p>${src==="trialEnd"?"7 günlük ücretsiz Plus dönemin bitti. Vücuttaki ilaç düzeyi, tüm grafikler ve doktor raporu için devam et.":"İlaç düzeyi, tüm grafikler, doktor raporu ve yan etki analizi tek abonelikte."}</p></div>
+     <div class="pwb">
+       <div class="pwf">
+         ${SHOTS()?`<div><i style="background:var(--shot-soft);color:var(--shot)">${UI_I(UIC.igne,18)}</i><span>Vücuttaki ilaç düzeyi<br><small>Tahmini mg, birikim ve tüm evrelerin ipuçları</small></span></div>`:""}
+@@ -1381,6 +1398,9 @@
+   $("#pwRestore").addEventListener("click",async()=>{const st=IAP();if(!st){toast(NATIVE()?(IOS()?"App Store'a bağlanılamadı":"Google Play'e bağlanılamadı"):"Bu görünümde satın alma yok");return}await st.restorePurchases().catch(()=>{});toast(plusOwnedNow(st)?"Hafif Plus geri yüklendi":"Bu hesapta etkin bir Hafif Plus aboneliği bulunamadı")});
+   $("#pwManage").addEventListener("click",()=>{const st=IAP();if(st&&st.manageSubscriptions)st.manageSubscriptions().catch(()=>{});else window.open("https://play.google.com/store/account/subscriptions","_blank")});
+ }
++document.addEventListener("click",e=>{const t=e.target;if(!t||!t.closest)return;
++  if(t.closest("[data-bfx]")){e.stopPropagation();try{localStorage.setItem("hf-bf-x",today())}catch(_){}const b=t.closest(".bfband");if(b)b.remove();return}
++  if(t.closest("[data-bf]"))openPaywall("bf")});
+ document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-plus]");if(b){e.stopPropagation();e.preventDefault();openPaywall("kilit")}},true);
+ /* ---------- Android ana ekran widget'ları: veri files/widget.json'a yazılır, widget'lar yerel olarak çizilir ---------- */
+ const WGP=()=>NATIVE()&&window.Capacitor.Plugins&&window.Capacitor.Plugins.HafifWidget||null;
+@@ -1479,6 +1499,7 @@
+   maybeOnboard(); trialEndCheck(); if(typeof widgetSync==="function")widgetSync();
+   if(loaded&&HP())syncHealth();
+   if(loaded&&LN()&&!remT)remQueue();
++  if(loaded&&LN()&&!bfT){bfT=1;bfBildirim()}
+   if(tab==="adim"&&HP()&&!HOURS)syncHealth(true);
+ }
+ 
+@@ -1696,7 +1717,7 @@
+       ${actionsHtml()}
+       ${suppMini()}
+       ${stepCard()}${suppCta()}
+-      ${penWarn()}${remCta()}
++      ${bfBand()}${penWarn()}${remCta()}
+       <button class="btn ghost" data-go="ayar">Hedefini ayarla</button></section>`;
+   }
+   if(!w.length){
+@@ -1708,7 +1729,7 @@
+       ${actionsHtml()}
+       ${suppMini()}
+       ${stepCard()}${suppCta()}
+-      ${penWarn()}${remCta()}
++      ${bfBand()}${penWarn()}${remCta()}
+       ${s.length?`<div id="cycWrap" class="cycw" data-v="kadran">${cycleHtml("kadran")}</div>`:`<button class="btn ghost" data-go="ayar">Hedef ve ilaç bilgisini ayarla</button>`}</section>`;
+   }
+   const latest=w[w.length-1], first=w[0];
+@@ -1742,7 +1763,7 @@
+     ${coachHtml()}
+     ${nextShotRow()}
+     ${HP()&&!(S.hc&&S.hc.on)&&!PV()?stepCard():""}${suppCta()}
+-    ${penWarn()}${remCta()}
++    ${bfBand()}${penWarn()}${remCta()}
+     ${msStrip()}
+   </section>`;
+ }
+@@ -4854,7 +4875,7 @@
+   S.hc.last=Date.now(); hcBusy=false; save();
+   if(changed||tab==="adim"){if(!$("#sheetRoot").firstChild&&!$("#onb")&&(tab==="ozet"||tab==="adim"||tab==="kilo"))render()}
+ }
+-document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible"){syncHealth();remQueue();wPending()}});
++document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible"){syncHealth();remQueue();bfBildirim();wPending()}});
+ (function wpIlk(){if(loaded)wPending();else setTimeout(wpIlk,800)})();
+ 
+ /* ---------- hatırlatıcılar (yalnızca Android; telefon kendisi zamanlar) ---------- */
+@@ -4895,6 +4916,19 @@
+   return L;
+ }
+ let remT=null,remBusy=false,remTypes=false,REMST=null,remSig="";
++/* Black Friday bildirimleri: sabit ID (9950, 9951; hatırlatıcılar 9000'in altını yeniden kurar, dokunmaz). Zaten bekleyen tekrar kurulmaz,
++   saati geçen kurulmaz, izin yoksa sessizce atlanır (izin yalnızca bunun için sorulmaz), Plus alınınca ya da kampanya bitince iptal edilir. */
++const BF_N=[{id:9950,at:new Date(2026,10,27,20,0,0,0),title:"Black Friday: Plus %40 indirimli",body:"Yıllık Plus 299,99 ₺. Doz planı, grafikler ve doktor raporu. 30 Kasım'a kadar."},
++  {id:9951,at:new Date(2026,10,30,20,0,0,0),title:"Son gün: Plus %40 indirimli",body:"Yıllık Plus 299,99 ₺ fırsatı bu gece bitiyor."}];
++let bfBusy=false,bfT=0;
++async function bfBildirim(){const N=LN();if(!N||bfBusy)return;bfBusy=true;
++  try{
++    if(plusOwned||Date.now()>BF.bit){await N.cancel({notifications:BF_N.map(x=>({id:x.id}))});return}
++    const p=await N.checkPermissions();if(!p||p.display!=="granted")return;
++    const q=await N.getPending(),bekl=((q&&q.notifications)||[]).map(x=>+x.id);
++    const L=BF_N.filter(x=>x.at.getTime()>Date.now()&&!bekl.includes(x.id)).map(x=>({id:x.id,title:x.title,body:x.body,extra:{bf:1},schedule:{at:x.at,allowWhileIdle:true}}));
++    if(L.length)await N.schedule({notifications:L});
++  }catch(e){console.warn("bf bildirim",e&&e.message)}finally{bfBusy=false}}
+ function remQueue(){if(!LN())return;clearTimeout(remT);remT=setTimeout(remSchedule,1200)}
+ async function remSchedule(){
+   const N=LN(); if(!N||remBusy) return; remBusy=true;
+@@ -4982,6 +5016,7 @@
+   if(id==="kaydet"){go("ozet");openSheet("shot");return}
+   if(id==="kilo"){go("ozet");openSheet("weight");return}
+   if(id==="tamam")return;
++  if(x.bf){go("ozet");try{render()}catch(_){}setTimeout(()=>openPaywall("bf"),250);return}
+   if(id==="yedek"){go("ayar");setTimeout(exportJson,600);return}
+   go(x.tab&&(x.tab!=="igne"||SHOTS())?x.tab:"ozet");
+ }
