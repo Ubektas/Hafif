@@ -1,0 +1,33 @@
+{
+  "adimlar": [
+    {
+      "ad": "Yayın derlemesi testi başladı",
+      "sonuc": true
+    },
+    {
+      "ad": "Yayın derlemesi: bildirim izni kontrolü",
+      "sonuc": true,
+      "detay": "{\"display\":\"granted\"}"
+    },
+    {
+      "ad": "Yayın derlemesi: bildirim izni isteme",
+      "sonuc": true,
+      "detay": "{\"display\":\"granted\"}"
+    },
+    {
+      "ad": "Yayın derlemesi: bekleyen bildirimler",
+      "sonuc": true,
+      "detay": "{\"notifications\":[{\"id\":9950,\"title\":\"Black Friday: Plus %40 indirimli\",\"body\":\"Yıllık Plus 299,99 ₺. Doz planı, grafikler ve doktor raporu. 30 Kasım'a kadar.\",\"schedule\":{\"at\":\"Fri Nov 27 20:00:00 UTC 2026\",\"count\":1,\"repeats\":false},\"extra\":{\"bf\":1},\"isExactNotification\":false,\"isExactMandatory\":false},{\"id\":9951,\"title\":\"Son gün: Plus %40 indirimli\",\"body\":\"Yıllık Plus 299,99 ₺ fırsatı bu gece bitiyor.\",\"schedule\":{\"at\":\"Mon Nov 30 20:00:00 UTC 2026\",\"count\":1,\"repeats\":false},\"extra\":{\"bf\":1},\"isExactNotification\":false,\"isExactMandatory\":false}]}"
+    },
+    {
+      "ad": "Yayın derlemesi: dosya izni kontrolü",
+      "sonuc": true,
+      "detay": "{\"publicStorage\":\"granted\"}"
+    },
+    {
+      "ad": "Yayın derlemesi: İndirilenler klasörüne kaydetme",
+      "sonuc": true,
+      "detay": "{\"uri\":\"file:///storage/emulated/0/Download/hafif-test.pdf\"} · undefined"
+    }
+  ]
+}
