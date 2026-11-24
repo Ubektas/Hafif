@@ -83,7 +83,10 @@ const bloklar = [
 const tl = (n) => "₺" + n.toFixed(2).replace(".", ",");
 const ybm = (m, d) => (d ? tl(m / d) : "—");
 
-const argDosyalar = process.argv.slice(2);
+// --saat=N: her gün için 00:00'dan N:59'a kadarki birikimli toplam (aynı saate kadar karşılaştırma).
+const saatArg = process.argv.slice(2).find((a) => a.startsWith("--saat="));
+const kesim = saatArg ? +saatArg.split("=")[1] : null;
+const argDosyalar = process.argv.slice(2).filter((a) => !a.startsWith("--"));
 const klasor = path.join(__dirname, "saatlik");
 const dosyalar = argDosyalar.length
   ? argDosyalar
@@ -94,6 +97,17 @@ for (const d of dosyalar) for (const r of satirlar(d)) tekil.set(r.gun + "|" + r
 const hepsi = [...tekil.values()];
 const top = (r) => r.reduce((a, x) => ({ m: a.m + x.maliyet, d: a.d + x.donusum }), { m: 0, d: 0 });
 const gunler = [...new Set(hepsi.map((x) => x.gun))].sort();
+
+if (kesim !== null) {
+  console.log(`## Günlere göre ${String(kesim).padStart(2, "0")}:59'a kadar\n\n| Gün | Harcama | Yükleme | Yükleme başı |\n|---|---|---|---|`);
+  for (const g of gunler) {
+    const r = hepsi.filter((x) => x.gun === g && x.saat <= kesim);
+    if (!r.length || Math.max(...hepsi.filter((x) => x.gun === g).map((x) => x.saat)) < kesim) continue;
+    const t = top(r);
+    console.log(`| ${g} ${r[0].haftaGunu} | ${tl(t.m)} | ${t.d} | ${ybm(t.m, t.d)} |`);
+  }
+  process.exit(0);
+}
 
 console.log(`# Saatlik reklam özeti (${gunler.length} gün)\n`);
 
