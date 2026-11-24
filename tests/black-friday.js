@@ -33,7 +33,7 @@ function sahte({ izin, abone, yillik, tema }) {
     cancel: async ({ notifications }) => { notifications.forEach(n => { window.__bf.cancel.push(+n.id); pend.delete(+n.id); }); },
   };
   window.__pend = pend; window.__listeners = {};
-  window.Capacitor = { isNativePlatform: () => true, getPlatform: () => 'android', Plugins: { LocalNotifications: LN },
+  window.Capacitor = { isNativePlatform: () => true, getPlatform: () => 'android', Plugins: { LocalNotifications: LN, App: { getLaunchUrl: async () => ({}), exitApp() {}, addListener() { return { remove() {} }; } } },
     addListener: (p, ev, fn) => { window.__listeners[ev] = fn; return { remove() {} }; } };
   // mağaza
   const faz = (micros, per) => ({ price: '₺' + (micros / 1e6).toLocaleString('tr-TR', { minimumFractionDigits: 2 }), priceMicros: micros, currency: 'TRY', billingPeriod: per, paymentMode: 'PayAsYouGo' });
@@ -71,6 +71,10 @@ const bekleyen = p => p.evaluate(() => [...window.__pend.keys()].sort());
 (async () => {
   const b = await chromium.launch();
 
+  // 0) Açılışta betik sonuna kadar çalışıyor mu (geri tuşu dinleyicisi en sonda kurulur)
+  { const { p, ctx, hatalar } = await ac(b, { zaman: '2026-11-24T12:00:00' });
+    ok('açılış: geri tuşu dinleyicisi kuruldu (betik sonuna kadar çalıştı)', await p.evaluate(() => typeof window.__listeners.backButton === 'function'));
+    ok('açılış: sayfa hatası yok', !hatalar.length, hatalar); await ctx.close(); }
   // 1) Kampanya öncesi (26 Kasım öğlen): bant ve etiket yok; iki bildirim kurulur, tekrar açılışta çift olmaz
   { const { p, ctx, hatalar } = await ac(b, { zaman: '2026-11-26T12:00:00' });
     ok('öncesi: bant yok', !(await band(p)));
@@ -82,6 +86,8 @@ const bekleyen = p => p.evaluate(() => [...window.__pend.keys()].sort());
     for (let i = 0; i < 3; i++) { await p.evaluate(() => { __hf.bfBildirim(); document.dispatchEvent(new Event('visibilitychange')); }); await p.waitForTimeout(300); }
     const n = await p.evaluate(() => window.__bf.schedule);
     ok('öncesi: yeniden açılışlarda tekrar kurulmuyor (toplam 2 kurulum)', n === 2, n);
+    const exact = await p.evaluate(() => [...window.__pend.values()].every(x => x.isExactNotification === false));
+    ok('öncesi: tam saatli alarm istenmiyor (isExactNotification:false, Android ayar sayfası açılmaz)', exact);
     ok('öncesi: bildirim izni istenmedi', (await p.evaluate(() => window.__bf.requestPerm)) === 0);
     const bd = await p.evaluate(() => [...window.__pend.values()].map(x => [x.id, new Date(x.schedule.at).toString().slice(0, 21), x.title]));
     ok('öncesi: bildirim saatleri 27 Kas 20:00 ve 30 Kas 20:00', bd[0][1].includes('Nov 27 2026 20:00') && bd[1][1].includes('Nov 30 2026 20:00'), bd);
