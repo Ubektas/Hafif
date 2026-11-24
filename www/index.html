@@ -4892,7 +4892,7 @@ async function bfBildirim(){const N=LN();if(!N||bfBusy)return;bfBusy=true;
     if(plusOwned||Date.now()>BF.bit){await N.cancel({notifications:BF_N.map(x=>({id:x.id}))});return}
     const p=await N.checkPermissions();if(!p||p.display!=="granted")return;
     const q=await N.getPending(),bekl=((q&&q.notifications)||[]).map(x=>+x.id);
-    const L=BF_N.filter(x=>x.at.getTime()>Date.now()&&!bekl.includes(x.id)).map(x=>({id:x.id,title:x.title,body:x.body,extra:{bf:1},schedule:{at:x.at,allowWhileIdle:true}}));
+    const L=BF_N.filter(x=>x.at.getTime()>Date.now()&&!bekl.includes(x.id)).map(x=>({id:x.id,title:x.title,body:x.body,extra:{bf:1},schedule:{at:x.at,allowWhileIdle:true},isExactNotification:false})); /* hatırlatıcılar gibi: tam saatli alarm izni istenmez (Android 12+ ayar sayfası açılmasın) */
     if(L.length)await N.schedule({notifications:L});
   }catch(e){console.warn("bf bildirim",e&&e.message)}finally{bfBusy=false}}
 function remQueue(){if(!LN())return;clearTimeout(remT);remT=setTimeout(remSchedule,1200)}
