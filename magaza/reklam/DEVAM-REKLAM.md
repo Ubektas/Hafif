@@ -33,7 +33,7 @@ Bu dosya yeni oturumun başlangıç noktası. Ayrıntılı geçmiş: `google-ads
 - Kural: tek yavaş sabaha göre ayar değiştirme. Akşam 21:00'de ≤35 yükleme ve >₺10 birkaç gün sürerse tCPI ₺11–12.
 
 ## iPhone (zayıf taraf)
-- App Store günlük indirme: 18 Kas ~15, 19 Kas ~15 (eş dost), 20 Kas 2, 21 Kas 8, 22 Kas 6, 23 Kas ~2. 17–23 Kas toplam 49.
+- App Store günlük indirme: 18 Kas ~15, 19 Kas ~15 (eş dost), 20 Kas 2, 21 Kas 8, 22 Kas 7, 23 Kas 2, 24 Kas 6. 18–24 Kas toplam **55** (Trends). Gelir hâlâ yalnızca 19 Kas arkadaş satışı ($10 / net $5,56).
 - **Google iOS Talep Yaratma: DURDURULDU** (22 Kas). ~₺460, ~1.170 tıklama, App Store'a ~1.000 sayfa ziyareti (App Referrer) ama ~%1 indirme. Kitle ilgisiz (Gmail/Discover/YouTube). Kampanya silinmedi.
 - **Apple Ads Advanced "Hafif - Arama - TR" / grup "Kilo ve iğne":** Running, Search Results, Search Match açık, 100 $ promosyon kredisiyle (Basic ile ortak hesap kredisi, tek kredi). Son 7 gün: 17,45 $, ~12 yükleme, **CPA 1,45 $ (~₺66)**. En iyi kelimeler: **kilo takibi** (1,50 $; 13 dokunma/6 yükleme), **kilo verme** (1,50 $; 7/4), adımsayar (177 gösterim/3/2). Önerilen ama yapıldığı teyit edilmemiş: adımsayar 1,50→0,80 $, tartı 1,10→0,60 $; zayıflama 0 dokunma (ad değişikliği sonrası bak). Negatif: kilo alma. **Basic:** Max CPI 1,16 $, aylık 100 $ (0 harcama; duraklatılması önerildi). ⚠️ Aylık bütçe 1 Ara'da yenilenir, kredi bitince karttan öder → **30 Kas'ta devam/duraklat kararı**.
 - Yorumlar: App Store'daki 2 değerlendirmeyi kullanıcı arkadaşlarına yazdırmış. Kendi cümleleri/gerçek kullanım değilse silinmeleri ya da yeniden yazılmaları önerildi (Apple 5.6.3). Doğru yol: uygulamaya SKStoreReviewController / Play In-App Review eklemek (diğer oturuma prompt verilecek).
