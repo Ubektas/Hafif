@@ -24,7 +24,7 @@ Bu dosya yeni oturumun başlangıç noktası. Ayrıntılı geçmiş: `google-ads
 | 23 Kas Pzt | ₺333,60 | 50 | ₺6,67 |
 | 24 Kas Sal | ₺365,70 | 62 | ₺5,90 |
 | 25 Kas Çar | gece ₺336,01 | 64 | ₺5,25 |
-| 26 Kas Per | 12:20'de ₺71,31 | 15 | ₺4,75 |
+| 26 Kas Per | 14:38'de ₺110,17 | 20 | ₺5,51 |
 
 - 17:00'ye kadar karşılaştırma (saatlik rapor): 17 Kas ₺188/14, 20 Kas ₺178/23, 21 Kas ₺170/24, 22 Kas ₺181/27, 23 Kas ₺170/23, **24 Kas ₺157/24**.
 - Saat dilimi (17–23 Kas): gece ₺8,7 · sabah 06–11 ₺9,6 (en pahalı; 07–08 ₺16–27) · öğleden sonra ₺7,2 · **akşam 17–23 ₺5,9, yüklemelerin %42'si**. tCPI ile harcama akşama kaydı.
