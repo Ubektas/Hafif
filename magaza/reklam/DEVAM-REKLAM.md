@@ -27,6 +27,7 @@ Bu dosya yeni oturumun başlangıç noktası. Ayrıntılı geçmiş: `google-ads
 
 - 17:00'ye kadar karşılaştırma (saatlik rapor): 17 Kas ₺188/14, 20 Kas ₺178/23, 21 Kas ₺170/24, 22 Kas ₺181/27, 23 Kas ₺170/23, **24 Kas ₺157/24**.
 - Saat dilimi (17–23 Kas): gece ₺8,7 · sabah 06–11 ₺9,6 (en pahalı; 07–08 ₺16–27) · öğleden sonra ₺7,2 · **akşam 17–23 ₺5,9, yüklemelerin %42'si**. tCPI ile harcama akşama kaydı.
+- Play Console 26 Kas sabahı TPG: edinme 23 Kas **57**; kullanıcı kaybı (kaldırma) 24 Kas **31** (22 Kas ~39 tepe, 23 Kas ~18); toplam yükleme 23 Kas **346**; etkin cihaz 21 Kas **152**; aylık etkin kullanıcı 18 Kas 50 (gecikmeli). Günlük kayıp edinmenin ~%40–50'si → net ~+30/gün.
 - Play Console: 22 Kas'a kadar **314 cihaz edinme**; 20 Kas'ta 58 edinme (43 ücretli/doğrudan, 13 ilişkilendirilmemiş, 2 Play keşfetme). İlk açılış/etkin cihaz metrikleri örneklem ve 1–2 hafta gecikmeli.
 - Ödeme: otomatik, eşik ₺500 (Google yükseltti). Kart Mastercard ••7634 (internet/yurt dışı açık kalmalı).
 - **Promosyon:** 15 Ocak 2027'ye kadar 8.000 TL + KDV harcanırsa 8.000 TL kredi (₺300/gün ile Aralık ortası dolar; ₺135/gün altına inme).
