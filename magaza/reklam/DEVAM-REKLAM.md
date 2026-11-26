@@ -28,6 +28,7 @@ Bu dosya yeni oturumun başlangıç noktası. Ayrıntılı geçmiş: `google-ads
 
 - 17:00'ye kadar karşılaştırma (saatlik rapor): 17 Kas ₺188/14, 20 Kas ₺178/23, 21 Kas ₺170/24, 22 Kas ₺181/27, 23 Kas ₺170/23, **24 Kas ₺157/24**.
 - Saat dilimi (17–23 Kas): gece ₺8,7 · sabah 06–11 ₺9,6 (en pahalı; 07–08 ₺16–27) · öğleden sonra ₺7,2 · **akşam 17–23 ₺5,9, yüklemelerin %42'si**. tCPI ile harcama akşama kaydı.
+- Play Console 26 Kas akşamı TPG: edinme 24 Kas **66**; kayıp 24 Kas 31; toplam yükleme 24 Kas 407; MAU 19 Kas 65; DAU 19 Kas 16; **mağaza girişi ziyaretçisi 23 Kas 330, dönüşüm %16,4** (28 gün ort. %22,7; 18–23 Kas ~%12–27, düşük taraf); kilitlenme ve gelir: veri yok. Öneri: Black Friday sonrası Play mağaza girişi denemesi (A/B: ekran görüntüleri / kısa açıklama).
 - Play Console 26 Kas sabahı TPG: edinme 23 Kas **57**; kullanıcı kaybı (kaldırma) 24 Kas **31** (22 Kas ~39 tepe, 23 Kas ~18); toplam yükleme 23 Kas **346**; etkin cihaz 21 Kas **152**; aylık etkin kullanıcı 18 Kas 50 (gecikmeli). Günlük kayıp edinmenin ~%40–50'si → net ~+30/gün.
 - Play Console: 22 Kas'a kadar **314 cihaz edinme**; 20 Kas'ta 58 edinme (43 ücretli/doğrudan, 13 ilişkilendirilmemiş, 2 Play keşfetme). İlk açılış/etkin cihaz metrikleri örneklem ve 1–2 hafta gecikmeli.
 - Ödeme: otomatik, eşik ₺500 (Google yükseltti). Kart Mastercard ••7634 (internet/yurt dışı açık kalmalı).
