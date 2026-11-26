@@ -16,7 +16,8 @@ Başlangıç: 16 Kasım 2026, ~21:47.
 | 22 Kas (Paz) | ₺300, tCPI ₺10 | ₺344,29 | 182 | 50 | ₺6,89 | Kesin |
 | 23 Kas (Pzt) | ₺300, tCPI ₺10 | ₺333,60 | 207 | 50 | ₺6,67 | Kesin; 4.120 gösterim. Sabah yavaş (12:00'de 8), öğleden sonra/akşam +42 |
 | 24 Kas (Sal) | ₺300, tCPI ₺10 | ₺365,70 | 235 | **62** | **₺5,90** | Kesin; 4.660 gösterim, TO %5,04. En iyi gün; ~22:30'da bütçenin %122'sinde harcama durdu |
-| **Toplam (17–24 Kas)** | | **₺2.394,98** | | **338** | **₺7,09** | |
+| 25 Kas (Çar) | ₺300, tCPI ₺10 | ₺336,80 | 192 | **67** | **₺5,03** | Kesin; 4.450 gösterim, TO %4,32. Yeni rekor; sabah kısık (13:00'te ₺67/13), akşam 17–23 güçlü. Gece 64 → kesin 67 |
+| **Toplam (17–25 Kas)** | | **₺2.731,78** | | **405** | **₺6,75** | |
 
 Not: Google Ads rakamları birkaç gün içinde düzeltilebilir (geçersiz trafik ayıklaması, geç gelen dönüşümler).
 Günlük satırlar `saatlik/` raporlarından (`node magaza/reklam/analiz.js`). Tıklama sayısı saatlik raporda yok.
