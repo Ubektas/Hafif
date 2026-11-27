@@ -19,6 +19,8 @@ Başlangıç: 16 Kasım 2026, ~21:47.
 | 25 Kas (Çar) | ₺300, tCPI ₺10 | ₺336,80 | 192 | **67** | **₺5,03** | Kesin; 4.450 gösterim, TO %4,32. Yeni rekor; sabah kısık (13:00'te ₺67/13), akşam 17–23 güçlü. Gece 64 → kesin 67 |
 | 26 Kas (Per) | ₺300, tCPI ₺10 | ₺339,47 | 199 | **70** | **₺4,85** | Kesin; 5.870 gösterim, TO %3,39. Yeni rekor. 15:45–17:17 durgun (+4), akşam 17:17–22:49 +40. TO düşüşü: Black Friday rekabeti başladı |
 | **Toplam (17–26 Kas)** | | **₺3.071,25** | | **475** | **₺6,47** | |
+| 27 Kas (Cum, Black Friday) | ₺300, tCPI ₺10 | ₺334,45 | 207 | **75** | **₺4,46** | Gün kapanışı (gece geç yüklemeler eklenebilir); 8.090 gösterim, TO %2,56, TBM ₺1,62. Yeni rekor. Sabah zayıf (10:30'da 5/₺15), 20:20 52/₺5,07, 23:00 72/₺4,50 |
+| **Toplam (17–27 Kas)** | | **₺3.405,70** | | **550** | **₺6,19** | |
 
 Not: Google Ads rakamları birkaç gün içinde düzeltilebilir (geçersiz trafik ayıklaması, geç gelen dönüşümler).
 Günlük satırlar `saatlik/` raporlarından (`node magaza/reklam/analiz.js`). Tıklama sayısı saatlik raporda yok.

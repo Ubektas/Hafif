@@ -25,7 +25,7 @@ Bu dosya yeni oturumun başlangıç noktası. Ayrıntılı geçmiş: `google-ads
 | 24 Kas Sal | ₺365,70 | 62 | ₺5,90 |
 | 25 Kas Çar | ₺336,80 | 67 | ₺5,03 |
 | 26 Kas Per | ₺339,47 | 70 | ₺4,85 |
-| 27 Kas Cum (Black Friday) | 23:00'te ₺324,29 | 72 | ₺4,50 |
+| 27 Kas Cum (Black Friday) | ₺334,45 (gün kapanışı) | **75** | **₺4,46** |
 
 - 17:00'ye kadar karşılaştırma (saatlik rapor): 17 Kas ₺188/14, 20 Kas ₺178/23, 21 Kas ₺170/24, 22 Kas ₺181/27, 23 Kas ₺170/23, **24 Kas ₺157/24**.
 - Saat dilimi (17–23 Kas): gece ₺8,7 · sabah 06–11 ₺9,6 (en pahalı; 07–08 ₺16–27) · öğleden sonra ₺7,2 · **akşam 17–23 ₺5,9, yüklemelerin %42'si**. tCPI ile harcama akşama kaydı.
@@ -66,7 +66,7 @@ Bu dosya yeni oturumun başlangıç noktası. Ayrıntılı geçmiş: `google-ads
 
 ## Oturum "Hafif Reklam 2" (24–27 Kas) özeti
 - Android 24/25/26 Kas üç gün üst üste rekor: 62 / 67 / 70 yükleme, YBM ₺5,90 / ₺5,03 / ₺4,85 (17–26 Kas toplam ₺3.071,25 / 475 / ₺6,47). Gün içi seyir: sabah kısık ve pahalı, 15–17 durgun, 17–23 günün ~%45'i. Tek sabaha/öğleden sonraya bakıp ayar değiştirme.
-- 27 Kas Black Friday: sabah TO %1,6, TBM ₺3,1, 10:30'da 5 yükleme/₺15; akşam toparladı (20:20'de 52/₺5,07; 23:00'te 72/₺4,50, 7.840 gösterim, TO %2,63, TBM ₺1,57; kesin rakam 28 Kas). tCPI ₺10 koruyucu çalıştı. BF'de bütçe artırma reddedildi; plan: 1–2 Ara ₺300→₺360, sonra ₺430 → ₺500 (YBM <₺6 ve en az 1 gerçek abone şartıyla).
+- 27 Kas Black Friday: sabah TO %1,6, TBM ₺3,1, 10:30'da 5 yükleme/₺15; akşam toparladı (20:20'de 52/₺5,07; 23:00'te 72/₺4,50; kapanış 75/₺4,46, 8.090 gösterim, TO %2,56, TBM ₺1,62 → 4. rekor gün üst üste; 17–27 Kas toplam ₺3.405,70 / 550 / ₺6,19). tCPI ₺10 koruyucu çalıştı. BF'de bütçe artırma reddedildi; plan: 1–2 Ara ₺300→₺360, sonra ₺430 → ₺500 (YBM <₺6 ve en az 1 gerçek abone şartıyla).
 - Google "15 başlık" e-postası: şimdi dokunma; ~1 Ara yeni öğeler (başlık adayları sohbette: "GLP-1 iğne günün hep aklında", "Doz, kilo ve protein tek yerde", "Haftalık iğneni unutma", "Bulantını ve iştahını kaydet", "Doktoruna PDF rapor götür", "Kası koru: protein ve su", "Hesap yok, veri telefonunda", "Kilo eğrini haftalık gör", "Kalem stoğun bitmeden haber"; ilaç markası yok) + yeni görseller/video.
 - Black Friday: Plus yıllık %40 (499,99 → 299,99 ₺), 27–30 Kas; uygulama içi bant + 27 ve 30 Kas 20:00 yerel bildirim. Prompt: `black-friday-prompt.md` (uygulama oturumuna verildi; Android önce). Güncellemenin ve mağaza fiyatının yayında olduğu **teyit edilmedi**. 1 Ara fiyatı geri al (BF alanları eski fiyatta kalsın). Play "Tanıtım içeriği" önerildi, yapıldığı bilinmiyor.
 - **Abonelik 0 — bulgu:** uygulamada deneme sonu ödeme ekranı yalnızca kullanıcı 8. günden sonra uygulamayı kendisi açarsa ve tek sefer çıkıyor (`trialEndCheck`, www/index.html); deneme sonu bildirimi yok. Öneri (uygulama oturumuna iş): 6. gün "Plus yarın bitiyor" + 8. gün bildirimi → ödeme ekranı. Ayrıca test hesabı olmayan gerçek Google hesabıyla bir satın alma yapıp iade ederek Play ödeme akışını canlıda doğrula.
