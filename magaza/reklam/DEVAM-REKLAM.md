@@ -1,6 +1,6 @@
-# Hafif reklam çalışması: devir notu (24 Kasım 2026, 17:30)
+# Hafif reklam çalışması: devir notu (güncel: 27 Kasım 2026, 20:50)
 
-Bu dosya yeni oturumun başlangıç noktası. Ayrıntılı geçmiş: `google-ads.md` (günlük tablo, olaylar), `baglantilar.md` (kanal bağlantıları, Google iOS testi), `saatlik/` (Google Ads saatlik CSV'leri), `analiz.js` (saatlik özet betiği). Dal: `claude/sweet-hamilton-qn0ov7`. Uygulama kodu ve iOS derlemeleri başka oturumda (`surum-2.0`, `claude/gifted-keller-p80qcv`, DEVAM.md).
+Bu dosya yeni oturumun başlangıç noktası. Ayrıntılı geçmiş: `google-ads.md` (günlük tablo, olaylar), `baglantilar.md` (kanal bağlantıları, Google iOS testi), `saatlik/` (Google Ads saatlik CSV'leri), `analiz.js` (saatlik özet betiği; `--saat=N` ile her günün N:59'a kadarki toplamı). Dal: `claude/sweet-hamilton-qn0ov7`. Uygulama kodu ve iOS derlemeleri başka oturumda (`surum-2.0`, `claude/gifted-keller-p80qcv`, DEVAM.md).
 
 ## Çalışma şekli (kullanıcı tercihleri)
 - Kullanıcı Türkçe yazar, mobilden ekran görüntüsü atar; saatini yazar. Kısa, net, tablolu yorum ister.
@@ -63,6 +63,16 @@ Bu dosya yeni oturumun başlangıç noktası. Ayrıntılı geçmiş: `google-ads
 - 7 gün ücretsiz Plus uygulama içinde (mağaza denemesi değil) → mağazalar denemeyi saymaz.
 - İlk reklam kullanıcılarının denemesi **24 Kas'tan** itibaren bitiyor. Takip: Play Console → Siparişler ("Test:" yazmayanlar), App Store Connect → Subscriptions/Paid Plans.
 - Bu oran (hedef %3+) şunları belirleyecek: bütçe artışı, Apple Ads'e kendi parayla devam, SDK kararı.
+
+## Oturum "Hafif Reklam 2" (24–27 Kas) özeti
+- Android 24/25/26 Kas üç gün üst üste rekor: 62 / 67 / 70 yükleme, YBM ₺5,90 / ₺5,03 / ₺4,85 (17–26 Kas toplam ₺3.071,25 / 475 / ₺6,47). Gün içi seyir: sabah kısık ve pahalı, 15–17 durgun, 17–23 günün ~%45'i. Tek sabaha/öğleden sonraya bakıp ayar değiştirme.
+- 27 Kas Black Friday: sabah TO %1,6, TBM ₺3,1, 10:30'da 5 yükleme/₺15; akşam toparladı (20:20'de 52/₺5,07). tCPI ₺10 koruyucu çalıştı. BF'de bütçe artırma reddedildi; plan: 1–2 Ara ₺300→₺360, sonra ₺430 → ₺500 (YBM <₺6 ve en az 1 gerçek abone şartıyla).
+- Google "15 başlık" e-postası: şimdi dokunma; ~1 Ara yeni öğeler (başlık adayları sohbette: "GLP-1 iğne günün hep aklında", "Doz, kilo ve protein tek yerde", "Haftalık iğneni unutma", "Bulantını ve iştahını kaydet", "Doktoruna PDF rapor götür", "Kası koru: protein ve su", "Hesap yok, veri telefonunda", "Kilo eğrini haftalık gör", "Kalem stoğun bitmeden haber"; ilaç markası yok) + yeni görseller/video.
+- Black Friday: Plus yıllık %40 (499,99 → 299,99 ₺), 27–30 Kas; uygulama içi bant + 27 ve 30 Kas 20:00 yerel bildirim. Prompt: `black-friday-prompt.md` (uygulama oturumuna verildi; Android önce). Güncellemenin ve mağaza fiyatının yayında olduğu **teyit edilmedi**. 1 Ara fiyatı geri al (BF alanları eski fiyatta kalsın). Play "Tanıtım içeriği" önerildi, yapıldığı bilinmiyor.
+- **Abonelik 0 — bulgu:** uygulamada deneme sonu ödeme ekranı yalnızca kullanıcı 8. günden sonra uygulamayı kendisi açarsa ve tek sefer çıkıyor (`trialEndCheck`, www/index.html); deneme sonu bildirimi yok. Öneri (uygulama oturumuna iş): 6. gün "Plus yarın bitiyor" + 8. gün bildirimi → ödeme ekranı. Ayrıca test hesabı olmayan gerçek Google hesabıyla bir satın alma yapıp iade ederek Play ödeme akışını canlıda doğrula.
+- Play mağaza girişi dönüşümü %16,4 (düşük) → ~1 Ara Play mağaza girişi denemesi (önce ekran görüntüleri, sonra kısa açıklama). Play hunisi: ilk açılış/edinme ~%30 (örneklemli olabilir), kaldırma ~%45 → ~4 Ara tekrar bak.
+- App Store yeni "Header and Search Results" özelliği → BF sonrası değerlendir.
+- Apple Ads: reklam grubu bitiş tarihi geçmişti (26 Kas düzeltildi; öneri bitiş 14 Ara). adımsayar 2,00 → 0,80 $ önerisi yapıldı mı teyit edilmedi. Kredinin son kullanma tarihi e-postadan kontrol edilecek.
 
 ## Bekleyen kararlar / sıradaki işler
 1. Her gün: Android kesin rakam → `google-ads.md`.
