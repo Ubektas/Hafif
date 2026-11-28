@@ -46,6 +46,7 @@ Bu dosya yeni oturumun başlangıç noktası. Ayrıntılı geçmiş: `google-ads
 - Geliştirici adı 24 Kas'ta **Ugur Bektas** olarak düzeldi (önce "ugut BEKTAS").
 
 ## Mağaza (ASO)
+- **28 Kas 19:36: Play sayfasında "500+ indirme"** göründü (sonraki eşik 1.000+). Puan/yıldız henüz görünmüyor (yeterli değerlendirme yok → uygulama içi değerlendirme isteği önemli). Öne çıkan görselde "Fragman" düğmesi "kilo" kelimesinin üstüne biniyor → ~1 Ara görsel yenilenirken metni sola/üste al, ortayı boş bırak.
 - Ad iki mağazada **"Hafif: GLP-1 ve Kilo Takibi"** (Play 22 Kas, App Store 2.0.13 derleme 21 ile 23–24 Kas yayında). App Store alt başlık "İğne günü, doz, protein ve su"; anahtar kelimeler `zayıflama,diyet,adım,enjeksiyon,ölçü,vücut,koç,tartı,takviye,yan etki,hatırlatıcı,glp1`. Metinler: `magaza/aciklama.md`, `magaza/app-store.md`.
 - Etki ölçümü (1–2 hafta): Play Console "Google Play keşfetme" (önce ~2/gün), App Store Connect Sources "App Store Search" (önce 3–10/gün), Apple Ads TTR (önce %2,8).
 - Apple öne çıkarma adaylığı gönderildi (yayın tarihi 1 Ocak 2027, Türkiye). Fikir: Ocak için "30 günlük protein ve su" In-App Event.
